@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bodhi's IPA Charts</title>
+  <style>
+    :root {
+      --primary-color: #5C4033; /* Brown, reminiscent of old linguistics texts */
+      --secondary-color: #8B4513; /* Saddle brown */
+      --accent-color: #A52A2A; /* Brick red */
+      --bg-color: #F5F5DC; /* Beige, paper-like */
+      --text-color: #333;
+      --border-color: #8B4513;
+      --rose-gold: #B76E79; /* Rose gold color */
+      --font-serif: 'Georgia', serif;
+      --font-sans: 'Arial', sans-serif;
+    }
+    
+    body {
+      font-family: var(--font-serif);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%235c4033' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      border-bottom: 5px solid var(--accent-color);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    
+    .bodhi-text {
+      color: var(--rose-gold);
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, #B76E79, #E0BFB8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    
+    h1::first-letter {
+      font-size: 3rem;
+      color: var(--accent-color);
+    }
+    
+    h2 {
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    h2 .bodhi-text {
+      background: linear-gradient(to right, #B76E79, #E0BFB8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-style: italic;
+      margin-top: 0.5rem;
+      font-family: var(--font-serif);
+    }
+    
+    main {
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
+    
+    .links-container {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    
+    .link-card {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 1.5rem;
+      width: 45%;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .link-card h3 {
+      color: var(--primary-color);
+      margin-top: 0;
+    }
+    
+    .link-card p {
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      border-radius: 3px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .btn:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .linguistics-terms {
+      background-color: rgba(92, 64, 51, 0.1);
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 5px;
+      border-left: 4px solid var(--accent-color);
+    }
+    
+    .linguistics-terms h3 {
+      margin-top: 0;
+      color: var(--secondary-color);
+    }
+    
+    .slavic-script {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .link-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span class="bodhi-text">Bodhi</span>'s Phonetic Charts</h1>
+    <p class="subtitle">Comprehensive Phonetic Resources for Languages</p>
+  </header>
+  
+  <div class="container">
+    <main>
+      <h2>Welcome to <span class="bodhi-text">Bodhi</span>'s Phonetic Charts</h2>
+      <p>Explore the fascinating world of phonetics through our comprehensive phonetic alphabet resources. Our charts provide detailed phonetic transcriptions and comparisons across Slavic language families.</p>
+      
+      <div class="linguistics-terms">
+        <h3>Featured Slavic Phonology</h3>
+        <div class="slavic-script">
+          <p>Common Slavic sound changes: iotation, palatalization, and the law of open syllables.</p>
+          <p>Notable features: hard/soft consonant pairs, complex consonant clusters, and vowel reduction patterns.</p>
+        </div>
+      </div>
+      
+      <div class="links-container">
+        <div class="link-card">
+          <h3>Standard IPA Chart</h3>
+          <p>Access our comprehensive IPA chart with detailed phonetic symbols for languages.</p>
+          <a href="ipa_chart/" class="btn">View Chart</a>
+        </div>
+        
+        <div class="link-card">
+          <h3>All dedicated IPA symbols in one place</h3>
+          <p>Brings all the dedicated IPA symbols into one place</p>
+          <a href="ipachart_mirror/" class="btn">View Mirror</a>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <p>&copy; 2025 <span class="bodhi-text">Bodhi</span>'s IPA Charts | Utilizing the Slavic Linguistics Jekyll Theme</p>
+      <p><!-- front matter for Jekyll -->
+<!--
+layout: default
+title: Bodhi's IPA Charts
+description: Comprehensive International Phonetic Alphabet resources for Slavic languages
+theme: slavic-linguistics
+-->
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
