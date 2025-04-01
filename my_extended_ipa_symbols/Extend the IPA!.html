@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Extended IPA Symbols</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 8px 15px;
+            background-color: white;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 200px;
+            font-size: 16px;
+        }
+        .search-button {
+            background-color: #6b7ff7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #727c89;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .tab.active {
+            background-color: #6b7ff7;
+        }
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .category-tab {
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            text-align: center;
+            cursor: pointer;
+            margin: 0 2px 5px 0;
+            flex-grow: 1;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: normal;
+        }
+        .label-cell {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Extended IPA Symbols</h1>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="consonants">Consonants</div>
+            <div class="tab" data-tab="vowels">Vowels</div>
+        </div>
+        
+        <!-- Consonants Tab Content -->
+        <div id="consonants" class="tab-content active">
+            <div class="category-tabs">
+            </div>
+            
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Bilabial</th>
+                    <th>Linguolabial</th>
+                    <th>Dental</th>
+                    <th>Alveolar</th>
+                    <th>Retroflex</th>
+                    <th>Alveolo-palatal</th>
+                    <th>Palatal</th>
+                    <th>Labio-palatal</th>
+                    <th>post-palatal</th>
+                    <th>labial-velar</th>
+                    <th>Uvular</th>
+                </tr>
+                <tr>
+                    <td class="label-cell">Nasal</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>𝼔</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Plosive</td>
+                    <td></td>
+                    <td></td>
+                    <td>𝼪 <span class="clickable-text" data-audio-url="audio/Voiced_dental_stop.ogg.mp3">𝼥</span>
+</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>ᶄ ꬶ</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Implosive</td>
+                    <td>ƥ</td>
+                    <td>ƭ̼</td>
+                    </tr>
+                <tr>
+                    <td class="label-cell">Non-sibilant fricative</td>
+                    <td></td>
+                    <td>þ̼</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><img src="images/W_with_left_hook.svg.png"></td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Approximant</td>
+                    <td></td>
+                    <td></td>
+                    <td> <span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3"><img src="images/Voiced dental approximant.png"
+                                 width="40"
+                                      height="40" /></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><img src="images/H_turned_H_ligature.svg.png"></td>
+                </tr>
+                <tr>
+                <td class="label-cell">Flap</td>
+                <td>ⱳ</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Trill</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>ᴙ</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">fricative trill</td>
+                    <td></td>
+                    <td </td>
+                        <td></td>
+                        <td><span class="clickable-text" data-audio-url="audio/Raised_alveolar_non-sonorant_trill.ogg.mp3"><img src="images/Voiced alveolar fricative trill.jpeg"
+                            width="40"
+                                 height="40" /></span></td>
+                    </tr>
+                <tr>
+                    <td class="label-cell">Lateral approximant</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Vowels Tab Content -->
+        <div id="vowels" class="tab-content">
+            <div class="category-tabs">
+            </div>
+            
+            <table>
+                <tr>
+                    <th></th>
+                    <th colspan="2">Front</th>
+                    <th colspan="2">Central</th>
+                    <th colspan="2">Back</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Unrounded</th>
+                    <th>Rounded</th>
+                    <th>Unrounded</th>
+                    <th>Rounded</th>
+                    <th>Unrounded</th>
+                    <th>Rounded</th>
+                </tr>
+                <tr>
+                    <td class="label-cell">Close</td>
+                    <td>i</td>
+                    <td>y</td>
+                    <td>ɨ</td>
+                    <td>ʉ</td>
+                    <td>ɯ</td>
+                    <td>u</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Near-close</td>
+                    <td>ɪ</td>
+                    <td>ʏ</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>ʊ</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Close-mid</td>
+                    <td>e</td>
+                    <td>ø</td>
+                    <td>ɘ</td>
+                    <td>ɵ</td>
+                    <td>ɤ</td>
+                    <td>o</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Mid</td>
+                    <td></td>
+                    <td></td>
+                    <td>ə</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Open-mid</td>
+                    <td>ɛ</td>
+                    <td>œ</td>
+                    <td>ɜ</td>
+                    <td>ɞ</td>
+                    <td>ʌ</td>
+                    <td>ɔ</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Near-open</td>
+                    <td>æ</td>
+                    <td></td>
+                    <td>ɐ</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Open</td>
+                    <td>a</td>
+                    <td>ɶ</td>
+                    <td></td>
+                    <td></td>
+                    <td>ɑ</td>
+                    <td>ɒ</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    // Show the corresponding tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+        
+        const clickableTexts = document.querySelectorAll('.clickable-text');
+
+        clickableTexts.forEach(text => {
+          text.addEventListener('click', () => {
+            const audioUrl = text.getAttribute('data-audio-url');
+            const audio = new Audio(audioUrl);
+            audio.play();
+          });
+        });
+    </script>
+</body>
+</html>
