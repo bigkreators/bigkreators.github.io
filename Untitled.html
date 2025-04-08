@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wiki - Homepage</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f6f6f6;
+        }
+        
+        /* Header */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 30px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+        
+        /* Main Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            min-height: calc(100vh - 130px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            margin-right: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0645ad;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .main-content h1 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .main-content p {
+            margin-bottom: 15px;
+        }
+        
+        .article-preview {
+            margin-bottom: 30px;
+        }
+        
+        .article-preview h3 {
+            margin-bottom: 10px;
+        }
+        
+        .article-preview a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        
+        /* Featured Content */
+        .featured-content {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .featured-content h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 10px;
+        }
+        
+        footer ul li {
+            margin: 0 15px;
+        }
+        
+        footer ul li a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        
+        /* Helper Classes */
+        .edit-link {
+            font-size: 0.8em;
+            color: #777;
+            margin-left: 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <span class="logo">Cryptopedia</span>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search the wiki...">
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">Random</a></li>
+                <li><a href="#">Contribute</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="#">Main Page</a></li>
+                <li><a href="#">Recent Changes</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Community Portal</a></li>
+            </ul>
+            
+            <h3>Tools</h3>
+            <ul>
+                <li><a href="#">Create Article</a></li>
+                <li><a href="#">Upload File</a></li>
+                <li><a href="#">Special Pages</a></li>
+                <li><a href="#">Admin Dashboard</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Wiki Content -->
+        <div class="main-content">
+            <h1>Welcome to the beginning of Cryptopedia!</h1>
+
+            
+            <p>Welcome to my wiki Cryptopedia!, a collaborative knowledge base dedicated to your favorite topics. Our goal is to create a comprehensive resource where enthusiasts and experts can share information, discoveries, and insights.
+<br>Other possible names: named Furn, Furnopedia, Cryptopedia</p>
+            
+            <div class="featured-content">
+                <h3>Featured Article</h3>
+                <p>Check out our featured article: <a href="#">Title of Featured Article</a>. This article showcases excellent content that represents the best of our wiki.</p>
+            </div>
+            <h3>Bonus content</h3>
+            <h1>Voiceless uvular fricative trill</h1>
+            <table class="infobox" style="width: 16em;">
+             <tbody>
+              <tr>
+               <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                Voiceless uvular fricative trill
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     ʀ̝̊
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     χ͡ʀ̥
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     ᴙ̭
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                Audio sample
+               </th>
+              </tr>
+              <tr>
+               <td class="infobox-full-data center" colspan="2">
+                <span typeof="mw:File">
+                 <span>
+                  <audio class="mw-file-element" controls="" data-durationhint="3" data-mw-tmh="" data-mwprovider="wikimediacommons" data-mwtitle="Voiceless_uvular_fricative_trill_ʀ̝̊.mp3" id="mwe_player_0" preload="none" style="width:150px;" width="150">
+                   <source data-height="0" data-width="0" src="Voiceless_uvular_fricative_trill_ʀ̝̊.mp3" type='audio/ogg; codecs="vorbis"'/>
+                   <source data-height="0" data-transcodekey="mp3" data-width="0" src="Voiceless_uvular_fricative_trill_ʀ̝̊.mp3" type="audio/mpeg"/>
+                  </audio>
+                 </span>
+                </span>
+               </td>
+              </tr>
+             </tbody>
+            </table>
+            The <strong>voiceless uvular fricative trill</strong> is a kind of rare type of consonantal sound used in some spoken languages. The IPA symbol for it is ⟨ʀ̝̊⟩, but since this sound is actually a simultaneous [χ] and [ʀ̥], it can also be transcribed as ⟨χ͡ʀ̥⟩. In Bodhi's Phonetic Alphabet<sup> <i> [Made up thing] </i> </sup>, it is represented with ⟨ᴙ̭⟩.<br> <br>
+            
+            Most of the languages that are claimed to have a <strong>voiceless uvular fricative</strong> might actually have a <strong>voiceless uvular fricative trill</strong>, since a complication of uvular fricatives in that the shape of the vocal tract may be such that the uvula vibrates.
+            
+            <h2>Occurance</h2>
+            
+            <h1>Explore the Wiki</h1>
+            
+            <div class="article-preview">
+                <h3><a href="#">Article Title 1</a></h3>
+                <p>Brief description or excerpt from the article to give readers a preview of what they can expect to learn from this article...</p>
+            </div>
+            
+            <div class="article-preview">
+                <h3><a href="#">Article Title 2</a></h3>
+                <p>Brief description or excerpt from the article to give readers a preview of what they can expect to learn from this article...</p>
+            </div>
+            
+            <div class="article-preview">
+                <h3><a href="#">Article Title 3</a></h3>
+                <p>Brief description or excerpt from the article to give readers a preview of what they can expect to learn from this article...</p>
+            </div>
+            
+            <h2>Getting Started</h2>
+            <p>New to the wiki? Here are some ways to get started:</p>
+            <ul>
+                <li>Browse our articles to find topics that interest you</li>
+                <li>Check out the help section to learn how to navigate and contribute</li>
+                <li>Visit the community portal to connect with other contributors</li>
+                <li>Create an account to start contributing your knowledge</li>
+                <li>Features:<br>copy symbol option<br>link to another article or website option<br>propose rename article option<br>propose delete article option<br>bold text format option<br>audio option<br>italic text format option<br>font option<br>made up letter tag<br>option to propose article or template<br>option to propose edit<br>option to reward someone’s edit</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>My Wiki - A collaborative knowledge base</p>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Simple script to handle link clicks for demo purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('This is a static demo - in a real wiki, this link would take you to: ' + link.textContent);
+                });
+            });
+            
+            // Add search functionality
+            const searchInput = document.querySelector('.search-bar input');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    alert('Search for: ' + searchInput.value);
+                    searchInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
