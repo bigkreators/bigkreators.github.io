@@ -2,115 +2,264 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>My Extended IPA Symbols</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f5f7fa;
-                    padding: 20px;
-                }
-                .container {
-                    max-width: 1000px;
-                    margin: 0 auto;
-                    background-color: white;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                    padding: 20px;
-                }
-                .header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 20px;
-                }
-                .search-box {
-                    display: flex;
-                    border: 1px solid #ddd;
-                    border-radius: 25px;
-                    padding: 8px 15px;
-                    background-color: white;
-                }
-                .search-box input {
-                    border: none;
-                    outline: none;
-                    width: 200px;
-                    font-size: 16px;
-                }
-                .search-button {
-                    background-color: #6b7ff7;
-                    color: white;
-                    border: none;
-                    border-radius: 50%;
-                    width: 30px;
-                    height: 30px;
-                    font-size: 18px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-left: 10px;
-                }
-                .tabs {
-                    display: flex;
-                    margin-bottom: 20px;
-                }
-                .tab {
-                    padding: 10px 20px;
-                    background-color: #727c89;
-                    color: white;
-                    text-align: center;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    margin-right: 10px;
-                }
-                .tab.active {
-                    background-color: #6b7ff7;
-                }
-                .category-tabs {
-                    display: flex;
-                    flex-wrap: wrap;
-                    margin-bottom: 10px;
-                }
-                .category-tab {
-                    padding: 8px 15px;
-                    background-color: #e9ecef;
-                    text-align: center;
-                    cursor: pointer;
-                    margin: 0 2px 5px 0;
-                    flex-grow: 1;
-                    border-radius: 5px;
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-bottom: 20px;
-                }
-                th, td {
-                    border: 1px solid #ddd;
-                    padding: 10px;
-                    text-align: center;
-                }
-                th {
-                    background-color: #f8f9fa;
-                    font-weight: normal;
-                }
-                .label-cell {
-                    background-color: #f8f9fa;
-                    font-weight: bold;
-                }
-                .tab-content {
-                    display: none;
-                }
-                .tab-content.active {
-                    display: block;
-                }
-                /*mirroring txet*/
-                  .mirrored {
-                    transform: scaleX(-1);
-                    display: inline-block; /* Important for inline elements */
-                  }
-            </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Extended IPA Symbols</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 8px 15px;
+            background-color: white;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 200px;
+            font-size: 16px;
+        }
+        .search-button {
+            background-color: #6b7ff7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #727c89;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .tab.active {
+            background-color: #6b7ff7;
+        }
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .category-tab {
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            text-align: center;
+            cursor: pointer;
+            margin: 0 2px 5px 0;
+            flex-grow: 1;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: normal;
+        }
+        .label-cell {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .mirrored {
+            transform: scaleX(-1);
+            display: inline-block;
+        }
+        
+        /* New styles for the proposal feature */
+        .proposal-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .proposal-submit-btn {
+            background-color: #6b7ff7;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .proposal-submit-btn:hover {
+            background-color: #5a6fe6;
+        }
+        .proposals-list {
+            margin-top: 20px;
+        }
+        .proposal-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .proposal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .proposal-symbol {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .proposal-date {
+            color: #666;
+        }
+        .proposal-details {
+            margin-bottom: 10px;
+        }
+        .proposal-details p {
+            margin: 5px 0;
+        }
+        .proposal-votes {
+            display: flex;
+            align-items: center;
+        }
+        .vote-btn {
+            background-color: #e9ecef;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .upvote {
+            color: green;
+        }
+        .downvote {
+            color: red;
+        }
+        .vote-count {
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        .no-proposals {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .delete-proposal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .status-pending {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .filter-buttons {
+            margin-bottom: 15px;
+        }
+        .filter-btn {
+            background-color: #e9ecef;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .filter-btn.active {
+            background-color: #6b7ff7;
+            color: white;
+        }
+        .file-upload {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .file-upload input[type="file"] {
+            width: auto;
+        }
+        .file-upload-label {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -119,9 +268,10 @@
         </div>
         
         <div class="tabs">
-            <div class="tab active" data-tab="consonants">Consonants</div>
-            <div class="tab" data-tab="vowels">Vowels</div>
-            <div class="tab" data-tab="other sounds">Other Sounds</div>
+            <div class="tab active" data-tab="consonants" id="consonants-tab">Consonants</div>
+            <div class="tab" data-tab="vowels" id="vowels-tab">Vowels</div>
+            <div class="tab" data-tab="other-sounds" id="other-sounds-tab">Other Sounds</div>
+            <div class="tab" data-tab="proposals" id="proposals-tab">Proposals</div>
         </div>
         
         <!-- Consonants Tab Content -->
@@ -139,10 +289,10 @@
                     <th>Retroflex</th>
                     <th>Alveolo-palatal</th>
                     <th>Palatal</th>
-                    <th>Labio-palatal</th>
+                    <th colspan="2" scope="col">Labial-palatal</th>
                     <th colspan="2" scope="col">Post-palatal</th>
                     <th>Labial-velar</th>
-                    <th>Uvular</th>
+                    <th colspan="2" scope="col">Uvular</th>
                 </tr>
                 <tr>
                     <td class="label-cell">Nasal</td>
@@ -156,7 +306,11 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td>𝼔</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Plosive</td>
@@ -166,7 +320,8 @@
                     <td> <span class="clickable-text" data-audio-url="audio/Voiceless_dental_stop.ogg.mp3">𝼪</span>
                         
                         <span class="clickable-text" data-audio-url="audio/Voiced_dental_stop.ogg.mp3">𝼥</span>
-</td>
+                    </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -174,13 +329,28 @@
                     <td></td>
                     <td>ᶄ</td>
                     <td>ꬶ</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Implosive</td>
                     <td>ƥ</td>
                     <td></td>
                     <td>ƭ̼</td>
-                    </tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 <tr>
                     <td class="label-cell">Non-sibilant fricative</td>
                     <td></td>
@@ -192,10 +362,13 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td><img src="images/H_turned_H_ligature.svg.png"></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>ᶍ</td>
+                    <td>ɣ̡</td>
                     <td><img src="images/W_with_left_hook.svg.png"></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Approximant</td>
@@ -203,20 +376,37 @@
                     <td></td>
                     <td></td>
                     <td> <span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3"><img src="images/Voiced dental approximant.png"
-                                 width="40"
-                                      height="40" /></span></td>
+                        width="40"
+                        height="40" /></span></td>
                     <td>ᴚ</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td> ɉ̊ </td>
                     <td> <span class="clickable-text" data-audio-url="audio/Post-palatal_approximant.ogg.mp3">ɉ</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                <td class="label-cell">Flap</td>
-                <td></td>
-                <td> <span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
+                    <td class="label-cell">Flap</td>
+                    <td></td>
+                    <td> <span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Trill</td>
@@ -232,18 +422,30 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td> <span class="clickable-text" data-audio-url="audio/Voiceless_uvular_trill.ogg.mp3">ᴙ</span></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Fricative trill</td>
                     <td></td>
                     <td></td>
-                    <td </td>
-                        <td></td>
-                        <td><span class="clickable-text" data-audio-url="audio/Raised_alveolar_non-sonorant_trill.ogg.mp3"><img src="images/Voiced alveolar fricative trill.jpeg"
-                            width="40"
-                                 height="40" /></span></td>
-                    </tr>
+                    <td></td>
+                    <td></td>
+                    <td><span class="clickable-text" data-audio-url="audio/Raised_alveolar_non-sonorant_trill.ogg.mp3"><img src="images/Voiced alveolar fricative trill.jpeg"
+                        width="40"
+                        height="40" /></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 <tr>
                     <td class="label-cell">Lateral approximant</td>
                     <td></td>
@@ -252,211 +454,40 @@
                     <td>𝼦</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
-    ᴎ voiceless Velar Nasal <br>
-    ᶍ    Voiceless post-palatal fricative <br>
-    ᴆ voiceless Alveolar Tap/flap <br>
-    𝼧 Dental nasal <br>
-    𝼨 Dental trill <br>
-    𝼩    s̪ <br>
-    (ȵ)Alveolo-palatal Nasal <br>
-    (ʠ) Voiceless Uvular Implosive <br>
-    ψ    voiced bilabial fricative trill    [ʙ̝]<br>
-    <p class="mirrored">β</p> Voiced bilabial approximant <br>
-    H_turned_H_ligature.svg.png voiceless labial–palatal fricative <br>
-    ᴊ Voiceless palatal approximant
+            ᴎ voiceless Velar Nasal <br>
+            ᴆ voiceless Alveolar Tap/flap <br>
+            𝼧 Dental nasal <br>
+            𝼨 Dental trill <br>
+            𝼩    s̪ <br>
+            ȵ Alveolo-palatal Nasal <br>
+            ʠ Voiceless Uvular Implosive <br>
+            ψ    voiced bilabial fricative trill    [ʙ̝]<br>
+            <p class="mirrored">β</p> Voiced bilabial approximant <br>
+            ᴊ Voiceless palatal approximant <br>
+            ⱷ voiceless bilabial approximant <br>
+            Voiced labial–alveolar plosive ȸ <br>
+            Voiceless labial–uvular plosive ȹ <br>
+            ᴘ voiceless bilabial trill <br>
+            ꟺ Near-close Near-back unrounded Vowel <br>
+            ꭆ Voiced uvular fricative trill <br>
+            þ voiceless Alveolar Non-sibilant fricative
         </div>
-        <!-- Other Sounds Tab Content -->
-        <div id="other sounds" class="tab-content">
-            <div class="category-tabs">
-            </div>
-            <table class="infobox" style="width: 16em;">
-                 <tbody>
-                  <tr>
-                   <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                Voiced velar bunched approximant
-                   </th>
-                  </tr>
-                  <tr>
-                   <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                    <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                     <span class="IPA nowrap">
-                         ᴪ
-                     </span>
-                    </span>
-                   </th>
-                  </tr>
-                 </tbody>
-                </table>
-            <table class="infobox" style="width: 16em;">
-                 <tbody>
-                  <tr>
-                   <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                       retroflex lateral click
-                   </th>
-                  </tr>
-                  <tr>
-                   <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                    <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                     <span class="IPA nowrap">
-                         ⦀
-                     </span>
-                    </span>
-                   </th>
-                  </tr>
-                 </tbody>
-                </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                      Voiced post-palatal fricative
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                    ᶍ̬
-                    ɉ̝
-                    ꬶ̞
-                    ɣ̡
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                      Compressed voiced post-palatal approximant
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                        𝼾
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                      Fricated palatal click
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                        𝼋
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                      Close central compressed vowel
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                        ɏ
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                protruded voiced post-palatal approximant
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                        𝼿
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table class="infobox" style="width: 16em;">
-                <tbody>
-                 <tr>
-                  <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
-                near-close central compressed vowel
-                  </th>
-                 </tr>
-                 <tr>
-                  <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                   <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                    <span class="IPA nowrap">
-                        <span style="font-variant: small-caps;">ɏ</span>
-                    </span>
-                   </span>
-                  </th>
-                 </tr>
-                </tbody>
-               </table>
-           <table>
-               <tr>
-                   <th></th>
-                   <th colspan="2" scope="col">Bilabial</th>
-                   <th colspan="2" scope="col">Labiodental</th>
-                   <th colspan="2" scope="col">Linguolabial
-                   <th colspan="2" scope="col">Palatal</th>
-                   <th colspan="2" scope="col">Velar
-                       <th colspan="2" scope="col">Uvular
-                   <th colspan="2" scope="col">Pharyngeal</th>
-                   <th colspan="2" scope="col">Epiglottal</th>
-                   <th colspan="2" scope="col">Glottal</th>
-               </tr>
-               <tr>
-<td class="label-cell">Nasal</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>ɴ̠̊</td>
-<td>ɴ̠</td>
-<tr>
-<td class="label-cell">Plosive/stop</td>    <td></td>    <td></td>    <td></td>    <td></td>    <td></td>    <td></td>    <td></td>    <td>ʡ̬    ʔ̬</td>
-</tr>
-<tr>
-       <td class="label-cell">Sibilant fricative</td>
-       <td>ϕ</td>
-       <td>ϐ</td>    <td>ғ</td> <td></td>    s̼ z̼    ɕ̠ ʑ̠    ӽ γ    ꭔ *    ђ ⸮    ӈ *    ꜧ * <tr>
-       Tap/flap                    k̆ ğ                ʔ̆ ʔ̬̆
-       Trill                    ʀ̟̊ ʀ̟        ʀ̠̊ ʀ̠        h𐞪 ɦ𐞪
-       Lateral affricate    pɸˡ bβˡ
-            </div>
+        
         <!-- Vowels Tab Content -->
         <div id="vowels" class="tab-content">
             <div class="category-tabs">
             </div>
-            
             <table>
                 <tr>
                     <th></th>
@@ -538,39 +569,1158 @@
                 </tr>
             </table>
         </div>
-    </div>
-
-    <script>
-        // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
+        
+        <!-- Other Sounds Tab Content -->
+        <div id="other-sounds" class="tab-content">
+            <div class="category-tabs">
+            </div>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            Voiced velar bunched approximant
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    ᴪ
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            retroflex lateral click
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    ⦀
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            Compressed voiced post-palatal approximant
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    𝼾
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            Fricated palatal click
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    𝼋
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            Close central compressed vowel
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    ɏ
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            protruded voiced post-palatal approximant
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    𝼿
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="infobox" style="width: 16em;">
+                <tbody>
+                    <tr>
+                        <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                            near-close central compressed vowel
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                <span class="IPA nowrap">
+                                    <span style="font-variant: small-caps;">ɏ</span>
+                                </span>
+                            </span>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Proposals Tab Content -->
+        <div id="proposals" class="tab-content">
+            <h2>Propose New IPA Symbols</h2>
             
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Hide all tab contents
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    // Show the corresponding tab content
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
+            <div class="proposal-form">
+                <div class="form-group">
+                    <label for="symbol">Symbol (Unicode character or description):</label>
+                    <input type="text" id="symbol" placeholder="Enter your proposed symbol or describe it">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sound-name">Sound Name:</label>
+                    <input type="text" id="sound-name" placeholder="E.g., Voiceless pharyngeal trill">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category">
+                        <option value="consonant">Consonant</option>
+                        <option value="vowel">Vowel</option>
+                        <option value="other">Other Sound</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="position">Position (if applicable):</label>
+                    <input type="text" id="position" placeholder="E.g., Bilabial, Alveolar, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="articulation">Manner of Articulation (if applicable):</label>
+                    <input type="text" id="articulation" placeholder="E.g., Nasal, Plosive, Fricative, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="ipa-feature">IPA Features/Description:</label>
+                    <input type="text" id="ipa-feature" placeholder="E.g., [β̥ʷ] voiceless labialized bilabial fricative">
+                </div>
+                
+                <div class="form-group">
+                    <label for="rationale">Rationale for Addition:</label>
+                    <textarea id="rationale" rows="4" placeholder="Explain why this symbol should be added to the extended IPA set"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="example-language">Example Language(s) (optional):</label>
+                    <input type="text" id="example-language" placeholder="Languages where this sound is found">
+                </div>
+                
+                <div class="form-group file-upload">
+                    <label class="file-upload-label">Audio Sample (optional):</label>
+                    <input type="file" id="audio-sample" accept="audio/*">
+                </div>
+                
+                <div class="form-group file-upload">
+                    <label class="file-upload-label">Image/Diagram (optional):</label>
+                    <input type="file" id="symbol-image" accept="image/*">
+                </div>
+                
+                <button class="proposal-submit-btn" id="submit-proposal">Submit Proposal</button>
+            </div>
+            
+            <h3>Current Proposals</h3>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="consonant">Consonants</button>
+                <button class="filter-btn" data-filter="vowel">Vowels</button>
+                <button class="filter-btn" data-filter="other">Other Sounds</button>
+            </div>
+            
+            <div id="proposals-list" class="proposals-list">
+                <div class="no-proposals">No proposals yet. Be the first to propose a new symbol!</div>
+            </div>
+        </div>
+        
+        <script>
+        // Tab switching functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    // Set default active tab
+    document.getElementById('consonants').classList.add('active');
+    document.getElementById('consonants-tab').classList.add('active');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all tab contents
+            tabContents.forEach(content => content.classList.remove('active'));
+            // Show the corresponding tab content
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Set up clickable text functionality
+    const clickableTexts = document.querySelectorAll('.clickable-text');
+    clickableTexts.forEach(text => {
+        text.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio-url');
+            if (audioUrl) {
+                const audio = new Audio(audioUrl);
+                audio.play();
+            }
+        });
+    });
+    
+    // Proposals functionality
+    const submitProposalBtn = document.getElementById('submit-proposal');
+    const proposalsList = document.getElementById('proposals-list');
+    let proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+    
+    // Display existing proposals
+    function displayProposals(filter = 'all') {
+        proposalsList.innerHTML = '';
+        
+        const filteredProposals = filter === 'all'
+            ? proposals
+            : proposals.filter(proposal => proposal.category === filter);
+        
+        if (filteredProposals.length === 0) {
+            proposalsList.innerHTML = '<div class="no-proposals">No proposals found for this category. Be the first to propose a new symbol!</div>';
+            return;
+        }
+        
+        filteredProposals.forEach((proposal, index) => {
+            const proposalItem = document.createElement('div');
+            proposalItem.className = 'proposal-item';
+            proposalItem.setAttribute('data-id', index);
+            
+            let statusBadge = '';
+            if (proposal.status === 'approved') {
+                statusBadge = '<span class="status-badge status-approved">Approved</span>';
+            } else if (proposal.status === 'rejected') {
+                statusBadge = '<span class="status-badge status-rejected">Rejected</span>';
+            } else {
+                statusBadge = '<span class="status-badge status-pending">Pending</span>';
+            }
+            
+            proposalItem.innerHTML = `
+                <div class="proposal-header">
+                    <div class="proposal-symbol">${proposal.symbol}</div>
+                    <div class="proposal-date">${proposal.date}${statusBadge}</div>
+                </div>
+                <div class="proposal-details">
+                    <p><strong>Sound Name:</strong> ${proposal.soundName}</p>
+                    <p><strong>Category:</strong> ${proposal.category.charAt(0).toUpperCase() + proposal.category.slice(1)}</p>
+                    ${proposal.position ? `<p><strong>Position:</strong> ${proposal.position}</p>` : ''}
+                    ${proposal.articulation ? `<p><strong>Articulation:</strong> ${proposal.articulation}</p>` : ''}
+                    <p><strong>IPA Features:</strong> ${proposal.ipaFeature}</p>
+                    <p><strong>Rationale:</strong> ${proposal.rationale}</p>
+                    ${proposal.exampleLanguage ? `<p><strong>Example Languages:</strong> ${proposal.exampleLanguage}</p>` : ''}
+                </div>
+                <div class="proposal-votes">
+                    <button class="vote-btn upvote" data-id="${index}">👍 Upvote</button>
+                    <button class="vote-btn downvote" data-id="${index}">👎 Downvote</button>
+                    <span class="vote-count">${proposal.votes || 0}</span>
+                </div>
+                <button class="delete-proposal" data-id="${index}">×</button>
+            `;
+            
+            proposalsList.appendChild(proposalItem);
+        });
+        
+        // Add event listeners for votes and delete
+        document.querySelectorAll('.upvote').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                proposals[id].votes = (proposals[id].votes || 0) + 1;
+                saveProposals();
+                displayProposals(getCurrentFilter());
             });
         });
         
-        const clickableTexts = document.querySelectorAll('.clickable-text');
-
-        clickableTexts.forEach(text => {
-          text.addEventListener('click', () => {
-            const audioUrl = text.getAttribute('data-audio-url');
-            const audio = new Audio(audioUrl);
-            audio.play();
-          });
+        document.querySelectorAll('.downvote').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                proposals[id].votes = (proposals[id].votes || 0) - 1;
+                saveProposals();
+                displayProposals(getCurrentFilter());
+            });
         });
-    </script>
+        
+        document.querySelectorAll('.delete-proposal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                if (confirm('Are you sure you want to delete this proposal?')) {
+                    proposals.splice(id, 1);
+                    saveProposals();
+                    displayProposals(getCurrentFilter());
+                }
+            });
+        });
+    }
+    
+    // Save proposals to localStorage
+    function saveProposals() {
+        localStorage.setItem('ipaProposals', JSON.stringify(proposals));
+    }
+    
+    // Get current filter selection
+    function getCurrentFilter() {
+        const activeFilter = document.querySelector('.filter-btn.active');
+        return activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+    }
+    
+    // Handle form submission
+    submitProposalBtn.addEventListener('click', function() {
+        const symbol = document.getElementById('symbol').value;
+        const soundName = document.getElementById('sound-name').value;
+        const category = document.getElementById('category').value;
+        const position = document.getElementById('position').value;
+        const articulation = document.getElementById('articulation').value;
+        const ipaFeature = document.getElementById('ipa-feature').value;
+        const rationale = document.getElementById('rationale').value;
+        const exampleLanguage = document.getElementById('example-language').value;
+        
+        // Basic validation
+        if (!symbol || !soundName || !category || !ipaFeature || !rationale) {
+            alert('Please fill in all required fields (Symbol, Sound Name, Category, IPA Features, and Rationale)');
+            return;
+        }
+        
+        // Create proposal object
+        const newProposal = {
+            symbol: symbol,
+            soundName: soundName,
+            category: category,
+            position: position,
+            articulation: articulation,
+            ipaFeature: ipaFeature,
+            rationale: rationale,
+            exampleLanguage: exampleLanguage,
+            date: new Date().toLocaleDateString(),
+            status: 'pending',
+            votes: 0
+        };
+        
+        // Add to proposals array
+        proposals.push(newProposal);
+        saveProposals();
+        
+        // Clear form
+        document.getElementById('symbol').value = '';
+        document.getElementById('sound-name').value = '';
+        document.getElementById('position').value = '';
+        document.getElementById('articulation').value = '';
+        document.getElementById('ipa-feature').value = '';
+        document.getElementById('rationale').value = '';
+        document.getElementById('example-language').value = '';
+        document.getElementById('audio-sample').value = '';
+        document.getElementById('symbol-image').value = '';
+        
+        // Display updated proposals
+        displayProposals(getCurrentFilter());
+        
+        alert('Your proposal has been submitted successfully!');
+    });
+    
+    // Handle filter buttons
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            displayProposals(filter);
+        });
+    });
+    
+    // Initialize proposals display
+    displayProposals();
+    
+    // Audio functionality for clickable phonetic symbols
+    document.querySelectorAll('.clickable-text').forEach(element => {
+        element.style.cursor = 'pointer';
+        element.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio-url');
+            if (audioUrl) {
+                const audio = new Audio(audioUrl);
+                audio.play().catch(e => {
+                    console.error('Error playing audio:', e);
+                    alert('Unable to play audio sample. The audio file may be missing or your browser may not support this feature.');
+                });
+            }
+        });
+    });
+    
+    // Make the symbol cells clickable to add them to the form
+    document.querySelectorAll('td:not(.label-cell)').forEach(cell => {
+        if (cell.textContent.trim()) {
+            cell.style.cursor = 'pointer';
+            cell.addEventListener('click', function() {
+                const symbol = this.textContent.trim();
+                document.getElementById('symbol').value = symbol;
+            });
+        }
+    });
+    
+    // Handle file uploads (preview functionality)
+    document.getElementById('symbol-image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // You could add preview functionality here
+            console.log('Image file selected:', file.name);
+        }
+    });
+    
+    document.getElementById('audio-sample').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // You could add preview functionality here
+            console.log('Audio file selected:', file.name);
+        }
+    });
+    
+    // Search functionality
+    const searchInput = document.querySelector('.search-box input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            // Search through symbols in all tabs
+            document.querySelectorAll('.tab-content table td:not(.label-cell)').forEach(cell => {
+                const cellText = cell.textContent.toLowerCase();
+                if (cellText.includes(searchTerm)) {
+                    cell.style.backgroundColor = 'yellow';
+                } else {
+                    cell.style.backgroundColor = '';
+                }
+            });
+        });
+    }
+});
+            
+            
+            // Add this to your existing script
+            document.addEventListener('DOMContentLoaded', function() {
+                // Define admin hash - change this to something unique and complex
+                const ADMIN_HASH = "yourSecretAdminHash123";
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Reference the proposals array from the main scope
+                    let proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+                    
+                    // Define admin hash - change this to something unique and complex
+                    const ADMIN_HASH = "yourSecretAdminHash123";
+                    
+                    // Check for admin mode in URL hash
+                    function checkAdminMode() {
+                        return window.location.hash === "#" + ADMIN_HASH;
+                    }
+                    
+                    // Function to check if user is in admin mode
+                    function isAdmin() {
+                        return checkAdminMode();
+                    }
+                    
+                    // Function to clear admin hash from URL (for logging out)
+                    function clearAdminHash() {
+                        // Replace current URL without the hash
+                        window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                    }
+                    
+                    // Add admin control section to the proposals tab
+                    const proposalsTab = document.getElementById('proposals');
+                    const adminControlsSection = document.createElement('div');
+                    adminControlsSection.id = 'admin-controls';
+                    adminControlsSection.className = 'admin-panel';
+                    adminControlsSection.style.display = isAdmin() ? 'block' : 'none';
+                    adminControlsSection.innerHTML = `
+                        <div class="admin-header">
+                            <h3>Admin Controls</h3>
+                            <p>You are currently in admin mode. You can approve or reject proposals.</p>
+                            <button id="admin-logout">Exit Admin Mode</button>
+                        </div>
+                        <div class="admin-stats">
+                            <p>Pending proposals: <span id="pending-count">0</span></p>
+                        </div>
+                    `;
+                    
+                    // Insert admin controls at the beginning of the proposals tab
+                    proposalsTab.insertBefore(adminControlsSection, proposalsTab.firstChild);
+                    
+                    // Add logout functionality
+                    document.getElementById('admin-logout')?.addEventListener('click', function() {
+                        clearAdminHash();
+                        adminControlsSection.style.display = 'none';
+                        // Refresh the proposals display without admin controls
+                        displayProposals(getCurrentFilter());
+                    });
+                    
+                    // Check URL hash when it changes
+                    window.addEventListener('hashchange', function() {
+                        if (isAdmin()) {
+                            adminControlsSection.style.display = 'block';
+                        } else {
+                            adminControlsSection.style.display = 'none';
+                        }
+                        displayProposals(getCurrentFilter());
+                    });
+                    
+                    // Function to save proposals to localStorage
+                    function saveProposals() {
+                        localStorage.setItem('ipaProposals', JSON.stringify(proposals));
+                        // After saving, refresh the proposals list
+                        proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+                    }
+                    
+                    // Function to get current filter selection
+                    function getCurrentFilter() {
+                        const activeFilter = document.querySelector('.filter-btn.active');
+                        return activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+                    }
+                    
+                    // Function to add approved symbol to the appropriate table
+                    function addApprovedSymbolToTable(proposal) {
+                        console.log(`Symbol ${proposal.symbol} approved and should be added to the ${proposal.category} table`);
+                        // You would implement logic here to add the symbol to the appropriate table
+                    }
+                    
+                    // Define the displayProposals function
+                    function displayProposals(filter = 'all') {
+                        const proposalsList = document.getElementById('proposals-list');
+                        if (!proposalsList) return; // Safety check
+                        
+                        proposalsList.innerHTML = '';
+                        
+                        // Make sure we have the latest proposals
+                        proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+                        
+                        let pendingCount = 0;
+                        
+                        const filteredProposals = filter === 'all'
+                            ? proposals
+                            : proposals.filter(proposal => proposal.category === filter);
+                        
+                        if (filteredProposals.length === 0) {
+                            proposalsList.innerHTML = '<div class="no-proposals">No proposals found for this category. Be the first to propose a new symbol!</div>';
+                            document.getElementById('pending-count').textContent = '0';
+                            return;
+                        }
+                        
+                        filteredProposals.forEach((proposal, index) => {
+                            if (proposal.status === 'pending') {
+                                pendingCount++;
+                            }
+                            
+                            const proposalItem = document.createElement('div');
+                            proposalItem.className = 'proposal-item';
+                            proposalItem.setAttribute('data-id', index);
+                            
+                            let statusBadge = '';
+                            if (proposal.status === 'approved') {
+                                statusBadge = '<span class="status-badge status-approved">Approved</span>';
+                            } else if (proposal.status === 'rejected') {
+                                statusBadge = '<span class="status-badge status-rejected">Rejected</span>';
+                            } else {
+                                statusBadge = '<span class="status-badge status-pending">Pending</span>';
+                            }
+                            
+                            // Add admin controls if user is in admin mode
+                            let adminControls = '';
+                            if (isAdmin() && proposal.status === 'pending') {
+                                adminControls = `
+                                    <div class="admin-controls">
+                                        <button class="approve-btn" data-id="${index}">Approve</button>
+                                        <button class="reject-btn" data-id="${index}">Reject</button>
+                                    </div>
+                                `;
+                            }
+                            
+                            proposalItem.innerHTML = `
+                                <div class="proposal-header">
+                                    <div class="proposal-symbol">${proposal.symbol}</div>
+                                    <div class="proposal-date">${proposal.date}${statusBadge}</div>
+                                </div>
+                                <div class="proposal-details">
+                                    <p><strong>Sound Name:</strong> ${proposal.soundName}</p>
+                                    <p><strong>Category:</strong> ${proposal.category.charAt(0).toUpperCase() + proposal.category.slice(1)}</p>
+                                    ${proposal.position ? `<p><strong>Position:</strong> ${proposal.position}</p>` : ''}
+                                    ${proposal.articulation ? `<p><strong>Articulation:</strong> ${proposal.articulation}</p>` : ''}
+                                    <p><strong>IPA Features:</strong> ${proposal.ipaFeature}</p>
+                                    <p><strong>Rationale:</strong> ${proposal.rationale}</p>
+                                    ${proposal.exampleLanguage ? `<p><strong>Example Languages:</strong> ${proposal.exampleLanguage}</p>` : ''}
+                                </div>
+                                <div class="proposal-votes">
+                                    <button class="vote-btn upvote" data-id="${index}">👍 Upvote</button>
+                                    <button class="vote-btn downvote" data-id="${index}">👎 Downvote</button>
+                                    <span class="vote-count">${proposal.votes || 0}</span>
+                                </div>
+                                ${adminControls}
+                                ${isAdmin() ? `<button class="delete-proposal" data-id="${index}">×</button>` : ''}
+                            `;
+                            
+                            proposalsList.appendChild(proposalItem);
+                        });
+                        
+                        // Update pending count in admin panel
+                        const pendingCountElement = document.getElementById('pending-count');
+                        if (pendingCountElement) {
+                            pendingCountElement.textContent = pendingCount;
+                        }
+                        
+                        // Add event listeners for votes
+                        document.querySelectorAll('.upvote').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                proposals[id].votes = (proposals[id].votes || 0) + 1;
+                                saveProposals();
+                                displayProposals(getCurrentFilter());
+                            });
+                        });
+                        
+                        document.querySelectorAll('.downvote').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                proposals[id].votes = (proposals[id].votes || 0) - 1;
+                                saveProposals();
+                                displayProposals(getCurrentFilter());
+                            });
+                        });
+                        
+                        // Admin action event listeners
+                        if (isAdmin()) {
+                            document.querySelectorAll('.approve-btn').forEach(btn => {
+                                btn.addEventListener('click', function() {
+                                    const id = parseInt(this.getAttribute('data-id'));
+                                    proposals[id].status = 'approved';
+                                    proposals[id].approvedDate = new Date().toLocaleDateString();
+                                    saveProposals();
+                                    // Optionally add the approved symbol to the appropriate table
+                                    addApprovedSymbolToTable(proposals[id]);
+                                    displayProposals(getCurrentFilter());
+                                });
+                            });
+                            
+                            document.querySelectorAll('.reject-btn').forEach(btn => {
+                                btn.addEventListener('click', function() {
+                                    const id = parseInt(this.getAttribute('data-id'));
+                                    proposals[id].status = 'rejected';
+                                    proposals[id].rejectedDate = new Date().toLocaleDateString();
+                                    saveProposals();
+                                    displayProposals(getCurrentFilter());
+                                });
+                            });
+                            
+                            document.querySelectorAll('.delete-proposal').forEach(btn => {
+                                btn.addEventListener('click', function() {
+                                    const id = parseInt(this.getAttribute('data-id'));
+                                    if (confirm('Are you sure you want to delete this proposal?')) {
+                                        proposals.splice(id, 1);
+                                        saveProposals();
+                                        displayProposals(getCurrentFilter());
+                                    }
+                                });
+                            });
+                        }
+                    }
+                    
+                    // Make sure our display function is available to other scripts
+                    window.displayProposals = displayProposals;
+                    
+                    // Add some styling for admin features
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .admin-panel {
+                            background-color: #e6f7ff;
+                            border: 1px solid #91d5ff;
+                            border-radius: 4px;
+                            padding: 15px;
+                            margin-bottom: 20px;
+                        }
+                        .admin-header {
+                            display: flex;
+                            flex-direction: column;
+                            margin-bottom: 15px;
+                        }
+                        .admin-header h3 {
+                            margin-top: 0;
+                            margin-bottom: 10px;
+                            color: #0050b3;
+                        }
+                        #admin-logout {
+                            background-color: #ff4d4f;
+                            color: white;
+                            border: none;
+                            padding: 8px 15px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            align-self: flex-start;
+                        }
+                        .admin-stats {
+                            background-color: #f5f5f5;
+                            padding: 10px;
+                            border-radius: 4px;
+                            margin-bottom: 10px;
+                        }
+                        .admin-controls {
+                            margin-top: 10px;
+                            padding: 10px;
+                            background-color: #f8f9fa;
+                            border-radius: 4px;
+                        }
+                        .approve-btn, .reject-btn {
+                            padding: 5px 10px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            margin-right: 10px;
+                        }
+                        .approve-btn {
+                            background-color: #28a745;
+                            color: white;
+                        }
+                        .reject-btn {
+                            background-color: #dc3545;
+                            color: white;
+                        }
+                        .delete-proposal {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background-color: #ff6b6b;
+                            color: white;
+                            border: none;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    // Check admin mode on initial load and refresh display
+                    if (isAdmin()) {
+                        console.log("Admin mode activated");
+                    }
+                    
+                    // Immediately display proposals
+                    displayProposals(getCurrentFilter());
+                    
+                    // If there's already a proposals display function in the main code,
+                    // override the submit button event to use our version
+                    const submitProposalBtn = document.getElementById('submit-proposal');
+                    if (submitProposalBtn) {
+                        submitProposalBtn.removeEventListener('click', window.originalSubmitHandler);
+                        submitProposalBtn.addEventListener('click', function() {
+                            const symbol = document.getElementById('symbol').value;
+                            const soundName = document.getElementById('sound-name').value;
+                            const category = document.getElementById('category').value;
+                            const position = document.getElementById('position').value;
+                            const articulation = document.getElementById('articulation').value;
+                            const ipaFeature = document.getElementById('ipa-feature').value;
+                            const rationale = document.getElementById('rationale').value;
+                            const exampleLanguage = document.getElementById('example-language').value;
+                            
+                            // Basic validation
+                            if (!symbol || !soundName || !category || !ipaFeature || !rationale) {
+                                alert('Please fill in all required fields (Symbol, Sound Name, Category, IPA Features, and Rationale)');
+                                return;
+                            }
+                            
+                            // Create proposal object
+                            const newProposal = {
+                                symbol: symbol,
+                                soundName: soundName,
+                                category: category,
+                                position: position,
+                                articulation: articulation,
+                                ipaFeature: ipaFeature,
+                                rationale: rationale,
+                                exampleLanguage: exampleLanguage,
+                                date: new Date().toLocaleDateString(),
+                                status: 'pending',
+                                votes: 0
+                            };
+                            
+                            // Add to proposals array
+                            proposals.push(newProposal);
+                            saveProposals();
+                            
+                            // Clear form
+                            document.getElementById('symbol').value = '';
+                            document.getElementById('sound-name').value = '';
+                            document.getElementById('position').value = '';
+                            document.getElementById('articulation').value = '';
+                            document.getElementById('ipa-feature').value = '';
+                            document.getElementById('rationale').value = '';
+                            document.getElementById('example-language').value = '';
+                            document.getElementById('audio-sample').value = '';
+                            document.getElementById('symbol-image').value = '';
+                            
+                            // Display updated proposals
+                            displayProposals(getCurrentFilter());
+                            
+                            alert('Your proposal has been submitted successfully!');
+                        });
+                    }
+                    
+                    // Setup filter buttons
+                    const filterButtons = document.querySelectorAll('.filter-btn');
+                    filterButtons.forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            filterButtons.forEach(b => b.classList.remove('active'));
+                            this.classList.add('active');
+                            
+                            const filter = this.getAttribute('data-filter');
+                            displayProposals(filter);
+                        });
+                    });
+                });
+                
+                // Check for admin mode in URL hash
+                function checkAdminMode() {
+                    return window.location.hash === "#" + ADMIN_HASH;
+                }
+                
+                // Function to check if user is in admin mode
+                function isAdmin() {
+                    return checkAdminMode();
+                }
+                
+                // Function to clear admin hash from URL (for logging out)
+                function clearAdminHash() {
+                    // Replace current URL without the hash
+                    window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                }
+                
+                // Add admin control section to the proposals tab
+                const proposalsTab = document.getElementById('proposals');
+                const adminControlsSection = document.createElement('div');
+                adminControlsSection.id = 'admin-controls';
+                adminControlsSection.className = 'admin-panel';
+                adminControlsSection.style.display = isAdmin() ? 'block' : 'none';
+                adminControlsSection.innerHTML = `
+                    <div class="admin-header">
+                        <h3>Admin Controls</h3>
+                        <p>You are currently in admin mode. You can approve or reject proposals.</p>
+                        <button id="admin-logout">Exit Admin Mode</button>
+                    </div>
+                    <div class="admin-stats">
+                        <p>Pending proposals: <span id="pending-count">0</span></p>
+                    </div>
+                `;
+                
+                // Insert admin controls at the beginning of the proposals tab
+                proposalsTab.insertBefore(adminControlsSection, proposalsTab.firstChild);
+                
+                // Add logout functionality
+                document.getElementById('admin-logout')?.addEventListener('click', function() {
+                    clearAdminHash();
+                    adminControlsSection.style.display = 'none';
+                    // Refresh the proposals display without admin controls
+                    displayProposals(getCurrentFilter());
+                });
+                
+                // Check URL hash when it changes
+                window.addEventListener('hashchange', function() {
+                    if (isAdmin()) {
+                        adminControlsSection.style.display = 'block';
+                    } else {
+                        adminControlsSection.style.display = 'none';
+                    }
+                    displayProposals(getCurrentFilter());
+                });
+                
+                // Modify the displayProposals function to include admin controls
+                const originalDisplayProposals = window.displayProposals || function() {};
+                
+                window.displayProposals = function(filter = 'all') {
+                    const proposalsList = document.getElementById('proposals-list');
+                    proposalsList.innerHTML = '';
+                    
+                    let pendingCount = 0;
+                    
+                    const filteredProposals = filter === 'all'
+                    ? proposals
+                    : proposals.filter(proposal => proposal.category === filter);
+                    
+                    if (filteredProposals.length === 0) {
+                        proposalsList.innerHTML = '<div class="no-proposals">No proposals found for this category. Be the first to propose a new symbol!</div>';
+                        return;
+                    }
+                    
+                    filteredProposals.forEach((proposal, index) => {
+                        if (proposal.status === 'pending') {
+                            pendingCount++;
+                        }
+                        
+                        const proposalItem = document.createElement('div');
+                        proposalItem.className = 'proposal-item';
+                        proposalItem.setAttribute('data-id', index);
+                        
+                        let statusBadge = '';
+                        if (proposal.status === 'approved') {
+                            statusBadge = '<span class="status-badge status-approved">Approved</span>';
+                        } else if (proposal.status === 'rejected') {
+                            statusBadge = '<span class="status-badge status-rejected">Rejected</span>';
+                        } else {
+                            statusBadge = '<span class="status-badge status-pending">Pending</span>';
+                        }
+                        
+                        // Add admin controls if user is in admin mode
+                        let adminControls = '';
+                        if (isAdmin() && proposal.status === 'pending') {
+                            adminControls = `
+                                <div class="admin-controls">
+                                    <button class="approve-btn" data-id="${index}">Approve</button>
+                                    <button class="reject-btn" data-id="${index}">Reject</button>
+                                </div>
+                            `;
+                        }
+                        
+                        proposalItem.innerHTML = `
+                                <div class="proposal-header">
+                                <div class="proposal-symbol">${proposal.symbol}</div>
+                                <div class="proposal-date">${proposal.date}${statusBadge}</div>
+                                </div>
+                                <div class="proposal-details">
+                                <p><strong>Sound Name:</strong> ${proposal.soundName}</p>
+                                <p><strong>Category:</strong> ${proposal.category.charAt(0).toUpperCase() + proposal.category.slice(1)}</p>
+                                ${proposal.position ? `<p><strong>Position:</strong> ${proposal.position}</p>` : ''}
+                                ${proposal.articulation ? `<p><strong>Articulation:</strong> ${proposal.articulation}</p>` : ''}
+                                <p><strong>IPA Features:</strong> ${proposal.ipaFeature}</p>
+                                <p><strong>Rationale:</strong> ${proposal.rationale}</p>
+                                ${proposal.exampleLanguage ? `<p><strong>Example Languages:</strong> ${proposal.exampleLanguage}</p>` : ''}
+                            </div>
+                            <div class="proposal-votes">
+                                <button class="vote-btn upvote" data-id="${index}">👍 Upvote</button>
+                                <button class="vote-btn downvote" data-id="${index}">👎 Downvote</button>
+                                <span class="vote-count">${proposal.votes || 0}</span>
+                            </div>
+                            ${adminControls}
+                            ${isAdmin() ? `<button class="delete-proposal" data-id="${index}">×</button>` : ''}
+                        `;
+                        
+                        proposalsList.appendChild(proposalItem);
+                    });
+                    
+                    // Update pending count in admin panel
+                    const pendingCountElement = document.getElementById('pending-count');
+                    if (pendingCountElement) {
+                        pendingCountElement.textContent = pendingCount;
+                    }
+                    
+                    // Add event listeners for votes
+                    document.querySelectorAll('.upvote').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = parseInt(this.getAttribute('data-id'));
+                            proposals[id].votes = (proposals[id].votes || 0) + 1;
+                            saveProposals();
+                            displayProposals(getCurrentFilter());
+                        });
+                    });
+                    
+                    document.querySelectorAll('.downvote').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = parseInt(this.getAttribute('data-id'));
+                            proposals[id].votes = (proposals[id].votes || 0) - 1;
+                            saveProposals();
+                            displayProposals(getCurrentFilter());
+                        });
+                    });
+                    
+                    // Admin action event listeners
+                    if (isAdmin()) {
+                        document.querySelectorAll('.approve-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                proposals[id].status = 'approved';
+                                proposals[id].approvedDate = new Date().toLocaleDateString();
+                                saveProposals();
+                                // Optionally add the approved symbol to the appropriate table
+                                addApprovedSymbolToTable(proposals[id]);
+                                displayProposals(getCurrentFilter());
+                            });
+                        });
+                        
+                        document.querySelectorAll('.reject-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                proposals[id].status = 'rejected';
+                                proposals[id].rejectedDate = new Date().toLocaleDateString();
+                                saveProposals();
+                                displayProposals(getCurrentFilter());
+                            });
+                        });
+                        
+                        document.querySelectorAll('.delete-proposal').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                if (confirm('Are you sure you want to delete this proposal?')) {
+                                    proposals.splice(id, 1);
+                                    saveProposals();
+                                    displayProposals(getCurrentFilter());
+                                }
+                            });
+                        });
+                    }
+                };
+                
+                // Function to save proposals to localStorage
+                function saveProposals() {
+                    localStorage.setItem('ipaProposals', JSON.stringify(proposals));
+                }
+                
+                // Function to get current filter selection
+                function getCurrentFilter() {
+                    const activeFilter = document.querySelector('.filter-btn.active');
+                    return activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+                }
+                
+                // Function to add approved symbol to the appropriate table
+                function addApprovedSymbolToTable(proposal) {
+                    console.log(`Symbol ${proposal.symbol} approved and should be added to the ${proposal.category} table`);
+                    // You would implement logic here to add the symbol to the appropriate table
+                    // This might involve modifying the DOM to add a new cell to the right table
+                }
+                
+                
+                
+                
+                
+                
+                
+                // Add some styling for admin features
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .admin-panel {
+                            background-color: #e6f7ff;
+                            border: 1px solid #91d5ff;
+                            border-radius: 4px;
+                            padding: 15px;
+                            margin-bottom: 20px;
+                        }
+                        .admin-header {
+                            display: flex;
+                            flex-direction: column;
+                            margin-bottom: 15px;
+                        }
+                        .admin-header h3 {
+                            margin-top: 0;
+                            margin-bottom: 10px;
+                            color: #0050b3;
+                        }
+                        #admin-logout {
+                            background-color: #ff4d4f;
+                            color: white;
+                            border: none;
+                            padding: 8px 15px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            align-self: flex-start;
+                        }
+                        .admin-stats {
+                            background-color: #f5f5f5;
+                            padding: 10px;
+                            border-radius: 4px;
+                            margin-bottom: 10px;
+                        }
+                        .admin-controls {
+                            margin-top: 10px;
+                            padding: 10px;
+                            background-color: #f8f9fa;
+                            border-radius: 4px;
+                        }
+                        .approve-btn, .reject-btn {
+                            padding: 5px 10px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            margin-right: 10px;
+                        }
+                        .approve-btn {
+                            background-color: #28a745;
+                            color: white;
+                        }
+                        .reject-btn {
+                            background-color: #dc3545;
+                            color: white;
+                        }
+                        .delete-proposal {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background-color: #ff6b6b;
+                            color: white;
+                            border: none;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    // Check admin mode on initial load and refresh display
+                    if (isAdmin()) {
+                        console.log("Admin mode activated");
+                    }
+                    
+                    // Call displayProposals to render with or without admin controls
+                    // We need to delay this to ensure it runs after the original script's displayProposals
+                    setTimeout(() => {
+                        displayProposals(getCurrentFilter());
+                    }, 100);
+                });
+</script>
 </body>
 </html>

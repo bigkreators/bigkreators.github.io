@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voiceless glottal approximant [h̞]</title>
+    <style>
+        body {
+            font-size: 18px;
+            line-height: 1.5;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Container using grid layout */
+        .content-container {
+            display: grid;
+            grid-template-columns: 1fr auto; /* Main content takes available space, tables take what they need */
+            grid-gap: 20px;
+            align-items: start;
+        }
+        
+        /* Main content styles */
+        .main-content {
+            font-size: 1.2em;
+            padding-right: 15px;
+        }
+        
+        /* Tables container - vertically stacked but on right side */
+        .tables-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Infobox styles */
+        .infobox {
+            border: 1px solid #a2a9b1;
+            background-color: #f8f9fa;
+            padding: 0.5em;
+            text-align: center;
+            line-height: 1.5em;
+            width: 22em;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .ipa-symbol {
+            font-size: 3em;
+            line-height: 1.2;
+            font-family: "Doulos SIL", "Gentium Plus", "Charis SIL", "DejaVu Sans", sans-serif;
+            padding: 0.2em 0;
+            display: block;
+        }
+
+        .infobox-header {
+            font-weight: bold;
+            padding: 0.4em;
+            font-size: 1.2em;
+            background-color: #eaecf0;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        /* Audio button styling */
+        .audio-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .speaker-icon {
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+        }
+        
+        .speaker-icon:hover {
+            background-color: #ddd;
+        }
+        
+        audio {
+            display: none;
+        }
+        
+        /* Image container that spans both columns */
+        .image-container {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+        
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .content-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tables-container {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <div class="main-content">
+            <p>The voiceless glottal fricative and approximant are two type of consonantal sounds, The fricative is the sound of the English letter H (as in the word <i>have</i>); likewise, The IPA symbol for both of these sounds is ⟨h⟩, but the approximant can be distinguished by a diacritic ⟨h̞⟩, and the fricative may be represented with the extIPA diacritic for strong articulation ⟨h͈⟩. An effort undertaken in the Kiel Convention in 1989 attempted to move both voiceless and voiced glottal fricatives, to approximants.<br><br>
+            
+            The fricative is sometimes called the voiceless glottal transition or aspirate.<br> <br>
+            
+            The voiceless glottal fricative patterns like a fricative or approximant consonant phonologically, but often lacks the usual phonetic characteristics of a consonant, but {{IPA|[h]}} has been described as a voiceless phonation because in many languages, it lacks the place and manner of articulation of a prototypical consonant, as well as the height and backness of a prototypical vowel:<br> <br>
+
+            [h and ɦ] have been described as voiceless or breathy voiced counterparts of the vowels that follow them [but] the shape of the vocal tract [...] is often simply that of the surrounding sounds. [...] Accordingly, in such cases it is more appropriate to regard h and ɦ as segments that have only a laryngeal specification, and are unmarked for all other features. There are other languages [such as Hebrew and Arabic] which show a more definite displacement of the formant frequencies for h, suggesting it has a [glottal] constriction associated with its production.<br><br>
+
+            The Shanghainese language, among others, contrasts voiced and voiceless glottal fricatives.</p>
+        </div>
+        
+        <div class="tables-container">
+            <table class="infobox">
+                <tr><td class="infobox-header">Voiceless glottal fricative</td></tr>
+                <tr><td><span class="ipa-symbol">h</span></td></tr>
+                <tr><td><span class="ipa-symbol">h͈</span></td></tr>
+                <tr><td><div class="audio-text">
+                    <div class="speaker-icon" onclick="document.getElementById('sound1').play()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </div>
+                    <span>listen</span>
+                    <audio id="sound1" src="Voiceless_glottal_fricative.ogg.mp3"></audio>
+                </div></td></tr>
+            </table>
+            
+            <table class="infobox">
+                <tr><td class="infobox-header">Voiceless glottal approximant</td></tr>
+                <tr><td><span class="ipa-symbol">h̞</span></td></tr>
+                <tr><td><div class="audio-text">
+                    <div class="speaker-icon" onclick="document.getElementById('sound2').play()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </div>
+                    <span>listen</span>
+                    <audio id="sound2" src="Voiceless_glottal_approximant_h̞.wav"></audio>
+                </div></td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
