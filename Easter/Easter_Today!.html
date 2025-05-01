@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easter Celebration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: #f5f9ff;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #ffc8dd, #bde0fe);
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #6a0dad;
+      font-size: 48px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+    }
+    
+    .subtitle {
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .countdown {
+      font-size: 24px;
+      color: #6a0dad;
+      font-weight: bold;
+      margin: 20px 0;
+      background-color: rgba(255,255,255,0.6);
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    
+    .egg-basket {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 40px 0;
+    }
+    
+    .egg {
+      width: 100px;
+      height: 140px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+      position: relative;
+      transform: rotate(-10deg);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .egg:hover {
+      transform: rotate(0) scale(1.1);
+    }
+    
+    .egg:nth-child(odd) {
+      transform: rotate(10deg);
+    }
+    
+    .egg:nth-child(odd):hover {
+      transform: rotate(0) scale(1.1);
+    }
+    
+    .egg1 { background: linear-gradient(45deg, #ffadad, #ffd6a5); }
+    .egg2 { background: linear-gradient(45deg, #fdffb6, #caffbf); }
+    .egg3 { background: linear-gradient(45deg, #9bf6ff, #a0c4ff); }
+    .egg4 { background: linear-gradient(45deg, #bdb2ff, #ffc6ff); }
+    .egg5 { background: linear-gradient(45deg, #fffffc, #ffd6ff); }
+    
+    .pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+    
+    .dots .pattern {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.7) 3px, transparent 4px);
+      background-size: 20px 20px;
+    }
+    
+    .stripes .pattern {
+      background-image: linear-gradient(45deg, rgba(255,255,255,0.4) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.4) 75%, transparent 75%, transparent);
+      background-size: 15px 15px;
+    }
+    
+    .zigzag .pattern {
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.5) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.5) 25%, transparent 25%), linear-gradient(315deg, rgba(255,255,255,0.5) 25%, transparent 25%), linear-gradient(45deg, rgba(255,255,255,0.5) 25%, transparent 25%);
+      background-size: 10px 10px;
+    }
+    
+    .bunny {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    
+    .bunny-svg {
+      width: 150px;
+      height: 200px;
+      margin-right: 30px;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin: 40px 0;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-card h3 {
+      color: #6a0dad;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    
+    .feature-card p {
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #ff85a2;
+    }
+    
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(135deg, #fde2e4, #e2ece9);
+      padding: 50px;
+      border-radius: 10px;
+      margin: 40px 0;
+    }
+    
+    .cta-section h2 {
+      color: #6a0dad;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background-color: #6a0dad;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    
+    .cta-button:hover {
+      background-color: #8a2be2;
+      transform: translateY(-3px);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: #666;
+      font-size: 14px;
+      border-top: 1px solid #ddd;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 36px;
+      }
+      
+      .egg-basket {
+        gap: 15px;
+      }
+      
+      .egg {
+        width: 80px;
+        height: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Happy Easter Celebration</h1>
+      <p class="subtitle">Join us for a fun-filled springtime celebration!</p>
+      <div class="countdown" id="countdown">Easter is here!</div>
+    </header>
+    
+    <div class="egg-basket">
+      <div class="egg egg1 dots">
+        <div class="pattern"></div>
+      </div>
+      <div class="egg egg2 stripes">
+        <div class="pattern"></div>
+      </div>
+      <div class="egg egg3 zigzag">
+        <div class="pattern"></div>
+      </div>
+      <div class="egg egg4 dots">
+        <div class="pattern"></div>
+      </div>
+      <div class="egg egg5 stripes">
+        <div class="pattern"></div>
+      </div>
+    </div>
+    
+    <div class="bunny">
+      <svg class="bunny-svg" viewBox="0 0 200 300">
+        <!-- Bunny body -->
+        <ellipse cx="100" cy="200" rx="60" ry="70" fill="#f8f6f1" />
+        
+        <!-- Left ear -->
+        <path d="M70 150 Q 40 60 70 100" stroke="#f8f6f1" stroke-width="20" fill="#f8f6f1" />
+        <path d="M70 150 Q 45 80 70 110" stroke="#ffb6c1" stroke-width="10" fill="#ffb6c1" />
+        
+        <!-- Right ear -->
+        <path d="M130 150 Q 160 60 130 100" stroke="#f8f6f1" stroke-width="20" fill="#f8f6f1" />
+        <path d="M130 150 Q 155 80 130 110" stroke="#ffb6c1" stroke-width="10" fill="#ffb6c1" />
+        
+        <!-- Head -->
+        <circle cx="100" cy="150" r="40" fill="#f8f6f1" />
+        
+        <!-- Eyes -->
+        <circle cx="85" cy="140" r="5" fill="#333" />
+        <circle cx="115" cy="140" r="5" fill="#333" />
+        
+        <!-- Nose -->
+        <ellipse cx="100" cy="155" rx="7" ry="5" fill="#ffb6c1" />
+        
+        <!-- Mouth -->
+        <path d="M95 165 Q 100 170 105 165" stroke="#333" stroke-width="2" fill="none" />
+        
+        <!-- Whiskers -->
+        <line x1="80" y1="155" x2="60" y2="150" stroke="#333" stroke-width="1.5" />
+        <line x1="80" y1="158" x2="60" y2="158" stroke="#333" stroke-width="1.5" />
+        <line x1="80" y1="161" x2="60" y2="166" stroke="#333" stroke-width="1.5" />
+        
+        <line x1="120" y1="155" x2="140" y2="150" stroke="#333" stroke-width="1.5" />
+        <line x1="120" y1="158" x2="140" y2="158" stroke="#333" stroke-width="1.5" />
+        <line x1="120" y1="161" x2="140" y2="166" stroke="#333" stroke-width="1.5" />
+        
+        <!-- Paws -->
+        <ellipse cx="70" cy="250" rx="15" ry="10" fill="#f8f6f1" />
+        <ellipse cx="130" cy="250" rx="15" ry="10" fill="#f8f6f1" />
+      </svg>
+      
+      <div>
+        <h2 style="color: #6a0dad; margin-bottom: 15px;">Welcome to Easter Joy!</h2>
+        <p style="line-height: 1.6;">Celebrate the spirit of Easter with colorful eggs, festive treats, and spring activities. Our Easter celebration brings together family and friends for a day of joy and renewal.</p>
+      </div>
+    </div>
+    
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🥚</div>
+        <h3>Easter Egg Hunt</h3>
+        <p>Join our annual Easter egg hunt with hundreds of colorfully decorated eggs hidden throughout the garden. Perfect for children of all ages!</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🧺</div>
+        <h3>Spring Picnic</h3>
+        <p>Enjoy a delicious spring picnic with traditional Easter treats, refreshing beverages, and seasonal specialties in our flower-filled meadow.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🐰</div>
+        <h3>Meet the Easter Bunny</h3>
+        <p>Take photos with the Easter Bunny and receive a special gift! A magical experience for children that creates lasting memories.</p>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <h2>Join Our Easter Celebration!</h2>
+      <p>Don't miss out on the fun and festivities. Bring your family and friends to celebrate this joyous occasion together.</p>
+      <a href="#" class="cta-button">Register Now</a>
+    </div>
+    
+    <footer>
+      <p>&copy; 2025 Easter Celebration | All Rights Reserved</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Add a little interactivity
+    document.querySelectorAll('.egg').forEach(egg => {
+      egg.addEventListener('click', () => {
+        egg.style.transform = 'rotate(720deg) scale(1.2)';
+        egg.style.transition = 'transform 1s ease';
+        
+        setTimeout(() => {
+          egg.style.transform = egg.classList.contains('egg:nth-child(odd)') 
+            ? 'rotate(10deg)' 
+            : 'rotate(-10deg)';
+        }, 1000);
+      });
+    });
+    
+    // Basic countdown functionality
+    function updateCountdown() {
+      const easterDate = new Date(2025, 3, 20); // April 20, 2025
+      const currentDate = new Date();
+      
+      const timeLeft = easterDate - currentDate;
+      
+      if (timeLeft <= 0) {
+        document.getElementById('countdown').textContent = 'Easter is here!';
+        return;
+      }
+      
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      document.getElementById('countdown').textContent = `${days} days until Easter!`;
+    }
+    
+    updateCountdown();
+  </script>
+</body>
+</html>
