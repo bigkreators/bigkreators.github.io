@@ -1,0 +1,731 @@
+import { useState, useEffect } from 'react';
+
+// Main component
+const PhonemeChart = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState('english');
+  const [activePhoneme, setActivePhoneme] = useState(null);
+  
+  // Sample language data
+  const languages = [
+    { id: 'english', name: 'English' },
+    { id: 'spanish', name: 'Spanish' },
+    { id: 'french', name: 'French' },
+    { id: 'japanese', name: 'Japanese' },
+    { id: 'arabic', name: 'Arabic' },
+    { id: 'mandarin', name: 'Mandarin Chinese' },
+    { id: 'russian', name: 'Russian' },
+    { id: 'hindi', name: 'Hindi' },
+    { id: 'swahili', name: 'Swahili' },
+    { id: 'portuguese', name: 'Portuguese' },
+    { id: 'korean', name: 'Korean' },
+    { id: 'german', name: 'German' },
+    { id: 'italian', name: 'Italian' },
+    { id: 'turkish', name: 'Turkish' }
+  ];
+  
+  // Phoneme data by language
+  const phonemeData = {
+    english: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'pen', ipa: 'p', audio: 'pen.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'book', ipa: 'b', audio: 'book.mp3', description: 'Voiced bilabial plosive' },
+          null,
+          null,
+          { symbol: 'm', example: 'man', ipa: 'm', audio: 'man.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'top', ipa: 't', audio: 'top.mp3', description: 'Voiceless alveolar plosive' },
+          { symbol: 'd', example: 'dog', ipa: 'd', audio: 'dog.mp3', description: 'Voiced alveolar plosive' },
+          { symbol: 's', example: 'sun', ipa: 's', audio: 'sun.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'z', example: 'zoo', ipa: 'z', audio: 'zoo.mp3', description: 'Voiced alveolar fricative' },
+          { symbol: 'n', example: 'net', ipa: 'n', audio: 'net.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'cat', ipa: 'k', audio: 'cat.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'go', ipa: 'g', audio: 'go.mp3', description: 'Voiced velar plosive' },
+          { symbol: 'ʃ', example: 'ship', ipa: 'ʃ', audio: 'ship.mp3', description: 'Voiceless postalveolar fricative' },
+          { symbol: 'ʒ', example: 'measure', ipa: 'ʒ', audio: 'measure.mp3', description: 'Voiced postalveolar fricative' },
+          { symbol: 'ŋ', example: 'ring', ipa: 'ŋ', audio: 'ring.mp3', description: 'Velar nasal' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i:', example: 'see', ipa: 'i:', audio: 'see.mp3', description: 'Close front unrounded vowel' },
+          null,
+          { symbol: 'u:', example: 'blue', ipa: 'u:', audio: 'blue.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'ɪ', example: 'sit', ipa: 'ɪ', audio: 'sit.mp3', description: 'Near-close near-front unrounded vowel' },
+          { symbol: 'ə', example: 'about', ipa: 'ə', audio: 'about.mp3', description: 'Mid central vowel' },
+          { symbol: 'ʊ', example: 'put', ipa: 'ʊ', audio: 'put.mp3', description: 'Near-close near-back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'bed', ipa: 'e', audio: 'bed.mp3', description: 'Open-mid front unrounded vowel' },
+          { symbol: 'ʌ', example: 'cup', ipa: 'ʌ', audio: 'cup.mp3', description: 'Open-mid back unrounded vowel' },
+          { symbol: 'ɔ:', example: 'call', ipa: 'ɔ:', audio: 'call.mp3', description: 'Open-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'æ', example: 'cat', ipa: 'æ', audio: 'cat.mp3', description: 'Near-open front unrounded vowel' },
+          null,
+          { symbol: 'ɑ:', example: 'car', ipa: 'ɑ:', audio: 'car.mp3', description: 'Open back unrounded vowel' }
+        ]
+      ]
+    },
+    spanish: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'padre', ipa: 'p', audio: 'padre.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'beso', ipa: 'b', audio: 'beso.mp3', description: 'Voiced bilabial plosive' },
+          null,
+          null,
+          { symbol: 'm', example: 'madre', ipa: 'm', audio: 'madre.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'toro', ipa: 't', audio: 'toro.mp3', description: 'Voiceless dental plosive' },
+          { symbol: 'd', example: 'dedo', ipa: 'd', audio: 'dedo.mp3', description: 'Voiced dental plosive' },
+          { symbol: 's', example: 'silla', ipa: 's', audio: 'silla.mp3', description: 'Voiceless alveolar fricative' },
+          null,
+          { symbol: 'n', example: 'noche', ipa: 'n', audio: 'noche.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'casa', ipa: 'k', audio: 'casa.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'gato', ipa: 'g', audio: 'gato.mp3', description: 'Voiced velar plosive' },
+          { symbol: 'tʃ', example: 'chico', ipa: 'tʃ', audio: 'chico.mp3', description: 'Voiceless postalveolar affricate' },
+          null,
+          { symbol: 'ɲ', example: 'niño', ipa: 'ɲ', audio: 'niño.mp3', description: 'Palatal nasal' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i', example: 'si', ipa: 'i', audio: 'si.mp3', description: 'Close front unrounded vowel' },
+          null,
+          { symbol: 'u', example: 'tu', ipa: 'u', audio: 'tu.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'mesa', ipa: 'e', audio: 'mesa.mp3', description: 'Mid front unrounded vowel' },
+          null,
+          { symbol: 'o', example: 'sol', ipa: 'o', audio: 'sol.mp3', description: 'Mid back rounded vowel' }
+        ],
+        [
+          null,
+          { symbol: 'a', example: 'casa', ipa: 'a', audio: 'casa.mp3', description: 'Open front unrounded vowel' },
+          null
+        ]
+      ]
+    },
+    french: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'pont', ipa: 'p', audio: 'pont.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'bon', ipa: 'b', audio: 'bon.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'f', example: 'feu', ipa: 'f', audio: 'feu.mp3', description: 'Voiceless labiodental fricative' },
+          { symbol: 'v', example: 'vous', ipa: 'v', audio: 'vous.mp3', description: 'Voiced labiodental fricative' },
+          { symbol: 'm', example: 'main', ipa: 'm', audio: 'main.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'ton', ipa: 't', audio: 'ton.mp3', description: 'Voiceless dental plosive' },
+          { symbol: 'd', example: 'dans', ipa: 'd', audio: 'dans.mp3', description: 'Voiced dental plosive' },
+          { symbol: 's', example: 'son', ipa: 's', audio: 'son.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'z', example: 'zone', ipa: 'z', audio: 'zone.mp3', description: 'Voiced alveolar fricative' },
+          { symbol: 'n', example: 'non', ipa: 'n', audio: 'non.mp3', description: 'Alveolar nasal' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i', example: 'si', ipa: 'i', audio: 'si.mp3', description: 'Close front unrounded vowel' },
+          { symbol: 'y', example: 'tu', ipa: 'y', audio: 'tu.mp3', description: 'Close front rounded vowel' },
+          { symbol: 'u', example: 'vous', ipa: 'u', audio: 'vous.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'été', ipa: 'e', audio: 'été.mp3', description: 'Close-mid front unrounded vowel' },
+          { symbol: 'ø', example: 'peu', ipa: 'ø', audio: 'peu.mp3', description: 'Close-mid front rounded vowel' },
+          { symbol: 'o', example: 'mot', ipa: 'o', audio: 'mot.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'ɛ', example: 'lait', ipa: 'ɛ', audio: 'lait.mp3', description: 'Open-mid front unrounded vowel' },
+          { symbol: 'œ', example: 'œuf', ipa: 'œ', audio: 'œuf.mp3', description: 'Open-mid front rounded vowel' },
+          { symbol: 'ɔ', example: 'fort', ipa: 'ɔ', audio: 'fort.mp3', description: 'Open-mid back rounded vowel' }
+        ],
+        [
+          null,
+          { symbol: 'a', example: 'place', ipa: 'a', audio: 'place.mp3', description: 'Open front unrounded vowel' },
+          { symbol: 'ɑ', example: 'pâte', ipa: 'ɑ', audio: 'pate.mp3', description: 'Open back unrounded vowel' }
+        ]
+      ]
+    },
+    japanese: {
+      consonants: [
+        [
+          { symbol: 'k', example: 'かい (kai)', ipa: 'k', audio: 'kai.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'がく (gaku)', ipa: 'g', audio: 'gaku.mp3', description: 'Voiced velar plosive' }
+        ],
+        [
+          { symbol: 's', example: 'さく (saku)', ipa: 's', audio: 'saku.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'z', example: 'ざつ (zatsu)', ipa: 'z', audio: 'zatsu.mp3', description: 'Voiced alveolar fricative' }
+        ],
+        [
+          { symbol: 't', example: 'たこ (tako)', ipa: 't', audio: 'tako.mp3', description: 'Voiceless alveolar plosive' },
+          { symbol: 'd', example: 'だれ (dare)', ipa: 'd', audio: 'dare.mp3', description: 'Voiced alveolar plosive' }
+        ],
+        [
+          { symbol: 'n', example: 'ねこ (neko)', ipa: 'n', audio: 'neko.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'h', example: 'はな (hana)', ipa: 'h', audio: 'hana.mp3', description: 'Voiceless glottal fricative' }
+        ],
+        [
+          { symbol: 'm', example: 'むし (mushi)', ipa: 'm', audio: 'mushi.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 'r', example: 'らく (raku)', ipa: 'ɾ', audio: 'raku.mp3', description: 'Alveolar tap' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'a', example: 'あか (aka)', ipa: 'a', audio: 'aka.mp3', description: 'Open central unrounded vowel' }
+        ],
+        [
+          { symbol: 'i', example: 'いけ (ike)', ipa: 'i', audio: 'ike.mp3', description: 'Close front unrounded vowel' }
+        ],
+        [
+          { symbol: 'u', example: 'うみ (umi)', ipa: 'ɯ', audio: 'umi.mp3', description: 'Close back unrounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'えき (eki)', ipa: 'e', audio: 'eki.mp3', description: 'Mid front unrounded vowel' }
+        ],
+        [
+          { symbol: 'o', example: 'おと (oto)', ipa: 'o', audio: 'oto.mp3', description: 'Mid back rounded vowel' }
+        ]
+      ]
+    },
+    arabic: {
+      consonants: [
+        [
+          { symbol: 'ب', example: 'باب (bāb)', ipa: 'b', audio: 'bab.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'ت', example: 'تين (tīn)', ipa: 't', audio: 'tin.mp3', description: 'Voiceless dental plosive' },
+          { symbol: 'د', example: 'دار (dār)', ipa: 'd', audio: 'dar.mp3', description: 'Voiced dental plosive' }
+        ],
+        [
+          { symbol: 'ك', example: 'كلب (kalb)', ipa: 'k', audio: 'kalb.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'ق', example: 'قلب (qalb)', ipa: 'q', audio: 'qalb.mp3', description: 'Voiceless uvular plosive' }
+        ],
+        [
+          { symbol: 'ف', example: 'فم (fam)', ipa: 'f', audio: 'fam.mp3', description: 'Voiceless labiodental fricative' },
+          { symbol: 'ث', example: 'ثلاثة (thalātha)', ipa: 'θ', audio: 'thalatha.mp3', description: 'Voiceless dental fricative' }
+        ],
+        [
+          { symbol: 'س', example: 'سلام (salām)', ipa: 's', audio: 'salam.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'ش', example: 'شمس (shams)', ipa: 'ʃ', audio: 'shams.mp3', description: 'Voiceless postalveolar fricative' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'ا', example: 'باب (bāb)', ipa: 'aː', audio: 'bab.mp3', description: 'Long open front unrounded vowel' },
+          { symbol: 'ي', example: 'فيل (fīl)', ipa: 'iː', audio: 'fil.mp3', description: 'Long close front unrounded vowel' },
+          { symbol: 'و', example: 'نور (nūr)', ipa: 'uː', audio: 'nur.mp3', description: 'Long close back rounded vowel' }
+        ],
+        [
+          { symbol: 'َ', example: 'كَتَبَ (kataba)', ipa: 'a', audio: 'kataba.mp3', description: 'Short open front unrounded vowel' },
+          { symbol: 'ِ', example: 'بِنْت (bint)', ipa: 'i', audio: 'bint.mp3', description: 'Short close front unrounded vowel' },
+          { symbol: 'ُ', example: 'كُتُب (kutub)', ipa: 'u', audio: 'kutub.mp3', description: 'Short close back rounded vowel' }
+        ]
+      ]
+    },
+    mandarin: {
+      consonants: [
+        [
+          { symbol: 'b', example: '爸 (bà)', ipa: 'p', audio: 'ba.mp3', description: 'Voiceless unaspirated bilabial plosive' },
+          { symbol: 'p', example: '怕 (pà)', ipa: 'pʰ', audio: 'pa.mp3', description: 'Voiceless aspirated bilabial plosive' }
+        ],
+        [
+          { symbol: 'd', example: '大 (dà)', ipa: 't', audio: 'da.mp3', description: 'Voiceless unaspirated alveolar plosive' },
+          { symbol: 't', example: '他 (tā)', ipa: 'tʰ', audio: 'ta.mp3', description: 'Voiceless aspirated alveolar plosive' }
+        ],
+        [
+          { symbol: 'g', example: '改 (gǎi)', ipa: 'k', audio: 'gai.mp3', description: 'Voiceless unaspirated velar plosive' },
+          { symbol: 'k', example: '开 (kāi)', ipa: 'kʰ', audio: 'kai.mp3', description: 'Voiceless aspirated velar plosive' }
+        ],
+        [
+          { symbol: 'z', example: '在 (zài)', ipa: 'ts', audio: 'zai.mp3', description: 'Voiceless unaspirated alveolar affricate' },
+          { symbol: 'c', example: '菜 (cài)', ipa: 'tsʰ', audio: 'cai.mp3', description: 'Voiceless aspirated alveolar affricate' }
+        ],
+        [
+          { symbol: 'zh', example: '知 (zhī)', ipa: 'tʂ', audio: 'zhi.mp3', description: 'Voiceless unaspirated retroflex affricate' },
+          { symbol: 'ch', example: '吃 (chī)', ipa: 'tʂʰ', audio: 'chi.mp3', description: 'Voiceless aspirated retroflex affricate' }
+        ],
+        [
+          { symbol: 'j', example: '家 (jiā)', ipa: 'tɕ', audio: 'jia.mp3', description: 'Voiceless unaspirated alveolo-palatal affricate' },
+          { symbol: 'q', example: '七 (qī)', ipa: 'tɕʰ', audio: 'qi.mp3', description: 'Voiceless aspirated alveolo-palatal affricate' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'a', example: '啊 (ā)', ipa: 'a', audio: 'a.mp3', description: 'Open central unrounded vowel' }
+        ],
+        [
+          { symbol: 'o', example: '哦 (ò)', ipa: 'o', audio: 'o.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: '额 (é)', ipa: 'ɤ', audio: 'e.mp3', description: 'Close-mid back unrounded vowel' }
+        ],
+        [
+          { symbol: 'i', example: '一 (yī)', ipa: 'i', audio: 'yi.mp3', description: 'Close front unrounded vowel' }
+        ],
+        [
+          { symbol: 'u', example: '五 (wǔ)', ipa: 'u', audio: 'wu.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'ü', example: '女 (nǚ)', ipa: 'y', audio: 'nv.mp3', description: 'Close front rounded vowel' }
+        ]
+      ]
+    },
+    russian: {
+      consonants: [
+        [
+          { symbol: 'п', example: 'папа (papa)', ipa: 'p', audio: 'papa.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'б', example: 'банк (bank)', ipa: 'b', audio: 'bank.mp3', description: 'Voiced bilabial plosive' }
+        ],
+        [
+          { symbol: 'т', example: 'там (tam)', ipa: 't', audio: 'tam.mp3', description: 'Voiceless dental plosive' },
+          { symbol: 'д', example: 'дом (dom)', ipa: 'd', audio: 'dom.mp3', description: 'Voiced dental plosive' }
+        ],
+        [
+          { symbol: 'к', example: 'кот (kot)', ipa: 'k', audio: 'kot.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'г', example: 'где (gde)', ipa: 'g', audio: 'gde.mp3', description: 'Voiced velar plosive' }
+        ],
+        [
+          { symbol: 'ф', example: 'факт (fakt)', ipa: 'f', audio: 'fakt.mp3', description: 'Voiceless labiodental fricative' },
+          { symbol: 'в', example: 'вот (vot)', ipa: 'v', audio: 'vot.mp3', description: 'Voiced labiodental fricative' }
+        ],
+        [
+          { symbol: 'с', example: 'сон (son)', ipa: 's', audio: 'son.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'з', example: 'зуб (zub)', ipa: 'z', audio: 'zub.mp3', description: 'Voiced alveolar fricative' }
+        ],
+        [
+          { symbol: 'ш', example: 'шаг (shag)', ipa: 'ʂ', audio: 'shag.mp3', description: 'Voiceless retroflex fricative' },
+          { symbol: 'ж', example: 'жук (zhuk)', ipa: 'ʐ', audio: 'zhuk.mp3', description: 'Voiced retroflex fricative' }
+        ],
+        [
+          { symbol: 'щ', example: 'щит (shchit)', ipa: 'ɕː', audio: 'shchit.mp3', description: 'Voiceless alveolo-palatal fricative' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'а', example: 'мак (mak)', ipa: 'a', audio: 'mak.mp3', description: 'Open central unrounded vowel' }
+        ],
+        [
+          { symbol: 'э', example: 'это (eto)', ipa: 'e', audio: 'eto.mp3', description: 'Mid front unrounded vowel' }
+        ],
+        [
+          { symbol: 'и', example: 'мир (mir)', ipa: 'i', audio: 'mir.mp3', description: 'Close front unrounded vowel' }
+        ],
+        [
+          { symbol: 'о', example: 'дом (dom)', ipa: 'o', audio: 'dom.mp3', description: 'Mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'у', example: 'стул (stul)', ipa: 'u', audio: 'stul.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'ы', example: 'мышь (mysh)', ipa: 'ɨ', audio: 'mysh.mp3', description: 'Close central unrounded vowel' }
+        ]
+      ]
+    },
+    hindi: {
+      consonants: [
+        [
+          { symbol: 'प', example: 'पानी (pānī)', ipa: 'p', audio: 'pani.mp3', description: 'Voiceless unaspirated bilabial plosive' },
+          { symbol: 'फ', example: 'फल (phal)', ipa: 'pʰ', audio: 'phal.mp3', description: 'Voiceless aspirated bilabial plosive' },
+          { symbol: 'ब', example: 'बस (bas)', ipa: 'b', audio: 'bas.mp3', description: 'Voiced unaspirated bilabial plosive' },
+          { symbol: 'भ', example: 'भारत (bhārat)', ipa: 'bʱ', audio: 'bharat.mp3', description: 'Voiced aspirated bilabial plosive' }
+        ],
+        [
+          { symbol: 'त', example: 'तीन (tīn)', ipa: 't̪', audio: 'tin.mp3', description: 'Voiceless unaspirated dental plosive' },
+          { symbol: 'थ', example: 'थाली (thālī)', ipa: 't̪ʰ', audio: 'thali.mp3', description: 'Voiceless aspirated dental plosive' },
+          { symbol: 'द', example: 'दस (das)', ipa: 'd̪', audio: 'das.mp3', description: 'Voiced unaspirated dental plosive' },
+          { symbol: 'ध', example: 'धन (dhan)', ipa: 'd̪ʱ', audio: 'dhan.mp3', description: 'Voiced aspirated dental plosive' }
+        ],
+        [
+          { symbol: 'ट', example: 'टमाटर (ṭamāṭar)', ipa: 'ʈ', audio: 'tamaatar.mp3', description: 'Voiceless unaspirated retroflex plosive' },
+          { symbol: 'ठ', example: 'ठंडा (ṭhaṇḍā)', ipa: 'ʈʰ', audio: 'thanda.mp3', description: 'Voiceless aspirated retroflex plosive' },
+          { symbol: 'ड', example: 'डर (ḍar)', ipa: 'ɖ', audio: 'dar.mp3', description: 'Voiced unaspirated retroflex plosive' },
+          { symbol: 'ढ', example: 'ढाल (ḍhāl)', ipa: 'ɖʱ', audio: 'dhal.mp3', description: 'Voiced aspirated retroflex plosive' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'अ', example: 'अब (ab)', ipa: 'ə', audio: 'ab.mp3', description: 'Mid central vowel' },
+          { symbol: 'आ', example: 'आम (ām)', ipa: 'aː', audio: 'aam.mp3', description: 'Open front unrounded long vowel' }
+        ],
+        [
+          { symbol: 'इ', example: 'इधर (idhar)', ipa: 'ɪ', audio: 'idhar.mp3', description: 'Near-close near-front unrounded vowel' },
+          { symbol: 'ई', example: 'ईद (īd)', ipa: 'iː', audio: 'id.mp3', description: 'Close front unrounded long vowel' }
+        ],
+        [
+          { symbol: 'उ', example: 'उधर (udhar)', ipa: 'ʊ', audio: 'udhar.mp3', description: 'Near-close near-back rounded vowel' },
+          { symbol: 'ऊ', example: 'ऊन (ūn)', ipa: 'uː', audio: 'un.mp3', description: 'Close back rounded long vowel' }
+        ],
+        [
+          { symbol: 'ए', example: 'एक (ek)', ipa: 'eː', audio: 'ek.mp3', description: 'Close-mid front unrounded long vowel' },
+          { symbol: 'ऐ', example: 'ऐनक (ainak)', ipa: 'ɛː', audio: 'ainak.mp3', description: 'Open-mid front unrounded long vowel' }
+        ],
+        [
+          { symbol: 'ओ', example: 'ओस (os)', ipa: 'oː', audio: 'os.mp3', description: 'Close-mid back rounded long vowel' },
+          { symbol: 'औ', example: 'औरत (aurat)', ipa: 'ɔː', audio: 'aurat.mp3', description: 'Open-mid back rounded long vowel' }
+        ]
+      ]
+    },
+    swahili: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'paka (cat)', ipa: 'p', audio: 'paka.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'baba (father)', ipa: 'b', audio: 'baba.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'm', example: 'mama (mother)', ipa: 'm', audio: 'mama.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'tatu (three)', ipa: 't', audio: 'tatu.mp3', description: 'Voiceless alveolar plosive' },
+          { symbol: 'd', example: 'dada (sister)', ipa: 'd', audio: 'dada.mp3', description: 'Voiced alveolar plosive' },
+          { symbol: 'n', example: 'nani (who)', ipa: 'n', audio: 'nani.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'ch', example: 'chakula (food)', ipa: 'tʃ', audio: 'chakula.mp3', description: 'Voiceless postalveolar affricate' },
+          { symbol: 'j', example: 'jina (name)', ipa: 'dʒ', audio: 'jina.mp3', description: 'Voiced postalveolar affricate' },
+          { symbol: 'ny', example: 'nyumba (house)', ipa: 'ɲ', audio: 'nyumba.mp3', description: 'Palatal nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'kaka (brother)', ipa: 'k', audio: 'kaka.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'gari (car)', ipa: 'g', audio: 'gari.mp3', description: 'Voiced velar plosive' },
+          { symbol: 'ng', example: 'ngoma (drum)', ipa: 'ŋ', audio: 'ngoma.mp3', description: 'Velar nasal' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'a', example: 'baba (father)', ipa: 'a', audio: 'baba.mp3', description: 'Open front unrounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'nene (baby)', ipa: 'ɛ', audio: 'nene.mp3', description: 'Open-mid front unrounded vowel' }
+        ],
+        [
+          { symbol: 'i', example: 'kiti (chair)', ipa: 'i', audio: 'kiti.mp3', description: 'Close front unrounded vowel' }
+        ],
+        [
+          { symbol: 'o', example: 'toto (child)', ipa: 'ɔ', audio: 'toto.mp3', description: 'Open-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'u', example: 'kuku (chicken)', ipa: 'u', audio: 'kuku.mp3', description: 'Close back rounded vowel' }
+        ]
+      ]
+    },
+    portuguese: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'pato (duck)', ipa: 'p', audio: 'pato.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'bola (ball)', ipa: 'b', audio: 'bola.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'm', example: 'mão (hand)', ipa: 'm', audio: 'mao.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'tudo (everything)', ipa: 't', audio: 'tudo.mp3', description: 'Voiceless dental/alveolar plosive' },
+          { symbol: 'd', example: 'dedo (finger)', ipa: 'd', audio: 'dedo.mp3', description: 'Voiced dental/alveolar plosive' },
+          { symbol: 'n', example: 'nada (nothing)', ipa: 'n', audio: 'nada.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'c/q', example: 'casa (house)', ipa: 'k', audio: 'casa.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'gato (cat)', ipa: 'g', audio: 'gato.mp3', description: 'Voiced velar plosive' },
+          { symbol: 'nh', example: 'ninho (nest)', ipa: 'ɲ', audio: 'ninho.mp3', description: 'Palatal nasal' }
+        ],
+        [
+          { symbol: 'f', example: 'faca (knife)', ipa: 'f', audio: 'faca.mp3', description: 'Voiceless labiodental fricative' },
+          { symbol: 'v', example: 'vaca (cow)', ipa: 'v', audio: 'vaca.mp3', description: 'Voiced labiodental fricative' }
+        ],
+        [
+          { symbol: 's', example: 'sol (sun)', ipa: 's', audio: 'sol.mp3', description: 'Voiceless alveolar fricative' },
+          { symbol: 'z', example: 'zero', ipa: 'z', audio: 'zero.mp3', description: 'Voiced alveolar fricative' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'a', example: 'água (water)', ipa: 'a', audio: 'agua.mp3', description: 'Open front unrounded vowel' },
+          { symbol: 'â', example: 'câmara (chamber)', ipa: 'ɐ', audio: 'camara.mp3', description: 'Near-open central vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'mesa (table)', ipa: 'e', audio: 'mesa.mp3', description: 'Close-mid front unrounded vowel' },
+          { symbol: 'é', example: 'café (coffee)', ipa: 'ɛ', audio: 'cafe.mp3', description: 'Open-mid front unrounded vowel' }
+        ],
+        [
+          { symbol: 'i', example: 'vida (life)', ipa: 'i', audio: 'vida.mp3', description: 'Close front unrounded vowel' }
+        ],
+        [
+          { symbol: 'o', example: 'bolo (cake)', ipa: 'o', audio: 'bolo.mp3', description: 'Close-mid back rounded vowel' },
+          { symbol: 'ó', example: 'avó (grandmother)', ipa: 'ɔ', audio: 'avo.mp3', description: 'Open-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'u', example: 'uva (grape)', ipa: 'u', audio: 'uva.mp3', description: 'Close back rounded vowel' }
+        ]
+      ]
+    },
+    korean: {
+      consonants: [
+        [
+          { symbol: 'ㅂ', example: '바다 (bada/sea)', ipa: 'p', audio: 'bada.mp3', description: 'Voiceless unaspirated bilabial plosive' },
+          { symbol: 'ㅍ', example: '파도 (pado/wave)', ipa: 'pʰ', audio: 'pado.mp3', description: 'Voiceless aspirated bilabial plosive' },
+          { symbol: 'ㅃ', example: '빵 (ppang/bread)', ipa: 'p͈', audio: 'ppang.mp3', description: 'Voiceless tense bilabial plosive' }
+        ],
+        [
+          { symbol: 'ㄷ', example: '다리 (dari/leg)', ipa: 't', audio: 'dari.mp3', description: 'Voiceless unaspirated alveolar plosive' },
+          { symbol: 'ㅌ', example: '타다 (tada/ride)', ipa: 'tʰ', audio: 'tada.mp3', description: 'Voiceless aspirated alveolar plosive' },
+          { symbol: 'ㄸ', example: '따다 (ttada/pick)', ipa: 't͈', audio: 'ttada.mp3', description: 'Voiceless tense alveolar plosive' }
+        ],
+        [
+          { symbol: 'ㄱ', example: '가다 (gada/go)', ipa: 'k', audio: 'gada.mp3', description: 'Voiceless unaspirated velar plosive' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'ㅏ', example: '바다 (bada/sea)', ipa: 'a', audio: 'bada.mp3', description: 'Open central unrounded vowel' }
+        ],
+        [
+          { symbol: 'ㅓ', example: '버스 (beoseu/bus)', ipa: 'ʌ', audio: 'beoseu.mp3', description: 'Open-mid back unrounded vowel' }
+        ],
+        [
+          { symbol: 'ㅗ', example: '오리 (ori/duck)', ipa: 'o', audio: 'ori.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'ㅜ', example: '우유 (uyu/milk)', ipa: 'u', audio: 'uyu.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'ㅡ', example: '음악 (eumak/music)', ipa: 'ɯ', audio: 'eumak.mp3', description: 'Close back unrounded vowel' }
+        ],
+        [
+          { symbol: 'ㅣ', example: '이름 (ireum/name)', ipa: 'i', audio: 'ireum.mp3', description: 'Close front unrounded vowel' }
+        ]
+      ]
+    },
+    german: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'Platz (place)', ipa: 'p', audio: 'platz.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'Brot (bread)', ipa: 'b', audio: 'brot.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'm', example: 'Mutter (mother)', ipa: 'm', audio: 'mutter.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'Tisch (table)', ipa: 't', audio: 'tisch.mp3', description: 'Voiceless alveolar plosive' },
+          { symbol: 'd', example: 'Dank (thanks)', ipa: 'd', audio: 'dank.mp3', description: 'Voiced alveolar plosive' },
+          { symbol: 'n', example: 'Nacht (night)', ipa: 'n', audio: 'nacht.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'Kalt (cold)', ipa: 'k', audio: 'kalt.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'Garten (garden)', ipa: 'g', audio: 'garten.mp3', description: 'Voiced velar plosive' },
+          { symbol: 'ŋ', example: 'singen (to sing)', ipa: 'ŋ', audio: 'singen.mp3', description: 'Velar nasal' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i', example: 'singen (to sing)', ipa: 'i', audio: 'singen.mp3', description: 'Close front unrounded vowel' },
+          { symbol: 'y', example: 'über (over)', ipa: 'y', audio: 'uber.mp3', description: 'Close front rounded vowel' },
+          { symbol: 'u', example: 'Buch (book)', ipa: 'u', audio: 'buch.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'gehen (to go)', ipa: 'e', audio: 'gehen.mp3', description: 'Close-mid front unrounded vowel' },
+          { symbol: 'ø', example: 'schön (beautiful)', ipa: 'ø', audio: 'schon.mp3', description: 'Close-mid front rounded vowel' },
+          { symbol: 'o', example: 'Brot (bread)', ipa: 'o', audio: 'brot.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'ɛ', example: 'Bett (bed)', ipa: 'ɛ', audio: 'bett.mp3', description: 'Open-mid front unrounded vowel' },
+          { symbol: 'œ', example: 'zwölf (twelve)', ipa: 'œ', audio: 'zwolf.mp3', description: 'Open-mid front rounded vowel' },
+          { symbol: 'ɔ', example: 'Kopf (head)', ipa: 'ɔ', audio: 'kopf.mp3', description: 'Open-mid back rounded vowel' }
+        ]
+      ]
+    },
+    italian: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'pane (bread)', ipa: 'p', audio: 'pane.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'buono (good)', ipa: 'b', audio: 'buono.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'm', example: 'madre (mother)', ipa: 'm', audio: 'madre.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'tavolo (table)', ipa: 't', audio: 'tavolo.mp3', description: 'Voiceless alveolar plosive' },
+          { symbol: 'd', example: 'dove (where)', ipa: 'd', audio: 'dove.mp3', description: 'Voiced alveolar plosive' },
+          { symbol: 'n', example: 'notte (night)', ipa: 'n', audio: 'notte.mp3', description: 'Alveolar nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'casa (house)', ipa: 'k', audio: 'casa.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'gatto (cat)', ipa: 'g', audio: 'gatto.mp3', description: 'Voiced velar plosive' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i', example: 'vino (wine)', ipa: 'i', audio: 'vino.mp3', description: 'Close front unrounded vowel' },
+          { symbol: 'u', example: 'tu (you)', ipa: 'u', audio: 'tu.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'sera (evening)', ipa: 'e', audio: 'sera.mp3', description: 'Close-mid front unrounded vowel' },
+          { symbol: 'o', example: 'cosa (thing)', ipa: 'o', audio: 'cosa.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'ɛ', example: 'bene (well)', ipa: 'ɛ', audio: 'bene.mp3', description: 'Open-mid front unrounded vowel' },
+          { symbol: 'ɔ', example: 'uomo (man)', ipa: 'ɔ', audio: 'uomo.mp3', description: 'Open-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'a', example: 'casa (house)', ipa: 'a', audio: 'casa.mp3', description: 'Open central unrounded vowel' }
+        ]
+      ]
+    },
+    turkish: {
+      consonants: [
+        [
+          { symbol: 'p', example: 'para (money)', ipa: 'p', audio: 'para.mp3', description: 'Voiceless bilabial plosive' },
+          { symbol: 'b', example: 'ben (I)', ipa: 'b', audio: 'ben.mp3', description: 'Voiced bilabial plosive' },
+          { symbol: 'm', example: 'masa (table)', ipa: 'm', audio: 'masa.mp3', description: 'Bilabial nasal' }
+        ],
+        [
+          { symbol: 't', example: 'tuz (salt)', ipa: 't', audio: 'tuz.mp3', description: 'Voiceless dental plosive' },
+          { symbol: 'd', example: 'dil (language)', ipa: 'd', audio: 'dil.mp3', description: 'Voiced dental plosive' },
+          { symbol: 'n', example: 'ne (what)', ipa: 'n', audio: 'ne.mp3', description: 'Dental nasal' }
+        ],
+        [
+          { symbol: 'k', example: 'kedi (cat)', ipa: 'k', audio: 'kedi.mp3', description: 'Voiceless velar plosive' },
+          { symbol: 'g', example: 'gel (come)', ipa: 'g', audio: 'gel.mp3', description: 'Voiced velar plosive' }
+        ]
+      ],
+      vowels: [
+        [
+          { symbol: 'i', example: 'bir (one)', ipa: 'i', audio: 'bir.mp3', description: 'Close front unrounded vowel' },
+          { symbol: 'y', example: 'gün (day)', ipa: 'y', audio: 'gun.mp3', description: 'Close front rounded vowel' },
+          { symbol: 'ɯ', example: 'kız (girl)', ipa: 'ɯ', audio: 'kiz.mp3', description: 'Close back unrounded vowel' },
+          { symbol: 'u', example: 'su (water)', ipa: 'u', audio: 'su.mp3', description: 'Close back rounded vowel' }
+        ],
+        [
+          { symbol: 'e', example: 'gel (come)', ipa: 'e', audio: 'gel.mp3', description: 'Close-mid front unrounded vowel' },
+          { symbol: 'ø', example: 'göz (eye)', ipa: 'ø', audio: 'goz.mp3', description: 'Close-mid front rounded vowel' },
+          { symbol: 'o', example: 'yol (road)', ipa: 'o', audio: 'yol.mp3', description: 'Close-mid back rounded vowel' }
+        ],
+        [
+          { symbol: 'a', example: 'al (take)', ipa: 'a', audio: 'al.mp3', description: 'Open front unrounded vowel' }
+        ]
+      ]
+    }
+  };
+  
+  // Handle language change
+  const handleLanguageChange = (event) => {
+    setSelectedLanguage(event.target.value);
+    setActivePhoneme(null);
+  };
+  
+  // Handle phoneme click
+  const handlePhonemeClick = (phoneme) => {
+    setActivePhoneme(phoneme);
+    
+    // In a real application, this would trigger audio playback
+    console.log(`Playing audio for ${phoneme.symbol} - ${phoneme.example}`);
+  };
+  
+  // Render a phoneme cell
+  const renderPhonemeCell = (phoneme, index) => {
+    if (!phoneme) return <td key={index} className="bg-gray-100 w-12 h-12"></td>;
+    
+    const isActive = activePhoneme && activePhoneme.symbol === phoneme.symbol;
+    
+    return (
+      <td 
+        key={index}
+        className={`text-center cursor-pointer p-2 w-12 h-12 border ${isActive ? 'bg-blue-200 border-blue-500' : 'hover:bg-blue-100 border-gray-300'}`}
+        onClick={() => handlePhonemeClick(phoneme)}
+      >
+        <div className="text-lg font-semibold">{phoneme.symbol}</div>
+      </td>
+    );
+  };
+  
+  // Get data for the current language
+  const currentLanguageData = phonemeData[selectedLanguage] || { consonants: [], vowels: [] };
+  
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold mb-6">Interactive Phonemic Chart</h1>
+      
+      <div className="mb-6">
+        <label htmlFor="language-select" className="block text-sm font-medium text-gray-700 mb-2">
+          Select a language:
+        </label>
+        <select
+          id="language-select"
+          value={selectedLanguage}
+          onChange={handleLanguageChange}
+          className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        >
+          {languages.map(lang => (
+            <option key={lang.id} value={lang.id}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Consonants</h2>
+        <div className="overflow-x-auto">
+          <table className="border-collapse border border-gray-300">
+            <tbody>
+              {currentLanguageData.consonants.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((phoneme, cellIndex) => renderPhonemeCell(phoneme, `cons-${rowIndex}-${cellIndex}`))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Vowels</h2>
+        <div className="overflow-x-auto">
+          <table className="border-collapse border border-gray-300">
+            <tbody>
+              {currentLanguageData.vowels.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((phoneme, cellIndex) => renderPhonemeCell(phoneme, `vowel-${rowIndex}-${cellIndex}`))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      {activePhoneme && (
+        <div className="p-4 border rounded-md bg-gray-50">
+          <h3 className="text-lg font-semibold mb-2">
+            <span className="text-xl mr-2">{activePhoneme.symbol}</span>
+            <span className="text-gray-500">/{activePhoneme.ipa}/</span>
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><span className="font-semibold">Example:</span> {activePhoneme.example}</p>
+              <p><span className="font-semibold">Description:</span> {activePhoneme.description}</p>
+            </div>
+            
+            <div className="flex items-center justify-center md:justify-start">
+              <button 
+                className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                onClick={() => console.log(`Playing audio for ${activePhoneme.symbol}`)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                </svg>
+                Play Pronunciation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div className="mt-8 text-sm text-gray-500">
+        <p>Note: This is a prototype. In a full implementation, the backend would provide complete phonemic data for each language and real audio files.</p>
+      </div>
+    </div>
+  );
+};
+
+export default PhonemeChart;

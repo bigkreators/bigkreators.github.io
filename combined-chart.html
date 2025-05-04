@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Phonology Chart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 24px;
+            color: #2b3038;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: #2b3038;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .control-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .control-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        }
+        
+        .language-select {
+            flex-grow: 0;
+        }
+        
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        select:focus {
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #4a5568;
+        }
+        
+        .toggle-buttons {
+            display: flex;
+        }
+        
+        .toggle-btn {
+            padding: 8px 16px;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        
+        .toggle-btn:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .toggle-btn:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .toggle-btn.active {
+            background-color: #4299e1;
+            color: white;
+        }
+        
+        .toggle-info {
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 32px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            border: 1px solid #e2e8f0;
+            font-family: 'Noto Serif', serif;
+        }
+        
+        .phoneme-cell {
+            text-align: center;
+            padding: 8px;
+            min-width: 48px;
+            height: 48px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .phonetic-cell {
+            text-align: center;
+            padding: 8px;
+            min-width: 64px;
+            height: 64px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .empty-cell {
+            background-color: #f7fafc;
+        }
+        
+        .phoneme-cell:hover:not(.empty-cell),
+        .phonetic-cell:hover:not(.empty-cell) {
+            background-color: #ebf8ff;
+        }
+        
+        .phoneme-cell.active,
+        .phonetic-cell.active {
+            background-color: #bee3f8;
+            border-color: #4299e1;
+        }
+        
+        .phoneme-symbol {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .allophone-list {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+        
+        .phoneme-info {
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #f8fafc;
+            margin-top: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .phoneme-info.hidden {
+            display: none;
+        }
+        
+        .phoneme-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        
+        .phoneme-header .symbol {
+            font-size: 24px;
+            margin-right: 8px;
+            font-weight: 600;
+            font-family: 'Noto Serif', serif;
+        }
+        
+        .phoneme-header .ipa {
+            font-size: 16px;
+            color: #718096;
+            font-family: 'Noto Serif', serif;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        
+        @media (min-width: 640px) {
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .play-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        
+        .play-button:hover {
+            background-color: #3182ce;
+        }
+        
+        .play-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
+        }
+        
+        .play-icon {
+            margin-right: 8px;
+        }
+        
+        .allophone-card {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        
+        .allophone-card:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+        
+        .allophone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .allophone-header .symbol {
+            font-size: 18px;
+            font-weight: 500;
+            font-family: 'Noto Serif', serif;
+        }
+        
+        .allophone-header .environment {
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .allophone-play {
+            padding: 4px 8px;
+            font-size: 12px;
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .allophone-info p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        
+        .footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Phonology Chart</h1>
+        
+        <div class="control-bar">
+            <div class="language-select">
+                <label for="language-select">Select a language:</label>
+                <select id="language-select">
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="arabic">Arabic</option>
+                    <option value="mandarin">Mandarin Chinese</option>
+                    <option value="russian">Russian</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="swahili">Swahili</option>
+                    <option value="portuguese">Portuguese</option>
+                    <option value="korean">Korean</option>
+                    <option value="german">German</option>
+                    <option value="italian">Italian</option>
+                    <option value="turkish">Turkish</option>
+                </select>
+            </div>
+            
+            <div class="view-toggle">
+                <div class="toggle-buttons">
+                    <button class="toggle-btn active" id="phonemic-btn">Phonemic</button>
+                    <button class="toggle-btn" id="phonetic-btn">Phonetic</button>
+                </div>
+                <div class="toggle-info" id="toggle-info">
+                    Showing abstract sound system
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h2>Consonants</h2>
+            <div class="table-container">
+                <table id="consonants-table"></table>
+            </div>
+        </div>
+        
+        <div>
+            <h2>Vowels</h2>
+            <div class="table-container">
+                <table id="vowels-table"></table>
+            </div>
+        </div>
+        
+        <div id="phoneme-info" class="phoneme-info hidden">
+            <!-- Content will be dynamically populated -->
+        </div>
+        
+        <div class="footer">
+            <p>Note: This is a prototype. In a full implementation, the backend would provide complete phonemic and phonetic data for each language and real audio files.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Language data
+        const languages = [
+            { id: 'english', name: 'English' },
+            { id: 'spanish', name: 'Spanish' },
+            { id: 'french', name: 'French' },
+            { id: 'japanese', name: 'Japanese' },
+            { id: 'arabic', name: 'Arabic' },
+            { id: 'mandarin', name: 'Mandarin Chinese' },
+            { id: 'russian', name: 'Russian' },
+            { id: 'hindi', name: 'Hindi' },
+            { id: 'swahili', name: 'Swahili' },
+            { id: 'portuguese', name: 'Portuguese' },
+            { id: 'korean', name: 'Korean' },
+            { id: 'german', name: 'German' },
+            { id: 'italian', name: 'Italian' },
+            { id: 'turkish', name: 'Turkish' }
+        ];
+        
+        // Phoneme data by language
+        const phonemeData = {
+            english: {
+                consonants: [
+                    [
+                        { symbol: 'p', example: 'pen', ipa: 'p', audio: 'pen.mp3', description: 'Voiceless bilabial plosive' },
+                        { symbol: 'b', example: 'book', ipa: 'b', audio: 'book.mp3', description: 'Voiced bilabial plosive' },
+                        null,
+                        null,
+                        { symbol: 'm', example: 'man', ipa: 'm', audio: 'man.mp3', description: 'Bilabial nasal' }
+                    ],
+                    [
+                        { symbol: 't', example: 'top', ipa: 't', audio: 'top.mp3', description: 'Voiceless alveolar plosive' },
+                        { symbol: 'd', example: 'dog', ipa: 'd', audio: 'dog.mp3', description: 'Voiced alveolar plosive' },
+                        { symbol: 's', example: 'sun', ipa: 's', audio: 'sun.mp3', description: 'Voiceless alveolar fricative' },
+                        { symbol: 'z', example: 'zoo', ipa: 'z', audio: 'zoo.mp3', description: 'Voiced alveolar fricative' },
+                        { symbol: 'n', example: 'net', ipa: 'n', audio: 'net.mp3', description: 'Alveolar nasal' }
+                    ],
+                    [
+                        { symbol: 'k', example: 'cat', ipa: 'k', audio: 'cat.mp3', description: 'Voiceless velar plosive' },
+                        { symbol: 'g', example: 'go', ipa: 'g', audio: 'go.mp3', description: 'Voiced velar plosive' },
+                        { symbol: 'ʃ', example: 'ship', ipa: 'ʃ', audio: 'ship.mp3', description: 'Voiceless postalveolar fricative' },
+                        { symbol: 'ʒ', example: 'measure', ipa: 'ʒ', audio: 'measure.mp3', description: 'Voiced postalveolar fricative' },
+                        { symbol: 'ŋ', example: 'ring', ipa: 'ŋ', audio: 'ring.mp3', description: 'Velar nasal' }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { symbol: 'i:', example: 'see', ipa: 'i:', audio: 'see.mp3', description: 'Close front unrounded vowel' },
+                        null,
+                        { symbol: 'u:', example: 'blue', ipa: 'u:', audio: 'blue.mp3', description: 'Close back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'ɪ', example: 'sit', ipa: 'ɪ', audio: 'sit.mp3', description: 'Near-close near-front unrounded vowel' },
+                        { symbol: 'ə', example: 'about', ipa: 'ə', audio: 'about.mp3', description: 'Mid central vowel' },
+                        { symbol: 'ʊ', example: 'put', ipa: 'ʊ', audio: 'put.mp3', description: 'Near-close near-back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'e', example: 'bed', ipa: 'e', audio: 'bed.mp3', description: 'Open-mid front unrounded vowel' },
+                        { symbol: 'ʌ', example: 'cup', ipa: 'ʌ', audio: 'cup.mp3', description: 'Open-mid back unrounded vowel' },
+                        { symbol: 'ɔ:', example: 'call', ipa: 'ɔ:', audio: 'call.mp3', description: 'Open-mid back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'æ', example: 'cat', ipa: 'æ', audio: 'cat.mp3', description: 'Near-open front unrounded vowel' },
+                        null,
+                        { symbol: 'ɑ:', example: 'car', ipa: 'ɑ:', audio: 'car.mp3', description: 'Open back unrounded vowel' }
+                    ]
+                ]
+            },
+            spanish: {
+                consonants: [
+                    [
+                        { symbol: 'p', example: 'padre', ipa: 'p', audio: 'padre.mp3', description: 'Voiceless bilabial plosive' },
+                        { symbol: 'b', example: 'beso', ipa: 'b', audio: 'beso.mp3', description: 'Voiced bilabial plosive' },
+                        null,
+                        null,
+                        { symbol: 'm', example: 'madre', ipa: 'm', audio: 'madre.mp3', description: 'Bilabial nasal' }
+                    ],
+                    [
+                        { symbol: 't', example: 'toro', ipa: 't', audio: 'toro.mp3', description: 'Voiceless dental plosive' },
+                        { symbol: 'd', example: 'dedo', ipa: 'd', audio: 'dedo.mp3', description: 'Voiced dental plosive' },
+                        { symbol: 's', example: 'silla', ipa: 's', audio: 'silla.mp3', description: 'Voiceless alveolar fricative' },
+                        null,
+                        { symbol: 'n', example: 'noche', ipa: 'n', audio: 'noche.mp3', description: 'Alveolar nasal' }
+                    ],
+                    [
+                        { symbol: 'k', example: 'casa', ipa: 'k', audio: 'casa.mp3', description: 'Voiceless velar plosive' },
+                        { symbol: 'g', example: 'gato', ipa: 'g', audio: 'gato.mp3', description: 'Voiced velar plosive' },
+                        { symbol: 'tʃ', example: 'chico', ipa: 'tʃ', audio: 'chico.mp3', description: 'Voiceless postalveolar affricate' },
+                        null,
+                        { symbol: 'ɲ', example: 'niño', ipa: 'ɲ', audio: 'niño.mp3', description: 'Palatal nasal' }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { symbol: 'i', example: 'si', ipa: 'i', audio: 'si.mp3', description: 'Close front unrounded vowel' },
+                        null,
+                        { symbol: 'u', example: 'tu', ipa: 'u', audio: 'tu.mp3', description: 'Close back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'e', example: 'mesa', ipa: 'e', audio: 'mesa.mp3', description: 'Mid front unrounded vowel' },
+                        null,
+                        { symbol: 'o', example: 'sol', ipa: 'o', audio: 'sol.mp3', description: 'Mid back rounded vowel' }
+                    ],
+                    [
+                        null,
+                        { symbol: 'a', example: 'casa', ipa: 'a', audio: 'casa.mp3', description: 'Open front unrounded vowel' },
+                        null
+                    ]
+                ]
+            },
+            french: {
+                consonants: [
+                    [
+                        { symbol: 'p', example: 'pont', ipa: 'p', audio: 'pont.mp3', description: 'Voiceless bilabial plosive' },
+                        { symbol: 'b', example: 'bon', ipa: 'b', audio: 'bon.mp3', description: 'Voiced bilabial plosive' },
+                        { symbol: 'f', example: 'feu', ipa: 'f', audio: 'feu.mp3', description: 'Voiceless labiodental fricative' },
+                        { symbol: 'v', example: 'vous', ipa: 'v', audio: 'vous.mp3', description: 'Voiced labiodental fricative' },
+                        { symbol: 'm', example: 'main', ipa: 'm', audio: 'main.mp3', description: 'Bilabial nasal' }
+                    ],
+                    [
+                        { symbol: 't', example: 'ton', ipa: 't', audio: 'ton.mp3', description: 'Voiceless dental plosive' },
+                        { symbol: 'd', example: 'dans', ipa: 'd', audio: 'dans.mp3', description: 'Voiced dental plosive' },
+                        { symbol: 's', example: 'son', ipa: 's', audio: 'son.mp3', description: 'Voiceless alveolar fricative' },
+                        { symbol: 'z', example: 'zone', ipa: 'z', audio: 'zone.mp3', description: 'Voiced alveolar fricative' },
+                        { symbol: 'n', example: 'non', ipa: 'n', audio: 'non.mp3', description: 'Alveolar nasal' }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { symbol: 'i', example: 'si', ipa: 'i', audio: 'si.mp3', description: 'Close front unrounded vowel' },
+                        { symbol: 'y', example: 'tu', ipa: 'y', audio: 'tu.mp3', description: 'Close front rounded vowel' },
+                        { symbol: 'u', example: 'vous', ipa: 'u', audio: 'vous.mp3', description: 'Close back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'e', example: 'été', ipa: 'e', audio: 'été.mp3', description: 'Close-mid front unrounded vowel' },
+                        { symbol: 'ø', example: 'peu', ipa: 'ø', audio: 'peu.mp3', description: 'Close-mid front rounded vowel' },
+                        { symbol: 'o', example: 'mot', ipa: 'o', audio: 'mot.mp3', description: 'Close-mid back rounded vowel' }
+                    ],
+                    [
+                        { symbol: 'ɛ', example: 'lait', ipa: 'ɛ', audio: 'lait.mp3', description: 'Open-mid front unrounded vowel' },
+                        { symbol: 'œ', example: 'œuf', ipa: 'œ', audio: 'œuf.mp3', description: 'Open-mid front rounded vowel' },
+                        { symbol: 'ɔ', example: 'fort', ipa: 'ɔ', audio: 'fort.mp3', description: 'Open-mid back rounded vowel' }
+                    ],
+                    [
+                        null,
+                        { symbol: 'a', example: 'place', ipa: 'a', audio: 'place.mp3', description: 'Open front unrounded vowel' },
+                        { symbol: 'ɑ', example: 'pâte', ipa: 'ɑ', audio: 'pate.mp3', description: 'Open back unrounded vowel' }
+                    ]
+                ]
+            },
+            japanese: {
+                consonants: [
+                    [
+                        { symbol: 'k', example: 'かい (kai)', ipa: 'k', audio: 'kai.mp3', description: 'Voiceless velar plosive' },
+                        { symbol: 'g', example: 'がく (gaku)', ipa: 'g', audio: 'gaku.mp3', description: 'Voiced velar plosive' }
+                    ],
+                    [
+                        { symbol: 's', example: 'さく (saku)', ipa: 's', audio: 'saku.mp3', description: 'Voiceless alveolar fricative' },
+                        { symbol: 'z', example: 'ざつ (zatsu)', ipa: 'z', audio: 'zatsu.mp3', description: 'Voiced alveolar fricative' }
+                    ],
+                    [
+                        { symbol: 't', example: 'たこ (tako)', ipa: 't', audio: 'tako.mp3', description: 'Voiceless alveolar plosive' },
+                        { symbol: 'd', example: 'だれ (dare)', ipa: 'd', audio: 'dare.mp3', description: 'Voiced alveolar plosive' }
+                    ],
+                    [
+                        { symbol: 'n', example: 'ねこ (neko)', ipa: 'n', audio: 'neko.mp3', description: 'Alveolar nasal' }
+                    ],
+                    [
+                        { symbol: 'h', example: 'はな (hana)', ipa: 'h', audio: 'hana.mp3', description: 'Voiceless glottal fricative' }
+                    ],
+                    [
+                        { symbol: 'm', example: 'むし (mushi)', ipa: 'm', audio: 'mushi.mp3', description: 'Bilabial nasal' }
+                    ],
+                    [
+                        { symbol: 'r', example: 'らく (raku)', ipa: 'ɾ', audio: 'raku.mp3', description: 'Alveolar tap' }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { symbol: 'a', example: 'あか (aka)', ipa: 'a', audio: 'aka.mp3', description: 'Open central unrounded vowel' }
+                    ],
+                    [
+                        { symbol: 'i', example: 'いけ (ike)', ipa: 'i', audio: 'ike.mp3', description: 'Close front unrounded vowel' }
+                    ],
+                    [
+                        { symbol: 'u', example: 'うみ (umi)', ipa: 'ɯ', audio: 'umi.mp3', description: 'Close back unrounded vowel' }
+                    ],
+                    [
+                        { symbol: 'e', example: 'えき (eki)', ipa: 'e', audio: 'eki.mp3', description: 'Mid front unrounded vowel' }
+                    ],
+                    [
+                        { symbol: 'o', example: 'おと (oto)', ipa: 'o', audio: 'oto.mp3', description: 'Mid back rounded vowel' }
+                    ]
+                ]
+            },
+            // Include other languages' data here (shortened for brevity)
+        };
+        
+        // Phonetic data by language (allophones)
+        const phoneticData = {
+            english: {
+                consonants: [
+                    [
+                        { 
+                            phoneme: 'p', 
+                            allophones: [
+                                { symbol: 'p', environment: '_#', example: 'stop [stɑp]', description: 'Unreleased at word-final position' },
+                                { symbol: 'pʰ', environment: '#_', example: 'pen [pʰɛn]', description: 'Aspirated at syllable-initial position' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'b', 
+                            allophones: [
+                                { symbol: 'b', environment: 'V_V', example: 'ruber [ɹubəɹ]', description: 'Fully voiced between vowels' },
+                                { symbol: 'b̥', environment: '_#', example: 'rob [ɹɑb̥]', description: 'Partially devoiced at word-final position' }
+                            ]
+                        },
+                        null,
+                        null,
+                        { 
+                            phoneme: 'm', 
+                            allophones: [
+                                { symbol: 'm', environment: 'general', example: 'mom [mɑm]', description: 'Bilabial nasal' },
+                                { symbol: 'ɱ', environment: '_f,v', example: 'comfort [kʌɱfəɹt]', description: 'Labiodental nasal before f or v' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 't', 
+                            allophones: [
+                                { symbol: 't', environment: '_#', example: 'cat [kæt]', description: 'Unreleased at word-final position' },
+                                { symbol: 'tʰ', environment: '#_', example: 'top [tʰɑp]', description: 'Aspirated at syllable-initial position' },
+                                { symbol: 'ɾ', environment: 'V_V', example: 'letter [lɛɾəɹ]', description: 'Flap between vowels (American English)' },
+                                { symbol: 'ʔ', environment: '_n', example: 'button [bʌʔn̩]', description: 'Glottalized before syllabic n' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'd', 
+                            allophones: [
+                                { symbol: 'd', environment: 'V_V', example: 'ladder [lædəɹ]', description: 'Fully voiced between vowels' },
+                                { symbol: 'd̥', environment: '_#', example: 'had [hæd̥]', description: 'Partially devoiced at word-final position' },
+                                { symbol: 'ɾ', environment: 'V_V', example: 'rider [ɹaɪɾəɹ]', description: 'Flap between vowels (American English)' }
+                            ]
+                        },
+                        { 
+                            phoneme: 's', 
+                            allophones: [
+                                { symbol: 's', environment: 'general', example: 'sun [sʌn]', description: 'Voiceless alveolar fricative' },
+                                { symbol: 'z̥', environment: '_voiced', example: 'dogs [dɒgz̥]', description: 'Partially voiced before voiced consonants' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'z', 
+                            allophones: [
+                                { symbol: 'z', environment: 'V_V', example: 'razor [ɹeɪzəɹ]', description: 'Fully voiced between vowels' },
+                                { symbol: 'z̥', environment: '_#', example: 'boys [bɔɪz̥]', description: 'Partially devoiced at word-final position' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'n', 
+                            allophones: [
+                                { symbol: 'n', environment: 'general', example: 'no [noʊ]', description: 'Alveolar nasal' },
+                                { symbol: 'ɱ', environment: '_f,v', example: 'info [ɪɱfoʊ]', description: 'Labiodental before f or v' },
+                                { symbol: 'n̪', environment: '_θ,ð', example: 'tenth [tɛn̪θ]', description: 'Dental before θ or ð' },
+                                { symbol: 'ŋ', environment: '_k,g', example: 'pink [pɪŋk]', description: 'Velar before k or g' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'k', 
+                            allophones: [
+                                { symbol: 'k', environment: '_#', example: 'back [bæk]', description: 'Unreleased at word-final position' },
+                                { symbol: 'kʰ', environment: '#_', example: 'cat [kʰæt]', description: 'Aspirated at syllable-initial position' },
+                                { symbol: 'k̟', environment: '_i,e', example: 'key [k̟iː]', description: 'Fronted before front vowels' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'g', 
+                            allophones: [
+                                { symbol: 'g', environment: 'V_V', example: 'bigger [bɪgəɹ]', description: 'Fully voiced between vowels' },
+                                { symbol: 'g̥', environment: '_#', example: 'dog [dɒg̥]', description: 'Partially devoiced at word-final position' },
+                                { symbol: 'g̟', environment: '_i,e', example: 'geese [g̟iːs]', description: 'Fronted before front vowels' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ʃ', 
+                            allophones: [
+                                { symbol: 'ʃ', environment: 'general', example: 'ship [ʃɪp]', description: 'Voiceless postalveolar fricative' },
+                                { symbol: 'ʃʲ', environment: '_i', example: 'sheet [ʃʲiːt]', description: 'Slightly palatalized before i' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ʒ', 
+                            allophones: [
+                                { symbol: 'ʒ', environment: 'V_V', example: 'measure [mɛʒəɹ]', description: 'Voiced postalveolar fricative' },
+                                { symbol: 'ʒ̥', environment: '_#', example: 'beige [beɪʒ̥]', description: 'Partially devoiced at word-final position' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ŋ', 
+                            allophones: [
+                                { symbol: 'ŋ', environment: 'general', example: 'sing [sɪŋ]', description: 'Velar nasal' },
+                                { symbol: 'ŋ̟', environment: '_i,e', example: 'sinking [sɪŋ̟kɪŋ]', description: 'Fronted before front vowels' }
+                            ]
+                        }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { 
+                            phoneme: 'i:', 
+                            allophones: [
+                                { symbol: 'i:', environment: 'general', example: 'see [si:]', description: 'Long close front unrounded vowel' },
+                                { symbol: 'ɪi', environment: 'before voiceless', example: 'seat [sɪit]', description: 'Slightly diphthongized' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'u:', 
+                            allophones: [
+                                { symbol: 'u:', environment: 'general', example: 'blue [blu:]', description: 'Long close back rounded vowel' },
+                                { symbol: 'ʊu', environment: 'before voiceless', example: 'boot [bʊut]', description: 'Slightly diphthongized' },
+                                { symbol: 'ü', environment: 'after y/j', example: 'yew [jü]', description: 'Fronted after palatal' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'ɪ', 
+                            allophones: [
+                                { symbol: 'ɪ', environment: 'general', example: 'bit [bɪt]', description: 'Near-close near-front unrounded vowel' },
+                                { symbol: 'ɪ̈', environment: 'unstressed', example: 'cities [sɪtɪ̈z]', description: 'Centralized in unstressed syllables' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ə', 
+                            allophones: [
+                                { symbol: 'ə', environment: 'general', example: 'about [əbaʊt]', description: 'Mid central vowel' },
+                                { symbol: 'ɨ', environment: 'before /ŋ/', example: 'button [bʌtɨn]', description: 'Raised word-finally or before /ŋ/' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ʊ', 
+                            allophones: [
+                                { symbol: 'ʊ', environment: 'general', example: 'put [pʊt]', description: 'Near-close near-back rounded vowel' },
+                                { symbol: 'ʊ̈', environment: 'final unstressed', example: 'into [ɪntʊ̈]', description: 'Centralized in unstressed syllables' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'e', 
+                            allophones: [
+                                { symbol: 'e', environment: 'general', example: 'bed [bed]', description: 'Open-mid front unrounded vowel' },
+                                { symbol: 'eɪ', environment: 'before voiced', example: 'beg [beɪg]', description: 'Slightly diphthongized before voiced consonants' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ʌ', 
+                            allophones: [
+                                { symbol: 'ʌ', environment: 'general', example: 'cut [kʌt]', description: 'Open-mid back unrounded vowel' },
+                                { symbol: 'ə', environment: 'unstressed', example: 'butter [bʌtə]', description: 'Reduced in unstressed syllables' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ɔ:', 
+                            allophones: [
+                                { symbol: 'ɔ:', environment: 'general', example: 'saw [sɔ:]', description: 'Long open-mid back rounded vowel' },
+                                { symbol: 'ɔ:ə', environment: 'r-coloring', example: 'more [mɔ:ə]', description: 'Slight schwa off-glide before r' },
+                                { symbol: 'ɑ', environment: 'cot-caught', example: 'caught [kɑt]', description: 'Merged with /ɑ/ in some dialects' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'æ', 
+                            allophones: [
+                                { symbol: 'æ', environment: 'general', example: 'cat [kæt]', description: 'Near-open front unrounded vowel' },
+                                { symbol: 'æ̝', environment: 'before nasal', example: 'man [mæ̝n]', description: 'Raised before nasals in some dialects' },
+                                { symbol: 'eə', environment: 'tense', example: 'bad [beəd]', description: 'Tensed allophone in some dialects' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'ɑ:', 
+                            allophones: [
+                                { symbol: 'ɑ:', environment: 'general', example: 'father [fɑ:ðə]', description: 'Long open back unrounded vowel' },
+                                { symbol: 'ɑ:ə', environment: 'r-coloring', example: 'car [kɑ:ə]', description: 'Slight schwa off-glide before r' }
+                            ]
+                        }
+                    ]
+                ]
+            },
+            spanish: {
+                consonants: [
+                    [
+                        { 
+                            phoneme: 'p', 
+                            allophones: [
+                                { symbol: 'p', environment: 'general', example: 'padre [ˈpaðɾe]', description: 'Voiceless bilabial plosive, unaspirated' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'b', 
+                            allophones: [
+                                { symbol: 'b', environment: '#_, after m', example: 'bien [ˈbjen], hombre [ˈombɾe]', description: 'Voiced bilabial plosive, word-initial or after nasal' },
+                                { symbol: 'β', environment: 'V_V, _C', example: 'había [aˈβia], abrir [aˈβɾiɾ]', description: 'Voiced bilabial fricative between vowels or before consonant' }
+                            ]
+                        },
+                        null,
+                        null,
+                        { 
+                            phoneme: 'm', 
+                            allophones: [
+                                { symbol: 'm', environment: 'general', example: 'madre [ˈmaðɾe]', description: 'Bilabial nasal' },
+                                { symbol: 'ɱ', environment: '_f', example: 'anfibio [aɱˈfiβjo]', description: 'Labiodental nasal before f' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 't', 
+                            allophones: [
+                                { symbol: 't', environment: 'general', example: 'toro [ˈtoɾo]', description: 'Voiceless dental plosive, unaspirated' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'd', 
+                            allophones: [
+                                { symbol: 'd', environment: '#_, after n,l', example: 'donde [ˈdonde], anda [ˈanda]', description: 'Voiced dental plosive, word-initial or after nasal/lateral' },
+                                { symbol: 'ð', environment: 'V_V, _C', example: 'nada [ˈnaða], madre [ˈmaðɾe]', description: 'Voiced dental fricative between vowels or before consonant' }
+                            ]
+                        },
+                        { 
+                            phoneme: 's', 
+                            allophones: [
+                                { symbol: 's', environment: 'general', example: 'silla [ˈsiʝa]', description: 'Voiceless alveolar fricative' },
+                                { symbol: 'z', environment: '_ voiced C', example: 'mismo [ˈmizmo]', description: 'Voiced before voiced consonants' },
+                                { symbol: 'h', environment: '_ # (in some dialects)', example: 'más [mah]', description: 'Aspirated in final position in some dialects' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'n', 
+                            allophones: [
+                                { symbol: 'n', environment: 'general', example: 'noche [ˈnotʃe]', description: 'Alveolar nasal' },
+                                { symbol: 'm', environment: '_p,b', example: 'un paso [um ˈpaso]', description: 'Bilabial before p or b' },
+                                { symbol: 'ɱ', environment: '_f', example: 'enfermo [eɱˈfeɾmo]', description: 'Labiodental before f' },
+                                { symbol: 'ŋ', environment: '_k,g', example: 'banco [ˈbaŋko]', description: 'Velar before k or g' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'k', 
+                            allophones: [
+                                { symbol: 'k', environment: 'general', example: 'casa [ˈkasa]', description: 'Voiceless velar plosive, unaspirated' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'g', 
+                            allophones: [
+                                { symbol: 'g', environment: '#_, after n', example: 'gato [ˈgato], mango [ˈmaŋgo]', description: 'Voiced velar plosive, word-initial or after nasal' },
+                                { symbol: 'ɣ', environment: 'V_V, _C', example: 'lago [ˈlaɣo], grande [ˈɣɾande]', description: 'Voiced velar fricative between vowels or before consonant' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'tʃ', 
+                            allophones: [
+                                { symbol: 'tʃ', environment: 'general', example: 'chico [ˈtʃiko]', description: 'Voiceless postalveolar affricate' },
+                                { symbol: 'ʃ', environment: 'in some dialects', example: 'chico [ˈʃiko]', description: 'Voiceless postalveolar fricative in some dialects' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'ɲ', 
+                            allophones: [
+                                { symbol: 'ɲ', environment: 'general', example: 'niño [ˈniɲo]', description: 'Palatal nasal' }
+                            ]
+                        }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { 
+                            phoneme: 'i', 
+                            allophones: [
+                                { symbol: 'i', environment: 'stressed', example: 'piso [ˈpiso]', description: 'Close front unrounded vowel' },
+                                { symbol: 'ɪ', environment: 'unstressed', example: 'militar [miliˈtaɾ]', description: 'Slightly lowered in unstressed syllables' },
+                                { symbol: 'j', environment: 'before vowel', example: 'viaje [ˈbjaxe]', description: 'Semivocalic before another vowel' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'u', 
+                            allophones: [
+                                { symbol: 'u', environment: 'stressed', example: 'muro [ˈmuɾo]', description: 'Close back rounded vowel' },
+                                { symbol: 'ʊ', environment: 'unstressed', example: 'cultural [kultuˈɾal]', description: 'Slightly lowered in unstressed syllables' },
+                                { symbol: 'w', environment: 'before vowel', example: 'fuego [ˈfweɣo]', description: 'Semivocalic before another vowel' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'e', 
+                            allophones: [
+                                { symbol: 'e', environment: 'general', example: 'mesa [ˈmesa]', description: 'Mid front unrounded vowel' },
+                                { symbol: 'ɛ', environment: 'before r, j', example: 'perro [ˈpɛro]', description: 'More open before r, or j' },
+                                { symbol: 'e̞', environment: 'unstressed', example: 'mente [ˈmente̞]', description: 'Lowered in unstressed syllables' }
+                            ]
+                        },
+                        null,
+                        { 
+                            phoneme: 'o', 
+                            allophones: [
+                                { symbol: 'o', environment: 'general', example: 'cosa [ˈkosa]', description: 'Mid back rounded vowel' },
+                                { symbol: 'ɔ', environment: 'before r, l', example: 'torre [ˈtɔre]', description: 'More open before r or l' },
+                                { symbol: 'o̞', environment: 'unstressed', example: 'momento [moˈmento̞]', description: 'Lowered in unstressed syllables' }
+                            ]
+                        }
+                    ],
+                    [
+                        null,
+                        { 
+                            phoneme: 'a', 
+                            allophones: [
+                                { symbol: 'a', environment: 'general', example: 'casa [ˈkasa]', description: 'Open central unrounded vowel' },
+                                { symbol: 'ä', environment: 'unstressed', example: 'caminar [kamiˈnäɾ]', description: 'Centralized in unstressed syllables' }
+                            ]
+                        },
+                        null
+                    ]
+                ]
+            },
+            french: {
+                consonants: [
+                    [
+                        { 
+                            phoneme: 'p', 
+                            allophones: [
+                                { symbol: 'p', environment: 'general', example: 'pont [pɔ̃]', description: 'Voiceless bilabial plosive, unaspirated' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'b', 
+                            allophones: [
+                                { symbol: 'b', environment: 'general', example: 'bon [bɔ̃]', description: 'Voiced bilabial plosive' },
+                                { symbol: 'b̥', environment: '_#', example: 'robe [ʁɔb̥]', description: 'Partially devoiced word-finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'f', 
+                            allophones: [
+                                { symbol: 'f', environment: 'general', example: 'feu [fø]', description: 'Voiceless labiodental fricative' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'v', 
+                            allophones: [
+                                { symbol: 'v', environment: 'general', example: 'vous [vu]', description: 'Voiced labiodental fricative' },
+                                { symbol: 'v̥', environment: '_#', example: 'rêve [ʁɛv̥]', description: 'Partially devoiced word-finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'm', 
+                            allophones: [
+                                { symbol: 'm', environment: 'general', example: 'main [mɛ̃]', description: 'Bilabial nasal' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 't', 
+                            allophones: [
+                                { symbol: 't', environment: 'general', example: 'ton [tɔ̃]', description: 'Voiceless dental plosive, unaspirated' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'd', 
+                            allophones: [
+                                { symbol: 'd', environment: 'general', example: 'dans [dɑ̃]', description: 'Voiced dental plosive' },
+                                { symbol: 'd̥', environment: '_#', example: 'grade [gʁad̥]', description: 'Partially devoiced word-finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 's', 
+                            allophones: [
+                                { symbol: 's', environment: 'general', example: 'son [sɔ̃]', description: 'Voiceless alveolar fricative' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'z', 
+                            allophones: [
+                                { symbol: 'z', environment: 'general', example: 'zone [zɔn]', description: 'Voiced alveolar fricative' },
+                                { symbol: 'z̥', environment: '_#', example: 'rose [ʁoz̥]', description: 'Partially devoiced word-finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'n', 
+                            allophones: [
+                                { symbol: 'n', environment: 'general', example: 'non [nɔ̃]', description: 'Alveolar nasal' }
+                            ]
+                        }
+                    ]
+                ],
+                vowels: [
+                    [
+                        { 
+                            phoneme: 'i', 
+                            allophones: [
+                                { symbol: 'i', environment: 'general', example: 'si [si]', description: 'Close front unrounded vowel' },
+                                { symbol: 'ij', environment: 'stressed final', example: 'vie [vij]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'y', 
+                            allophones: [
+                                { symbol: 'y', environment: 'general', example: 'tu [ty]', description: 'Close front rounded vowel' },
+                                { symbol: 'yɥ', environment: 'stressed final', example: 'rue [ʁyɥ]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'u', 
+                            allophones: [
+                                { symbol: 'u', environment: 'general', example: 'vous [vu]', description: 'Close back rounded vowel' },
+                                { symbol: 'uw', environment: 'stressed final', example: 'doux [duw]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'e', 
+                            allophones: [
+                                { symbol: 'e', environment: 'general', example: 'été [ete]', description: 'Close-mid front unrounded vowel' },
+                                { symbol: 'ej', environment: 'stressed final', example: 'thé [tej]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ø', 
+                            allophones: [
+                                { symbol: 'ø', environment: 'general', example: 'peu [pø]', description: 'Close-mid front rounded vowel' },
+                                { symbol: 'øɥ', environment: 'stressed final', example: 'feu [føɥ]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'o', 
+                            allophones: [
+                                { symbol: 'o', environment: 'general', example: 'mot [mo]', description: 'Close-mid back rounded vowel' },
+                                { symbol: 'ow', environment: 'stressed final', example: 'peau [pow]', description: 'Slightly diphthongized when stressed finally' }
+                            ]
+                        }
+                    ],
+                    [
+                        { 
+                            phoneme: 'ɛ', 
+                            allophones: [
+                                { symbol: 'ɛ', environment: 'general', example: 'lait [lɛ]', description: 'Open-mid front unrounded vowel' },
+                                { symbol: 'ɛj', environment: 'stressed final', example: 'laid [lɛj]', description: 'Slightly diphthongized when stressed finally' },
+                                { symbol: 'e', environment: 'open syllable', example: 'décès [dese]', description: 'Raised in open syllables in some dialects' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'œ', 
+                            allophones: [
+                                { symbol: 'œ', environment: 'general', example: 'œuf [œf]', description: 'Open-mid front rounded vowel' },
+                                { symbol: 'ø', environment: 'open syllable', example: 'deux [dø]', description: 'Raised in open syllables' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ɔ', 
+                            allophones: [
+                                { symbol: 'ɔ', environment: 'general', example: 'fort [fɔʁ]', description: 'Open-mid back rounded vowel' },
+                                { symbol: 'o', environment: 'open syllable', example: 'rose [ʁoz]', description: 'Raised in open syllables in some dialects' }
+                            ]
+                        }
+                    ],
+                    [
+                        null,
+                        { 
+                            phoneme: 'a', 
+                            allophones: [
+                                { symbol: 'a', environment: 'general', example: 'place [plas]', description: 'Open front unrounded vowel' },
+                                { symbol: 'ɑ', environment: 'regional', example: 'pâte [pɑt]', description: 'Back variant in some dialects' }
+                            ]
+                        },
+                        { 
+                            phoneme: 'ɑ', 
+                            allophones: [
+                                { symbol: 'ɑ', environment: 'general', example: 'pâte [pɑt]', description: 'Open back unrounded vowel' },
+                                { symbol: 'a', environment: 'neutral', example: 'pâte [pat]', description: 'Fronted in contemporary French' }
+                            ]
+                        }
+                    ]
+                ]
+            }
+            // Include other languages' phonetic data here
+        };
+        
+        // DOM elements
+        const languageSelect = document.getElementById('language-select');
+        const phonemicBtn = document.getElementById('phonemic-btn');
+        const phoneticBtn = document.getElementById('phonetic-btn');
+        const toggleInfo = document.getElementById('toggle-info');
+        const consonantsTable = document.getElementById('consonants-table');
+        const vowelsTable = document.getElementById('vowels-table');
+        const phonemeInfo = document.getElementById('phoneme-info');
+        
+        // Current state
+        let selectedLanguage = 'english';
+        let viewMode = 'phonemic'; // 'phonemic' or 'phonetic'
+        let activePhoneme = null;
+        
+        // Function to render a phoneme cell in phonemic view
+        function renderPhonemeCell(phoneme, index) {
+            const cell = document.createElement('td');
+            
+            if (!phoneme) {
+                cell.className = 'empty-cell';
+                return cell;
+            }
+            
+            cell.className = 'phoneme-cell';
+            cell.setAttribute('data-index', index);
+            
+            const symbolDiv = document.createElement('div');
+            symbolDiv.className = 'phoneme-symbol';
+            symbolDiv.textContent = phoneme.symbol;
+            
+            cell.appendChild(symbolDiv);
+            
+            cell.addEventListener('click', function() {
+                // Remove active class from all cells
+                document.querySelectorAll('.phoneme-cell').forEach(cell => {
+                    cell.classList.remove('active');
+                });
+                
+                // Add active class to clicked cell
+                this.classList.add('active');
+                
+                // Get the current language data
+                const data = phonemeData[selectedLanguage] || { consonants: [], vowels: [] };
+                
+                // Find the phoneme in the data
+                const allPhonemes = [...data.consonants.flat(), ...data.vowels.flat()].filter(Boolean);
+                const clickedPhoneme = allPhonemes.find(p => p.symbol === phoneme.symbol);
+                
+                // Set active phoneme and update info
+                activePhoneme = clickedPhoneme;
+                updatePhonemeInfo();
+            });
+            
+            return cell;
+        }
+        
+        // Function to render a phoneme group in phonetic view
+        function renderPhoneticCell(phonemeGroup, index) {
+            const cell = document.createElement('td');
+            
+            if (!phonemeGroup) {
+                cell.className = 'empty-cell';
+                return cell;
+            }
+            
+            cell.className = 'phonetic-cell';
+            cell.setAttribute('data-index', index);
+            
+            const symbolDiv = document.createElement('div');
+            symbolDiv.className = 'phoneme-symbol';
+            symbolDiv.textContent = '/' + phonemeGroup.phoneme + '/';
+            const allophonesList = document.createElement('div');
+            allophonesList.className = 'allophone-list';
+            
+            // Add sample allophones (max 2 for display)
+            const displayAllophones = phonemeGroup.allophones.slice(0, 2);
+            displayAllophones.forEach((allophone, idx) => {
+                const span = document.createElement('span');
+                span.textContent = `[${allophone.symbol}]`;
+                span.className = 'inline-allophone';
+                
+                if (idx > 0) {
+                    allophonesList.appendChild(document.createTextNode(' '));
+                }
+                
+                allophonesList.appendChild(span);
+            });
+            
+            // Add ellipsis if there are more allophones
+            if (phonemeGroup.allophones.length > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                allophonesList.appendChild(document.createTextNode(' '));
+                allophonesList.appendChild(ellipsis);
+            }
+            
+            cell.appendChild(symbolDiv);
+            cell.appendChild(allophonesList);
+            
+            cell.addEventListener('click', function() {
+                // Remove active class from all cells
+                document.querySelectorAll('.phonetic-cell').forEach(cell => {
+                    cell.classList.remove('active');
+                });
+                
+                // Add active class to clicked cell
+                this.classList.add('active');
+                
+                // Set active phoneme and update info
+                activePhoneme = phonemeGroup;
+                updatePhonemeInfo();
+            });
+            
+            return cell;
+        }
+        
+        // Function to render a table for phonemes
+        function renderPhonemicTable(phonemes, tableElement) {
+            // Clear the table
+            tableElement.innerHTML = '';
+            
+            // Create rows and cells
+            phonemes.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                
+                row.forEach((phoneme, cellIndex) => {
+                    const index = `${rowIndex}-${cellIndex}`;
+                    const cell = renderPhonemeCell(phoneme, index);
+                    tr.appendChild(cell);
+                });
+                
+                tableElement.appendChild(tr);
+            });
+        }
+        
+        // Function to render a table for phonetic data
+        function renderPhoneticTable(phonemes, tableElement) {
+            // Clear the table
+            tableElement.innerHTML = '';
+            
+            // Create rows and cells
+            phonemes.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                
+                row.forEach((phonemeGroup, cellIndex) => {
+                    const index = `${rowIndex}-${cellIndex}`;
+                    const cell = renderPhoneticCell(phonemeGroup, index);
+                    tr.appendChild(cell);
+                });
+                
+                tableElement.appendChild(tr);
+            });
+        }
+        
+        // Function to update phoneme info section for phonemic view
+        function updatePhonemeInfoForPhonemic() {
+            if (!activePhoneme) {
+                phonemeInfo.classList.add('hidden');
+                return;
+            }
+            
+            phonemeInfo.classList.remove('hidden');
+            phonemeInfo.innerHTML = '';
+            
+            // Create header
+            const header = document.createElement('div');
+            header.className = 'phoneme-header';
+            
+            const symbol = document.createElement('span');
+            symbol.className = 'symbol';
+            symbol.textContent = activePhoneme.symbol;
+            
+            const ipa = document.createElement('span');
+            ipa.className = 'ipa';
+            ipa.textContent = `/${activePhoneme.ipa}/`;
+            
+            header.appendChild(symbol);
+            header.appendChild(ipa);
+            
+            // Create content grid
+            const infoGrid = document.createElement('div');
+            infoGrid.className = 'info-grid';
+            
+            // Left column with info
+            const leftCol = document.createElement('div');
+            
+            const examplePara = document.createElement('p');
+            const exampleLabel = document.createElement('span');
+            exampleLabel.className = 'font-semibold';
+            exampleLabel.textContent = 'Example: ';
+            examplePara.appendChild(exampleLabel);
+            examplePara.appendChild(document.createTextNode(activePhoneme.example));
+            
+            const descPara = document.createElement('p');
+            const descLabel = document.createElement('span');
+            descLabel.className = 'font-semibold';
+            descLabel.textContent = 'Description: ';
+            descPara.appendChild(descLabel);
+            descPara.appendChild(document.createTextNode(activePhoneme.description));
+            
+            leftCol.appendChild(examplePara);
+            leftCol.appendChild(descPara);
+            
+            // Right column with play button
+            const rightCol = document.createElement('div');
+            rightCol.style.display = 'flex';
+            rightCol.style.alignItems = 'center';
+            rightCol.style.justifyContent = 'center';
+            
+            const playButton = document.createElement('button');
+            playButton.className = 'play-button';
+            playButton.innerHTML = `
+                <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                </svg>
+                Play Pronunciation
+            `;
+            
+            playButton.addEventListener('click', function() {
+                console.log(`Playing audio for ${activePhoneme.symbol} - ${activePhoneme.audio}`);
+                // In a real implementation, this would play the audio file
+                alert(`In a full implementation, this would play the audio file: ${activePhoneme.audio}`);
+            });
+            
+            rightCol.appendChild(playButton);
+            
+            // Add columns to grid
+            infoGrid.appendChild(leftCol);
+            infoGrid.appendChild(rightCol);
+            
+            // Add all to the phoneme info container
+            phonemeInfo.appendChild(header);
+            phonemeInfo.appendChild(infoGrid);
+        }
+        
+        // Function to update phoneme info section for phonetic view
+        function updatePhonemeInfoForPhonetic() {
+            if (!activePhoneme || !activePhoneme.allophones) {
+                phonemeInfo.classList.add('hidden');
+                return;
+            }
+            
+            phonemeInfo.classList.remove('hidden');
+            phonemeInfo.innerHTML = '';
+            
+            // Create header
+            const header = document.createElement('div');
+            header.className = 'phoneme-header';
+            
+            const symbol = document.createElement('span');
+            symbol.className = 'symbol';
+            symbol.textContent = `/${activePhoneme.phoneme}/`;
+            
+            const allophonesLabel = document.createElement('span');
+            allophonesLabel.className = 'ipa';
+            allophonesLabel.textContent = 'Allophones';
+            
+            header.appendChild(symbol);
+            header.appendChild(allophonesLabel);
+            
+            // Create allophones list
+            const allophonesContainer = document.createElement('div');
+            allophonesContainer.className = 'space-y-4';
+            
+            activePhoneme.allophones.forEach((allophone, index) => {
+                const card = document.createElement('div');
+                card.className = 'allophone-card';
+                
+                // Allophone header with play button
+                const allophoneHeader = document.createElement('div');
+                allophoneHeader.className = 'allophone-header';
+                
+                const allophoneLeft = document.createElement('div');
+                
+                const allophoneSymbol = document.createElement('span');
+                allophoneSymbol.className = 'symbol';
+                allophoneSymbol.textContent = `[${allophone.symbol}]`;
+                
+                const environmentSpan = document.createElement('span');
+                environmentSpan.className = 'environment';
+                environmentSpan.textContent = `Environment: ${allophone.environment}`;
+                
+                allophoneLeft.appendChild(allophoneSymbol);
+                allophoneLeft.appendChild(document.createElement('br'));
+                allophoneLeft.appendChild(environmentSpan);
+                
+                const playButton = document.createElement('button');
+                playButton.className = 'allophone-play';
+                playButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                    Play
+                `;
+                
+                playButton.addEventListener('click', function() {
+                    console.log(`Playing audio for ${allophone.symbol} - ${allophone.example}`);
+                    // In a real implementation, this would play the audio file
+                    alert(`In a full implementation, this would play the audio for: ${allophone.example}`);
+                });
+                
+                allophoneHeader.appendChild(allophoneLeft);
+                allophoneHeader.appendChild(playButton);
+                
+                // Allophone info
+                const allophoneInfo = document.createElement('div');
+                allophoneInfo.className = 'allophone-info';
+                
+                const examplePara = document.createElement('p');
+                const exampleLabel = document.createElement('span');
+                exampleLabel.className = 'font-semibold';
+                exampleLabel.textContent = 'Example: ';
+                examplePara.appendChild(exampleLabel);
+                examplePara.appendChild(document.createTextNode(allophone.example));
+                
+                const descPara = document.createElement('p');
+                const descLabel = document.createElement('span');
+                descLabel.className = 'font-semibold';
+                descLabel.textContent = 'Description: ';
+                descPara.appendChild(descLabel);
+                descPara.appendChild(document.createTextNode(allophone.description));
+                
+                allophoneInfo.appendChild(examplePara);
+                allophoneInfo.appendChild(descPara);
+                
+                // Add all to the card
+                card.appendChild(allophoneHeader);
+                card.appendChild(allophoneInfo);
+                
+                // Add card to container
+                allophonesContainer.appendChild(card);
+            });
+            
+            // Add all to the phoneme info container
+            phonemeInfo.appendChild(header);
+            phonemeInfo.appendChild(allophonesContainer);
+        }
+        
+        // Function to update phoneme info section based on view mode
+        function updatePhonemeInfo() {
+            if (viewMode === 'phonemic') {
+                updatePhonemeInfoForPhonemic();
+            } else {
+                updatePhonemeInfoForPhonetic();
+            }
+        }
+        
+        // Function to update the tables based on the current view mode and language
+        function updateTables() {
+            // Hide phoneme info
+            phonemeInfo.classList.add('hidden');
+            activePhoneme = null;
+            
+            if (viewMode === 'phonemic') {
+                // Get data for the current language
+                const data = phonemeData[selectedLanguage] || { consonants: [], vowels: [] };
+                
+                // Render tables
+                renderPhonemicTable(data.consonants, consonantsTable);
+                renderPhonemicTable(data.vowels, vowelsTable);
+            } else {
+                // Get phonetic data for the current language
+                let data = phoneticData[selectedLanguage];
+                
+                // If no phonetic data exists for this language, switch to phonemic view
+                if (!data) {
+                    console.log(`No phonetic data available for ${selectedLanguage}, displaying phonemic view instead`);
+                    viewMode = 'phonemic';
+                    updateToggleButtons();
+                    updateTables();
+                    return;
+                }
+                
+                // Render tables with phonetic data
+                renderPhoneticTable(data.consonants, consonantsTable);
+                renderPhoneticTable(data.vowels, vowelsTable);
+            }
+        }
+        
+        // Function to update toggle buttons state
+        function updateToggleButtons() {
+            if (viewMode === 'phonemic') {
+                phonemicBtn.classList.add('active');
+                phoneticBtn.classList.remove('active');
+                toggleInfo.textContent = 'Showing abstract sound system';
+            } else {
+                phonemicBtn.classList.remove('active');
+                phoneticBtn.classList.add('active');
+                toggleInfo.textContent = 'Showing actual sound realizations';
+            }
+        }
+        
+        // Handle language change
+        languageSelect.addEventListener('change', function() {
+            selectedLanguage = this.value;
+            activePhoneme = null;
+            updateTables();
+        });
+        
+        // Handle view mode toggle
+        phonemicBtn.addEventListener('click', function() {
+            if (viewMode !== 'phonemic') {
+                viewMode = 'phonemic';
+                updateToggleButtons();
+                updateTables();
+            }
+        });
+        
+        phoneticBtn.addEventListener('click', function() {
+            if (viewMode !== 'phonetic') {
+                viewMode = 'phonetic';
+                updateToggleButtons();
+                updateTables();
+            }
+        });
+        
+        // Initialize the chart with the default language and view mode
+        updateToggleButtons();
+        updateTables();
+    </script>
+</body>
+</html>
+
