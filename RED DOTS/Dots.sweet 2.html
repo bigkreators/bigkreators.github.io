@@ -14,39 +14,17 @@
       h2 {
         color: white;
         position: relative;
-        z-index: 2; /* Changed from 1 to allow middle snow to be behind text */
+        z-index: 1;
       }
 
-      /* Top snowflake container */
-      .snowflakes-top {
+      /* Snowflake container */
+      .snowflakes {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 3; /* Top layer */
-        pointer-events: none;
-      }
-
-      /* Middle snowflake container */
-      .snowflakes-middle {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* Below text to overlay with dots */
-        pointer-events: none;
-      }
-
-      /* Bottom snowflake container */
-      .snowflakes-bottom {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 3; /* Top layer like top snow */
+        z-index: 2;
         pointer-events: none;
       }
 
@@ -57,26 +35,6 @@
         font-size: 1.5em;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
         opacity: 0.8;
-        user-select: none;
-      }
-      
-      /* Middle snowflake styling */
-      .snowflake-middle {
-        position: absolute;
-        color: white;
-        font-size: 1.5em;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
-        opacity: 0.6; /* Slightly more transparent */
-        user-select: none;
-      }
-
-      /* Bottom snowflake styling */
-      .snowflake-bottom {
-        position: absolute;
-        color: white;
-        font-size: 1.5em;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
-        opacity: 0.7;
         user-select: none;
       }
 
@@ -98,42 +56,6 @@
         }
       }
 
-      /* Keyframes for rising animation */
-      @keyframes rise {
-        0% {
-          transform: translateY(110vh) translateX(0);
-          opacity: 0;
-        }
-        10% {
-          opacity: 0.7;
-        }
-        90% {
-          opacity: 0.6;
-        }
-        100% {
-          transform: translateY(0vh) translateX(20px);
-          opacity: 0;
-        }
-      }
-
-      /* Keyframes for middle snow animation */
-      @keyframes middle-snow {
-        0% {
-          transform: translate(0, 0);
-          opacity: 0;
-        }
-        10% {
-          opacity: 0.6;
-        }
-        90% {
-          opacity: 0.5;
-        }
-        100% {
-          transform: translate(30px, 30px);
-          opacity: 0;
-        }
-      }
-
       /* Keyframes for wiggle animation */
       @keyframes wiggle {
         0%, 100% {
@@ -149,39 +71,21 @@
     <!-- Original content -->
     <h2 style="color: white;">. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·. . ․﹒．ᐧ・･·．ᐧ・･·. . ․﹒．ᐧ・･</h2>
     
-    <!-- Snowflake containers for all three layers -->
-    <div class="snowflakes-top" id="snowflakesTop"></div>
-    <div class="snowflakes-middle" id="snowflakesMiddle"></div>
-    <div class="snowflakes-bottom" id="snowflakesBottom"></div>
+    <!-- Snowflake container -->
+    <div class="snowflakes" id="snowflakes"></div>
 
     <script>
       // Snowflake characters
       const snowflakes = ['❅', '❆', '❄', '✻', '✼', '❋', '❊', '✧', '✦'];
-      const numTopSnowflakes = 70; // More snow
-      const numMiddleSnowflakes = 40;
-      const numBottomSnowflakes = 50;
+      const numSnowflakes = 50;
+      const snowflakesContainer = document.getElementById('snowflakes');
       
-      const snowflakesTopContainer = document.getElementById('snowflakesTop');
-      const snowflakesMiddleContainer = document.getElementById('snowflakesMiddle');
-      const snowflakesBottomContainer = document.getElementById('snowflakesBottom');
-      
-      // Create the top falling snowflakes
-      for (let i = 0; i < numTopSnowflakes; i++) {
-        createTopSnowflake();
+      // Create the snowflakes
+      for (let i = 0; i < numSnowflakes; i++) {
+        createSnowflake();
       }
       
-      // Create the middle snowflakes
-      for (let i = 0; i < numMiddleSnowflakes; i++) {
-        createMiddleSnowflake();
-      }
-      
-      // Create the bottom rising snowflakes
-      for (let i = 0; i < numBottomSnowflakes; i++) {
-        createBottomSnowflake();
-      }
-      
-      // Top falling snowflakes
-      function createTopSnowflake() {
+      function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.className = 'snowflake';
         snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
@@ -200,72 +104,13 @@
         snowflake.style.animation = `fall ${fallDuration}s linear forwards, wiggle ${fallDuration/5}s ease-in-out infinite alternate`;
         
         // Append to container
-        snowflakesTopContainer.appendChild(snowflake);
+        snowflakesContainer.appendChild(snowflake);
         
         // Remove and recreate after animation is complete
         setTimeout(() => {
           snowflake.remove();
-          createTopSnowflake();
+          createSnowflake();
         }, fallDuration * 1000);
-      }
-      
-      // Middle floating snowflakes
-      function createMiddleSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.className = 'snowflake-middle';
-        snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-        
-        // Random positioning across the entire screen
-        const startPositionX = Math.random() * window.innerWidth;
-        const startPositionY = Math.random() * window.innerHeight;
-        snowflake.style.left = startPositionX + 'px';
-        snowflake.style.top = startPositionY + 'px';
-        
-        // Random size
-        const size = (Math.random() * 1.8) + 0.3;
-        snowflake.style.fontSize = size + 'em';
-        
-        // Random float duration
-        const floatDuration = Math.random() * 10 + 10; // 10-20 seconds
-        snowflake.style.animation = `middle-snow ${floatDuration}s ease-in-out forwards`;
-        
-        // Append to container
-        snowflakesMiddleContainer.appendChild(snowflake);
-        
-        // Remove and recreate after animation is complete
-        setTimeout(() => {
-          snowflake.remove();
-          createMiddleSnowflake();
-        }, floatDuration * 1000);
-      }
-      
-      // Bottom rising snowflakes
-      function createBottomSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.className = 'snowflake-bottom';
-        snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-        
-        // Random positioning
-        const startPositionX = Math.random() * window.innerWidth;
-        snowflake.style.left = startPositionX + 'px';
-        snowflake.style.bottom = '-20px';
-        
-        // Random size
-        const size = (Math.random() * 1.5) + 0.5;
-        snowflake.style.fontSize = size + 'em';
-        
-        // Random rise duration
-        const riseDuration = Math.random() * 8 + 7; // 7-15 seconds
-        snowflake.style.animation = `rise ${riseDuration}s linear forwards, wiggle ${riseDuration/4}s ease-in-out infinite alternate`;
-        
-        // Append to container
-        snowflakesBottomContainer.appendChild(snowflake);
-        
-        // Remove and recreate after animation is complete
-        setTimeout(() => {
-          snowflake.remove();
-          createBottomSnowflake();
-        }, riseDuration * 1000);
       }
     </script>
   </body>

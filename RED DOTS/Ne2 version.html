@@ -1,0 +1,856 @@
+<html>
+  <head>
+    <style>
+      /* Base styling */
+      body {
+        background-color: #0D1117;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      h1 {
+        color: #E6F1FF;
+        text-align: center;
+        margin: 20px;
+        font-size: 2.5em;
+        z-index: 10;
+        text-shadow: 0 0 10px rgba(75, 192, 192, 0.5);
+      }
+      
+      p {
+        color: #ACB9CA;
+        text-align: center;
+        margin: 10px 20px;
+        z-index: 10;
+        max-width: 800px;
+      }
+
+      /* Sound wave visualization */
+      .sound-wave {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .wave-bar {
+        background: linear-gradient(to top, #4BC0C0, #6FE9E9);
+        width: 4px;
+        height: 5px;
+        margin: 0 2px;
+        border-radius: 2px;
+        transition: height 0.2s ease;
+      }
+
+      /* Mouth visualization */
+      .mouth-container {
+        width: 300px;
+        height: 200px;
+        position: relative;
+        margin: 20px auto;
+        z-index: 10;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      .mouth {
+        width: 120px;
+        height: 60px;
+        background-color: #8B0000;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        transition: all 0.5s ease;
+      }
+
+      .tongue {
+        width: 80px;
+        height: 30px;
+        background-color: #FF6B6B;
+        border-radius: 50%;
+        position: absolute;
+        bottom: -10px;
+        transition: all 0.5s ease;
+      }
+
+      .teeth {
+        width: 100px;
+        height: 15px;
+        background-color: white;
+        border-radius: 10px;
+        position: absolute;
+        top: 5px;
+      }
+
+      .lips {
+        width: 120px;
+        height: 60px;
+        border: 2px solid #4E0707;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+
+      /* Phoneme particles */
+      .phoneme-particle {
+        position: absolute;
+        font-size: 1.2em;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 5px rgba(75, 192, 192, 0.7);
+        user-select: none;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      /* Sound category pills */
+      .sound-categories {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 20px 0;
+        gap: 10px;
+        z-index: 10;
+      }
+
+      .category-pill {
+        background: linear-gradient(135deg, #4BC0C0, #1E7B7B);
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .category-pill:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(75, 192, 192, 0.5);
+      }
+
+      .category-pill.active {
+        background: linear-gradient(135deg, #FF6B6B, #CC5555);
+        box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+      }
+
+      /* Sound spectrum visualization */
+      .spectrum-container {
+        width: 90%;
+        max-width: 800px;
+        height: 100px;
+        position: relative;
+        z-index: 10;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        margin: 20px auto;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      /* Frequency markers */
+      .frequency-markers {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .frequency-marker {
+        font-size: 0.8em;
+        color: #ACB9CA;
+      }
+
+      /* Interactive canvas for sound waves */
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      /* Animation keyframes */
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive design for smaller screens */
+      @media (max-width: 768px) {
+        .sound-wave, .spectrum-container {
+          width: 95%;
+        }
+        
+        .mouth-container {
+          width: 250px;
+          height: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vocal Resonance Explorer</h1>
+    <p>Experience phonetics through interactive sound visualization. Select a sound category below to see how it forms in the mouth and appears in sound waves.</p>
+    
+    <!-- Sound categories -->
+    <div class="sound-categories">
+      <button class="category-pill" data-category="plosives">Plosives</button>
+      <button class="category-pill" data-category="fricatives">Fricatives</button>
+      <button class="category-pill" data-category="nasals">Nasals</button>
+      <button class="category-pill" data-category="vowels">Vowels</button>
+      <button class="category-pill" data-category="tones">Tones</button>
+    </div>
+    
+    <!-- Mouth visualization -->
+    <div class="mouth-container">
+      <div class="mouth" id="mouth">
+        <div class="tongue" id="tongue"></div>
+        <div class="teeth"></div>
+        <div class="lips"></div>
+      </div>
+    </div>
+    
+    <!-- Sound wave visualization -->
+    <div class="sound-wave" id="soundWave">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <!-- Frequency spectrum -->
+    <div class="spectrum-container" id="spectrumContainer">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <div class="frequency-markers">
+      <span class="frequency-marker">100Hz</span>
+      <span class="frequency-marker">500Hz</span>
+      <span class="frequency-marker">1kHz</span>
+      <span class="frequency-marker">2kHz</span>
+      <span class="frequency-marker">5kHz</span>
+      <span class="frequency-marker">10kHz</span>
+    </div>
+    
+    <!-- Background canvas for wave animations -->
+    <canvas id="waveCanvas"></canvas>
+
+    <script>
+      // Set up wave bars for sound visualization
+      const soundWave = document.getElementById('soundWave');
+      const numberOfBars = 50;
+      
+      for (let i = 0; i < numberOfBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'wave-bar';
+        soundWave.appendChild(bar);
+      }
+      
+      // Set up spectrum visualization
+      const spectrumContainer = document.getElementById('spectrumContainer');
+      const numberOfSpectrumBars = 128;
+      
+      for (let i = 0; i < numberOfSpectrumBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'wave-bar';
+        bar.style.height = '5px';
+        spectrumContainer.appendChild(bar);
+      }
+      
+      // Phoneme definitions with articulation data
+      const phonemes = {
+        plosives: [
+          {
+            symbol: 'p',
+            mouthShape: { width: '80px', height: '20px' },
+            tonguePosition: { bottom: '-10px' },
+            wavePattern: 'burst',
+            spectrum: [0.1, 0.2, 0.8, 1, 0.6, 0.4, 0.2, 0.1]
+          },
+          {
+            symbol: 't',
+            mouthShape: { width: '90px', height: '30px' },
+            tonguePosition: { bottom: '20px' },
+            wavePattern: 'burst',
+            spectrum: [0.2, 0.4, 0.9, 0.7, 0.5, 0.3, 0.1, 0.1]
+          },
+          {
+            symbol: 'k',
+            mouthShape: { width: '100px', height: '40px' },
+            tonguePosition: { bottom: '15px' },
+            wavePattern: 'burst',
+            spectrum: [0.3, 0.5, 0.7, 1, 0.8, 0.2, 0.1, 0.1]
+          }
+        ],
+        fricatives: [
+          {
+            symbol: 's',
+            mouthShape: { width: '70px', height: '15px' },
+            tonguePosition: { bottom: '15px' },
+            wavePattern: 'noise',
+            spectrum: [0.1, 0.2, 0.3, 0.5, 0.8, 1, 0.9, 0.7]
+          },
+          {
+            symbol: 'f',
+            mouthShape: { width: '60px', height: '10px' },
+            tonguePosition: { bottom: '0px' },
+            wavePattern: 'noise',
+            spectrum: [0.2, 0.3, 0.4, 0.6, 0.9, 1, 0.8, 0.5]
+          },
+          {
+            symbol: 'ʃ',
+            mouthShape: { width: '75px', height: '25px' },
+            tonguePosition: { bottom: '10px' },
+            wavePattern: 'noise',
+            spectrum: [0.1, 0.3, 0.5, 0.8, 1, 0.7, 0.4, 0.2]
+          }
+        ],
+        nasals: [
+          {
+            symbol: 'm',
+            mouthShape: { width: '40px', height: '10px' },
+            tonguePosition: { bottom: '0px' },
+            wavePattern: 'smooth',
+            spectrum: [1, 0.8, 0.6, 0.3, 0.1, 0.1, 0.1, 0.1]
+          },
+          {
+            symbol: 'n',
+            mouthShape: { width: '50px', height: '15px' },
+            tonguePosition: { bottom: '15px' },
+            wavePattern: 'smooth',
+            spectrum: [0.9, 0.7, 0.5, 0.4, 0.2, 0.1, 0.1, 0.1]
+          }
+        ],
+        vowels: [
+          {
+            symbol: 'i',
+            mouthShape: { width: '90px', height: '20px' },
+            tonguePosition: { bottom: '20px' },
+            wavePattern: 'sinusoidal',
+            spectrum: [0.7, 1, 0.5, 0.3, 0.6, 0.4, 0.2, 0.1]
+          },
+          {
+            symbol: 'a',
+            mouthShape: { width: '120px', height: '60px' },
+            tonguePosition: { bottom: '0px' },
+            wavePattern: 'sinusoidal',
+            spectrum: [1, 0.8, 0.6, 0.5, 0.3, 0.2, 0.1, 0.1]
+          },
+          {
+            symbol: 'u',
+            mouthShape: { width: '50px', height: '40px' },
+            tonguePosition: { bottom: '10px' },
+            wavePattern: 'sinusoidal',
+            spectrum: [0.9, 0.7, 0.3, 0.1, 0.1, 0.2, 0.4, 0.3]
+          }
+        ],
+        tones: [
+          {
+            symbol: 'ˉ', // High level
+            mouthShape: { width: '100px', height: '30px' },
+            tonguePosition: { bottom: '10px' },
+            wavePattern: 'rising',
+            spectrum: [0.5, 0.6, 0.8, 1, 0.7, 0.5, 0.3, 0.2]
+          },
+          {
+            symbol: 'ˊ', // Rising
+            mouthShape: { width: '100px', height: '40px' },
+            tonguePosition: { bottom: '15px' },
+            wavePattern: 'rising',
+            spectrum: [0.3, 0.5, 0.7, 0.9, 1, 0.8, 0.5, 0.3]
+          },
+          {
+            symbol: 'ˇ', // Falling-rising
+            mouthShape: { width: '110px', height: '50px' },
+            tonguePosition: { bottom: '10px' },
+            wavePattern: 'complex',
+            spectrum: [0.6, 0.8, 1, 0.7, 0.5, 0.8, 0.9, 0.6]
+          }
+        ]
+      };
+      
+      // Initialize canvas
+      const canvas = document.getElementById('waveCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas dimensions
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      
+      // Initial resize
+      resizeCanvas();
+      
+      // Handle window resize
+      window.addEventListener('resize', resizeCanvas);
+      
+      // Animation variables
+      let particles = [];
+      let animationId;
+      let currentCategory = null;
+      let currentPhonemeIndex = 0;
+      
+      // Select the mouth and tongue elements
+      const mouth = document.getElementById('mouth');
+      const tongue = document.getElementById('tongue');
+      
+      // Handle category selection
+      const categoryButtons = document.querySelectorAll('.category-pill');
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const category = this.getAttribute('data-category');
+          
+          // Remove active class from all buttons
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Set current category and reset phoneme index
+          currentCategory = category;
+          currentPhonemeIndex = 0;
+          
+          // Display the first phoneme in the category
+          displayPhoneme(category, 0);
+          
+          // Start the animation sequence for this category
+          animateCategory(category);
+        });
+      });
+      
+      // Function to display a phoneme
+      function displayPhoneme(category, index) {
+        const phoneme = phonemes[category][index];
+        
+        // Animate mouth shape
+        mouth.style.width = phoneme.mouthShape.width;
+        mouth.style.height = phoneme.mouthShape.height;
+        
+        // Animate tongue position
+        tongue.style.bottom = phoneme.tonguePosition.bottom;
+        
+        // Generate sound wave visualization
+        animateSoundWave(phoneme.wavePattern);
+        
+        // Update spectrum visualization
+        updateSpectrum(phoneme.spectrum);
+        
+        // Create phoneme particles
+        createPhonemeParticles(phoneme.symbol);
+      }
+      
+      // Function to animate sound wave based on pattern
+      function animateSoundWave(pattern) {
+        const bars = document.querySelectorAll('#soundWave .wave-bar');
+        
+        // Clear any existing animations
+        bars.forEach(bar => {
+          bar.style.animation = '';
+          bar.style.height = '5px';
+        });
+        
+        // Apply animation based on pattern
+        switch (pattern) {
+          case 'burst':
+            // Burst pattern - high in center, tapering to edges
+            bars.forEach((bar, index) => {
+              const distance = Math.abs(index - (numberOfBars / 2));
+              const height = Math.max(5, 100 - (distance * 3));
+              setTimeout(() => {
+                bar.style.height = height + 'px';
+                setTimeout(() => {
+                  bar.style.height = '5px';
+                }, 300);
+              }, index * 10);
+            });
+            break;
+            
+          case 'noise':
+            // Random noise pattern
+            setInterval(() => {
+              bars.forEach(bar => {
+                const height = Math.random() * 60 + 5;
+                bar.style.height = height + 'px';
+              });
+            }, 50);
+            break;
+            
+          case 'smooth':
+            // Smooth sinusoidal pattern
+            let phase = 0;
+            setInterval(() => {
+              bars.forEach((bar, index) => {
+                const height = 30 + 25 * Math.sin((index * 0.2) + phase);
+                bar.style.height = height + 'px';
+              });
+              phase += 0.1;
+            }, 50);
+            break;
+            
+          case 'sinusoidal':
+            // Steady sinusoidal pattern
+            bars.forEach((bar, index) => {
+              const height = 30 + 25 * Math.sin(index * 0.2);
+              bar.style.height = height + 'px';
+              bar.style.animation = 'pulse 1s infinite';
+            });
+            break;
+            
+          case 'rising':
+            // Rising pattern
+            bars.forEach((bar, index) => {
+              setTimeout(() => {
+                bar.style.height = (60 - index) + 'px';
+              }, index * 20);
+            });
+            break;
+            
+          case 'complex':
+            // Complex wave pattern
+            bars.forEach((bar, index) => {
+              const height = 15 + 20 * Math.sin(index * 0.3) + 15 * Math.sin(index * 0.7);
+              bar.style.height = height + 'px';
+            });
+            break;
+        }
+      }
+      
+      // Function to update spectrum visualization
+      function updateSpectrum(spectrumData) {
+        const bars = document.querySelectorAll('#spectrumContainer .wave-bar');
+        const expandedSpectrum = [];
+        
+        // Expand the spectrum data to fit all bars
+        for (let i = 0; i < spectrumData.length - 1; i++) {
+          const start = spectrumData[i];
+          const end = spectrumData[i + 1];
+          const segmentSize = Math.floor(numberOfSpectrumBars / (spectrumData.length - 1));
+          
+          for (let j = 0; j < segmentSize; j++) {
+            const ratio = j / segmentSize;
+            expandedSpectrum.push(start + (end - start) * ratio);
+          }
+        }
+        
+        // Fill any remaining bars
+        while (expandedSpectrum.length < numberOfSpectrumBars) {
+          expandedSpectrum.push(spectrumData[spectrumData.length - 1]);
+        }
+        
+        // Apply heights to bars
+        bars.forEach((bar, index) => {
+          if (index < expandedSpectrum.length) {
+            const height = expandedSpectrum[index] * 80;
+            bar.style.height = height + 'px';
+          }
+        });
+      }
+      
+      // Function to create floating phoneme particles
+      function createPhonemeParticles(symbol) {
+        // Create several particles with the phoneme symbol
+        for (let i = 0; i < 10; i++) {
+          createPhonemeParticle(symbol);
+        }
+      }
+      
+      // Function to create a single phoneme particle
+      function createPhonemeParticle(symbol) {
+        const particle = document.createElement('div');
+        particle.className = 'phoneme-particle';
+        particle.innerHTML = symbol;
+        
+        // Position at the mouth
+        const mouthRect = mouth.getBoundingClientRect();
+        const startX = mouthRect.left + mouthRect.width / 2;
+        const startY = mouthRect.top + mouthRect.height / 2;
+        
+        // Apply random trajectory
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 2 + 1;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        
+        // Set initial position
+        particle.style.left = startX + 'px';
+        particle.style.top = startY + 'px';
+        
+        // Add to DOM
+        document.body.appendChild(particle);
+        
+        // Store particle data
+        particles.push({
+          element: particle,
+          x: startX,
+          y: startY,
+          vx: vx,
+          vy: vy,
+          life: 100, // Life counter
+          opacity: 1
+        });
+      }
+      
+      // Function to animate particles
+      function animateParticles() {
+        particles.forEach((particle, index) => {
+          // Update position
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          particle.life -= 1;
+          particle.opacity = particle.life / 100;
+          
+          // Apply updates to DOM element
+          particle.element.style.left = particle.x + 'px';
+          particle.element.style.top = particle.y + 'px';
+          particle.element.style.opacity = particle.opacity;
+          
+          // Remove dead particles
+          if (particle.life <= 0) {
+            particle.element.remove();
+            particles.splice(index, 1);
+          }
+        });
+      }
+      
+      // Function to draw background wave patterns
+      function drawWaves() {
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw waves only if we have a selected category
+        if (currentCategory) {
+          const time = Date.now() * 0.001;
+          
+          // Draw wave patterns based on current category
+          if (currentCategory === 'vowels') {
+            drawSinusoidalWaves(time);
+          } else if (currentCategory === 'fricatives') {
+            drawNoiseWaves(time);
+          } else if (currentCategory === 'plosives') {
+            drawBurstWaves(time);
+          } else if (currentCategory === 'nasals') {
+            drawSmoothWaves(time);
+          } else if (currentCategory === 'tones') {
+            drawToneWaves(time);
+          }
+        }
+      }
+      
+      // Different wave drawing functions for different sound categories
+      
+      function drawSinusoidalWaves(time) {
+        ctx.strokeStyle = 'rgba(75, 192, 192, 0.1)';
+        ctx.lineWidth = 2;
+        
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          
+          for (let x = 0; x < canvas.width; x += 5) {
+            const y = (canvas.height * 0.5) +
+                    Math.sin(x * 0.01 + time + i) * 50 +
+                    Math.sin(x * 0.02 - time * 2 + i) * 30;
+            
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          
+          ctx.stroke();
+        }
+      }
+      
+      function drawNoiseWaves(time) {
+        ctx.strokeStyle = 'rgba(255, 107, 107, 0.05)';
+        ctx.lineWidth = 1;
+        
+        let lastY = Array(10).fill(canvas.height / 2);
+        
+        for (let i = 0; i < 10; i++) {
+          ctx.beginPath();
+          
+          for (let x = 0; x < canvas.width; x += 2) {
+            // Perlin-like noise with more randomness for fricatives
+            const noise = (lastY[i] - canvas.height/2) * 0.9 + (Math.random() - 0.5) * 20;
+            const y = canvas.height/2 + noise;
+            lastY[i] = y;
+            
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          
+          ctx.stroke();
+        }
+      }
+      
+      function drawBurstWaves(time) {
+        // Draw burst patterns every few seconds
+        const burstTime = Math.floor(time) % 3; // Burst every 3 seconds
+        
+        if (burstTime < 0.5) {
+          // Draw burst wave
+          const intensity = (0.5 - burstTime) * 2; // Fade out over 0.5 seconds
+          
+          ctx.strokeStyle = `rgba(255, 193, 7, ${intensity * 0.2})`;
+          ctx.lineWidth = 2;
+          
+          ctx.beginPath();
+          for (let x = 0; x < canvas.width; x += 2) {
+            const distFromCenter = Math.abs(x - canvas.width/2);
+            const waveMagnitude = Math.max(0, 100 - (distFromCenter * 0.1)) * intensity;
+            const y = canvas.height/2 + Math.sin(x * 0.1) * waveMagnitude;
+            
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.stroke();
+        } else {
+          // Draw low-amplitude background noise between bursts
+          ctx.strokeStyle = 'rgba(255, 193, 7, 0.05)';
+          ctx.beginPath();
+          for (let x = 0; x < canvas.width; x += 5) {
+            const y = canvas.height/2 + (Math.random() - 0.5) * 10;
+            
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.stroke();
+        }
+      }
+      
+      function drawSmoothWaves(time) {
+        ctx.strokeStyle = 'rgba(106, 76, 147, 0.1)';
+        ctx.lineWidth = 3;
+        
+        // Draw several harmonics with decreasing amplitude
+        for (let harmonic = 1; harmonic <= 4; harmonic++) {
+          ctx.beginPath();
+          
+          for (let x = 0; x < canvas.width; x += 5) {
+            const amplitude = 80 / harmonic;
+            const y = canvas.height/2 +
+                    Math.sin(x * 0.005 * harmonic + time) * amplitude;
+            
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          
+          ctx.stroke();
+        }
+      }
+      
+      function drawToneWaves(time) {
+        ctx.strokeStyle = 'rgba(52, 152, 219, 0.1)';
+        ctx.lineWidth = 2;
+        
+        // Draw a wave that changes frequency over time
+        ctx.beginPath();
+        
+        const period = 5; // 5 second tone cycle
+        const cyclePosition = (time % period) / period;
+        
+        for (let x = 0; x < canvas.width; x += 3) {
+          let frequency;
+          
+          // Change frequency based on cycle position
+          if (cyclePosition < 0.33) {
+            // Rising tone
+            frequency = 0.01 + (cyclePosition / 0.33) * 0.03;
+          } else if (cyclePosition < 0.66) {
+            // Falling tone
+            frequency = 0.04 - ((cyclePosition - 0.33) / 0.33) * 0.03;
+          } else {
+            // Level tone
+            frequency = 0.01;
+          }
+          
+          const y = canvas.height/2 + Math.sin(x * frequency + time * 2) * 60;
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        
+        ctx.stroke();
+      }
+      
+      // Function to animate a category by cycling through its phonemes
+      function animateCategory(category) {
+        // Cancel any existing animation
+        if (animationId) {
+          clearInterval(animationId);
+        }
+        
+        // Set up animation loop for this category
+        animationId = setInterval(() => {
+          // Display next phoneme in the category
+          currentPhonemeIndex = (currentPhonemeIndex + 1) % phonemes[category].length;
+          displayPhoneme(category, currentPhonemeIndex);
+        }, 3000); // Change phoneme every 3 seconds
+      }
+      
+      // Main animation loop
+      function animate() {
+        drawWaves();
+        animateParticles();
+        requestAnimationFrame(animate);
+      }
