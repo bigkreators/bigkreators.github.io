@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPA Keyboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .keyboard-section {
+            margin-bottom: 30px;
+        }
+        .keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .key {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            font-size: 18px;
+            padding: 0 10px;
+        }
+        .key:hover {
+            background-color: #e0e0e0;
+        }
+        .category {
+            background-color: #f8f8f8;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .category h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .copy-btn {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 5px;
+        }
+        .chart-header {
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+        }
+        .subcategory {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .label-cell {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>IPA Keyboard</h1>
+    
+    <textarea id="output" placeholder="Click on IPA symbols below to add them here..."></textarea>
+    
+    <div class="controls">
+        <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+        <button class="copy-btn" onclick="clearText()" style="background-color: #f44336;">Clear</button>
+    </div>
+    
+    <div class="keyboard-section">
+        <div class="category">
+            <h2>Pulmonic Consonants</h2>
+            <div class="subcategory">Manner of Articulation × Place of Articulation</div>
+            <table>
+                <tr>
+                    <th></th>
+                <th>Bilabial</th>
+                <th>Labdental</th>
+                <th>Dental</th>
+                <th>Alveolar</th>
+                <th>Postalveolar</th>
+                <th>Retroflex</th>
+                <th>Palatal</th>
+                <th>Velar</th>
+                <th>Uvular</th>
+                <th>Pharyngeal</th>
+                <th>Glottal</th>
+                </tr>
+                <tr>
+                <td class="label-cell">Plosive</td>
+                <div class="key" onclick="addSymbol('p')">p</div>
+                <div class="key" onclick="addSymbol('b')">b</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('t')">t</div>
+                <div class="key" onclick="addSymbol('d')">d</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʈ')">ʈ</div>
+                <div class="key" onclick="addSymbol('ɖ')">ɖ</div>
+                <div class="key" onclick="addSymbol('c')">c</div>
+                <div class="key" onclick="addSymbol('ɟ')">ɟ</div>
+                <div class="key" onclick="addSymbol('k')">k</div>
+                <div class="key" onclick="addSymbol('ɡ')">ɡ</div>
+                <div class="key" onclick="addSymbol('q')">q</div>
+                <div class="key" onclick="addSymbol('ɢ')">ɢ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʔ')">ʔ</div>
+                <div class="key empty"></div>
+                </tr>
+                <!-- Nasals -->
+                <div class="key" onclick="addSymbol('m')">m</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɱ')">ɱ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('n')">n</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɳ')">ɳ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɲ')">ɲ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ŋ')">ŋ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɴ')">ɴ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Trills -->
+                <div class="key" onclick="addSymbol('ʙ')">ʙ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('r')">r</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʀ')">ʀ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Taps/Flaps -->
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɾ')">ɾ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɽ')">ɽ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Fricatives -->
+                <div class="key" onclick="addSymbol('ɸ')">ɸ</div>
+                <div class="key" onclick="addSymbol('β')">β</div>
+                <div class="key" onclick="addSymbol('f')">f</div>
+                <div class="key" onclick="addSymbol('v')">v</div>
+                <div class="key" onclick="addSymbol('θ')">θ</div>
+                <div class="key" onclick="addSymbol('ð')">ð</div>
+                <div class="key" onclick="addSymbol('s')">s</div>
+                <div class="key" onclick="addSymbol('z')">z</div>
+                <div class="key" onclick="addSymbol('ʃ')">ʃ</div>
+                <div class="key" onclick="addSymbol('ʒ')">ʒ</div>
+                <div class="key" onclick="addSymbol('ʂ')">ʂ</div>
+                <div class="key" onclick="addSymbol('ʐ')">ʐ</div>
+                <div class="key" onclick="addSymbol('ç')">ç</div>
+                <div class="key" onclick="addSymbol('ʝ')">ʝ</div>
+                <div class="key" onclick="addSymbol('x')">x</div>
+                <div class="key" onclick="addSymbol('ɣ')">ɣ</div>
+                <div class="key" onclick="addSymbol('χ')">χ</div>
+                <div class="key" onclick="addSymbol('ʁ')">ʁ</div>
+                <div class="key" onclick="addSymbol('ħ')">ħ</div>
+                <div class="key" onclick="addSymbol('ʕ')">ʕ</div>
+                <div class="key" onclick="addSymbol('h')">h</div>
+                <div class="key" onclick="addSymbol('ɦ')">ɦ</div>
+                
+                <!-- Lateral Fricatives -->
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɬ')">ɬ</div>
+                <div class="key" onclick="addSymbol('ɮ')">ɮ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Approximants -->
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʋ')">ʋ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɹ')">ɹ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɻ')">ɻ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('j')">j</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɰ')">ɰ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Lateral Approximants -->
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('l')">l</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɭ')">ɭ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʎ')">ʎ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʟ')">ʟ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+            </table>
+        </div>
+
+        <div class="category">
+            <h2>Non-Pulmonic Consonants</h2>
+            <div class="keyboard">
+                <div class="key" onclick="addSymbol('ʘ')">ʘ</div>
+                <div class="key" onclick="addSymbol('ǀ')">ǀ</div>
+                <div class="key" onclick="addSymbol('ǃ')">ǃ</div>
+                <div class="key" onclick="addSymbol('ǂ')">ǂ</div>
+                <div class="key" onclick="addSymbol('ǁ')">ǁ</div>
+                <div class="key" onclick="addSymbol('ɓ')">ɓ</div>
+                <div class="key" onclick="addSymbol('ɗ')">ɗ</div>
+                <div class="key" onclick="addSymbol('ʄ')">ʄ</div>
+                <div class="key" onclick="addSymbol('ɠ')">ɠ</div>
+                <div class="key" onclick="addSymbol('ʛ')">ʛ</div>
+                <div class="key" onclick="addSymbol('pʼ')">pʼ</div>
+                <div class="key" onclick="addSymbol('tʼ')">tʼ</div>
+                <div class="key" onclick="addSymbol('kʼ')">kʼ</div>
+                <div class="key" onclick="addSymbol('sʼ')">sʼ</div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Co-articulated Consonants</h2>
+            <div class="keyboard">
+                <div class="key" onclick="addSymbol('w')">w</div>
+                <div class="key" onclick="addSymbol('ʍ')">ʍ</div>
+                <div class="key" onclick="addSymbol('ɥ')">ɥ</div>
+                <div class="key" onclick="addSymbol('ɕ')">ɕ</div>
+                <div class="key" onclick="addSymbol('ʑ')">ʑ</div>
+                <div class="key" onclick="addSymbol('ɧ')">ɧ</div>
+                <div class="key" onclick="addSymbol('kp')">kp</div>
+                <div class="key" onclick="addSymbol('ɡb')">ɡb</div>
+                <div class="key" onclick="addSymbol('ŋm')">ŋm</div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Vowels</h2>
+            <div class="subcategory">Height × Backness</div>
+            <div class="chart-grid" style="grid-template-columns: repeat(9, 1fr);">
+                <!-- Headers -->
+                <div class="chart-header"></div>
+                <div class="chart-header">Front</div>
+                <div class="chart-header"></div>
+                <div class="chart-header">Central</div>
+                <div class="chart-header"></div>
+                <div class="chart-header">Back</div>
+                <div class="chart-header"></div>
+                <div class="chart-header"></div>
+                <div class="chart-header"></div>
+                
+                <!-- Close Vowels -->
+                <div class="chart-header">Close</div>
+                <div class="key" onclick="addSymbol('i')">i</div>
+                <div class="key" onclick="addSymbol('y')">y</div>
+                <div class="key" onclick="addSymbol('ɨ')">ɨ</div>
+                <div class="key" onclick="addSymbol('ʉ')">ʉ</div>
+                <div class="key" onclick="addSymbol('ɯ')">ɯ</div>
+                <div class="key" onclick="addSymbol('u')">u</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Near-close Vowels -->
+                <div class="chart-header">Near-close</div>
+                <div class="key" onclick="addSymbol('ɪ')">ɪ</div>
+                <div class="key" onclick="addSymbol('ʏ')">ʏ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ʊ')">ʊ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Close-mid Vowels -->
+                <div class="chart-header">Close-mid</div>
+                <div class="key" onclick="addSymbol('e')">e</div>
+                <div class="key" onclick="addSymbol('ø')">ø</div>
+                <div class="key" onclick="addSymbol('ɘ')">ɘ</div>
+                <div class="key" onclick="addSymbol('ɵ')">ɵ</div>
+                <div class="key" onclick="addSymbol('ɤ')">ɤ</div>
+                <div class="key" onclick="addSymbol('o')">o</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Mid Vowels -->
+                <div class="chart-header">Mid</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ə')">ə</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Open-mid Vowels -->
+                <div class="chart-header">Open-mid</div>
+                <div class="key" onclick="addSymbol('ɛ')">ɛ</div>
+                <div class="key" onclick="addSymbol('œ')">œ</div>
+                <div class="key" onclick="addSymbol('ɜ')">ɜ</div>
+                <div class="key" onclick="addSymbol('ɞ')">ɞ</div>
+                <div class="key" onclick="addSymbol('ʌ')">ʌ</div>
+                <div class="key" onclick="addSymbol('ɔ')">ɔ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Near-open Vowels -->
+                <div class="chart-header">Near-open</div>
+                <div class="key" onclick="addSymbol('æ')">æ</div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɐ')">ɐ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                
+                <!-- Open Vowels -->
+                <div class="chart-header">Open</div>
+                <div class="key" onclick="addSymbol('a')">a</div>
+                <div class="key" onclick="addSymbol('ɶ')">ɶ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+                <div class="key" onclick="addSymbol('ɑ')">ɑ</div>
+                <div class="key" onclick="addSymbol('ɒ')">ɒ</div>
+                <div class="key empty"></div>
+                <div class="key empty"></div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Suprasegmentals</h2>
+            <div class="keyboard">
+                <div class="key" onclick="addSymbol('ˈ')" title="Primary stress">ˈ</div>
+                <div class="key" onclick="addSymbol('ˌ')" title="Secondary stress">ˌ</div>
+                <div class="key" onclick="addSymbol('ː')" title="Long">ː</div>
+                <div class="key" onclick="addSymbol('ˑ')" title="Half-long">ˑ</div>
+                <div class="key" onclick="addSymbol('.')" title="Syllable break">.</div>
+                <div class="key" onclick="addSymbol('̆')" title="Extra-short">̆</div>
+                <div class="key" onclick="addSymbol('͡')" title="Tie bar (above)">͡</div>
+                <div class="key" onclick="addSymbol('͜')" title="Tie bar (below)">͜</div>
+                <div class="key" onclick="addSymbol('|')" title="Minor group">|</div>
+                <div class="key" onclick="addSymbol('‖')" title="Major group">‖</div>
+                <div class="key" onclick="addSymbol('↗')" title="Global rise">↗</div>
+                <div class="key" onclick="addSymbol('↘')" title="Global fall">↘</div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Tones and Word Accents</h2>
+            <div class="keyboard">
+                <div class="key" onclick="addSymbol('˥')" title="Extra high tone">˥</div>
+                <div class="key" onclick="addSymbol('˦')" title="High tone">˦</div>
+                <div class="key" onclick="addSymbol('˧')" title="Mid tone">˧</div>
+                <div class="key" onclick="addSymbol('˨')" title="Low tone">˨</div>
+                <div class="key" onclick="addSymbol('˩')" title="Extra low tone">˩</div>
+                <div class="key" onclick="addSymbol('̋')" title="Extra high">̋</div>
+                <div class="key" onclick="addSymbol('́')" title="High">́</div>
+                <div class="key" onclick="addSymbol('̄')" title="Mid">̄</div>
+                <div class="key" onclick="addSymbol('̀')" title="Low">̀</div>
+                <div class="key" onclick="addSymbol('̏')" title="Extra low">̏</div>
+                <div class="key" onclick="addSymbol('ˇ')" title="Rising">ˇ</div>
+                <div class="key" onclick="addSymbol('̂')" title="Falling">̂</div>
+                <div class="key" onclick="addSymbol('᷄')" title="High rising">᷄</div>
+                <div class="key" onclick="addSymbol('᷅')" title="Low rising">᷅</div>
+                <div class="key" onclick="addSymbol('᷈')" title="Rising-falling">᷈</div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Diacritics</h2>
+            <div class="keyboard">
+                <div class="key" onclick="addSymbol('̥')" title="Voiceless">̥</div>
+                <div class="key" onclick="addSymbol('̬')" title="Voiced">̬</div>
+                <div class="key" onclick="addSymbol('ʰ')" title="Aspirated">ʰ</div>
+                <div class="key" onclick="addSymbol('̹')" title="More rounded">̹</div>
+                <div class="key" onclick="addSymbol('̜')" title="Less rounded">̜</div>
+                <div class="key" onclick="addSymbol('̟')" title="Advanced">̟</div>
+                <div class="key" onclick="addSymbol('̠')" title="Retracted">̠</div>
+                <div class="key" onclick="addSymbol('̈')" title="Centralized">̈</div>
+                <div class="key" onclick="addSymbol('̽')" title="Mid-centralized">̽</div>
+                <div class="key" onclick="addSymbol('̩')" title="Syllabic">̩</div>
+                <div class="key" onclick="addSymbol('̯')" title="Non-syllabic">̯</div>
+                <div class="key" onclick="addSymbol('˞')" title="Rhoticity">˞</div>
+                <div class="key" onclick="addSymbol('̃')" title="Nasalized">̃</div>
+                <div class="key" onclick="addSymbol('̰')" title="Creaky voiced">̰</div>
+                <div class="key" onclick="addSymbol('̤')" title="Breathy voiced">̤</div>
+                <div class="key" onclick="addSymbol('̪')" title="Dental">̪</div>
+                <div class="key" onclick="addSymbol('̺')" title="Apical">̺</div>
+                <div class="key" onclick="addSymbol('̻')" title="Laminal">̻</div>
+                <div class="key" onclick="addSymbol('̚')" title="No audible release">̚</div>
+                <div class="key" onclick="addSymbol('ʷ')" title="Labialized">ʷ</div>
+                <div class="key" onclick="addSymbol('ʲ')" title="Palatalized">ʲ</div>
+                <div class="key" onclick="addSymbol('ˠ')" title="Velarized">ˠ</div>
+                <div class="key" onclick="addSymbol('ˤ')" title="Pharyngealized">ˤ</div>
+                <div class="key" onclick="addSymbol('̴')" title="Velarized/pharyngealized">̴</div>
+                <div class="key" onclick="addSymbol('̝')" title="Raised">̝</div>
+                <div class="key" onclick="addSymbol('̞')" title="Lowered">̞</div>
+                <div class="key" onclick="addSymbol('̘')" title="Advanced tongue root">̘</div>
+                <div class="key" onclick="addSymbol('̙')" title="Retracted tongue root">̙</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addSymbol(symbol) {
+            const output = document.getElementById('output');
+            const cursorPos = output.selectionStart;
+            const textBefore = output.value.substring(0, cursorPos);
+            const textAfter = output.value.substring(cursorPos, output.value.length);
+            
+            output.value = textBefore + symbol + textAfter;
+            
+            // Set cursor position after the inserted symbol
+            output.selectionStart = cursorPos + symbol.length;
+            output.selectionEnd = cursorPos + symbol.length;
+            output.focus();
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy to Clipboard';
+            }, 2000);
+        }
+        
+        function clearText() {
+            const output = document.getElementById('output');
+            output.value = '';
+            output.focus();
+        }
+        
+        // Add empty placeholders for grid alignment
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartGrids = document.querySelectorAll('.chart-grid');
+            chartGrids.forEach(grid => {
+                const emptyDivs = grid.querySelectorAll('.empty');
+                emptyDivs.forEach(div => {
+                    div.classList.add('key');
+                    div.style.visibility = 'hidden';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

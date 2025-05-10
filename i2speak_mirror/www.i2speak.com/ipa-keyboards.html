@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>i2Speak - Free Online Smart IPA Keyboard</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+<meta content="i2Speak is a free online Smart IPA Keyboard (International Phonetic Alphabet) to quickly type phonetic symbols using Roman letters without the need to memorize any symbol code." name="description"/>
+<meta content="IPA, IPA keyboard, smart IPA keyboard, phonics, phonetics, phonetic alphabet, phonetics keyboard, SAMPA keyboard, international phonetic alphabet" name="keywords"/>
+<meta content="https://www.i2speak.com/i2Speak.png" property="og:image"/>
+<link href="css/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+<link href="DevSDK/css/i2template.css?42" rel="stylesheet" type="text/css"/>
+<link href="css/i2speak.css?70" rel="stylesheet" type="text/css"/><link href="css/tTip.css?70" rel="stylesheet" type="text/css"/>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+						   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+						   m[i].l=1*new Date();
+						   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+						   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+						   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+						   ym(95456225, "init", {
+						        clickmap:true,
+						        trackLinks:true,
+						        accurateTrackBounce:true
+						   });
+						</script>
+<noscript><div><img alt="" src="https://mc.yandex.ru/watch/95456225" style="position:absolute; left:-9999px;"/></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script src="js/min/jquery.form.min.js"></script>
+<script>								
+				//<![CDATA[
+				$(document).ready(function(){
+									
+						
+				_active_language =  "smart ipa"
+
+
+				init("");					
+
+
+				$(".tTip").betterTooltip({speed: 150, delay: 300});
+
+				
+				/*-- start popup --*/
+				$("a.poplight[href^=#]").click(function() {
+					var popID = $(this).attr("rel"); //Get Popup Name
+					var popURL = $(this).attr("href"); //Get Popup href to define size
+
+					//Pull Query & Variables from href URL
+					var query= popURL.split("?");
+					var dim= query[1].split("&");
+					var popWidth = dim[0].split("=")[1]; //Gets the first query string value
+
+					//Fade in the Popup and add close button
+					$("#" + popID).fadeIn().css({ "width": Number( popWidth ) }).prepend('<a href="#" class="close"><img src="/css/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>');
+					
+					//Define margin for center alignment (vertical   horizontal) - we add 80px to the height/width to accomodate for the padding  and border width defined in the css
+					var popMargTop = ($("#" + popID).height() + 80) / 2;
+					var popMargLeft = ($("#" + popID).width() + 80) / 2;
+
+					//Apply Margin to Popup
+					$("#" + popID).css({
+						"margin-top" : -popMargTop,
+						"margin-left" : -popMargLeft
+					});
+
+					//Fade in Background
+					$("body").append('<div id="fade"></div>'); //Add the fade layer to bottom of the body tag.
+					$("#fade").css({"filter" : "alpha(opacity=80)"}).fadeIn(); //Fade in the fade layer - .css({"filter" : "alpha(opacity=80)"}) is used to fix the IE Bug on fading transparencies 
+
+
+					return false;
+				});
+
+				//Close Popups and Fade Layer
+				$("a.close, #fade").live("click", function() { //When clicking on the close or fade layer...
+					$("#fade , .popup_block").fadeOut(function() {
+						$("#fade, a.close").remove();  //fade them both out
+					});
+					return false;
+				});
+				/*-- end popup --*/
+				
+				jQuery.fn.extend({
+					insertAtCaret: function(myValue){
+					  return this.each(function(i) {
+						if (document.selection) {
+						  this.focus();
+						  sel = document.selection.createRange();
+						  sel.text = myValue;
+						  this.focus();
+						}
+						else if (this.selectionStart || this.selectionStart == "0") {
+						  var startPos = this.selectionStart;
+						  var endPos = this.selectionEnd;
+						  var scrollTop = this.scrollTop;
+						  this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+						  this.focus();
+						  this.selectionStart = startPos + myValue.length;
+						  this.selectionEnd = startPos + myValue.length;
+						  this.scrollTop = scrollTop;
+						} else {
+						  this.value += myValue;
+						  this.focus();
+						}
+					  })
+					}
+				});							
+											
+				$("#as_text").hide();
+				$("#as_unicode").show();
+									
+				$("#as_unicode").live("click" , function() {
+					$("#preview").css({"font-size":"21px", "color":"#000"});
+					$("#preview").attr("disabled", true);
+					var hex = "";
+					var hexCode = "";
+					var input = $("#preview").val();
+					for(var i = 0; i < input.length; ++i)
+					{
+						// when read a unicode from textarea, it returns it as %uxxxx
+						var unicode = escape(input[i]);
+						if((unicode[0] == "%") && (unicode[1] == "u"))
+						{
+							hexCode = unicode.replace("%u", "&#x") + ";";
+						}
+						else
+						{
+							hexCode = input[i];
+						}
+						
+						// unicode to dec
+						//hexCode = unicode2dec(unicode);
+						
+						hex += hexCode;
+					}		
+					$("#preview").val(hex);
+					$("#as_unicode").hide();
+					$("#as_text").show();
+				
+				});
+				
+				$("#as_text").live("click" , function() {					
+					$("#preview").css({"font-size":_font_size, "color":"#FF0054"});
+					$("#preview").removeAttr("disabled");
+					var hex = "";					
+					var input = $("#preview").val();	
+					input = input.replace(new RegExp("&#x", "g"),"%u");
+					input = input.replace(new RegExp(";", "g"),"");						
+					input = unescape(input);
+					$("#preview").val(input);
+					$("#as_text").hide();
+					$("#as_unicode").show();
+				});									
+
+				$("#download").live("click" , function() {
+					$("#server_job").val("0");
+					$("#font_size").val(_font_size);
+					$(this).css({"opacity":"0.2"});
+				});
+
+				$("#snapshot").live("click" , function() {
+					$("#server_job").val("1");
+					$("#font_size").val(_font_size);
+					$("#i2speak_form").submit();
+				});										
+
+				
+				$("#preview").keypress(function () {
+					$(this).change();
+				});							
+				
+				$("#preview").keyup(function () {
+					updateCharCount();
+				});	
+				
+				$("#preview").keydown(function () {
+					updateCharCount();
+				});	
+
+				// backlog
+				$("#preview").change(function () {
+					updateCharCount();
+					//$("#i2speak_form").submit();
+				});																
+
+				var options_i2speak_upload_form = { 
+					target:    "#downloadDiv",
+					url:       "/process_form_i2speak",
+					type:      "post",
+				}; 
+				
+				$("#i2speak_form").submit(function() {
+					
+					$(this).ajaxSubmit(options_i2speak_upload_form);
+					return false;
+				});			
+																			
+
+				//
+				// Load to Clipboard
+				//
+			    var clipboard = new Clipboard(".copy_btn");
+			    clipboard.on("success", function(e) {
+			      $("#preview").fadeOut(250);            
+			      $("#preview").fadeIn(250);
+				  $("#downloadFile").val("0");
+				  $("#i2speak_form").submit();
+				  $("#copy_status").fadeOut(250);		      
+			      setTimeout(function(){}, 1000);
+			      window.getSelection().removeAllRanges();
+			    });
+
+		        
+		        $("a#Google").live("click" , function() {
+		            var query = $("#preview").val().replace(/\s+/g,"+");
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }
+		            var url = "https://www.google.com/search?hl=en&q=" + query;
+		            $(this).attr("href", url);
+		        });                         
+
+		        $("a#YouTube").live("click" , function() {
+		            var query = $("#preview").val().replace(/\s+/g,"+");
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }                    
+		            var url = "https://www.YouTube.com/results?search_query=" + query;
+		            $(this).attr("href", url);
+		        });                         		                                           
+
+
+		        $("a#Twitter").live("click" , function() {
+		            //var query = $("#preview").val().replace(/\s+/g,"+");
+		            var query = encodeURIComponent($("#preview").val());
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }                    
+		            //var url = "https://www.Twitter.com/#!/search/" + query;
+		            var url = "https://twitter.com/intent/tweet?text=" + query + "&via=i2speak";
+		            $(this).attr("href", url);
+		        });                         
+
+		        $("a#Facebook").live("click" , function() {
+		            var query = $("#preview").val().replace(/\s+/g,"+");
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }                    
+		            //var url = "https://www.Facebook.com/search?hl=en&q=" + query;
+		            var url = "https://www.facebook.com/dialog/feed?app_id=199741253396111&message=" + query + "&redirect_uri=https://www.sciweavers.org/i2type";
+		            alert("This button will ONLY launches Facebook post dialog. You have to Copy & Paste your typed message manually. This is a Facebook new security restriction :(");
+		            $(this).attr("href", url);
+		        });			                         
+
+		        
+		        $("a#Wikipedia").live("click" , function() {
+		            var query = $("#preview").val().replace(/\s+/g,"+");
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }                    
+		            var url = "https://ar.wikipedia.org/w/index.php?search=" + query;
+		            $(this).attr("href", url);
+		        });   		    
+
+
+		        $("a#Bing").live("click" , function() {
+		            var query = $("#preview").val().replace(/\s+/g,"+");
+		            if(query == "")
+		            {
+		                answer = confirm (warning);
+		                if(!answer)
+		                    return false;
+		            }                    
+		            var url = "https://www.bing.com/search?q=" + query;                          
+		            $(this).attr("href", url);
+		        });  		            
+		
+
+					$("#hide_banner").click(function() {
+						$("#iBanner").slideUp(700);
+					});
+				//]]>
+				});
+			</script>
+<!--[if lt IE 7]>
+				<style media="screen" type="text/css">
+				#iPage {
+					height:100%;
+				}
+				</style>
+				<![endif]-->
+<link href="css/cookie.min.css?1" rel="stylesheet" type="text/css"/>
+<script src="js/cookie.min.js?1"></script>
+<script>
+        window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#24151B",
+              "text": "#eeeeee"
+            },
+            "button": {
+              "background": "#FF94BF"
+            }
+          },
+          "showLink": true,
+          "position": "bottom-right",
+          "content": {
+            "message": "This site uses cookies to ensure you get the best experience. By continuing to use this site, you consent to our use of cookies and acknowledge that you have read and understand our ",
+            "dismiss": "Accept",
+            "link": "Privacy Policy, Cookie Policy, and Terms",
+            "href": "/privacy"
+          }
+        })});
+        </script>
+</head>
+<body>
+<div class="footer_height" id="iPage"><h1>i2Speak - Free Online Smart IPA Keyboard</h1><div id="iHeader">
+<a href=".html"><img alt="i2Speak" height="63" src="css/logo.png" style="margin-top:10px;" width="240"/></a>
+</div><div class="iContent">
+<div id="IE_Msg"></div>
+<div class="clearBoth"></div><div class="row">
+<div class="headline" style="text-align:left; padding-left:30px;">Type a roman letter (ex: u) that has the same phonetic sound or shape to an IPA letter (ex: ʊ). Add diacritics or tones fast by typing "u\", "u/", "u_", or "u^"</div>
+<div style="float: left;width: 800px;">
+<div style="text-align:center;">
+<div style="text-align:center; margin-top:4px; margin-bottom:8px;"><script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 Top -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-slot="9353277407" style="display:inline-block;width:728px;height:90px"></ins>
+<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+				</script></div>
+<form action="process_form_i2speak/99804666.html" enctype="multipart/form-data" id="i2speak_form" method="post">
+<div class="iContentTypes" id="service_options">
+<div id="ikeybrd2"><div class="popup_block" id="popup_help"><div class="styleBtn helpBtn" style="background:#222;"><div class="english">a</div> <div class="unicode">ɑ/ɒ/ɐ/æ/α</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">b</div> <div class="unicode">ʙ/β/ɓ/ɞ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">c</div> <div class="unicode">ɔ/ç/ɶ/ɕ/č</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">d</div> <div class="unicode">ɖ/ɗ/ḍ/ð/d̪/ʤ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e</div> <div class="unicode">ə/ɚ/ɘ/ẹ/ɛ/ɜ/ε/ɝ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">f</div> <div class="unicode">ɸ/ʄ/ɟ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">g</div> <div class="unicode">ɠ/ɡ/ɢ/ʛ/ɣ/ˠ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">h</div> <div class="unicode">ħ/ɦ/ɥ/ʜ/ɧ/ʰ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">i</div> <div class="unicode">ɪ/ɨ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">j</div> <div class="unicode">ɟ/ʝ/ǰ/ʲ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">l</div> <div class="unicode">ʟ/ɭ/ɮ/ɫ/ɬ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">m</div> <div class="unicode">ɱ/ɯ/ɰ/ʍ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">n</div> <div class="unicode">ɴ/ŋ/ɲ/ɳ/ⁿ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">o</div> <div class="unicode">ʘ/ø/ɵ/ɸ/θ/œ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">p</div> <div class="unicode">ɸ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">r</div> <div class="unicode">ʀ/ʁ/ɾ/ɹ/ɺ/ɻ/ɽ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">s</div> <div class="unicode">ʂ/ʃ/ʄ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">t</div> <div class="unicode">ʈ/ʧ/θ/ð</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">u</div> <div class="unicode">ʊ/ʉ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">v</div> <div class="unicode">ʋ/ⱱ/ʌ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">w</div> <div class="unicode"><sup>w</sup>/ɯ/ɰ/ʷ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">x</div> <div class="unicode">χ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">y</div> <div class="unicode">ʏ/ʎ/ŷ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">z</div> <div class="unicode">ʒ/ʐ/ʑ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">0</div> <div class="unicode">ø/ʘ/ɵ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">1</div> <div class="unicode">|/ǀ/‖/ǁ/ǂ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">2/?</div> <div class="unicode">ʔ/ʕ/ʡ/ʢ/ˤ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">3</div> <div class="unicode">ɛ/ɜ/ʒ/ɝ/ɞ</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e:</div> <div class="unicode">eː</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e/</div> <div class="unicode">e̋/é</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e\</div> <div class="unicode">ȅ/è</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e_</div> <div class="unicode">e̥/e̯/e̬/e̹/e̜/e̟</div></div><div class="styleBtn helpBtn" style="background:#222;"><div class="english">e^</div> <div class="unicode">e̊/e˞/ẽ/ë/e̽</div></div></div><div style="float:left;"><select class="iListBox iListBoxFont" id="ListBox_Types_fonts" name="ListBox_Types_fonts" onchange="update_fonts(this.value)(this.value);"><option value="Verdana, Geneva, sans-serif"> Verdana </option><option value="'Courier New', Courier, monospace"> Courier New </option><option value="Tahoma, Geneva, sans-serif"> Tahoma </option><option value="Arial, Helvetica, sans-serif"> Arial </option><option value="'Comic Sans MS', cursive, sans-serif"> Comic Sans MS </option><option value="Helvetica"> Helvetica </option><option value="'Lucida Console', Monaco, monospace"> Lucida Console </option><option value="'Times New Roman', Times, serif"> Times New Roman </option><option value="'Trebuchet MS', Helvetica, sans-serif"> Trebuchet MS </option><option value="Century Gothic, sans-serif"> Century Gothic </option><option value="Georgia, serif"> Georgia </option><option selected="selected" value="'Lucida Sans Unicode', 'Lucida Grande', sans-serif"> Lucida Sans Unicode </option><option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif"> Palatino Linotype </option></select></div><input class="button silver" id="font_minus" style="width:40px; padding:7px 0; height:auto; width:32px; height:32px; margin-left:10px;" type="button" value="A⁻"/><input class="button silver" id="font_plus" style="width:40px; padding:7px 0; height:auto; width:32px;height:32px;" type="button" value="A⁺"/><a class="button silver poplight" href="#?w=740" id="help" rel="popup_help" style="width:110px; background:#FCBFD7; color:#000; font-weight:bold;padding-top:8px; height:24px;text-decoration:none;;text-decoration:none;">
+				IPA Rules
+			</a><div class="button silver" id="as_text" style="display:none; width:32px;height:32px;"><img alt="Switch to Editor Mode" height="32" src="css/text.png" title="Switch to Editor Mode" width="32"/></div><div class="button silver" id="as_unicode" style="width:32px; height:32px;"><img alt="Convert to unicode" height="32" src="css/unicode.png" title="Convert to unicode" width="32"/></div><div class="button silver" id="snapshot" style="width:32px; height:32px;"><img alt="Save as Image" height="32" src="css/snapshot.png" title="Save as Image" width="32"/></div><button class="button silver" id="download" style="height:34px;"><img alt="Save as Word" height="24" src="css/word.png" title="Save as Word" width="24"/></button><div class="button silver copy_btn" data-clipboard-action="copy" data-clipboard-target="#preview" style="width:32px; height:32px;">
+<img alt="Copy to Clipboard" height="26" src="css/copy.png" title="Copy to Clipboard" width="26"/>
+</div><input class="button silver" id="iChar" style="width:40px; padding:7px 0; height:auto; width:40px;height:34px;font-weight:bold;" type="button" value="140"/><div style="float:right;"><a class="button silver" href="https://www.i2ocr.com" style="width:60px; background:#F9FCD7; color:#000; font-weight:bold;padding-top:8px; height:24px;text-decoration:none;" target="_blank">OCR</a><a class="button silver" href="https://www.i2pdf.com" style="width:60px; background:#B8D9FF; color:#000; font-weight:bold;padding-top:8px; height:24px;text-decoration:none;" target="_blank">PDF</a><a class="button silver" href="https://www.i2symbol.com/symbols" style="width:60px; background:#D7FCF6; color:#000; font-weight:bold;padding-top:8px; height:24px;text-decoration:none;" target="_blank">SYM</a></div></div><div style="clear:both;"></div><div style="margin-top:5px;"><textarea class="iTextArea" cols="20" id="preview" inputmode="none" name="preview" onkeydown="IE_keydown(event);" onkeyup="IE_keyup(event);" rows="1"></textarea><div id="autoComplete"></div></div><div id="ikeybrd"><div style="clear:both;"></div><div class="container">
+<div>
+<a class="myTab activeTab" href="ipa-keyboards.html">IPA Keyboards</a><a class="myTab" href="pulmonic-consonants-phonetic-ipa-keyboard.html">Pulmonic Consonants</a><a class="myTab" href="non-pulmonic-consonants-phonetic-ipa-keyboard.html">Non Pulmonic Consonants</a><a class="myTab" href="vowels-phonetic-ipa-keyboard.html">Vowels</a><a class="myTab" href="diphthongs-phonetic-ipa-keyboard.html">Diphthongs</a><a class="myTab" href="diacritics-phonetic-ipa-keyboard.html">Diacritics</a><a class="myTab" href="tones-phonetic-ipa-keyboard.html">Tones</a><a class="myTab" href="suprasegmental-phonetic-ipa-keyboard.html">Suprasegmental</a><a class="myTab" href="affricates-phonetic-ipa-keyboard.html">Affricates</a><a class="myTab" href="others-phonetic-ipa-keyboard.html">Others</a>
+</div>
+<div class="tab_container">
+<div class="tab_content" id="ipa-keyboards">
+<div>
+<div><div style="margin-left:250px;"><select class="iListBox iListBoxLanguage" id="ListBox_Languages" name="ListBox_Languages" onchange="changeKeyboardLayout(this.options[this.options.selectedIndex].value);" style="font-size:14px;"><option selected="selected" style="font:normal 12px verdana;" value="smart ipa"> Smart IPA Keyboard </option><option style="font:normal 12px verdana;" value="ipa english"> IPA English Keyboard </option><option style="font:normal 12px verdana;" value="unicode"> Unicode Keyboard </option><option style="font:normal 12px verdana;" value="sampa english"> Sampa English Keyboard </option><option style="font:normal 12px verdana;" value="superscript symbols"> Superscript Symbols </option><option style="font:normal 12px verdana;" value="subscript symbols"> Subscript Symbols </option><option style="font:normal 12px verdana;" value="flipped symbols"> Flipped Symbols </option><option style="font:normal 12px verdana;" value="retroflex symbols"> Retroflex Symbols </option><option style="font:normal 12px verdana;" value="extended symbols"> Extended Symbols </option><option style="font:normal 12px verdana;" value="barred symbols"> Barred Symbols </option></select></div></div>
+<div class="clear"></div>
+<div id="keyboard"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div class="options"><a id="clear_btn"></a></div><div id="SmartMode"><input checked="checked" id="smart_check" type="checkbox"/> Smart Mode</div></div><div><input id="downloadFile" name="downloadFile" type="hidden" value="1"/></div>
+</div>
+<div id="downloadDiv"></div>
+<div><input id="extName" name="extName" type="hidden"/></div>
+<div><input id="server_job" name="server_job" type="hidden"/></div>
+<div><input id="font_size" name="font_size" type="hidden"/></div>
+</form>
+<div class="headline" style="text-align:left;line-height:1.6;padding:20px;">i2Speak is a smart online international phonetic alphabet (IPA) keyboard which let you quickly type IPA phonetics without the need to memorize any symbol code. For every Roman character you type, a popup menu displays a group of phonetic symbols that share the same sound or shape beneath typed character. Use arrow keys to select the proper symbol then hit the Enter button to type it. You can copy and paste typed IPA phonetics, save to a word file, or search the internet.
+	</div>
+</div>
+<div style="text-align:center; margin-top:4px; margin-bottom:28px;"><script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 Middle -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-slot="1830010609" style="display:inline-block;width:728px;height:90px"></ins>
+<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+				</script></div>
+</div>
+<div style="margin:20px 0;">
+<div style="margin:0 0 10px 20px;font:bold 21px verdana">More Free Tools !</div>
+<div style="text-align:center;"><a class="button silver" href="https://www.i2text.com" style="background:#00c9a7;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2text.com</a><a class="button silver" href="https://www.i2pdf.com" style="background:#377DFF;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2pdf.com</a><a class="button silver" href="https://www.i2img.com" style="background:#7961F2;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2img.com</a><a class="button silver" href="https://www.i2ocr.com" style="background:#F18136;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2ocr.com</a><a class="button silver" href="https://www.i2symbol.com/symbols" style="background:#EA326F;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2symbol.com</a><a class="button silver" href="https://www.i2clipart.com" style="background:#46C6E2;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2clipart.com</a><a class="button silver" href="https://www.i2type.com" style="background:#96643B;width:300px;height:20px;padding:15px 0;text-decoration:none;color:#ffffff; font:bold 17px verdana; text-shadow:none;" target="_blank">i2type.com</a></div>
+<div style="margin-bottom:20px;"></div>
+</div>
+<div style="float: left;width: 320px;">
+<div style="text-align:center; margin-top:6px;"><script async="" src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"'></script>
+<!-- Responsive -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-format="auto" data-ad-slot="3056176606" style="display:block"></ins>
+<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script></div>
+<div style="text-align:center; margin-top:6px;"><script async="" src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"'></script>
+<!-- Responsive -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-format="auto" data-ad-slot="3056176606" style="display:block"></ins>
+<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script></div>
+<div style="text-align:center; margin-top:6px;"><script async="" src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"'></script>
+<!-- Responsive -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-format="auto" data-ad-slot="3056176606" style="display:block"></ins>
+<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script></div>
+<div style="text-align:center; margin-top:6px;"><script async="" src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"'></script>
+<!-- Responsive -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-format="auto" data-ad-slot="3056176606" style="display:block"></ins>
+<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div><div class="contentTitle">Features</div><div class="iContent"><div style="padding:20px;">
+<div class="use">
+	The <span class="bold">Smart IPA</span> Keyboard lets you quickly type IPA phonetics without the need to memorize any symbol code. For every Roman character you type, 
+	a popup menu displays a group of phonetic symbols that share the same sound or shape beneath typed character. Use arrow keys to select the proper symbol then hit the Enter button.
+	</div>
+<div class="use">
+	The <span class="bold">Sampa English</span> Keyboard lets you type English phonetics using Roman characters according to SAMPA (Speech Assessment Methods Phonetic Alphabet) rules.
+	</div>
+<div class="use">
+	The <span class="bold">IPA English</span> Keyboard provides you with a full English phonetics keyboard. Press the symbol of interest using a suitable input device.
+	</div>
+<div class="use">
+	You can type directly on your physical keyboard or on the virtual on-screen keyboard using a suitable input device such as mouse or touch screen device.
+	</div>
+<div class="use">
+	You can change the keyboard symbols by selecting another layout from the listbox located above the virtual keyboard.
+	</div>
+<div class="use">
+	For every keyboard layout, more symbols can be displayed by pressing the CAPS Lock.
+	</div>
+<div class="use">
+	You can convert typed phonetics to the equivalent HTML code (unicode) to insert into your web page by clicking the HTML button. After copying the code using the Copy button, click the Editor button to continue typing.
+	</div>
+<div class="use">
+	When you hover the mouse over an English phonetic button, a slick tooltip will show some example English words.
+	</div>
+<div class="use">
+	You can save typed phonetics as an MS-Word file by clicking the Save button, copy them to clipboard using the Copy button, or post them to Twitter, Facebook, etc by clicking the desired button.
+	</div>
+<div class="use">
+	You can save typed phonetics as a PNG image to insert in a presentation or share on a medium that does not support a proper phonetic font.
+	</div>
+</div>
+</div><div style="text-align:center; margin-top:4px; margin-bottom:20px;"><script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 Status -->
+<ins class="adsbygoogle" data-ad-client="ca-pub-5930435762906662" data-ad-slot="3511893403" style="display:inline-block;width:728px;height:90px"></ins>
+<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+				</script></div><span class="iTextArea" id="spanClonePreview" style="height:auto; width:auto; display:none;"></span><div class="iTextArea" contenteditable="true" id="divClonePreview" style="height:auto; position:relative;visibility:hidden;"></div></div>
+<div class="clearBoth"></div>
+<div class="footer">
+<div class="entry">
+<div style="color:#666;font-size:11px; margin:0 auto; text-align:center;">
+<span>Copyright © i2Speak 2011-2025, <a href="https://sciweavers.org" target="_blank">Sciweavers LLC</a>, USA.</span>
+</div>
+<div class="rounded join">
+<div class="company">
+<div class="ft_link"><a href="about.html">About</a></div>
+<div class="ft_link"><a href="contact.html">Contact</a></div>
+<div class="ft_link"><a href="privacy.html">Privacy Policy</a></div>
+<div class="ft_link"><a href="cookies.html">Cookies</a></div>
+<div class="ft_link"><a href="terms.html">Terms of Use</a></div>
+</div>
+</div>
+</div>
+</div><script src="js/i2type_v6.js?v=70"></script>
+<script src="js/keyboard_v6.js?v=70"></script>
+<script src="js/caretpos.js?v=70"></script>
+<script src="js/clipboard.min.js"></script>
+<script src="js/tTip.js"></script>
+<script>var sc_project=7396595;var sc_invisible=1;var sc_security="0ca10704";</script><script src="https://www.statcounter.com/counter/counter.js"></script></body></html>

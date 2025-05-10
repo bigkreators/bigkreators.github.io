@@ -1,0 +1,31 @@
+<html>
+<style>
+.success {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+</style>
+<button class="success" data-id="${index}">Erase data</button>
+
+<script>
+document.querySelectorAll('..success').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    if (confirm('<head></head><body><div class="notice" style="background:var(--background-color-destructive-subtle, #fee7e6); border:1px solid var(--border-color-warning, #a66200); color:inherit; padding:0.5em; margin:0.5em auto; min-height: 40px"><span data-mw-comment-start="" id="c-Voorts-20250118221600-Blocked_as_a_sockpuppet"></span><figure class="mw-halign-left" typeof="mw:File"><a href="/wiki/File:Stop_x_nuvola.svg" class="mw-file-description"><img alt="Stop icon" src="//upload.wikimedia.org/wikipedia/en/thumb/4/42/Stop_x_nuvola.svg/40px-Stop_x_nuvola.svg.png" decoding="async" width="40" height="40" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/en/thumb/4/42/Stop_x_nuvola.svg/60px-Stop_x_nuvola.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/4/42/Stop_x_nuvola.svg/120px-Stop_x_nuvola.svg.png 2x" data-file-width="240" data-file-height="240"></a><figcaption></figcaption></figure><div style="margin-left:45px">Your data has been erased succesfully!</div></div></body>')) {
+                    }
+                });
+            });
+        }
+</script>
+</html>
