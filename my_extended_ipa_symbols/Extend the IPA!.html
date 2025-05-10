@@ -11,7 +11,7 @@
     padding: 20px;
     }
     .container {
-    max-width: 1115px;
+    max-width: 1220px;
     margin: 0 auto;
     background-color: white;
     border-radius: 8px;
@@ -264,9 +264,8 @@
     border-radius: 4px;
     cursor: pointer;
     }
-            }
         .open {
-            border-right: none; !important
+            border-right: none !important;
         }
         .search-container {
                     display: flex;
@@ -290,7 +289,7 @@
         
         
         
-        feedback-header {
+        .feedback-header {
                     border-bottom: 1px solid #ddd;
                     padding-bottom: 15px;
                     margin-bottom: 20px;
@@ -401,13 +400,256 @@
                     border-radius: 5px;
                     margin-top: 20px;
                 }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+           /* Header styles */
+           .header {
+               background-color: #2563eb;
+               color: white;
+               padding: 16px 20px;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+           }
+           .header h1 {
+               margin: 0;
+               font-size: 24px;
+           }
+
+           /* Notification bell styles */
+           .notification-container {
+               position: relative;
+           }
+           .bell-button {
+               background: none;
+               border: none;
+               color: white;
+               cursor: pointer;
+               width: 40px;
+               height: 40px;
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               position: relative;
+           }
+           .bell-button:hover {
+               background-color: rgba(255,255,255,0.1);
+           }
+           .notification-badge {
+               position: absolute;
+               top: 0;
+               right: 0;
+               background-color: #ef4444;
+               color: white;
+               border-radius: 50%;
+               width: 20px;
+               height: 20px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 12px;
+               font-weight: bold;
+           }
+           .notifications-dropdown {
+               position: absolute;
+               right: 0;
+               top: 45px;
+               width: 320px;
+               background-color: white;
+               border-radius: 8px;
+               box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+               z-index: 1000;
+               color: #333;
+               display: none;
+           }
+           .notifications-dropdown.show {
+               display: block;
+           }
+           .notifications-header {
+               padding: 8px 12px;
+               border-bottom: 1px solid #e5e7eb;
+               font-weight: bold;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+           }
+           .notifications-list {
+               max-height: 256px;
+               overflow-y: auto;
+           }
+           .notification-item {
+               padding: 12px;
+               border-bottom: 1px solid #f3f4f6;
+               display: flex;
+               justify-content: space-between;
+           }
+           .notification-item.unread {
+               background-color: #eff6ff;
+           }
+           .notification-text {
+               font-size: 14px;
+               flex: 1;
+           }
+           .dismiss-button {
+               background: none;
+               border: none;
+               color: #9ca3af;
+               cursor: pointer;
+               margin-left: 8px;
+           }
+           .dismiss-button:hover {
+               color: #4b5563;
+           }
+           .no-notifications {
+               padding: 16px;
+               text-align: center;
+               color: #6b7280;
+           }
+           .loading-spinner::after {
+               content: "";
+               width: 20px;
+               height: 20px;
+               border: 2px solid #f3f4f6;
+               border-top: 2px solid #2563eb;
+               border-radius: 50%;
+               animation: spin 1s linear infinite;
+           }
+           @keyframes spin {
+               0% { transform: rotate(0deg); }
+               100% { transform: rotate(360deg); }
+           }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /* Add these CSS styles to your stylesheet */
+
+        .notification-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f1f1f1;
+            display: flex;
+            align-items: flex-start;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #333;
+        }
+
+        .notification-message {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .notification-time {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-notifications {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        /* Make sure dropdown is styled properly */
+        .notifications-dropdown {
+            position: absolute;
+            right: 0;
+            top: 40px;
+            width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
     </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <h1>My Additional IPA Symbols</h1>
-            </div>
+                            <h1>My Additional IPA Symbols</h1>
+                            <div class="notification-container">
+                                <button class="bell-button" id="notificationBell">
+                                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                    </svg>
+                                    <span class="notification-badge" id="notificationBadge">0</span>
+                                </button>
+                                
+                                <div class="notifications-dropdown" id="notificationsDropdown">
+                                    <div class="notifications-header">
+                                        <span>Notifications</span>
+                                        <button id="refreshNotifications" class="dismiss-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M23 4v6h-6"></path>
+                                                <path d="M1 20v-6h6"></path>
+                                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                                                <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="notifications-list" id="notificationsList">
+                                        <!-- Notifications will be populated here -->
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
             <div class="search-container">
                     <input type="text" id="searchInput" placeholder="Search symbols...">
                     <button id="searchButton"><span style="position: relative; width: 100px; height: 20px; background-color: #ccc;">
@@ -445,6 +687,7 @@
                         <tr>
                             <th></th>
                             <th colspan="2" scope="col">Bilabial</th>
+                            <th colspan="2" scope="col">Labiodental</th>
                             <th colspan="2" scope="col">Dental</th>
                             <th colspan="2" scope="col">Alveolar</th>
                             <th colspan="2" scope="col">Retroflex</th>
@@ -461,6 +704,8 @@
                         <tr>
                             <td class="label-cell">Nasal</td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiceless_Bilabial_Nasal.ogg.mp3">ᴍ</span></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -489,6 +734,8 @@
                         </tr>
                         <tr>
                             <td class="label-cell">Plosive</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td> <span class="clickable-text" data-audio-url="audio/Voiceless_dental_stop.ogg.mp3">𝼪</span></td>
@@ -540,6 +787,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiceless-uvular-implosive.ogg.mp3">ʠ</span></td>
                             <td></td>
                             <td></td>
@@ -549,6 +798,8 @@
                             <td class="label-cell">Sibilant fricative</td>
                             <td style="background-color: #d1d4da;"></td>
                             <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td></td>
                             <td>𝼩</td>
                             <td>𝼩̬</td>
                             <td></td>
@@ -565,9 +816,19 @@
                             <td style="background-color: #d1d4da;"></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             </tr>
                         <tr>
                             <td class="label-cell">Non-sibilant fricative</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -592,11 +853,15 @@
                             <td><img src="images/W_with_left_hook.svg.png"></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="label-cell">Approximant</td>
                             <td>ⱷ</td>
                             <td><span class="clickable-text" data-audio-url="audio/Bilabial_approximant.ogg.mp3"><p class="mirrored">β</p></span></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td> <span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3"><img src="images/Voiced dental approximant.png"
                                 width="20"
@@ -611,7 +876,7 @@
                             <td></td>
                             <td>ᴊʷ</td>
                             <td></td>
-                            <td> ɉ̊</td>
+                            <td>ɉ̊</td>
                             <td> <span class="clickable-text" data-audio-url="audio/Post-palatal_approximant.ogg.mp3">ɉ</span></td>
                             <td></td>
                             <td></td>
@@ -628,9 +893,11 @@
                             <td class="label-cell">Flap</td>
                             <td></td>
                             <td> <span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
+                            <td></td>
+                            <td></td>
                             <td>ᴆ̪</td>
                             <td></td>
-                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_tap.wav.mp3">ᴆ</span><br></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_tap.wav.mp3">ᴆ</span></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -674,16 +941,22 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                             <td style="background-color: #d1d4da;"></td>
                             <td style="background-color: #d1d4da;"></td>
                             <td style="background-color: #d1d4da;"></td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_trill.ogg.mp3">ᴙ</span></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td class="label-cell">Fricative trill</td>
                             <td>ψ̊</td>
                             <td>ψ</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -708,9 +981,13 @@
                             <td style="background-color: #d1d4da;"></td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_fricative_trill.ogg.mp3">ꭆ̊</span></td>
                             <td>ꭆ</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="label-cell">Lateral approximant</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -733,7 +1010,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -745,7 +1022,13 @@
         Voiced labialized postpalatal approximant 𝼿 (w̶) <br>
         Voiceless Alveolar Lateral Approximant ꝲ <br>
         voiceless palatal implosive ƈ <br>
-        voiced alveolo-palatal lateral approximant ȴ
+        voiced alveolo-palatal lateral approximant ȴ <br>
+        ⱹ voiced dental lateral flap <br>
+        ƀ Voiced Labiodental Plosive <br>
+        ƭ voiceless alveolar implosive <br>
+        voiceless velar implosive ƙ <br>
+        voiceless retroflex implosive 𝼉 <br>
+        Alveolo-palatal Plosive ȶ ȡ
             <h2 style="text-align: center">Other ones</h2>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
                     <!-- Row 1 -->
@@ -758,10 +1041,8 @@
                             </tr>
                             <tr>
                                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
-                                    <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                        <span class="IPA nowrap">
-                                            ᴪ
-                                        </span>
+                                    <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;" class="IPA nowrap">
+                                        ᴪ
                                     </span>
                                 </th>
                             </tr>
@@ -807,7 +1088,7 @@
                     </table>
 
                     <!-- Row 2 -->
-                    <table lass="infobox" style="width: 30%; margin-bottom: 20px; height: 200px; box-sizing: border-box;">
+                    <table class="infobox" style="width: 30%; margin-bottom: 20px; height: 200px; box-sizing: border-box;">
                         <tbody>
                             <tr>
                                 <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
@@ -906,10 +1187,10 @@
                         <td></td>
                         <td style="background-color: #d1d4da;">ɴ̠̊</td>
                         <td style="background-color: #d1d4da;">ɴ̠</td>
-                        <td style="background-color: #d1d4da;"> </td>
-                        <td style="background-color: #d1d4da;"> </td>
-                        <td style="background-color: #d1d4da;"> </td>
-                        <td style="background-color: #d1d4da;"> </td>
+                        <td style="background-color: #d1d4da;">ʡ̃</td>
+                        <td style="background-color: #d1d4da;">ʡ̬̃</td>
+                        <td style="background-color: #d1d4da;">ʔ̃</td>
+                        <td style="background-color: #d1d4da;">ʔ̬̃</td>
                         </tr>
                         <tr>
                         <td class="label-cell">Plosive/stop</td>
@@ -941,7 +1222,7 @@
                                <td style="background-color: #d1d4da;">s̼</td>
                                <td style="background-color: #d1d4da;">z̼</td>
                                <td style="background-color: #d1d4da;">ɕ̠</td>
-                            <td style="background-color: #d1d4da;"> ʑ̠ </td>
+                            <td style="background-color: #d1d4da;">ʑ̠</td>
                             <td style="background-color: #d1d4da;">ӽ</td>
                             <td style="background-color: #d1d4da;">γ</td>
                             <td style="background-color: #d1d4da;">ꭔ</td>
@@ -952,6 +1233,7 @@
                             <td style="background-color: #d1d4da;"> </td>
                             <td style="background-color: #d1d4da;"> </td>
                             <td style="background-color: #d1d4da;"> </td>
+                            </tr>
                             <tr>
                                 <td class="label-cell">Tap/flap</td>
                                <td></td>
@@ -972,6 +1254,7 @@
                                <td></td>
                                <td style="background-color: #d1d4da;">ʔ̆</td>
                                <td style="background-color: #d1d4da;">ʔ̬̆</td>
+                               </tr>
                                <tr>
                                <td class="label-cell">Trill</td>
                                <td></td>
@@ -993,6 +1276,7 @@
                                <td style="background-color: #d1d4da;">ⴙ</td>
                 <td style="background-color: #d1d4da;">ɦ𐞪</td>
         </tr>
+                               <tr>
                                <td class="label-cell">Lateral affricate</td>
                                <td style="background-color: #d1d4da;">pɸˡ</td>
                                <td style="background-color: #d1d4da;">bβˡ</td>
@@ -1012,6 +1296,7 @@
                                <td></td>
                                <td></td>
                                <td></td>
+                               </tr>
                         </table>
             </div>
             
@@ -1146,7 +1431,8 @@
             
             <!-- Proposals Tab Content -->
             <div id="proposals" class="tab-content">
-            <h2>Propose New IPA Symbols</h2>
+            <h2>Propose New Symbols</h2>
+            <p>Note that when your proposal has been reviewed, you should recieve a notification.</p>
 
             <div class="proposal-form">
                 <div class="form-group">
@@ -1173,7 +1459,7 @@
                 
                 <div class="form-group">
                     <label for="rationale">Rationale for Addition:</label>
-                    <textarea id="rationale" rows="4" placeholder="Explain why this symbol should be added to the extended IPA set" style="resize: none;"></textarea>
+                    <textarea id="rationale" rows="4" placeholder="Explain why this symbol should be added to our additional IPA set" style="resize: none;"></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -1235,7 +1521,7 @@
             
             <!-- Feedback Thanks -->
             <div id="feedback-thanks" class="hidden">
-                <p>Thank you for your contribution! Your topic has been added to the discussion.</p>
+                <p>Thank you for your contribution! Your topic has been added to the discussion. Note that when someone responds, you should receive a notification.</p>
             </div>
             
             <!-- Topics Section -->
@@ -2092,6 +2378,127 @@
                         replyForm.style.display = 'block';
                     }
                 }
+        
+        
+        
+        
+        
+        // Add this JavaScript at the end of your HTML file, right before the closing </body> tag
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationBell = document.getElementById('notificationBell');
+            const notificationsDropdown = document.getElementById('notificationsDropdown');
+            
+            // Toggle dropdown when bell is clicked
+            notificationBell.addEventListener('click', function() {
+                notificationsDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside of it
+            document.addEventListener('click', function(event) {
+                if (!notificationBell.contains(event.target) && !notificationsDropdown.contains(event.target)) {
+                    notificationsDropdown.classList.remove('show');
+                }
+            });
+            
+            // Add this CSS to make the dropdown visible when it has the 'show' class
+            const style = document.createElement('style');
+            style.textContent = `
+                .notifications-dropdown.show {
+                    display: block;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        
+        
+        // Add this to your existing notification bell JavaScript code:
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get references to elements
+            const notificationsList = document.getElementById('notificationsList');
+            const refreshNotifications = document.getElementById('refreshNotifications');
+            
+            // Function to load notifications
+            function loadNotifications() {
+                // First clear any existing notifications
+                while (notificationsList.firstChild) {
+                    notificationsList.removeChild(notificationsList.firstChild);
+                }
+                
+                // Add loading spinner
+                const loadingSpinner = document.createElement('div');
+                loadingSpinner.className = 'loading-spinner';
+                notificationsList.appendChild(loadingSpinner);
+                
+                // Simulate loading delay
+                setTimeout(() => {
+                    // Remove loading spinner
+                    notificationsList.removeChild(loadingSpinner);
+                    
+                    // Check if we have notifications data
+                    // In a real application, you would fetch this from an API or localStorage
+                    const notifications = [
+                        {
+                            title: 'New IPA Symbol Proposed',
+                            message: 'A new vowel symbol has been proposed for review.',
+                            time: '2 hours ago'
+                        },
+                        {
+                            title: 'Your feedback received',
+                            message: 'Thank you for your feedback on the bilabial click symbol.',
+                            time: '1 day ago'
+                        },
+                        {
+                            title: 'Welcome!',
+                            message: 'Welcome to the Additional IPA Symbols tool.',
+                            time: '3 days ago'
+                        }
+                    ];
+                    
+                    if (notifications.length === 0) {
+                        // If no notifications
+                        const emptyNote = document.createElement('div');
+                        emptyNote.className = 'empty-notifications';
+                        emptyNote.textContent = 'No notifications at this time.';
+                        notificationsList.appendChild(emptyNote);
+                    } else {
+                        // Add each notification to the list
+                        notifications.forEach(notification => {
+                            const item = document.createElement('div');
+                            item.className = 'notification-item';
+                            
+                            item.innerHTML = `
+                                <div class="notification-content">
+                                    <div class="notification-title">${notification.title}</div>
+                                    <div class="notification-message">${notification.message}</div>
+                                    <div class="notification-time">${notification.time}</div>
+                                </div>
+                            `;
+                            
+                            notificationsList.appendChild(item);
+                        });
+                        
+                        // Update the badge count
+                        document.getElementById('notificationBadge').textContent = notifications.length;
+                    }
+                }, 800); // Simulate network delay
+            }
+            
+            // Load notifications when dropdown is opened
+            notificationBell.addEventListener('click', function() {
+                if (!notificationsDropdown.classList.contains('show')) {
+                    loadNotifications();
+                }
+            });
+            
+            // Refresh button functionality
+            refreshNotifications.addEventListener('click', loadNotifications);
+            
+            // Initial load of notifications (optional)
+            loadNotifications();
+        });
     </script>
     </body>
     </html>
