@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Voiceless Glottal Trill Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .controls {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .slider-container {
+            margin: 15px 0;
+        }
+        label {
+            display: inline-block;
+            width: 220px;
+            font-weight: bold;
+        }
+        input[type=range] {
+            width: 250px;
+            vertical-align: middle;
+        }
+        .preset-buttons {
+            margin: 15px 0;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .explanation {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            margin: 20px 0;
+        }
+        .status {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+        }
+        .visualizer {
+            width: 100%;
+            height: 100px;
+            background-color: #f0f0f0;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced Voiceless Glottal Trill Audio Simulation</h1>
+    
+    <p>This simulation creates a more realistic approximation of what a hypothetical voiceless glottal trill might sound like if it were physiologically possible to produce, in the context: /a/ + [voiceless glottal trill] + /a/.</p>
+    
+    <div class="controls">
+        <h2>Parameters</h2>
+        
+        <div class="preset-buttons">
+            <button id="maleVoice">Male Voice</button>
+            <button id="femaleVoice">Female Voice</button>
+            <button id="childVoice">Child Voice</button>
+        </div>
+        
+        <div class="slider-container">
+            <label for="trillRate">Trill Rate (Hz):</label>
+            <input type="range" id="trillRate" min="20" max="50" value="30" step="1">
+            <span id="trillRateValue">30 Hz</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="vowelFreq">Voice Fundamental Freq:</label>
+            <input type="range" id="vowelFreq" min="80" max="400" value="120" step="1">
+            <span id="vowelFreqValue">120 Hz</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="noiseAmount">Breathiness/Noise:</label>
+            <input type="range" id="noiseAmount" min="0" max="1" value="0.5" step="0.01">
+            <span id="noiseAmountValue">0.5</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="trillDuration">Trill Duration (ms):</label>
+            <input type="range" id="trillDuration" min="50" max="400" value="150" step="10">
+            <span id="trillDurationValue">150 ms</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="vowelDuration">Vowel Duration (ms):</label>
+            <input type="range" id="vowelDuration" min="100" max="500" value="250" step="10">
+            <span id="vowelDurationValue">250 ms</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="jitter">Voice Jitter (natural variation):</label>
+            <input type="range" id="jitter" min="0" max="0.1" value="0.02" step="0.005">
+            <span id="jitterValue">0.02</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="shimmer">Voice Shimmer (amplitude variation):</label>
+            <input type="range" id="shimmer" min="0" max="0.15" value="0.04" step="0.005">
+            <span id="shimmerValue">0.04</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="trillTension">Trill Tension:</label>
+            <input type="range" id="trillTension" min="0.1" max="1" value="0.5" step="0.05">
+            <span id="trillTensionValue">0.5</span>
+        </div>
+        
+        <div class="slider-container">
+            <label for="formantShift">Formant Shift:</label>
+            <input type="range" id="formantShift" min="0.7" max="1.3" value="1.0" step="0.01">
+            <span id="formantShiftValue">1.0</span>
+        </div>
+    </div>
+    
+    <div class="status" id="statusText">Ready to play</div>
+    <div class="visualizer" id="waveformVisualizer"></div>
+    
+    <button id="playButton">Play Simulation</button>
+    <button id="stopButton">Stop</button>
+    <button id="downloadButton">Download Audio</button>
+    
+    <div class="explanation">
+        <h2>Explanation</h2>
+        <p>This enhanced simulation creates the following sequence:</p>
+        <ol>
+            <li>A vowel /a/ using a detailed formant-based synthesizer with realistic vocal tract modeling</li>
+            <li>A simulated voiceless glottal trill created by modeling rapid airflow pulsation through a nearly-closed glottis with turbulent noise</li>
+            <li>Another vowel /a/ to complete the sequence</li>
+        </ol>
+        <p>Key improvements in this simulation:</p>
+        <ul>
+            <li>More accurate vocal tract resonance modeling for more human-like vowels</li>
+            <li>Micro-variations in pitch and amplitude (jitter and shimmer) to simulate natural voice</li>
+            <li>Enhanced glottal pulse modeling based on the Liljencrants-Fant (LF) model</li>
+            <li>Smoother transitions between sound components</li>
+            <li>Realistic breath noise simulation</li>
+            <li>Voice type presets (male, female, child) with appropriate formant structures</li>
+        </ul>
+        <p>Since a true voiceless glottal trill is physiologically challenging (the vocal folds can't simultaneously vibrate for trilling while remaining voiceless), this is an approximation of what such a sound might theoretically sound like if it could be produced.</p>
+    </div>
+
+    <script>
+        // Initialize audio context
+        let audioContext;
+        let audioBuffer = null;
+        let currentSource = null;
+        let visualizerContext = null;
+        let isPlaying = false;
+        
+        // Define formant presets for different voice types
+        const formantPresets = {
+            male: {
+                vowelA: [700, 1200, 2500],
+                bandwidths: [80, 90, 120],
+                amplitudes: [1.0, 0.5, 0.25],
+                defaultFreq: 120
+            },
+            female: {
+                vowelA: [800, 1400, 2700],
+                bandwidths: [90, 100, 140],
+                amplitudes: [1.0, 0.55, 0.28],
+                defaultFreq: 220
+            },
+            child: {
+                vowelA: [900, 1600, 3000],
+                bandwidths: [100, 110, 160],
+                amplitudes: [1.0, 0.6, 0.3],
+                defaultFreq: 280
+            }
+        };
+        
+        // Set up visualizer canvas
+        function setupVisualizer() {
+            const canvas = document.getElementById('waveformVisualizer');
+            visualizerContext = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Clear the canvas
+            visualizerContext.fillStyle = '#f0f0f0';
+            visualizerContext.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // Update visualizer with waveform data
+        function updateVisualizer(buffer) {
+            if (!visualizerContext) return;
+            
+            const canvas = visualizerContext.canvas;
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Clear the canvas
+            visualizerContext.fillStyle = '#f0f0f0';
+            visualizerContext.fillRect(0, 0, width, height);
+            
+            // Draw the waveform
+            const data = buffer.getChannelData(0);
+            const step = Math.ceil(data.length / width);
+            const amp = height / 2;
+            
+            visualizerContext.beginPath();
+            visualizerContext.moveTo(0, height / 2);
+            visualizerContext.strokeStyle = '#4CAF50';
+            visualizerContext.lineWidth = 2;
+            
+            for (let i = 0; i < width; i++) {
+                const idx = Math.floor(i * step);
+                const y = (0.5 + data[idx] * 0.5) * height;
+                visualizerContext.lineTo(i, y);
+            }
+            
+            visualizerContext.stroke();
+            
+            // Mark the trill section
+            const vowelDuration = parseInt(document.getElementById('vowelDuration').value);
+            const trillDuration = parseInt(document.getElementById('trillDuration').value);
+            const totalDuration = vowelDuration * 2 + trillDuration;
+            
+            const trillStart = (vowelDuration / totalDuration) * width;
+            const trillEnd = ((vowelDuration + trillDuration) / totalDuration) * width;
+            
+            visualizerContext.fillStyle = 'rgba(255, 166, 0, 0.2)';
+            visualizerContext.fillRect(trillStart, 0, trillEnd - trillStart, height);
+            
+            visualizerContext.fillStyle = '#333';
+            visualizerContext.font = '12px Arial';
+            visualizerContext.fillText('Trill', (trillStart + trillEnd) / 2 - 15, 15);
+        }
+        
+        // Update slider value displays
+        document.getElementById('trillRate').addEventListener('input', function() {
+            document.getElementById('trillRateValue').textContent = this.value + ' Hz';
+        });
+        
+        document.getElementById('vowelFreq').addEventListener('input', function() {
+            document.getElementById('vowelFreqValue').textContent = this.value + ' Hz';
+        });
+        
+        document.getElementById('noiseAmount').addEventListener('input', function() {
+            document.getElementById('noiseAmountValue').textContent = this.value;
+        });
+        
+        document.getElementById('trillDuration').addEventListener('input', function() {
+            document.getElementById('trillDurationValue').textContent = this.value + ' ms';
+        });
+        
+        document.getElementById('vowelDuration').addEventListener('input', function() {
+            document.getElementById('vowelDurationValue').textContent = this.value + ' ms';
+        });
+        
+        document.getElementById('jitter').addEventListener('input', function() {
+            document.getElementById('jitterValue').textContent = this.value;
+        });
+        
+        document.getElementById('shimmer').addEventListener('input', function() {
+            document.getElementById('shimmerValue').textContent = this.value;
+        });
+        
+        document.getElementById('trillTension').addEventListener('input', function() {
+            document.getElementById('trillTensionValue').textContent = this.value;
+        });
+        
+        document.getElementById('formantShift').addEventListener('input', function() {
+            document.getElementById('formantShiftValue').textContent = this.value;
+        });
+        
+        // Voice preset buttons
+        document.getElementById('maleVoice').addEventListener('click', function() {
+            document.getElementById('vowelFreq').value = formantPresets.male.defaultFreq;
+            document.getElementById('vowelFreqValue').textContent = formantPresets.male.defaultFreq + ' Hz';
+            document.getElementById('formantShift').value = 1.0;
+            document.getElementById('formantShiftValue').textContent = '1.0';
+            document.getElementById('jitter').value = 0.02;
+            document.getElementById('jitterValue').textContent = '0.02';
+            document.getElementById('shimmer').value = 0.04;
+            document.getElementById('shimmerValue').textContent = '0.04';
+            document.getElementById('statusText').textContent = 'Male voice preset loaded';
+        });
+        
+        document.getElementById('femaleVoice').addEventListener('click', function() {
+            document.getElementById('vowelFreq').value = formantPresets.female.defaultFreq;
+            document.getElementById('vowelFreqValue').textContent = formantPresets.female.defaultFreq + ' Hz';
+            document.getElementById('formantShift').value = 1.15;
+            document.getElementById('formantShiftValue').textContent = '1.15';
+            document.getElementById('jitter').value = 0.025;
+            document.getElementById('jitterValue').textContent = '0.025';
+            document.getElementById('shimmer').value = 0.05;
+            document.getElementById('shimmerValue').textContent = '0.05';
+            document.getElementById('statusText').textContent = 'Female voice preset loaded';
+        });
+        
+        document.getElementById('childVoice').addEventListener('click', function() {
+            document.getElementById('vowelFreq').value = formantPresets.child.defaultFreq;
+            document.getElementById('vowelFreqValue').textContent = formantPresets.child.defaultFreq + ' Hz';
+            document.getElementById('formantShift').value = 1.25;
+            document.getElementById('formantShiftValue').textContent = '1.25';
+            document.getElementById('jitter').value = 0.035;
+            document.getElementById('jitterValue').textContent = '0.035';
+            document.getElementById('shimmer').value = 0.06;
+            document.getElementById('shimmerValue').textContent = '0.06';
+            document.getElementById('statusText').textContent = 'Child voice preset loaded';
+        });
+        
+        // Enhanced LF model for glottal pulse
+        function lfModel(phase, te, tp, ta) {
+            // Liljencrants-Fant model parameters
+            // te: glottal closure instant (0.6 typical)
+            // tp: maximum flow instant (0.4 typical)
+            // ta: return phase coefficient (0.02 typical)
+            
+            if (phase < tp) {
+                // Opening phase
+                return 0.5 * (1 - Math.cos(Math.PI * phase / tp));
+            } else if (phase < te) {
+                // Closing phase
+                return Math.cos((Math.PI / 2) * (phase - tp) / (te - tp));
+            } else {
+                // Return phase
+                return -Math.exp(-(phase - te) / ta);
+            }
+        }
+        
+        // Function to generate enhanced vowel /a/ sound
+        function createVowel(context, duration, frequency, voiceType = 'male', jitterAmount = 0.02, shimmerAmount = 0.04, formantShift = 1.0) {
+            const sampleRate = context.sampleRate;
+            const numSamples = Math.floor(duration * sampleRate / 1000);
+            const buffer = context.createBuffer(1, numSamples, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Get formant data from presets
+            const formantData = formantPresets[voiceType];
+            
+            // Apply formant shift
+            const formants = formantData.vowelA.map(f => f * formantShift);
+            const bandwidths = formantData.bandwidths;
+            const amplitudes = formantData.amplitudes;
+            
+            // Pre-calculate jitter and shimmer values for natural variation
+            const jitterValues = [];
+            const shimmerValues = [];
+            const numPeriods = Math.ceil(duration * frequency / 1000);
+            
+            for (let p = 0; p < numPeriods; p++) {
+                // Random fluctuations in frequency (jitter)
+                jitterValues.push(1 + (Math.random() * 2 - 1) * jitterAmount);
+                
+                // Random fluctuations in amplitude (shimmer)
+                shimmerValues.push(1 + (Math.random() * 2 - 1) * shimmerAmount);
+            }
+            
+            let periodCounter = 0;
+            let currentPhase = 0;
+            
+            for (let i = 0; i < numSamples; i++) {
+                const t = i / sampleRate;
+                
+                // Apply jitter to the frequency
+                const currentFreq = frequency * jitterValues[Math.min(periodCounter, numPeriods - 1)];
+                
+                // Calculate period with jitter
+                const period = 1.0 / currentFreq;
+                
+                // Update phase
+                currentPhase += 1.0 / sampleRate;
+                if (currentPhase >= period) {
+                    currentPhase -= period;
+                    periodCounter++;
+                }
+                
+                // Normalized phase within the current period
+                const phase = currentPhase / period;
+                
+                // Generate enhanced glottal pulse using LF model
+                // Adjust these parameters for different voice qualities
+                const te = 0.6;  // glottal closure instant
+                const tp = 0.4;  // maximum flow instant
+                const ta = 0.02; // return phase coefficient
+                
+                const glottalPulse = lfModel(phase, te, tp, ta);
+                
+                // Apply shimmer to the amplitude
+                const shimmerFactor = shimmerValues[Math.min(periodCounter, numPeriods - 1)];
+                
+                let sample = 0;
+                
+                // Apply formant frequencies to create an /a/ vowel
+                for (let f = 0; f < formants.length; f++) {
+                    const formantFreq = formants[f];
+                    const bandwidth = bandwidths[f];
+                    const amplitude = amplitudes[f];
+                    
+                    // Create a more realistic formant by including bandwidth
+                    const formantComponent = Math.sin(2 * Math.PI * formantFreq * t);
+                    
+                    // Apply resonance decay based on bandwidth
+                    const resonanceDecay = Math.exp(-Math.PI * bandwidth * t % period);
+                    
+                    // Modulate the formant with the glottal pulse
+                    sample += amplitude * glottalPulse * formantComponent * resonanceDecay;
+                }
+                
+                // Add some breathiness/noise
+                const breathiness = 0.1;
+                const breathNoise = (Math.random() * 2 - 1) * breathiness * glottalPulse;
+                
+                sample = sample + breathNoise;
+                
+                // Apply shimmer
+                sample *= shimmerFactor;
+                
+                // Apply envelope to avoid clicks
+                let envelope = 1.0;
+                const attackReleaseDuration = numSamples * 0.15;
+                
+                if (i < attackReleaseDuration) {
+                    envelope = i / attackReleaseDuration;
+                } else if (i > numSamples - attackReleaseDuration) {
+                    envelope = (numSamples - i) / attackReleaseDuration;
+                }
+                
+                data[i] = sample * envelope * 0.3;
+            }
+            
+            return buffer;
+        }
+        
+        // Function to create enhanced simulated voiceless glottal trill
+        function createGlottalTrill(context, duration, trillRate, noiseAmount, tension = 0.5) {
+            const sampleRate = context.sampleRate;
+            const numSamples = Math.floor(duration * sampleRate / 1000);
+            const buffer = context.createBuffer(1, numSamples, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Trill period in samples
+            const trillPeriod = Math.floor(sampleRate / trillRate);
+            
+            // Pre-generate filtered noise to make it more natural
+            const noiseBuffer = new Float32Array(numSamples);
+            for (let i = 0; i < numSamples; i++) {
+                noiseBuffer[i] = Math.random() * 2 - 1;
+            }
+            
+            // Simple low-pass filter for the noise
+            for (let i = 1; i < numSamples; i++) {
+                noiseBuffer[i] = noiseBuffer[i] * 0.3 + noiseBuffer[i-1] * 0.7;
+            }
+            
+            // Add some natural variation to the trill rate
+            const trillRateVariation = 0.05; // 5% variation
+            const trillRatePoints = Math.ceil(duration / 50); // Change every 50ms
+            const trillRateValues = [];
+            
+            for (let p = 0; p < trillRatePoints; p++) {
+                trillRateValues.push(trillRate * (1 + (Math.random() * 2 - 1) * trillRateVariation));
+            }
+            
+            // Add more realistic resonance effects
+            // Typical tracheal and oral cavity resonances
+            const resonances = [800, 1500, 2300, 3500];
+            const resonanceAmplitudes = [0.5, 0.3, 0.2, 0.1];
+            
+            for (let i = 0; i < numSamples; i++) {
+                const t = i / sampleRate;
+                const timeFraction = i / numSamples;
+                
+                // Get the current trill rate with variation
+                const pointIndex = Math.floor(timeFraction * trillRatePoints);
+                const currentTrillRate = trillRateValues[Math.min(pointIndex, trillRatePoints - 1)];
+                const currentPeriod = sampleRate / currentTrillRate;
+                
+                // Create a rapid series of pulses for the trill effect
+                const trillPhase = (i % Math.floor(currentPeriod)) / currentPeriod;
+                
+                // Create a more speech-like pulse shape affected by tension parameter
+                let pulseShape = 0;
+                const openPhase = 0.3 - (tension * 0.1); // Tension reduces open phase
+                const closePhase = 0.2 + (tension * 0.2); // Tension increases close phase speed
+                
+                if (trillPhase < openPhase) {
+                    // Opening phase
+                    pulseShape = Math.pow(trillPhase / openPhase, 2 - tension); // Less tension = smoother opening
+                } else if (trillPhase < openPhase + closePhase) {
+                    // Closing phase
+                    const closeProgress = (trillPhase - openPhase) / closePhase;
+                    pulseShape = 1 - Math.pow(closeProgress, 1 + tension); // More tension = faster closing
+                }
+                
+                // Get filtered noise
+                const noise = noiseBuffer[i];
+                
+                // Add resonances to the pulse
+                let resonanceEffect = 0;
+                for (let r = 0; r < resonances.length; r++) {
+                    resonanceEffect += resonanceAmplitudes[r] *
+                        Math.sin(2 * Math.PI * resonances[r] * t + noise * 0.1);
+                }
+                
+                // Combine the pulse shape with filtered noise
+                const pulseComponent = pulseShape * (1 - noiseAmount) * (1 + resonanceEffect * 0.3);
+                const noiseComponent = noise * noiseAmount * (0.7 + pulseShape * 0.3); // Modulate noise with pulse
+                
+                // Combine components
+                data[i] = (pulseComponent + noiseComponent);
+                
+                // Apply envelope
+                let envelope = 1.0;
+                const attackReleaseDuration = numSamples * 0.2;
+                
+                if (i < attackReleaseDuration) {
+                    envelope = i / attackReleaseDuration;
+                } else if (i > numSamples - attackReleaseDuration) {
+                    envelope = (numSamples - i) / attackReleaseDuration;
+                }
+                
+                data[i] *= envelope * 0.3;
+            }
+            
+            return buffer;
+        }
+        
+        // Function to create the complete enhanced sound
+        function createCompleteSound() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            // Get parameters
+            const trillRate = parseInt(document.getElementById('trillRate').value);
+            const vowelFreq = parseInt(document.getElementById('vowelFreq').value);
+            const noiseAmount = parseFloat(document.getElementById('noiseAmount').value);
+            const trillDuration = parseInt(document.getElementById('trillDuration').value);
+            const vowelDuration = parseInt(document.getElementById('vowelDuration').value);
+            const jitter = parseFloat(document.getElementById('jitter').value);
+            const shimmer = parseFloat(document.getElementById('shimmer').value);
+            const trillTension = parseFloat(document.getElementById('trillTension').value);
+            const formantShift = parseFloat(document.getElementById('formantShift').value);
+            
+            // Determine voice type based on frequency
+            let voiceType = 'male';
+            if (vowelFreq > 170 && vowelFreq < 260) {
+                voiceType = 'female';
+            } else if (vowelFreq >= 260) {
+                voiceType = 'child';
+            }
+            
+            // Create enhanced sound components
+            const vowel1 = createVowel(audioContext, vowelDuration, vowelFreq, voiceType, jitter, shimmer, formantShift);
+            const trill = createGlottalTrill(audioContext, trillDuration, trillRate, noiseAmount, trillTension);
+            const vowel2 = createVowel(audioContext, vowelDuration, vowelFreq, voiceType, jitter, shimmer, formantShift);
+            
+            // Calculate total duration and create final buffer
+            const totalDuration = vowelDuration * 2 + trillDuration;
+            const totalSamples = Math.floor(totalDuration * audioContext.sampleRate / 1000);
+            const result = audioContext.createBuffer(1, totalSamples, audioContext.sampleRate);
+            const resultData = result.getChannelData(0);
+            
+            // Copy first vowel
+            const vowel1Data = vowel1.getChannelData(0);
+            for (let i = 0; i < vowel1Data.length; i++) {
+                resultData[i] = vowel1Data[i];
+            }
+            
+            // Copy trill
+            const trillData = trill.getChannelData(0);
+            const trillOffset = Math.floor(vowelDuration * audioContext.sampleRate / 1000);
+            for (let i = 0; i < trillData.length; i++) {
+                resultData[trillOffset + i] = trillData[i];
+            }
+            
+            // Copy second vowel
+            const vowel2Data = vowel2.getChannelData(0);
+            const vowel2Offset = Math.floor((vowelDuration + trillDuration) * audioContext.sampleRate / 1000);
+            for (let i = 0; i < vowel2Data.length; i++) {
+                resultData[vowel2Offset + i] = vowel2Data[i];
+            }
+            
+            // Apply a improved blend between components
+            const blendSize = Math.floor(45 * audioContext.sampleRate / 1000); // 45ms blend for smoother transition
+            
+            // Blend first vowel into trill
+            const blend1Start = trillOffset - blendSize;
+            const blend1End = trillOffset + blendSize;
+            for (let i = blend1Start; i < blend1End; i++) {
+                if (i >= 0 && i < totalSamples) {
+                    // Smoother cosine blend function
+                    const weight = 0.5 * (1 - Math.cos(Math.PI * (i - blend1Start) / (blend1End - blend1Start)));
+                    
+                    const vowelPos = i;
+                    const trillPos = i - trillOffset;
+                    
+                    if (vowelPos < vowel1Data.length && trillPos >= 0 && trillPos < trillData.length) {
+                        resultData[i] = vowel1Data[vowelPos] * (1 - weight) + trillData[trillPos] * weight;
+                    }
+                }
+            }
+            
+            // Blend trill into second vowel
+            const blend2Start = vowel2Offset - blendSize;
+            const blend2End = vowel2Offset + blendSize;
+            for (let i = blend2Start; i < blend2End; i++) {
+                if (i >= 0 && i < totalSamples) {
+                    const weight = 0.5 * (1 - Math.cos(Math.PI * (i - blend2Start) / (blend2End - blend2Start)));
+                    
+                    const trillPos = i - trillOffset;
+                    const vowelPos = i - vowel2Offset;
+                    
+                    if (trillPos < trillData.length && vowelPos >= 0 && vowelPos < vowel2Data.length) {
+                        resultData[i] = trillData[trillPos] * (1 - weight) + vowel2Data[vowelPos] * weight;
+                    }
+                }
+            }
+            
+            // Update status
+            document.getElementById('statusText').textContent = 'Sound generated with ' + voiceType + ' voice characteristics';
+            
+            // Update visualizer
+            updateVisualizer(result);
+            
+            audioBuffer = result;
+            return result;
+        }
+        
+        // Play the simulated sound
+        document.getElementById('playButton').addEventListener('click', function() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } else if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            // Stop any currently playing sound
+            if (currentSource) {
+                currentSource.stop();
+                currentSource = null;
+            }
+            
+            // Create and play the sound
+            const buffer = createCompleteSound();
+            currentSource = audioContext.createBufferSource();
+            currentSource.buffer = buffer;
+            currentSource.connect(audioContext.destination);
+            currentSource.start();
+            
+            isPlaying = true;
+            document.getElementById('statusText').textContent = 'Playing...';
+            
+            // Update status when finished playing
+            currentSource.onended = function() {
+                isPlaying = false;
+                document.getElementById('statusText').textContent = 'Playback complete';
+            };
+        });
+        
+        // Stop button
+        document.getElementById('stopButton').addEventListener('click', function() {
+            if (currentSource && isPlaying) {
+                currentSource.stop();
+                currentSource = null;
+                isPlaying = false;
+                document.getElementById('statusText').textContent = 'Playback stopped';
+            }
+        });
+        
+        // Handle download
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            if (!audioBuffer) {
+                createCompleteSound();
+            }
+            
+            // Convert buffer to WAV
+            function bufferToWave(buffer) {
+                const numChannels = buffer.numberOfChannels;
+                const length = buffer.length * numChannels * 2 + 44;
+                const arrayBuffer = new ArrayBuffer(length);
+                const view = new DataView(arrayBuffer);
+                const channels = [];
+                let offset = 0;
+                let pos = 0;
+                
+                // Extract channels
+                for (let i = 0; i < numChannels; i++) {
+                    channels.push(buffer.getChannelData(i));
+                }
+                
+                // Write RIFF header
+                setUint32(0x46464952);          // "RIFF"
+                setUint32(length - 8);          // file length - 8
+                setUint32(0x45564157);          // "WAVE"
+                
+                // Write fmt chunk
+                setUint32(0x20746d66);          // "fmt "
+                setUint32(16);                  // length = 16
+                setUint16(1);                   // PCM (uncompressed)
+                setUint16(numChannels);
+                setUint32(buffer.sampleRate);
+                setUint32(buffer.sampleRate * numChannels * 2); // avg. bytes/sec
+                setUint16(numChannels * 2);     // block-align
+                setUint16(16);                  // 16-bit
+                
+                // Write data chunk
+                setUint32(0x61746164);          // "data"
+                setUint32(length - pos - 4);    // chunk length
+                
+                // Write interleaved data
+                for (let i = 0; i < buffer.length; i++) {
+                    for (let c = 0; c < numChannels; c++) {
+                        const sample = Math.max(-1, Math.min(1, channels[c][i])); // clamp
+                        const int = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                        view.setInt16(pos, int, true);
+                        pos += 2;
+                    }
+                }
+                
+                // Helper functions
+                function setUint32(data) {
+                    view.setUint32(pos, data, true);
+                    pos += 4;
+                }
+                
+                function setUint16(data) {
+                    view.setUint16(pos, data, true);
+                    pos += 2;
+                }
+                
+                return new Blob([view], { type: 'audio/wav' });
+            }
+            
+            const blob = bufferToWave(audioBuffer);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'enhanced-voiceless-glottal-trill.wav';
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+            
+            document.getElementById('statusText').textContent = 'Audio file downloaded';
+        });
+        
+        // Initialize
+        window.addEventListener('load', function() {
+            setupVisualizer();
+            document.getElementById('statusText').textContent = 'Ready. Please select parameters and press Play.';
+        });
