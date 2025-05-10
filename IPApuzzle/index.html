@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPA Chart Puzzle</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9fafb;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .p-4 {
+      padding: 1rem;
+    }
+    
+    .bg-white {
+      background-color: white;
+    }
+    
+    .rounded-lg {
+      border-radius: 0.5rem;
+    }
+    
+    .shadow-lg {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+    
+    .font-bold {
+      font-weight: 700;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .bg-blue-50 {
+      background-color: #eff6ff;
+    }
+    
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .w-8 {
+      width: 2rem;
+    }
+    
+    .h-8 {
+      height: 2rem;
+    }
+    
+    .bg-white {
+      background-color: white;
+    }
+    
+    .m-1 {
+      margin: 0.25rem;
+    }
+    
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+    
+    .shadow {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .cursor-move {
+      cursor: move;
+    }
+    
+    .text-lg {
+      font-size: 1.125rem;
+    }
+    
+    .font-mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    
+    .text-blue-700 {
+      color: #1d4ed8;
+    }
+    
+    .overflow-x-auto {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .border {
+      border-width: 1px;
+    }
+    
+    .border-gray-300 {
+      border-color: #d1d5db;
+    }
+    
+    .bg-gray-200 {
+      background-color: #e5e7eb;
+    }
+    
+    .p-2 {
+      padding: 0.5rem;
+    }
+    
+    .text-xs {
+      font-size: 0.75rem;
+    }
+    
+    .min-w-10 {
+      min-width: 2.5rem;
+    }
+    
+    .min-h-10 {
+      min-height: 2.5rem;
+    }
+    
+    .bg-gray-100 {
+      background-color: #f3f4f6;
+    }
+    
+    .bg-red-200 {
+      background-color: #fecaca;
+    }
+    
+    .bg-green-200 {
+      background-color: #bbf7d0;
+    }
+    
+    .bg-yellow-200 {
+      background-color: #fef08a;
+    }
+    
+    .min-h-8 {
+      min-height: 2rem;
+    }
+    
+    .text-green-600 {
+      color: #059669;
+    }
+    
+    .text-red-600 {
+      color: #dc2626;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .bg-blue-500 {
+      background-color: #3b82f6;
+    }
+    
+    .text-white {
+      color: white;
+    }
+    
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+    
+    .hover\:bg-blue-600:hover {
+      background-color: #2563eb;
+    }
+    
+    .bg-gray-500 {
+      background-color: #6b7280;
+    }
+    
+    .hover\:bg-gray-600:hover {
+      background-color: #4b5563;
+    }
+    
+    .mt-6 {
+      margin-top: 1.5rem;
+    }
+    
+    .text-lg {
+      font-size: 1.125rem;
+    }
+    
+    button {
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .draggable-symbol {
+      width: 2rem;
+      height: 2rem;
+      background-color: white;
+      margin: 0.25rem;
+      border-radius: 0.375rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: move;
+      font-size: 1.125rem;
+      font-family: monospace;
+      user-select: none;
+    }
+    
+    .chart-cell {
+      border: 1px solid #d1d5db;
+      padding: 0.5rem;
+      min-width: 2.5rem;
+      min-height: 2.5rem;
+    }
+    
+    .chart-cell-content {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100%;
+      width: 100%;
+      min-height: 2rem;
+    }
+    
+    .cell-symbol {
+      text-align: center;
+      margin: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="p-4 bg-white rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-center">IPA Chart Puzzle</h2>
+      <p class="mb-4 text-center">The goal of this game is to drag the IPA symbols to their correct positions on the chart. Score: <span id="score">0</span>/<span id="maxScore">0</span></p>
+      
+      <!-- Draggable symbols area -->
+      <div id="draggableArea" class="p-4 bg-blue-50 mb-6 rounded-lg flex flex-wrap justify-center">
+        <!-- Symbols will be added here by JavaScript -->
+      </div>
+      
+      <!-- Dragged symbol info -->
+      <div id="draggedSymbolInfo" class="mb-4 text-center text-blue-700" style="display: none;">
+        Currently dragging: <span id="currentDraggedSymbolText" class="font-bold"></span>
+      </div>
+      
+      <!-- IPA Chart -->
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse mb-6">
+          <thead>
+            <tr>
+              <th class="border border-gray-300 bg-gray-200 p-2"></th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Bilabial</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Labiodental</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Dental</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Alveolar</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Postalveolar</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Retroflex</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Palatal</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Velar</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Uvular</th>
+              <th class="border border-gray-300 bg-gray-200 p-2 text-xs">Glottal</th>
+            </tr>
+          </thead>
+          <tbody id="ipaTableBody">
+            <!-- Table rows will be added here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Control buttons -->
+      <div class="flex justify-center gap-4">
+        <button id="checkResultsBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+          Check Results
+        </button>
+        <button id="resetGameBtn" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+          Reset Game
+        </button>
+      </div>
+      
+      <!-- Results display -->
+      <div id="resultsDisplay" class="mt-6 p-4 bg-blue-50 rounded-lg" style="display: none;">
+        <h3 class="font-bold text-lg">Results</h3>
+        <p>Your score: <span id="finalScore">0</span> out of <span id="finalMaxScore">0</span></p>
+        <p id="resultsMessage"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // IPA chart structure - place, manner combinations
+    const chartStructure = {
+      plosive: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      nasal: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      trill: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      tapflap: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      fricative: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      lateral: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      approximant: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      lateralApprox: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+    };
+
+    // True mapping of IPA symbols to their chart positions
+    const correctPositions = {
+      'p': {manner: 'plosive', place: 'bilabial', voiced: false},
+      'b': {manner: 'plosive', place: 'bilabial', voiced: true},
+      't': {manner: 'plosive', place: 'alveolar', voiced: false},
+      'd': {manner: 'plosive', place: 'alveolar', voiced: true},
+      'ʈ': {manner: 'plosive', place: 'retroflex', voiced: false},
+      'ɖ': {manner: 'plosive', place: 'retroflex', voiced: true},
+      'c': {manner: 'plosive', place: 'palatal', voiced: false},
+      'ɟ': {manner: 'plosive', place: 'palatal', voiced: true},
+      'k': {manner: 'plosive', place: 'velar', voiced: false},
+      'g': {manner: 'plosive', place: 'velar', voiced: true},
+      'q': {manner: 'plosive', place: 'uvular', voiced: false},
+      'ɢ': {manner: 'plosive', place: 'uvular', voiced: true},
+      'ʔ': {manner: 'plosive', place: 'glottal', voiced: false},
+      
+      'm': {manner: 'nasal', place: 'bilabial', voiced: true},
+      'ɱ': {manner: 'nasal', place: 'labiodental', voiced: true},
+      'n': {manner: 'nasal', place: 'alveolar', voiced: true},
+      'ɳ': {manner: 'nasal', place: 'retroflex', voiced: true},
+      'ɲ': {manner: 'nasal', place: 'palatal', voiced: true},
+      'ŋ': {manner: 'nasal', place: 'velar', voiced: true},
+      'ɴ': {manner: 'nasal', place: 'uvular', voiced: true},
+      
+      'ʙ': {manner: 'trill', place: 'bilabial', voiced: true},
+      'r': {manner: 'trill', place: 'alveolar', voiced: true},
+      'ʀ': {manner: 'trill', place: 'uvular', voiced: true},
+      
+      'ⱱ': {manner: 'tapflap', place: 'labiodental', voiced: true},
+      'ɾ': {manner: 'tapflap', place: 'alveolar', voiced: true},
+      'ɽ': {manner: 'tapflap', place: 'retroflex', voiced: true},
+      
+      'ɸ': {manner: 'fricative', place: 'bilabial', voiced: false},
+      'β': {manner: 'fricative', place: 'bilabial', voiced: true},
+      'f': {manner: 'fricative', place: 'labiodental', voiced: false},
+      'v': {manner: 'fricative', place: 'labiodental', voiced: true},
+      'θ': {manner: 'fricative', place: 'dental', voiced: false},
+      'ð': {manner: 'fricative', place: 'dental', voiced: true},
+      's': {manner: 'fricative', place: 'alveolar', voiced: false},
+      'z': {manner: 'fricative', place: 'alveolar', voiced: true},
+      'ʃ': {manner: 'fricative', place: 'postalveolar', voiced: false},
+      'ʒ': {manner: 'fricative', place: 'postalveolar', voiced: true},
+      'ʂ': {manner: 'fricative', place: 'retroflex', voiced: false},
+      'ʐ': {manner: 'fricative', place: 'retroflex', voiced: true},
+      'ç': {manner: 'fricative', place: 'palatal', voiced: false},
+      'ʝ': {manner: 'fricative', place: 'palatal', voiced: true},
+      'x': {manner: 'fricative', place: 'velar', voiced: false},
+      'ɣ': {manner: 'fricative', place: 'velar', voiced: true},
+      'χ': {manner: 'fricative', place: 'uvular', voiced: false},
+      'ʁ': {manner: 'fricative', place: 'uvular', voiced: true},
+      'ħ': {manner: 'fricative', place: 'pharyngeal', voiced: false},
+      'ʕ': {manner: 'fricative', place: 'pharyngeal', voiced: true},
+      'h': {manner: 'fricative', place: 'glottal', voiced: false},
+      'ɦ': {manner: 'fricative', place: 'glottal', voiced: true},
+      
+      'ⱱ̟': {manner: 'lateral', place: 'labiodental', voiced: true},
+      'ɺ': {manner: 'lateral', place: 'alveolar', voiced: true},
+      'l': {manner: 'lateralApprox', place: 'alveolar', voiced: true},
+      'ɭ': {manner: 'lateralApprox', place: 'retroflex', voiced: true},
+      'ʎ': {manner: 'lateralApprox', place: 'palatal', voiced: true},
+      'ʟ': {manner: 'lateralApprox', place: 'velar', voiced: true},
+      
+      'ʋ': {manner: 'approximant', place: 'labiodental', voiced: true},
+      'ɹ': {manner: 'approximant', place: 'alveolar', voiced: true},
+      'ɻ': {manner: 'approximant', place: 'retroflex', voiced: true},
+      'j': {manner: 'approximant', place: 'palatal', voiced: true},
+      'ɰ': {manner: 'approximant', place: 'velar', voiced: true},
+      'w': {manner: 'approximant', place: 'labial-velar', voiced: true},
+    };
+    
+    // Create a smaller subset for the puzzle
+    const commonSymbols = [
+      'p', 'b', 't', 'd', 'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', 'ʔ',
+      'm', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ',
+      'f', 'v', 's', 'z', 'ʃ', 'ʒ', 'h',
+      'l', 'j', 'w', 'r'
+    ];
+
+    // Get a more compact, usable subset of the chart structure
+    const compactChartStructure = {
+      manners: ['plosive', 'nasal', 'trill', 'tapflap', 'fricative', 'lateral', 'approximant', 'lateralApprox'],
+      places: ['bilabial', 'labiodental', 'dental', 'alveolar', 'postalveolar', 'retroflex', 'palatal', 'velar', 'uvular', 'glottal'],
+      readableManners: {
+        'plosive': 'Plosive',
+        'nasal': 'Nasal',
+        'trill': 'Trill',
+        'tapflap': 'Tap/Flap',
+        'fricative': 'Fricative',
+        'lateral': 'Lateral Flap',
+        'approximant': 'Approximant',
+        'lateralApprox': 'Lateral Approximant'
+      },
+      readablePlaces: {
+        'bilabial': 'Bilabial',
+        'labiodental': 'Labiodental',
+        'dental': 'Dental',
+        'alveolar': 'Alveolar',
+        'postalveolar': 'Postalveolar',
+        'retroflex': 'Retroflex',
+        'palatal': 'Palatal',
+        'velar': 'Velar',
+        'uvular': 'Uvular',
+        'glottal': 'Glottal'
+      }
+    };
+
+    // Variables to track game state
+    let draggableSymbols = [...commonSymbols];
+    let placedSymbols = {};
+    let currentDraggedSymbol = null;
+    let score = 0;
+    let maxScore = commonSymbols.length;
+    let showResults = false;
+
+    // Initialize the game
+    function initGame() {
+      // Set max score
+      document.getElementById('maxScore').textContent = maxScore;
+      document.getElementById('finalMaxScore').textContent = maxScore;
+      
+      // Populate draggable symbols
+      const draggableArea = document.getElementById('draggableArea');
+      draggableArea.innerHTML = '';
+      
+      draggableSymbols.forEach(symbol => {
+        const symbolElement = document.createElement('div');
+        symbolElement.className = 'draggable-symbol';
+        symbolElement.textContent = symbol;
+        symbolElement.draggable = true;
+        
+        symbolElement.addEventListener('dragstart', function(e) {
+          currentDraggedSymbol = symbol;
+          
+          // Show info about the symbol being dragged
+          if (correctPositions[symbol]) {
+            document.getElementById('draggedSymbolInfo').style.display = 'block';
+            document.getElementById('currentDraggedSymbolText').textContent = symbol;
+          }
+        });
+        
+        draggableArea.appendChild(symbolElement);
+      });
+      
+      // Create the IPA table
+      createIPATable();
+    }
+
+    // Create the IPA table
+    function createIPATable() {
+      const tableBody = document.getElementById('ipaTableBody');
+      tableBody.innerHTML = '';
+      
+      compactChartStructure.manners.forEach(manner => {
+        const row = document.createElement('tr');
+        
+        // Add manner header
+        const mannerHeader = document.createElement('th');
+        mannerHeader.className = 'border border-gray-300 bg-gray-200 p-2 text-xs';
+        mannerHeader.textContent = compactChartStructure.readableManners[manner];
+        row.appendChild(mannerHeader);
+        
+        // Add place cells
+        compactChartStructure.places.forEach(place => {
+          const cell = document.createElement('td');
+          const cellKey = `${manner}-${place}`;
+          cell.className = `chart-cell bg-gray-100`;
+          cell.id = cellKey;
+          
+          // Create cell content container
+          const cellContent = document.createElement('div');
+          cellContent.className = 'chart-cell-content';
+          cell.appendChild(cellContent);
+          
+          // Add drop event
+          cell.addEventListener('dragover', function(e) {
+            e.preventDefault();
+          });
+          
+          cell.addEventListener('drop', function(e) {
+            e.preventDefault();
+            handleDrop(manner, place);
+          });
+          
+          row.appendChild(cell);
+        });
+        
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Handle drop
+    function handleDrop(manner, place) {
+      if (!currentDraggedSymbol) return;
+
+      // Check if this place exists in the chart structure
+      if (!chartStructure[manner] || !chartStructure[manner].includes(place)) {
+        return;
+      }
+
+      // Add symbol to placed symbols
+      const cellKey = `${manner}-${place}`;
+      
+      if (!placedSymbols[cellKey]) {
+        placedSymbols[cellKey] = [];
+      }
+      
+      // Don't add if already there
+      if (!placedSymbols[cellKey].includes(currentDraggedSymbol)) {
+        placedSymbols[cellKey].push(currentDraggedSymbol);
+        
+        // Remove from draggable symbols
+        const index = draggableSymbols.indexOf(currentDraggedSymbol);
+        if (index > -1) {
+          draggableSymbols.splice(index, 1);
+        }
+        
+        // Check if placed correctly
+        const correct = correctPositions[currentDraggedSymbol] && 
+                       correctPositions[currentDraggedSymbol].manner === manner && 
+                       correctPositions[currentDraggedSymbol].place === place;
+        
+        if (correct) {
+          score++;
+          document.getElementById('score').textContent = score;
+        }
+        
+        // Update the cell display
+        updateCellDisplay(cellKey);
+        
+        // Update draggable area
+        updateDraggableArea();
+      }
+      
+      currentDraggedSymbol = null;
+      document.getElementById('draggedSymbolInfo').style.display = 'none';
+    }
+
+    // Update cell display
+    function updateCellDisplay(cellKey) {
+      const cell = document.getElementById(cellKey);
+      const cellContent = cell.querySelector('.chart-cell-content');
+      cellContent.innerHTML = '';
+      
+      const symbols = placedSymbols[cellKey] || [];
+      
+      symbols.forEach((symbol, index) => {
+        const symbolElement = document.createElement('div');
+        symbolElement.className = 'cell-symbol';
+        
+        if (showResults) {
+          const [manner, place] = cellKey.split('-');
+          const correct = correctPositions[symbol] && 
+                         correctPositions[symbol].manner === manner && 
+                         correctPositions[symbol].place === place;
+          
+          symbolElement.className += correct ? ' text-green-600' : ' text-red-600';
+        }
+        
+        symbolElement.textContent = symbol;
+        cellContent.appendChild(symbolElement);
+      });
+    }
+
+    // Update draggable area
+    function updateDraggableArea() {
+      const draggableArea = document.getElementById('draggableArea');
+      draggableArea.innerHTML = '';
+      
+      draggableSymbols.forEach(symbol => {
+        const symbolElement = document.createElement('div');
+        symbolElement.className = 'draggable-symbol';
+        symbolElement.textContent = symbol;
+        symbolElement.draggable = true;
+        
+        symbolElement.addEventListener('dragstart', function(e) {
+          currentDraggedSymbol = symbol;
+          
+          // Show info about the symbol being dragged
+          if (correctPositions[symbol]) {
+            document.getElementById('draggedSymbolInfo').style.display = 'block';
+            document.getElementById('currentDraggedSymbolText').textContent = symbol;
+          }
+        });
+        
+        draggableArea.appendChild(symbolElement);
+      });
+    }
+
+    // Get cell class based on correctness
+    function getCellClass(manner, place) {
+      if (!showResults) return "bg-gray-100";
+      
+      const cellKey = `${manner}-${place}`;
+      const symbolsInCell = placedSymbols[cellKey] || [];
+
+      // Check each symbol in the cell
+      for (let symbol of symbolsInCell) {
+        const correct = correctPositions[symbol] && 
+                      correctPositions[symbol].manner === manner && 
+                      correctPositions[symbol].place === place;
+        
+        if (!correct) {
+          return "bg-red-200"; // At least one incorrect symbol
+        }
+      }
+      
+      // All symbols correct but check if any are missing
+      const expectedSymbols = Object.keys(correctPositions).filter(sym => 
+        correctPositions[sym].manner === manner && 
+        correctPositions[sym].place === place
+      );
+      
+      const allPresent = expectedSymbols.every(sym => symbolsInCell.includes(sym));
+      
+      return symbolsInCell.length > 0 ? 
+        (allPresent ? "bg-green-200" : "bg-yellow-200") : 
+        "bg-gray-100";
+    }
+
+    // Check results
+    function checkResults() {
+      showResults = true;
+      document.getElementById('finalScore').textContent = score;
+      
+      // Update cell colors
+      compactChartStructure.manners.forEach(manner => {
+        compactChartStructure.places.forEach(place => {
+          const cellKey = `${manner}-${place}`;
+          const cell = document.getElementById(cellKey);
+          
+          const cellClass = getCellClass(manner, place);
+          cell.className = `chart-cell ${cellClass}`;
+          
+          // Update symbol colors
+          updateCellDisplay(cellKey);
+        });
+      });
+      
+      // Show results display
+      const resultsDisplay = document.getElementById('resultsDisplay');
+      resultsDisplay.style.display = 'block';
+      
+      // Update results message
+      const resultsMessage = document.getElementById('resultsMessage');
+      if (score === maxScore) {
+        resultsMessage.textContent = "Perfect! All symbols placed correctly!";
+      } else {
+        resultsMessage.textContent = `You have ${score} symbols in the right place. Green cells are completely correct, yellow cells have some correct symbols but may be missing some, and red cells contain incorrect placements.`;
+      }
+    }
+
+    // Reset game
+    function resetGame() {
+      draggableSymbols = [...commonSymbols];
+      placedSymbols = {};
+      currentDraggedSymbol = null;
+      score = 0;
+      showResults = false;
+      
+      document.getElementById('score').textContent = '0';
+      document.getElementById('draggedSymbolInfo').style.display = 'none';
+      document.getElementById('resultsDisplay').style.display = 'none';
+      
+      // Reset cells
+      compactChartStructure.manners.forEach(manner => {
+        compactChartStructure.places.forEach(place => {
+          const cellKey = `${manner}-${place}`;
+          const cell = document.getElementById(cellKey);
+          cell.className = 'chart-cell bg-gray-100';
+          
+          const cellContent = cell.querySelector('.chart-cell-content');
+          cellContent.innerHTML = '';
+        });
+      });
+      
+      // Reset draggable area
+      updateDraggableArea();
+    }
+
+    // Add event listeners
+    document.getElementById('checkResultsBtn').addEventListener('click', checkResults);
+    document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+
+    // Initialize the game
+    document.addEventListener('DOMContentLoaded', initGame);
+  </script>
+</body>
+</html>
