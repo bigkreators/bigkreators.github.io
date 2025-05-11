@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falling Letters Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .letter {
+            position: absolute;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+        .letter:active {
+            transform: scale(1.2);
+        }
+        #score-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+        #lives-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+        #level-container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        #start-screen h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #start-button, #restart-button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover, #restart-button:hover {
+            background-color: #45a049;
+        }
+        #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        #game-over h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #final-score {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score-container">Score: <span id="score">0</span></div>
+        <div id="lives-container">Lives: <span id="lives">3</span></div>
+        <div id="level-container">Level: <span id="level">1</span></div>
+    </div>
+    
+    <div id="start-screen">
+        <h1>Falling Letters Game</h1>
+        <button id="start-button">Start Game</button>
+    </div>
+    
+    <div id="game-over">
+        <h1>Game Over!</h1>
+        <div id="final-score">Score: 0</div>
+        <button id="restart-button">Play Again</button>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score');
+        const livesDisplay = document.getElementById('lives');
+        const levelDisplay = document.getElementById('level');
+        const startScreen = document.getElementById('start-screen');
+        const startButton = document.getElementById('start-button');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const restartButton = document.getElementById('restart-button');
+
+        let score = 0;
+        let lives = 3;
+        let level = 1;
+        let gameRunning = false;
+        let letterInterval;
+        let letters = [];
+        let colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF3'];
+        let spawnRate = 2000; // milliseconds between letter spawns
+        let fallSpeed = 3; // pixels per animation frame
+        
+        // Start the game when the start button is clicked
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', restartGame);
+
+        function startGame() {
+            startScreen.style.display = 'none';
+            gameRunning = true;
+            score = 0;
+            lives = 3;
+            level = 1;
+            updateUI();
+            
+            // Start spawning letters
+            letterInterval = setInterval(spawnLetter, spawnRate);
+            
+            // Start the game loop
+            requestAnimationFrame(gameLoop);
+        }
+        
+        function restartGame() {
+            gameOverScreen.style.display = 'none';
+            
+            // Remove all existing letters
+            letters.forEach(letter => {
+                if (letter.element && letter.element.parentNode) {
+                    letter.element.parentNode.removeChild(letter.element);
+                }
+            });
+            letters = [];
+            
+            startGame();
+        }
+        
+        function spawnLetter() {
+            if (!gameRunning) return;
+            
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const letterElement = document.createElement('div');
+            letterElement.className = 'letter';
+            letterElement.textContent = randomLetter;
+            letterElement.style.color = randomColor;
+            letterElement.style.left = Math.random() * (gameContainer.clientWidth - 40) + 'px';
+            letterElement.style.top = '0px';
+            
+            gameContainer.appendChild(letterElement);
+            
+            // Add click event listener to the letter
+            letterElement.addEventListener('click', function() {
+                if (!gameRunning) return;
+                
+                // Remove the letter
+                if (letterElement.parentNode) {
+                    letterElement.parentNode.removeChild(letterElement);
+                }
+                
+                // Update score and find the letter in the letters array
+                score += 10;
+                updateUI();
+                
+                const index = letters.findIndex(l => l.element === letterElement);
+                if (index !== -1) {
+                    letters.splice(index, 1);
+                }
+                
+                // Check if level up
+                checkLevelUp();
+            });
+            
+            // Add the letter to the letters array
+            letters.push({
+                element: letterElement,
+                y: 0,
+                speed: fallSpeed * (1 + (level - 1) * 0.2) // Increase speed with level
+            });
+        }
+        
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            // Move all letters down
+            for (let i = letters.length - 1; i >= 0; i--) {
+                const letter = letters[i];
+                letter.y += letter.speed;
+                letter.element.style.top = letter.y + 'px';
+                
+                // Check if the letter has reached the bottom
+                if (letter.y > gameContainer.clientHeight) {
+                    // Remove the letter from the DOM
+                    if (letter.element.parentNode) {
+                        letter.element.parentNode.removeChild(letter.element);
+                    }
+                    
+                    // Remove the letter from the array
+                    letters.splice(i, 1);
+                    
+                    // Decrease lives
+                    lives--;
+                    updateUI();
+                    
+                    // Check if game over
+                    if (lives <= 0) {
+                        endGame();
+                        return;
+                    }
+                }
+            }
+            
+            // Continue the game loop
+            requestAnimationFrame(gameLoop);
+        }
+        
+        function checkLevelUp() {
+            // Level up every 100 points
+            if (score > 0 && score % 100 === 0) {
+                level++;
+                updateUI();
+                
+                // Speed up the game
+                clearInterval(letterInterval);
+                spawnRate = Math.max(500, spawnRate - 200); // Minimum spawn rate of 500ms
+                letterInterval = setInterval(spawnLetter, spawnRate);
+            }
+        }
+        
+        function updateUI() {
+            scoreDisplay.textContent = score;
+            livesDisplay.textContent = lives;
+            levelDisplay.textContent = level;
+        }
+        
+        function endGame() {
+            gameRunning = false;
+            clearInterval(letterInterval);
+            
+            // Show game over screen
+            finalScoreDisplay.textContent = `Score: ${score}`;
+            gameOverScreen.style.display = 'flex';
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            // Ensure letters don't go out of bounds
+            letters.forEach(letter => {
+                const maxX = gameContainer.clientWidth - 40;
+                letter.element.style.left = Math.min(parseInt(letter.element.style.left), maxX) + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
