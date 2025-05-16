@@ -86,7 +86,7 @@
                     <th colspan="2" scope="col">Palatal</th>
                     <th colspan="2" scope="col">Labial-palatal</th>
                     <th colspan="2" scope="col">Post-palatal</th>
-                    <th colspan="2" scope="col">labialized postpalatal</th>
+                    <th colspan="2" scope="col">Labialized postpalatal</th>
                     <th colspan="2" scope="col">Velar</th>
                     <th colspan="2" scope="col">Labial-velar</th>
                     <th colspan="2" scope="col">Uvular</th>
@@ -104,8 +104,8 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>ȶ</td>
+                    <td>ȡ</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -134,7 +134,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td><span class="clickable-text" data-audio-url="audio/Voiced-retroflex-implosive.ogg.mp3">ᶑ</span></td>
                     <td></td>
                     <td></td>
                     <td class="clickable-text" data-audio-url="audio/Voiceless_palatal_implosive.ogg.mp3">ƈ</td>
@@ -283,7 +283,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>𝼨</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -330,7 +330,7 @@
                     <td></td>
                     <td></td>
                     <td style="background-color: #d1d4da;"></td>
-                    <td></td>
+                    <td style="background-color: #d1d4da;"></td>
                     <td style="background-color: #d1d4da;"></td>
                     <td style="background-color: #d1d4da;"></td>
                     <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_fricative_trill.ogg.mp3">ꭆ̊</span></td>
@@ -360,10 +360,10 @@
                     <td>ꬶ̆</td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="background-color: #d1d4da;"></td>
+                    <td style="background-color: #d1d4da;"></td>
+                    <td style="background-color: #d1d4da;"></td>
+                    <td style="background-color: #d1d4da;"></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -377,7 +377,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>𝼦</td>
+                    <td class="clickable-text" data-audio-url="audio/Voiced_dental_lateral_approximant.ogg.mp3">𝼦</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -434,19 +434,16 @@
                 </tr>
             </table>
             𝼧 Dental nasal <br>
-            𝼨 Voiced Dental trill <br>
             Voiced labialized postpalatal approximant 𝼿 (w̶) <br>
             Voiceless alveolar lateral approximant ꬹ <br>
             voiced alveolo-palatal lateral approximant ȴ <br>
             <span class="clickable-text" data-audio-url="audio/Voiced_labiodental_plosive.wav.mp3">ƀ Voiced Labiodental Plosive</span><br>
             <span class="clickable-text" data-audio-url="audio/Voiceless-alveolar-implosive.ogg.mp3">ƭ voiceless alveolar implosive</span><br>
-            voiceless velar implosive ƙ <br>
+            <span class="clickable-text" data-audio-url="audio/Voiceless-velar-implosive.ogg.mp3">voiceless velar implosive ƙ</span><br>
             <span class="clickable-text" data-audio-url="audio/Voiceless-retroflex-implosive.ogg.mp3">voiceless retroflex implosive 𝼉</span><br>
-            Alveolo-palatal Plosive ȶ ȡ <br>
             ꝵ voiceless alveolar trill <br>
             ꞥ Voiceless alveolar nasal <br>
-            <span class="clickable-text" data-audio-url="audio/Voiceless_labiodental_plosive.ogg.mp3">ᵽ voiceless labiodental plosive</span> <br>
-            <span class="clickable-text" data-audio-url="audio/Voiced-retroflex-implosive.ogg.mp3">Voiced retroflex implosive ᶑ</span> <br>
+            <span class="clickable-text" data-audio-url="audio/Voiceless_labiodental_plosive.ogg.mp3">ᵽ voiceless labiodental plosive</span>
             <h2 style="text-align: center">Other ones</h2>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
                 <!-- Row 1 -->
@@ -1057,17 +1054,6 @@
             // Show the corresponding tab content
             const tabId = this.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
-            });
-            });
-            // Set up clickable text functionality
-            const clickableTexts = document.querySelectorAll('.clickable-text');
-            clickableTexts.forEach(text => {
-            text.addEventListener('click', function() {
-            const audioUrl = this.getAttribute('data-audio-url');
-            if (audioUrl) {
-            const audio = new Audio(audioUrl);
-            audio.play();
-            }
             });
             });
 
