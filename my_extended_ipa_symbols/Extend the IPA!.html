@@ -41,27 +41,8 @@
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search symbols...">
-            <button id="searchButton">
-                <span style="position: relative; width: 100px; height: 20px; background-color: #ccc;">
-                    <span style="position: absolute; top: 50%; left: 30%; transform: translateY(-50%); background-color: #777; width: 40px; height: 20px; border-radius: 10px;">Search</span>
-                </span>
-            </button>
+            <button id="searchButton" class="search-btn">Search</button>
         </div>
-
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-
-            td {
-                border: 1px solid #ccc;
-                padding: 10px;
-            }
-
-            span {
-                display: inline-block;
-            }
-        </style>
                                                                             
         <div class="tabs">
             <div class="tab active" data-tab="consonants" id="consonants-tab">Consonants</div>
@@ -70,573 +51,609 @@
             <div class="tab" data-tab="feedback" id="feedback-tab">Feedback</div>
         </div>
         <!-- Consonants Tab Content -->
-        <div id="consonants" class="tab-content active">
-            <div class="category-tabs">
-            </div>
-            
-            <table>
-                <tr>
-                    <th></th>
-                    <th colspan="2" scope="col">Bilabial</th>
-                    <th colspan="2" scope="col">Labiodental</th>
-                    <th colspan="2" scope="col">Dental</th>
-                    <th colspan="2" scope="col">Alveolar</th>
-                    <th colspan="2" scope="col">Retroflex</th>
-                    <th colspan="2" scope="col">Alveolo-palatal</th>
-                    <th colspan="2" scope="col">Palatal</th>
-                    <th colspan="2" scope="col">Labial-palatal</th>
-                    <th colspan="2" scope="col">Post-palatal</th>
-                    <th colspan="2" scope="col">Labialized postpalatal</th>
-                    <th colspan="2" scope="col">Velar</th>
-                    <th colspan="2" scope="col">Labial-velar</th>
-                    <th colspan="2" scope="col">Uvular</th>
-                    <th colspan="2" scope="col">Epiglottal</th>
-                </tr>
-                <tr>
-                    <td class="label-cell">Plosive</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_dental_stop.ogg.mp3">𝼪</span></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiced_dental_stop.ogg.mp3">𝼥</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ȶ</td>
-                    <td>ȡ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ᶄ</td>
-                    <td>ꬶ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Implosive</td>
-                    <td class="clickable-text" data-audio-url="audio/Voiceless-bilabial-implosive.ogg.mp3">ƥ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiced-retroflex-implosive.ogg.mp3">ᶑ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Voiceless_palatal_implosive.ogg.mp3">ƈ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless-labial–velar-implosive.ogg.mp3">ƙ͜ƥ</span></td>
-                    <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Voiceless-uvular-implosive.ogg.mp3">ʠ</td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Nasal</td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_Bilabial_Nasal.ogg.mp3">ᴍ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ȵ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>𝼔</td>
-                    <td></td>
-                    <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Voiceless_velar_nasal.wav.mp3">ƞ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Voiceless_uvular_nasal.ogg.mp3">ᴎ</td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Sibilant fricative</td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td></td>
-                    <td></td>
-                    <td>𝼩</td>
-                    <td>𝼩̬</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Non-sibilant fricative</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_non-sibilant_fricative.ogg.mp3">þ</span></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiced_alveolar_non-sibilant_fricative.ogg.mp3">đ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><img src="images/H_turned_H_ligature.svg.png"></td>
-                    <td></td>
-                    <td>ꭖ</td>
-                    <td>ʝ̵</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><img src="images/W_with_left_hook.svg.png"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                    <td class="label-cell">Approximant</td>
-                    <td>ⱷ</td>
-                    <td class="clickable-text" data-audio-url="audio/Bilabial_approximant.ogg.mp3"><p class="mirrored">β</p></td>
-                    <td rowspan="2">ꜰ</td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3">ᴆ</span></td>
-                    <td>ᴚ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_palatal_approximant.wav.mp3">ᴊ</span></td>
-                    <td></td>
-                    <td>ᴊʷ</td>
-                    <td></td>
-                    <td>ɉ̊</td>
-                    <td class="clickable-text" data-audio-url="audio/Post-palatal_approximant.ogg.mp3">ɉ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ƾ</td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Trill</td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_bilabial_trill.ogg.mp3">ᴘ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>𝼨</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ꭉ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_trill.ogg.mp3">ᴙ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Fricative trill</td>
-                    <td>ψ̊</td>
-                    <td>ψ</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_raised_non-sonorant_trill.ogg.mp3">ɼ̊</span></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Raised_alveolar_non-sonorant_trill.ogg.mp3">ɼ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_fricative_trill.ogg.mp3">ꭆ̊</span></td>
-                    <td>ꭆ</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Tap or flap</td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td>ɿ̪</td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_tap.wav.mp3">ɿ</span></td>
-                    <td></td>
-                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_tap.wav.mp3">ʅ</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>ᶄ̆</td>
-                    <td>ꬶ̆</td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td style="background-color: #d1d4da;"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                <tr>
-                    <td class="label-cell">Lateral approximant</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Voiced_dental_lateral_approximant.ogg.mp3">𝼦</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                <td class="label-cell">lateral flap</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>ⱹ</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="clickable-text" data-audio-url="audio/Voiced_retroflex_lateral_flap.wav.mp3">𝼈</span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                </tr>
-            </table>
-            𝼧 Dental nasal <br>
-            Voiced labialized postpalatal approximant 𝼿 (w̶) <br>
-            Voiceless alveolar lateral approximant ꬹ <br>
-            voiced alveolo-palatal lateral approximant ȴ <br>
-            <span class="clickable-text" data-audio-url="audio/Voiced_labiodental_plosive.wav.mp3">ƀ Voiced Labiodental Plosive</span><br>
-            <span class="clickable-text" data-audio-url="audio/Voiceless-alveolar-implosive.ogg.mp3">ƭ voiceless alveolar implosive</span><br>
-            <span class="clickable-text" data-audio-url="audio/Voiceless-velar-implosive.ogg.mp3">voiceless velar implosive ƙ</span><br>
-            <span class="clickable-text" data-audio-url="audio/Voiceless-retroflex-implosive.ogg.mp3">voiceless retroflex implosive 𝼉</span><br>
-            ꝵ voiceless alveolar trill <br>
-            ꞥ Voiceless alveolar nasal <br>
-            <span class="clickable-text" data-audio-url="audio/Voiceless_labiodental_plosive.ogg.mp3">ᵽ voiceless labiodental plosive</span>
-            <h2 style="text-align: center">Other ones</h2>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-                <!-- Row 1 -->
-                <table style="width: 30%; margin-bottom: 20px;">
-                    <tbody>
+                <div id="consonants" class="tab-content active">
+                    <div class="category-tabs">
+                    </div>
+                    
+                    <table>
                         <tr>
-                            <th style="background: #f2f2ce;">
-                                Voiced velar bunched approximant
-                            </th>
+                            <th></th>
+                            <th colspan="2" scope="col">Bilabial</th>
+                            <th colspan="2" scope="col">Labiodental</th>
+                            <th colspan="2" scope="col">Dental</th>
+                            <th colspan="2" scope="col">Alveolar</th>
+                            <th colspan="2" scope="col">Retroflex</th>
+                            <th colspan="2" scope="col">Alveolo-palatal</th>
+                            <th colspan="2" scope="col">Palatal</th>
+                            <th colspan="2" scope="col">Labial-palatal</th>
+                            <th colspan="2" scope="col">Post-palatal</th>
+                            <th colspan="2" scope="col">Labialized postpalatal</th>
+                            <th colspan="2" scope="col">Velar</th>
+                            <th colspan="2" scope="col">Labial-velar</th>
+                            <th colspan="2" scope="col">Velar bunched</th>
+                            <th colspan="2" scope="col">Uvular</th>
+                            <th colspan="2" scope="col">Epiglottal</th>
                         </tr>
                         <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                    ᴪ
-                                </span>
-                            </th>
+                            <td class="label-cell">Plosive</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_dental_stop.ogg.mp3">𝼪</span></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_dental_stop.ogg.mp3">𝼥</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ȶ</td>
+                            <td>ȡ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ᶄ</td>
+                            <td>ꬶ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
                         </tr>
-                    </tbody>
-                </table>
+                        <tr>
+                            <td class="label-cell">Implosive</td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless-bilabial-implosive.ogg.mp3">ƥ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless-retroflex-implosive.ogg.mp3">𝼉</td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced-retroflex-implosive.ogg.mp3">ᶑ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless_palatal_implosive.ogg.mp3">ƈ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless-velar-implosive.ogg.mp3">ƙ</td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless-labial–velar-implosive.ogg.mp3">ƙ͜ƥ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless-uvular-implosive.ogg.mp3">ʠ</td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Nasal</td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_Bilabial_Nasal.ogg.mp3">ᴍ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ȵ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>𝼔</td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless_velar_nasal.wav.mp3">ƞ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiceless_uvular_nasal.ogg.mp3">ᴎ</td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Sibilant fricative</td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td>𝼩</td>
+                            <td>𝼩̬</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Non-sibilant fricative</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_non-sibilant_fricative.ogg.mp3">þ</span></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_alveolar_non-sibilant_fricative.ogg.mp3">đ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><img src="images/H_turned_H_ligature.svg.png" alt="An h connected to a turned h"></td>
+                            <td></td>
+                            <td>ꭖ</td>
+                            <td>ʝ̵</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><img src="images/W_with_left_hook.svg.png" alt="A w with a hook on its top left"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Approximant</td>
+                            <td>ⱷ</td>
+                            <td class="clickable-text" data-audio-url="audio/Bilabial_approximant.ogg.mp3"><p class="mirrored">β</p></td>
+                            <td rowspan="2">ꜰ</td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3">ᴆ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_palatal_approximant.wav.mp3">ᴊ</span></td>
+                            <td></td>
+                            <td>ᴊʷ</td>
+                            <td></td>
+                            <td>ɉ̊</td>
+                            <td class="clickable-text" data-audio-url="audio/Post-palatal_approximant.ogg.mp3">ɉ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ƾ</td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Trill</td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_bilabial_trill.ogg.mp3">ᴘ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>𝼨</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ꭉ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_trill.ogg.mp3">ᴙ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Fricative trill</td>
+                            <td>ψ̊</td>
+                            <td>ψ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_raised_non-sonorant_trill.ogg.mp3">ɼ̊</span></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Raised_alveolar_non-sonorant_trill.ogg.mp3">ɼ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_uvular_fricative_trill.ogg.mp3">ꭆ̊</span></td>
+                            <td>ꭆ</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Tap or flap</td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td>ɿ̪</td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_tap.wav.mp3">ɿ</span></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_tap.wav.mp3">ʅ</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>ᶄ̆</td>
+                            <td>ꬶ̆</td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Lateral approximant</td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td class="clickable-text" data-audio-url="audio/Voiced_dental_lateral_approximant.ogg.mp3">𝼦</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">lateral flap</td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td style="background-color: #d1d4da;"></td>
+                            <td></td>
+                            <td>ⱹ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_retroflex_lateral_flap.wav.mp3">𝼈</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    𝼧 Dental nasal <br>
+                    Voiced labialized postpalatal approximant 𝼿 (w̶) <br>
+                    Voiceless alveolar lateral approximant ꬹ <br>
+                    voiced alveolo-palatal lateral approximant ȴ <br>
+                    <span class="clickable-text" data-audio-url="audio/Voiced_labiodental_plosive.wav.mp3">ƀ Voiced Labiodental Plosive</span><br>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless-alveolar-implosive.ogg.mp3">ƭ voiceless alveolar implosive</span><br>
+                    ꝵ voiceless alveolar trill <br>
+                    ꞥ Voiceless alveolar nasal <br>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless_labiodental_plosive.ogg.mp3">ᵽ voiceless labiodental plosive</span> <br>
+                    ȷ voiced palatal tap or flap <br>
+                    ᴚ voiced uvular approximant
+                    <h2 style="text-align: center">Other ones</h2>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+                        <!-- Row 1 -->
+                        <table style="width: 30%; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Voiced velar bunched approximant
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                            ᴪ
+                                        </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                <table style="width: 30%; margin-bottom: 20px;">
-                    <tbody>
-                        <tr>
-                            <th style="background: #f2f2ce;">
-                                Retroflex lateral click
-                            </th>
-                        </tr>
-                        <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                        ⦀
-                                    </span>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
+                        <table style="width: 30%; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Retroflex lateral click
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                                ⦀
+                                            </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                <table style="width: 30%; margin-bottom: 20px;">
-                    <tbody>
-                        <tr>
-                            <th style="background: #f2f2ce;">
-                                Voiced compressed post-palatal approximant
-                            </th>
-                        </tr>
-                        <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                        𝼾 (ɥ̵)
-                                    </span>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
+                        <table style="width: 30%; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Voiced compressed post-palatal approximant
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                                𝼾 (ɥ̵)
+                                            </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                <!-- Row 2 -->
-                <table style="width: 30%; margin-bottom: 20px;">
-                    <tbody>
+                        <!-- Row 2 -->
+                        <table style="width: 30%; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Fricated palatal click
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                                𝼋
+                                            </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width: 30%; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Creaky-voiced glottal approximant
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                        <span class="clickable-text" data-audio-url="audio/Creaky-voiced_glottal_approximant.wav.mp3">ꜧ</span>
+                                            </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">
+                                        Voiced (post-velar,) uvular(, pharyngeal, or epiglottal) lateral approximant
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                                        <span class="clickable-text" data-audio-url="audio/Uvular_lateral_approximant.ogg.mp3">ꝇ</span>
+                                            </span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Row 3 -->
+                        <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">Retroflex click</th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">𝼊</span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
+                            <tbody>
+                                <tr>
+                                    <th style="background: #f2f2ce;">Fricated palatal nasal click</th>
+                                </tr>
+                                <tr>
+                                    <th style="background: #ffffe6;">
+                                        <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">𝼌</span>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h2 style="text-align: center">Impossible ones</h2>
+                    <table>
                         <tr>
-                            <th style="background: #f2f2ce;">
-                                Fricated palatal click
-                            </th>
+                            <th></th>
+                            <th colspan="2" scope="col">Bilabial</th>
+                            <th colspan="2" scope="col">Labiodental</th>
+                            <th colspan="2" scope="col">Linguolabial</th>
+                            <th colspan="2" scope="col">Palatal</th>
+                            <th colspan="2" scope="col">Velar</th>
+                            <th colspan="2" scope="col">Uvular</th>
+                            <th colspan="2" scope="col">Pharyngeal</th>
+                            <th colspan="2" scope="col">Epiglottal</th>
+                            <th colspan="2" scope="col">Glottal</th>
                         </tr>
                         <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                        𝼋
-                                    </span>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-                <table style="width: 30%; margin-bottom: 20px;">
-                    <tbody>
-                        <tr>
-                            <th style="background: #f2f2ce;">
-                                Creaky-voiced glottal approximant
-                            </th>
-                        </tr>
-                        <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                <span class="clickable-text" data-audio-url="audio/Creaky-voiced_glottal_approximant.wav.mp3">ꜧ</span>
-                                    </span>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-                <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
-                    <tbody>
-                        <tr>
-                            <th style="background: #f2f2ce;">
-                                Voiced (post-velar,) uvular(, pharyngeal, or epiglottal) lateral approximant
-                            </th>
+                            <td class="label-cell">Plosive</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;">ʡ̬</td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;">ʔ̬</td>
                         </tr>
                         <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
-                                <span class="clickable-text" data-audio-url="audio/Uvular_lateral_approximant.ogg.mp3">ꝇ</span>
-                                    </span>
-                            </th>
+                            <td class="label-cell">Nasal</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #d1d4da;">ɴ̠̊</td>
+                            <td style="background-color: #d1d4da;"><span class="clickable-text" data-audio-url="audio/Voiced-pharyngeal-nasal.ogg.mp3">ɴ̠</span></td>
+                            <td style="background-color: #d1d4da;">ʡ̃</td>
+                            <td style="background-color: #d1d4da;">ʡ̬̃</td>
+                            <td style="background-color: #d1d4da;">ʔ̃</td>
+                            <td style="background-color: #d1d4da;">ʔ̬̃</td>
                         </tr>
-                    </tbody>
-                </table>
-                <!-- Row 3 -->
-                <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
-                    <tbody>
                         <tr>
-                            <th style="background: #f2f2ce;">Retroflex click</th>
+                            <td class="label-cell">Sibilant affricate</td>
+                            <td style="background-color: #d1d4da;">pϕ</td>
+                            <td style="background-color: #d1d4da;">bϐ</td>
+                            <td style="background-color: #d1d4da;">p̪ғ</td>
+                            <td style="background-color: #d1d4da;">b̪ꝟ</td>
+                            <td style="background-color: #d1d4da;">t̼s̼</td>
+                            <td style="background-color: #d1d4da;">d̼z̼</td>
+                            <td style="background-color: #d1d4da;">cɕ̠</td>
+                            <td style="background-color: #d1d4da;">ɟʑ̠</td>
+                            <td style="background-color: #d1d4da;">kӽ</td>
+                            <td style="background-color: #d1d4da;">ɡγ</td>
+                            <td style="background-color: #d1d4da;">qꭔ</td>
+                            <td style="background-color: #d1d4da;"> </td>
+                            <td style="background-color: #d1d4da;">ꞯђ</td>
+                            <td style="background-color: #d1d4da;">𝼂⸮</td>
+                            <td style="background-color: #d1d4da;">ʡӈ</td>
+                            <td style="background-color: #d1d4da;"> </td>
+                            <td style="background-color: #d1d4da;"> </td>
+                            <td style="background-color: #d1d4da;"> </td>
                         </tr>
-                        <tr>
-                            <th style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">𝼊</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h2 style="text-align: center">Impossible ones</h2>
-            <table>
-                <tr>
-                    <th></th>
-                    <th colspan="2" scope="col">Bilabial</th>
-                    <th colspan="2" scope="col">Labiodental</th>
-                    <th colspan="2" scope="col">Linguolabial</th>
-                    <th colspan="2" scope="col">Palatal</th>
-                    <th colspan="2" scope="col">Velar</th>
-                    <th colspan="2" scope="col">Uvular</th>
-                    <th colspan="2" scope="col">Pharyngeal</th>
-                    <th colspan="2" scope="col">Epiglottal</th>
-                    <th colspan="2" scope="col">Glottal</th>
-                </tr>
-                <tr>
-                    <td class="label-cell">Plosive</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;">ʡ̬</td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;">ʔ̬</td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Nasal</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: #d1d4da;">ɴ̠̊</td>
-                    <td style="background-color: #d1d4da;"><span class="clickable-text" data-audio-url="audio/Voiced-pharyngeal-nasal.ogg.mp3">ɴ̠</span></td>
-                    <td style="background-color: #d1d4da;">ʡ̃</td>
-                    <td style="background-color: #d1d4da;">ʡ̬̃</td>
-                    <td style="background-color: #d1d4da;">ʔ̃</td>
-                    <td style="background-color: #d1d4da;">ʔ̬̃</td>
-                </tr>
-                <tr>
-                    <td class="label-cell">Sibilant affricate</td>
-                    <td style="background-color: #d1d4da;">pϕ</td>
-                    <td style="background-color: #d1d4da;">bϐ</td>
-                    <td style="background-color: #d1d4da;">p̪ғ</td>
-                    <td style="background-color: #d1d4da;">b̪ꝟ</td>
-                    <td style="background-color: #d1d4da;">t̼s̼</td>
-                    <td style="background-color: #d1d4da;">d̼z̼</td>
-                    <td style="background-color: #d1d4da;">cɕ̠</td>
-                    <td style="background-color: #d1d4da;">ɟʑ̠</td>
-                    <td style="background-color: #d1d4da;">kӽ</td>
-                    <td style="background-color: #d1d4da;">ɡγ</td>
-                    <td style="background-color: #d1d4da;">qꭔ</td>
-                    <td style="background-color: #d1d4da;"> </td>
-                    <td style="background-color: #d1d4da;">ꞯђ</td>
-                    <td style="background-color: #d1d4da;">𝼂⸮</td>
-                    <td style="background-color: #d1d4da;">ʡӈ</td>
-                    <td style="background-color: #d1d4da;"> </td>
-                    <td style="background-color: #d1d4da;"> </td>
-                    <td style="background-color: #d1d4da;"> </td>
-                </tr>
                 <tr>
                     <td class="label-cell">Sibilant fricative</td>
                     <td style="background-color: #d1d4da;">ϕ</td>
