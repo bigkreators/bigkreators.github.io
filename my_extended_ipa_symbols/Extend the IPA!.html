@@ -213,8 +213,8 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="background-color: #d1d4da;"></td>
+                    <td style="background-color: #d1d4da;"></td>
                 </tr>
                 <tr>
                     <td class="label-cell">Non-sibilant fricative</td>
@@ -339,7 +339,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="label-cell">Flap</td>
+                    <td class="label-cell">Tap or flap</td>
                     <td></td>
                     <td><span class="clickable-text" data-audio-url="audio/Voiced_bilabial_flap.wav.mp3">ⱳ</span></td>
                     <td></td>
@@ -348,7 +348,7 @@
                     <td></td>
                     <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_tap.wav.mp3">ɿ</span></td>
                     <td></td>
-                    <td></td>
+                    <td><span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_tap.wav.mp3">ʅ</span></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -408,11 +408,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td>ⱹ</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
+                <td><span class="clickable-text" data-audio-url="audio/Voiced_retroflex_lateral_flap.wav.mp3">𝼈</span></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -438,7 +438,6 @@
             Voiced labialized postpalatal approximant 𝼿 (w̶) <br>
             Voiceless alveolar lateral approximant ꬹ <br>
             voiced alveolo-palatal lateral approximant ȴ <br>
-            ⱹ voiced dental lateral flap <br>
             <span class="clickable-text" data-audio-url="audio/Voiced_labiodental_plosive.wav.mp3">ƀ Voiced Labiodental Plosive</span><br>
             <span class="clickable-text" data-audio-url="audio/Voiceless-alveolar-implosive.ogg.mp3">ƭ voiceless alveolar implosive</span><br>
             voiceless velar implosive ƙ <br>
@@ -548,6 +547,18 @@
                                 <span class="clickable-text" data-audio-url="audio/Uvular_lateral_approximant.ogg.mp3">ꝇ</span>
                                     </span>
                             </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Row 3 -->
+                <table style="width: 30%; margin-bottom: 20px; height: 133px; box-sizing: border-box;">
+                    <tbody>
+                        <tr>
+                            <th style="background: #f2f2ce;">Retroflex click</th>
+                        </tr>
+                        <tr>
+                            <th style="background: #ffffe6;">
+                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">𝼊</th>
                         </tr>
                     </tbody>
                 </table>
@@ -1024,71 +1035,71 @@
                     </div>
                 </div>
             </div>
-        </div>                                                                                                 <script>
-                                                                                                                                                                                                                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                                                                                                                                                                                                                            // Tab switching functionality
-                                                                                                                                                                                                                                                            const tabs = document.querySelectorAll('.tab');
-                                                                                                                                                                                                                                                            const tabContents = document.querySelectorAll('.tab-content');
-                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                            // Set default active tab
-                                                                                                                                                                                                                                                            document.getElementById('consonants').classList.add('active');
-                                                                                                                                                                                                                                                            document.getElementById('consonants-tab').classList.add('active');
-                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                            tabs.forEach(tab => {
-                                                                                                                                                                                                                                                                tab.addEventListener('click', function() {
-                                                                                                                                                                                                                                                                    // Remove active class from all tabs
-                                                                                                                                                                                                                                                                    tabs.forEach(t => t.classList.remove('active'));
-                                                                                                                                                                                                                                                                    // Add active class to clicked tab
-                                                                                                                                                                                                                                                                    this.classList.add('active');
-                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                    // Hide all tab contents
-                                                                                                                                                                                                                                                                    tabContents.forEach(content => content.classList.remove('active'));
-                                                                                                                                                                                                                                                                    // Show the corresponding tab content
-                                                                                                                                                                                                                                                                    const tabId = this.getAttribute('data-tab');
-                                                                                                                                                                                                                                                                    document.getElementById(tabId).classList.add('active');
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                                            // Set up clickable text functionality
-                                                                                                                                                                                                                                                                        const clickableTexts = document.querySelectorAll('.clickable-text');
-                                                                                                                                                                                                                                                                        clickableTexts.forEach(text => {
-                                                                                                                                                                                                                                                                            text.addEventListener('click', function() {
-                                                                                                                                                                                                                                                                                const audioUrl = this.getAttribute('data-audio-url');
-                                                                                                                                                                                                                                                                                if (audioUrl) {
-                                                                                                                                                                                                                                                                                    const audio = new Audio(audioUrl);
-                                                                                                                                                                                                                                                                                    audio.play();
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                                                        });
-                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                        // Proposals functionality
-                                                                                                                                                                                                                                                                        const submitProposalBtn = document.getElementById('submit-proposal');
-                                                                                                                                                                                                                                                                        const proposalsList = document.getElementById('proposals-list');
-                                                                                                                                                                                                                                                                        let proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
-                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                        // Define admin hash - change this to something unique and complex
-                                                                                                                                                                                                                                                                        const ADMIN_HASH = "yourSecretAdminHash123";
-                                                                                                                                                                                                                                                                        // Check for admin mode in URL hash
-                                                                                                                                                                                                                                                                                    function checkAdminMode() {
-                                                                                                                                                                                                                                                                                        return window.location.hash === "#" + ADMIN_HASH;
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                    // Function to check if user is in admin mode
-                                                                                                                                                                                                                                                                                    function isAdmin() {
-                                                                                                                                                                                                                                                                                        return checkAdminMode();
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                    // Function to clear admin hash from URL (for logging out)
-                                                                                                                                                                                                                                                                                    function clearAdminHash() {
-                                                                                                                                                                                                                                                                                        // Replace current URL without the hash
-                                                                                                                                                                                                                                                                                        window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                    // Function to save proposals to localStorage
-                                                                                                                                                                                                                                                                                    function saveProposals() {
-                                                                                                                                                                                                                                                                                        localStorage.setItem('ipaProposals', JSON.stringify(proposals));
-                                                                                                                                                                                                                                                                                        // After saving, refresh the proposals list
-                                                                                                                                                                                                                                                                                        proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
-                                                                                                                                                                                                                                                                                                    }
+        </div>                                                                                  <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Set default active tab
+            document.getElementById('consonants').classList.add('active');
+            document.getElementById('consonants-tab').classList.add('active');
+
+            tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            this.classList.add('active');
+
+            // Hide all tab contents
+            tabContents.forEach(content => content.classList.remove('active'));
+            // Show the corresponding tab content
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+            });
+            });
+            // Set up clickable text functionality
+            const clickableTexts = document.querySelectorAll('.clickable-text');
+            clickableTexts.forEach(text => {
+            text.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio-url');
+            if (audioUrl) {
+            const audio = new Audio(audioUrl);
+            audio.play();
+            }
+            });
+            });
+
+            // Proposals functionality
+            const submitProposalBtn = document.getElementById('submit-proposal');
+            const proposalsList = document.getElementById('proposals-list');
+            let proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+
+            // Define admin hash - change this to something unique and complex
+            const ADMIN_HASH = "yourSecretAdminHash123";
+            // Check for admin mode in URL hash
+            function checkAdminMode() {
+            return window.location.hash === "#" + ADMIN_HASH;
+            }
+
+            // Function to check if user is in admin mode
+            function isAdmin() {
+            return checkAdminMode();
+            }
+
+            // Function to clear admin hash from URL (for logging out)
+            function clearAdminHash() {
+            // Replace current URL without the hash
+            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            }
+
+            // Function to save proposals to localStorage
+            function saveProposals() {
+            localStorage.setItem('ipaProposals', JSON.stringify(proposals));
+            // After saving, refresh the proposals list
+            proposals = JSON.parse(localStorage.getItem('ipaProposals')) || [];
+            }
                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                     // Function to get current filter selection
                                                                                                                                                                                                                                                                                                     function getCurrentFilter() {
