@@ -854,3 +854,99 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonetic Symbol Card</title>
+    <style>
+        .card {
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #f5f5dc; /* Light beige color */
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .symbol-container {
+            background-color: #f5f5dc;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            line-height: 1.5;
+        }
+        .audio-section {
+            background-color: #f0f0f5;
+            padding: 15px;
+            text-align: center;
+        }
+        .audio-label {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .audio-player {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .play-button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+        }
+        .time-display {
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        .footer {
+            background-color: #f0f0f5;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer a {
+            color: #5959b3;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer .dot {
+            color: #5959b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            Voiceless uvular fricative trill
+        </div>
+        <div class="symbol-container">
+            <div>R̥</div>
+            <div>χR̥</div>
+            <div>ʀ̥</div>
+        </div>
+        <div class="audio-section">
+            <div class="audio-label">Audio sample</div>
+            <div class="audio-player">
+                <button class="play-button">►</button>
+                <div class="time-display">0:02</div>
+            </div>
+        </div>
+        <div class="footer">
+            <a href="#">source</a>
+            <span class="dot">•</span>
+            <a href="#">help</a>
+        </div>
+    </div>
+</body>
+</html>
