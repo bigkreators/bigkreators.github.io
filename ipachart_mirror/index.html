@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
   <head>
       <base href="https://www.ipachart.com/"/>
       <meta charset="utf-8"/>
@@ -28,7 +29,7 @@
       }
       
       p {
-        color: white;
+        color: green;
         text-align: center;
         margin: 10px;
         z-index: 2;
@@ -48,10 +49,11 @@
       /* IPA symbol styling */
       .ipa-symbol {
         position: absolute;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 25, 0.8);
         font-size: 1.5em;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
         user-select: none;
+        font-family: "Noto Sans" !important;
       }
 
       /* Interactive phonetic chart */
@@ -201,7 +203,7 @@
             margin-bottom: 30px;
         }
         .IPA {
-            font-family: "Noto Sans"
+            font-family: "Noto Sans" !important;
         }
         body {
             font-family: sans-serif;
@@ -246,53 +248,6 @@
             padding: 0;
             text-align: center;
             height: 2em;
-        }
-        .selected-display {
-            text-align: center;
-            font-size: 32px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            min-height: 50px;
-            background-color: white;
-        }
-        .control-panel {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .control-btn {
-            padding: 8px 12px;
-            background-color: #4169E1;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .control-btn:hover {
-            background-color: #3a5ecd;
-        }
-        .clear-btn {
-            background-color: #e74c3c;
-        }
-        .clear-btn:hover {
-            background-color: #c0392b;
-        }
-        .symbol {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .section-header {
-            background-color: #333;
-            color: white;
-            padding: 10px 15px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-weight: bold;
         }
         .footer {
             margin-top: 30px;
@@ -399,13 +354,13 @@
             width: 35em;
             margin: 0 0 0 1.5em;
         }
-        .vowels .trapezoid {
-            position: absolute:
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
+          .vowels .trapezoid {
+              position: absolute:
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+          }
         .vowels .v {
             width: 14%;
             text-align: center;
@@ -511,6 +466,10 @@
             top: 34%;
             left: -1.5em;
         }
+          .vowels .mid {
+              top: 48%;
+              left: -1.5em;
+          }
         .vowels .openmid {
             top: 62%;
             left: -1.5em;
@@ -543,6 +502,71 @@
             zoom: 1;
             *display: inline;
         }
+          @media (max-width: 768px) {
+            .at {
+              width: 100%;
+              overflow-x: auto;
+            }
+          }
+          .overflow {
+            contain: content;
+            will-change: transform;
+          }
+          /* Add these to your existing CSS */
+          @media (max-width: 768px) {
+            /* Improve table scrolling on mobile */
+            .overflow, .twins, .voweloverflow {
+              overflow-x: auto;
+              -webkit-overflow-scrolling: touch;
+              max-width: 100%;
+            }
+            
+            /* Reduce font size for better fit on small screens */
+            body {
+              font-size: 14px;
+            }
+            
+            /* Improve spacing for mobile */
+            .at td, .rt td, .ct td {
+              padding: 0.08em;
+            }
+            
+            /* Make twins display vertically on mobile */
+            .twins {
+              display: flex;
+              flex-direction: column;
+            }
+            
+            .twin1, .twin2 {
+              width: 100%;
+              margin: 5px 0;
+            }
+            
+            /* Improve text readability */
+            .text {
+              max-width: 95%;
+              padding: 0.5em;
+            }
+            
+            /* Make symbols more tappable on mobile */
+            .interactive {
+              min-width: 2em;
+              min-height: 2em;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            
+            /* Reduce floating symbols on mobile for better performance */
+            @media (max-width: 480px) {
+              .ipa-symbol {
+                display: none;
+              }
+              .ipa-symbol:nth-child(-n+15) {
+                display: block;
+              }
+            }
+          }
     </style>
     <!--[if lt IE 9]>
     <script src="nwmatcher-1.2.2.min.js"></script>
@@ -606,7 +630,7 @@
       <div class="text">
     <h1>All IPA Symbols</h1>
     <p>The <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet">International Phonetic Alphabet (IPA)</a> is a set of symbols that linguists use to describe the sounds of spoken languages.</p>
-    <p>This page lets you hear the sounds that the symbols represent, like <a href="https://ipachart.com">ipachart.com</a>, but with an addition of the  a diacritics chart, which doesn't have audio, except the dark l and voiced bilabial approximant, and a modified chart that brings all the dedicated symbols into one place, but note that this doesn't include the diacritic combiniations nessacary for filling in the rest of the chart, except the affricates, lateral affricates, and ejectives. Still remember that it is only a rough guide.</p>
+    <p>This page lets you hear the sounds that the symbols represent, like <a href="https://ipachart.com">ipachart.com</a>, but with an addition of the  a diacritics chart, which doesn't have audio, except the dark l and voiced bilabial approximant, and a modified chart that brings all the dedicated symbols into one place, but note that this doesn't include the diacritic combiniations necessary for filling in the rest of the chart, except the affricates, lateral affricates, and ejectives. Still remember that it is only a rough guide.</p>
     <p>Hit a symbol to hear the sound it represents.</p>
       </div>
     <div class="problem" id="noaudio">
@@ -630,6 +654,7 @@
             <div class="l back">Back</div>
             <div class="l close">Close</div>
             <div class="l closemid">Close-mid</div>
+            <div class="l mid">Mid</div>
             <div class="l openmid">Open-mid</div>
             <div class="l open">Open</div>
             <div class="v close_front"><span class="interactive IPA" onclick="ipa('Close_front_unrounded_vowel');">i</span> <span class="interactive IPA" onclick="ipa('Close_front_rounded_vowel');">y</span></div>
@@ -655,9 +680,6 @@
             <div class="v open_back"><span class="interactive IPA" onclick="ipa('Open_back_unrounded_vowel');">ɑ</span> <span class="interactive IPA" onclick="ipa('Open_back_rounded_vowel');">ɒ</span></div>
         </div>
     </div>
-    <!-- Ezoic - long_content - long_content -->
-    <span id="ezoic-pub-ad-placeholder-115"></span><span data-ez-ph-id="115" style="float:none !important;margin-right:auto !important;margin-left:auto !important;display:block !important;min-width:728px;margin-top:15px !important;margin-bottom:15px !important;text-align:center !important;box-sizing:content-box;max-width:100% !important;line-height:0px;min-height:90px;padding:0;"></span>
-    <!-- End Ezoic - long_content - long_content -->
     <h2>Pulmonic consonants</h2>
     <p class="caption">Where symbols appear in pairs, the one to the left represents a voiceless consonant, and the one to the right represents a voiced consonant.</p>
     <p class="caption">Areas shaded grey indicate articulations judged impossible.</p>
@@ -702,11 +724,11 @@
                     <td></td>
                     <td class="interactive IPA" onclick="ipa('Voiceless_uvular_plosive');">q</td>
                     <td class="interactive IPA" onclick="ipa('Voiced_uvular_plosive');">ɢ</td>
-                    <td class= "impossible" </td>
-                        <td class= "impossible" </td>
-                            <td </td>
-                                <td class="impossible"</td>
-                                    <td class="interactive" onclick="ipa('Voiceless_epiglottal_plosive');"><span class="IPA">ʡ</span></td>
+                    <td class= "impossible"></td>
+                        <td class= "impossible"></td>
+                            <td></td>
+                                <td class="impossible"></td>
+    <td class="interactive" onclick="ipa('Voiceless_epiglottal_plosive');"><span class="IPA">ʡ</span></td>
                                     <td class="impossible"></td>
                                     <td class="interactive IPA" onclick="ipa('Glottal_stop');">ʔ</td>
                                     <td class="impossible"></td>
@@ -720,7 +742,7 @@
                     </td>
                     <td></td>
                     <td class="interactive IPA" onclick="ipa('Retroflex_nasal');">ɳ</td>
-                    <td </td>
+                    <td></td>
                         <td class="interactive IPA" onclick="ipa('Alveolo-palatal_nasal');">ȵ</td>
                         <td></td><td class="interactive IPA" onclick="ipa('Palatal_nasal');">ɲ</td>
                         <td></td><td class="interactive IPA" onclick="ipa('Velar_nasal');">ŋ</td>
@@ -778,59 +800,39 @@
                 </tr>
                 <tr>
                     <th>Lateral flap</th>
-                    <td class = "impossible"
-                        </td>
-                        <td class = "impossible"
-                            </td>
-                            <td class = "impossible"
-                                </td>
-                                <td class = "impossible"
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td> <td class="interactive" onclick="ipa('Alveolar_lateral_flap');"><span class="IPA">ɺ</span></td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td class="interactive" onclick="ipa('Retroflex_Lateral_flap');"><span class="IPA">𝼈</span>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    </td>
+                    <td class="impossible"></td>
+                        <td class="impossible"></td>
+                            <td class="impossible"></td>
+                                <td class="impossible"></td>
                                     <td></td>
                                     <td></td>
-                                    <td class = "impossible"></td>
-                                    <td class = "impossible"></td>
-                                    <td class = "impossible"
-                                        </td>
-                                        <td class = "impossible"
-                                            </td>
-                                            <td class = "impossible"
-                                                </td>
-                                                <td class = "impossible"
-                                                    </td>
-                                                    <td class = "impossible"
-                                                        </td>
-                                                        <td class = "impossible"
-                                                            </td>
+                                    <td></td>
+                                    <td class="interactive" onclick="ipa('Alveolar_lateral_flap');"><span class="IPA">ɺ</span></td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td class="interactive" onclick="ipa('Retroflex_lateral_flap');"><span class="IPA">𝼈</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="impossible"></td>
+                                    <td class="impossible"></td>
+                                    <td class="impossible"></td>
+                                        <td class="impossible"></td>
+                                            <td class="impossible"></td>
+                                                <td class="impossible"></td>
+                                                    <td class="impossible"></td>
+                                                        <td class="impossible"></td>
                                                         </tr>
                     <tr>
                     <th>Fricative</th>
@@ -892,7 +894,7 @@
                 <td class="impossible"></td>
                 <td class="impossible"></td>
                 <td class="impossible"></td>
-                <td class="impossible" </td>
+                <td class="impossible"></td>
                     <td> </td>
                     <td> </td>
                     <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_lateral–median_fricative');">ʪ</td>
@@ -935,11 +937,12 @@
                         <td></td>
                         <td></td>
                         <td></td><td></td>
-                        <td> </td>
-                        <td> </td>
+                        <td></td>
+                        <td></td>
                         <td></td><td></td>
                         <td></td><td></td>
-                        <td class="impossible"</td><td class="impossible"</td>
+                        <td class="impossible"></td>
+                        <td class="impossible"></td>
                         </tr>
                         <tr>
                         <th>Lateral Approximant</th>
@@ -987,29 +990,34 @@
                    <th colspan="2">Glot<wbr/>tal</th>
                </tr>
                    <tr>
-                       <th> Affricate</th>
-                       <td class="interactive IPA" onclick="ipa('Voiceless_bi­labial_affricate');"><span class="IPA">p͡ɸ</td>
-                       <td class="interactive IPA" onclick="ipa('Voiced_bi­labial_affricate');"><span class="IPA">b͡β</td>
-                       <td></td><td></td><td></td><td></td>
-                       <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_affricate');"><span class="IPA">t͡s</td>
-                       <td class="interactive IPA" onclick="ipa('Voiced_alveolar_affricate');"><span class="IPA">d͡z</td>
-                       <td class="interactive IPA" onclick="ipa('Voiceless_palato-alveolar_affricate');"><span class="IPA">t͡ʃ</td>
-                       <td class="interactive" onclick="ipa('Voiced_postalveolar_affricate');"><span class="IPA">d͡ʒ</td>
-                       <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_affricate');"><span class="IPA">ʈ͡ʂ</td>
-                       <td class="interactive IPA" onclick="ipa('Voiced_retroflex_affricate');"><span class="IPA">ɖ͡ʐ</td>
-                       <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_affricate');"><span class="IPA">ȶ͡ɕ</span></td><td class="interactive" onclick="ipa('Voiced_alveolo-palatal_affricate');"><span class="IPA">ȡ͡ʑ</span></td>
-                       <td class="interactive" onclick="ipa('Voiceless_palatal_affricate');"><span class="IPA">c͡ç</span></td><td class="interactive" onclick="ipa('Voiced_palatal_affricate');"><span class="IPA">ɟ͡ʝ</td></td>
-                       <td class="interactive" onclick="ipa('Voiceless_velar_affricate');"><span class="IPA">k͡x</td>
-                       <td class="interactive" onclick="ipa('Voiced_velar_affricate');"><span class="IPA">ɡ͡ɣ</td>
-                       <td class="interactive onclick="ipa('Voiceless_uvular_affricate');"><span class="IPA">q͡χ</td>
-                       <td class="interactive" onclick="ipa('Voiced_uvular_affricate');"><span class="IPA">ɢ͡ʁ</td>
+                       <th>Affricate</th>
+                       <td class="interactive IPA" onclick="ipa('Voiceless_bi­labial_affricate');"><span class="IPA">p͡ɸ</span></td>
+                       <td class="interactive IPA" onclick="ipa('Voiced_bi­labial_affricate');"><span class="IPA">b͡β</span></td>
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                       <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_affricate');"><span class="IPA">t͡s</span></td>
+                       <td class="interactive IPA" onclick="ipa('Voiced_alveolar_affricate');"><span class="IPA">d͡z</span></td>
+                       <td class="interactive IPA" onclick="ipa('Voiceless_palato-alveolar_affricate');"><span class="IPA">t͡ʃ</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_postalveolar_affricate');"><span class="IPA">d͡ʒ</span></td>
+                       <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_affricate');"><span class="IPA">ʈ͡ʂ</span></td>
+                       <td class="interactive IPA" onclick="ipa('Voiced_retroflex_affricate');"><span class="IPA">ɖ͡ʐ</span></td>
+                       <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_affricate');"><span class="IPA">ȶ͡ɕ</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_alveolo-palatal_affricate');"><span class="IPA">ȡ͡ʑ</span></td>
+                       <td class="interactive" onclick="ipa('Voiceless_palatal_affricate');"><span class="IPA">c͡ç</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_palatal_affricate');"><span class="IPA">ɟ͡ʝ</span></td>
+                       <td class="interactive" onclick="ipa('Voiceless_velar_affricate');"><span class="IPA">k͡x</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_velar_affricate');"><span class="IPA">ɡ͡ɣ</span></td>
+                       <td class="interactive" onclick="ipa('Voiceless_uvular_affricate');"><span class="IPA">q͡χ</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_uvular_affricate');"><span class="IPA">ɢ͡ʁ</span></td>
                        <td class="impossible"></td>
                        <td class="impossible"></td>
-                       <td </td>
+                       <td></td>
                            <td></td>
-                           <td class="interactive" onclick="ipa('Voiceless_epiglottal_affricate');"><span class="IPA">ʡ͡ʜ</td>
+                           <td class="interactive" onclick="ipa('Voiceless_epiglottal_affricate');"><span class="IPA">ʡ͡ʜ</span></td>
                            <td></td>
-                           <td class="interactive" onclick="ipa('voiceless_glottal_affricate');"><span class="IPA">ʔ͡h</td>
+                           <td class="interactive" onclick="ipa('voiceless_glottal_affricate');"><span class="IPA">ʔ͡h</span></td>
                                <td></td>
                    </tr>
                    <tr>
@@ -1020,17 +1028,17 @@
                        <td class="impossible"></td>
                        <td> </td>
                        <td> </td>
-                       <td class="interactive" onclick="ipa('Voiceless_alveolar_lateral_affricate');"><span class="IPA">t͡ɬ</td>
-                       <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_affricate');"><span class="IPA">d͡ɮ</td>
+                       <td class="interactive" onclick="ipa('Voiceless_alveolar_lateral_affricate');"><span class="IPA">t͡ɬ</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_affricate');"><span class="IPA">d͡ɮ</span></td>
                        <td></td>
                        <td></td>
-                       <td class="interactive" onclick="ipa('Voiceless_retroflex_lateral_affricate');"><span class="IPA">ʈ͡ꞎ</td>
-                       <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_affricate');"><span class="IPA">ɖ͡𝼅</td>
+                       <td class="interactive" onclick="ipa('Voiceless_retroflex_lateral_affricate');"><span class="IPA">ʈ͡ꞎ</span></td>
+                       <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_affricate');"><span class="IPA">ɖ͡𝼅</span></td>
                        <td></td>
                        <td></td>
-                       <td class="interactive" onclick="ipa('Voiceless_palatal_lateral_affricate');"><span class="IPA">c͜𝼆</td>
+                       <td class="interactive" onclick="ipa('Voiceless_palatal_lateral_affricate');"><span class="IPA">c͜𝼆</span></td>
                        <td></td>
-                       <td class="interactive" onclick="ipa('Voiceless_velar_lateral_affricate');"><span class="IPA">k͜𝼄</td>
+                       <td class="interactive" onclick="ipa('Voiceless_velar_lateral_affricate');"><span class="IPA">k͜𝼄</span></td>
                        <td></td>
                        <td></td>
                        <td></td>
@@ -1052,7 +1060,7 @@
                         <tr><td class="interactive" onclick="ipa('Voiceless_labial-velar_plosive');"><span class="IPA">k͡p</span> Simultaneous k and p</td></tr>
                         <tr><td class="interactive" onclick="ipa('Voiced_labial-velar_plosive');"><span class="IPA">ɡ͡b</span> Simultaneous ɡ and b</td></tr>
                         <tr><td class="interactive" onclick="ipa('Labial-velar_nasal_stop');"><span class="IPA">ŋ͡m</span> Simultaneous ŋ and m</td></tr>
-                    <tr><td class="interactive"<td class="interactive" onclick="ipa('Voiceless_labio-velar_fricative');"><span class="IPA">ʍ</span> Voiceless labial-velar fricative</td></tr>
+                    <tr><td class="interactive" onclick="ipa('Voiceless_labio-velar_fricative');"><span class="IPA">ʍ</span> Voiceless labial-velar fricative</td></tr>
                     <tr><td class="interactive" onclick="ipa('Voiced_labio-velar_approximant');"><span class="IPA">w</span> Voiced labial-velar approximant</td></tr>
                     <tr><td class="interactive" onclick="ipa('Labial-palatal_approximant');"><span class="IPA">ɥ</span> Voiced labial-palatal approximant</td></tr>
                     <tr><td class="interactive" onclick="ipa('Voiceless_dorso-palatal_velar_fricative');"><span class="IPA">ɧ</span> Simultaneous <span class="IPA nofloat">ʃ</span> and <span class="IPA nofloat">x</span></td></tr>
@@ -1157,59 +1165,59 @@
     </div>
     <h2>Diacritics</h2>
     <table class="rt">
-            <tr>
-            <td class="diacritic">◌̥ / ◌̊</td>
+        <tr>
+            <td class="IPA">◌̥ / ◌̊</td>
             <td>Voiceless</td>
             <td>n̥, l̥, n̊</td>
             
-            <td class="diacritic">◌ʱ / ◌̤</td>
+            <td class="IPA">◌ʱ / ◌̤</td>
             <td>Breathy voiced</td>
             <td>dʱ, bʱ, b̤, a̤</td>
-                        
-            <td class="diacritic">◌ᶹ</td>
-            <td>Labiodental</td> 
+                    
+            <td class="IPA">◌ᶹ</td>
+            <td>Labiodental</td>
             <td>tᶹ</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̬</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̬</td>
             <td>Voiced</td>
             <td>s̬, t̬</td>
             
-            <td>◌̰</td>
+            <td class="IPA">◌̰</td>
             <td>Creaky voiced</td>
             <td>b̰, a̰</td>
             
-            <td class="diacritic">◌̪</td>
+            <td class="IPA">◌̪</td>
             <td>Dental</td>
             <td>t̪, d̪</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌ʰ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌ʰ</td>
             <td>Aspirated</td>
             <td>tʰ, pʰ</td>
             
             <td class="IPA">◌̼</td>
             <td>Linguolabial</td>
             <td>t̼, d̼</td>
-                            
-            <td class="diacritic">◌̺</td>
+                        
+            <td class="IPA">◌̺</td>
             <td>Apical</td>
             <td>t̺, d̺</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌˭</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌˭</td>
             <td>unaspirated</td>
             <td>p˭</td>
             
             <td class="IPA">◌͍</td>
             <td>labial spreading</td>
-            <td>s͍, u͍</td> 
-                
-            <td class="diacritic">◌̻</td>
+            <td>s͍, u͍</td>
+            
+            <td class="IPA">◌̻</td>
             <td>Laminal</td>
             <td>t̻, d̻</td>
-            </tr>
-            <tr>
+        </tr>
+        <tr>
             <td class="IPA">◌̹</td>
             <td>More rounded</td>
             <td>ɔ̹, ʊ̹</td>
@@ -1218,37 +1226,37 @@
             <td>Open-labialized</td>
             <td></td>
             
-            <td class="diacritic">◌̃</td>
+            <td class="IPA">◌̃</td>
             <td>Nasalized</td>
             <td>ẽ, õ</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̜</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̜</td>
             <td>Less rounded</td>
             <td>ɔ̜, ʊ̜</td>
             
-            <td class="diacritic">◌ʷ</td>
+            <td class="IPA">◌ʷ</td>
             <td>Labialized</td>
             <td>tʷ, kʷ</td>
             
-            <td class="diacritic">◌͊</td>
+            <td class="IPA">◌͊</td>
             <td>Denasalized</td>
             <td>m͊, n͊</td>
-            </tr>
-            <tr>
+        </tr>
+        <tr>
             <td class="IPA">◌ⁿ</td>
             <td>Nasal release</td>
             <td>dⁿ, tⁿ</td>
             
-            <td class="diacritic">◌ᵝ</td>
+            <td class="IPA">◌ᵝ</td>
             <td>compressed</td>
             <td>ɯᵝ</td>
             
-            <td class="diacritic">◌͋</td>
+            <td class="IPA">◌͋</td>
             <td>Nasal fricative</td>
             <td>n͋</td>
-            </tr>
-            <tr>
+        </tr>
+        <tr>
             <td></td>
             <td></td>
             <td></td>
@@ -1257,403 +1265,339 @@
             <td>Alveolar</td>
             <td>p͇, t͇</td>
             
-            <td class="diacritic">◌ˡ</td>
+            <td class="IPA">◌ˡ</td>
             <td>Lateral release</td>
             <td>dˡ, tˡ</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̟</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̟</td>
             <td>Advanced</td>
             <td>u̟, ɡ̟</td>
             
-            <td class="diacritic">◌ʲ</td>
+            <td class="IPA">◌ʲ</td>
             <td>Palatalized</td>
             <td>tʲ, dʲ</td>
                 
-            <td class="diacritic">◌̚</td>
+            <td class="IPA">◌̚</td>
             <td>No audible release</td>
             <td>p̚, t̚, k̚</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̠</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̠</td>
             <td>Retracted</td>
             <td>i̠, t̠</td>
             
-            <td class="diacritic">◌ᶣ</td>
+            <td class="IPA">◌ᶣ</td>
             <td>Labio-palatalized</td>
             <td></td>
             
-            <td class="diacritic">◌ᵊ</td>
+            <td class="IPA">◌ᵊ</td>
             <td>Mid central vowel release</td>
             <td></td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̈</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̈</td>
             <td>Centralized</td>
             <td>ë, ö</td>
             
-            <td class="diacritic"> </td>
+            <td class="IPA">◌ˠ</td>
             <td>Velarized</td>
             <td>tˠ, bˠ</td>
             
-            <td class="diacritic">◌ᶿ</td>
+            <td class="IPA">◌ᶿ</td>
             <td>Voiceless dental fricative release</td>
             <td></td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̽</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̽</td>
             <td>Mid-centralized</td>
             <td>e̽, o̽</td>
                 
-            <td class="diacritic">◌ʶ</td>
+            <td class="IPA">◌ʶ</td>
             <td>Uvularized</td>
-            <td>tʶ</td>                          
+            <td>tʶ</td>
                                                             
-            <td class="diacritic">◌ˣ</td>
+            <td class="IPA">◌ˣ</td>
             <td>Voiceless velar fricative release</td>
             <td></td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̩</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̩</td>
             <td>Syllabic</td>
             <td>n̩, l̩</td>
             
-            <td class="diacritic">◌ˤ</td>
+            <td class="IPA">◌ˤ</td>
             <td>Pharyngealized</td>
-            <td>tˤ, sˤ</td>   
+            <td>tˤ, sˤ</td>
                                                             
-            <td class="diacritic">↑</td>
+            <td class="IPA">↑</td>
             <td>Egressive airstream</td>
             <td></td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌̯</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̯</td>
             <td>Non-syllabic</td>
             <td>e̯, u̯</td>
             
-            <td class="diacritic">◌̴</td>
+            <td class="IPA">◌̴</td>
             <td>Velarized or pharyngealized</td>
-            <td class="interactive" onclick="ipa('Velarized_alveolar_lateral_approximant');"><span class="IPA">ɫ</span>(dark l)</td>                            
+            <td class="interactive" onclick="ipa('Velarized_alveolar_lateral_approximant');"><span class="IPA">ɫ</span>dark l</td>
                                                 
-            <td class="diacritic">↓</td>
+            <td class="IPA">↓</td>
             <td>Downstep</td>
             <td></td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌͈</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌͈</td>
             <td>strong articulation</td>
             <td>f͈</td>
             
-            <td class="diacritic">◌ˀ</td>
+            <td class="IPA">◌ˀ</td>
             <td>Glottalized</td>
             <td>tˀ, kˀ</td>
                                                                         
-            </tr>
-            <tr>
-            <td class="diacritic">◌͉</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌͉</td>
             <td>weak articulation</td>
             <td>v͉</td>
                                                                            
-            <td class="diacritic"> </td>
+            <td class="IPA">◌̝</td>
             <td>Raised</td>
             <td>e̝, ɹ̝</td>
                                             
-            </tr>
-            <tr>
-            <td class="diacritic">◌͎</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌͎</td>
             <td>whistled articulation</td>
             <td>s͎</td>
                                             
-            <td class="diacritic">◌̞</td>
+            <td class="IPA">◌̞</td>
             <td>Lowered</td>
-            <td>e̞, ʃ̞</td>
-            </tr>
-            <tr>
-            <td class="diacritic">◌˞</td>
+            <td class="interactive" onclick="ipa('Bilabial_approximant');"><span class="IPA">β̞</span>Voiced bilabial approximant</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌˞</td>
             <td>Rhoticity</td>
             <td>ɚ, ɝ</td>
             
-            <td class="diacritic">◌̘</td>
+            <td class="IPA">◌̘</td>
             <td>Advanced tongue root</td>
             <td>e̘, o̘</td>
-            </tr>
-            <tr>
+        </tr>
+        <tr>
             <td></td>
             <td></td>
             <td></td>
             
-            <td class="diacritic">◌̙</td>
+            <td class="IPA">◌̙</td>
             <td>Retracted tongue root</td>
             <td>e̙, o̙</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̋</td>
+            <td>Extra high tone</td>
+            <td>ő, ű</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌́</td>
+            <td>High tone</td>
+            <td>é, á</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̄</td>
+            <td>Mid tone</td>
+            <td>ē, ō</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̀</td>
+            <td>Low tone</td>
+            <td>è, ò</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̏</td>
+            <td>Extra low tone</td>
+            <td>ȅ, ȍ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̌</td>
+            <td>Rising tone</td>
+            <td>ě, ǎ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̂</td>
+            <td>Falling tone</td>
+            <td>ê, ô</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷄</td>
+            <td>High-mid tone</td>
+            <td>e᷄, o᷄</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷅</td>
+            <td>Low-mid tone</td>
+            <td>e᷅, o᷅</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷈</td>
+            <td>Rising-falling tone</td>
+            <td>e᷈, o᷈</td>
+        </tr>
+        <tr>
+            <td class="IPA">↗</td>
+            <td>Global rise</td>
+            <td>↗</td>
+        </tr>
+        <tr>
+            <td class="IPA">↘</td>
+            <td>Global fall</td>
+            <td>↘</td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="twins">
+        <div class="twin1">
+    <div class="chart-section">
+        <h3>Suprasegmentals</h3>
+        
+        <table class="rt">
+            <tr>
+                <td class="IPA">ˈ◌</td>
+                <td>Primary stress</td>
+                <td>foʊˈnɛtɪks</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̆</td>
+                <td class="IPA">ˌ◌</td>
+                <td>Secondary stress</td>
+                <td>ˌɪntərˈnæʃənəl</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌ː</td>
+                <td>Long</td>
+                <td>iː, uː</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌ˑ</td>
+                <td>Half-long</td>
+                <td>eˑ, oˑ</td>
+            </tr>
+            <tr>
+            <td class="IPA">◌̆</td>
             <td>Extra-short</td>
             <td>ă, ĕ</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̋</td>
-            <td>Extra high tone</td>
-            <td>ő, ű</td>
+                <td class="IPA">◌|◌</td>
+                <td>Minor (foot) group</td>
+                <td>words | words</td>
             </tr>
             <tr>
-            <td class="diacritic">◌́</td>
-            <td>High tone</td>
-            <td>é, á</td>
+                <td class="IPA">◌‖◌</td>
+                <td>Major (intonation) group</td>
+                <td>words ‖ words</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̄</td>
-            <td>Mid tone</td>
-            <td>ē, ō</td>
+                <td class="IPA">◌.◌</td>
+                <td>Syllable break</td>
+                <td>ri.ækt</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̀</td>
-            <td>Low tone</td>
-            <td>è, ò</td>
+                <td class="IPA">◌‿◌</td>
+                <td>Linking (absence of a break)</td>
+                <td>rock‿and‿roll</td>
+            </tr>
+        </table>
+    </div>
+        </div>
+        <div class="twin2">
+    <div class="chart-section">
+        <h3>Tone and Word Accents</h3>
+        
+        <table class="rt">
+            <tr>
+                <td class="IPA">◌˥</td>
+                <td>Extra high tone</td>
+                <td>ma˥</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̏</td>
-            <td>Extra low tone</td>
-            <td>ȅ, ȍ</td>
+                <td class="IPA">◌˦</td>
+                <td>High tone</td>
+                <td>ma˦</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̌</td>
-            <td>Rising tone</td>
-            <td>ě, ǎ</td>
+                <td class="IPA">◌˧</td>
+                <td>Mid tone</td>
+                <td>ma˧</td>
             </tr>
             <tr>
-            <td class="diacritic">◌̂</td>
-            <td>Falling tone</td>
-            <td>ê, ô</td>
+                <td class="IPA">◌˨</td>
+                <td>Low tone</td>
+                <td>ma˨</td>
             </tr>
             <tr>
-            <td class="diacritic">◌᷄</td>
-            <td>High-mid tone</td>
-            <td>e᷄, o᷄</td>
+                <td class="IPA">◌˩</td>
+                <td>Extra low tone</td>
+                <td>ma˩</td>
             </tr>
             <tr>
-            <td class="diacritic">◌᷅</td>
-            <td>Low-mid tone</td>
-            <td>e᷅, o᷅</td>
+                <td class="IPA">◌˩˥</td>
+                <td>Rising tone</td>
+                <td>ma˩˥</td>
             </tr>
             <tr>
-            <td class="diacritic">◌᷈</td>
-            <td>Rising-falling tone</td>
-            <td>e᷈, o᷈</td>
+                <td class="IPA">◌˥˩</td>
+                <td>Falling tone</td>
+                <td>ma˥˩</td>
             </tr>
             <tr>
-            <td class="diacritic">↗</td>
-            <td>Global rise</td>
-            <td>↗</td>
+                <td class="IPA">◌˦˥</td>
+                <td>High rising tone</td>
+                <td>ma˦˥</td>
             </tr>
             <tr>
-            <td class="diacritic">↘</td>
-                <td>Global fall</td>
-                <td>↘</td>
-                </tr>
-                </table>
-                </div>
-                
-                <div class="chart-section">
-                    <h3>Suprasegmentals</h3>
-                    
-                    <table class="rt">
-                            <tr>
-                            <th>Example with ◌ Placeholder</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Example</th>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">ˈ◌</td>
-                            <td>Primary stress</td>
-                            <td class="description">Mark for primary stress in a word</td>
-                            <td>foʊˈnɛtɪks</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">ˌ◌</td>
-                            <td>Secondary stress</td>
-                            <td class="description">Mark for secondary stress in a word</td>
-                            <td>ˌɪntərˈnæʃənəl</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌ː</td>
-                            <td>Long</td>
-                            <td class="description">Marks lengthened sounds</td>
-                            <td>iː, uː</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌ˑ</td>
-                            <td>Half-long</td>
-                            <td class="description">Marks half-lengthened sounds</td>
-                            <td>eˑ, oˑ</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌|◌</td>
-                            <td>Minor (foot) group</td>
-                            <td class="description">Marks a minor phrase boundary</td>
-                            <td>words | words</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌‖◌</td>
-                            <td>Major (intonation) group</td>
-                            <td class="description">Marks a major phrase boundary</td>
-                            <td>words ‖ words</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌.◌</td>
-                            <td>Syllable break</td>
-                            <td class="description">Marks syllable boundaries</td>
-                            <td>ri.ækt</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌‿◌</td>
-                            <td>Linking (absence of a break)</td>
-                            <td class="description">Marks linking between words</td>
-                            <td>rock‿and‿roll</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <div class="chart-section">
-                    <h3>Tone and Word Accents</h3>
-                    
-                    <table class="rt">
-                            <tr>
-                            <th>Example with ◌ Placeholder</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Example</th>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˥</td>
-                            <td>Extra high tone</td>
-                            <td class="description">Level 5 tone (highest)</td>
-                            <td>ma˥</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˦</td>
-                            <td>High tone</td>
-                            <td class="description">Level 4 tone</td>
-                            <td>ma˦</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˧</td>
-                            <td>Mid tone</td>
-                            <td class="description">Level 3 tone</td>
-                            <td>ma˧</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˨</td>
-                            <td>Low tone</td>
-                            <td class="description">Level 2 tone</td>
-                            <td>ma˨</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˩</td>
-                            <td>Extra low tone</td>
-                            <td class="description">Level 1 tone (lowest)</td>
-                            <td>ma˩</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˩˥</td>
-                            <td>Rising tone</td>
-                            <td class="description">Contour rising from lowest to highest</td>
-                            <td>ma˩˥</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˥˩</td>
-                            <td>Falling tone</td>
-                            <td class="description">Contour falling from highest to lowest</td>
-                            <td>ma˥˩</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˦˥</td>
-                            <td>High rising tone</td>
-                            <td class="description">Contour rising from high to extra high</td>
-                            <td>ma˦˥</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˩˨</td>
-                            <td>Low rising tone</td>
-                            <td class="description">Contour rising from extra low to low</td>
-                            <td>ma˩˨</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˥˦</td>
-                            <td>High falling tone</td>
-                            <td class="description">Contour falling from extra high to high</td>
-                            <td>ma˥˦</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˨˩</td>
-                            <td>Low falling tone</td>
-                            <td class="description">Contour falling from low to extra low</td>
-                            <td>ma˨˩</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˧˦˧</td>
-                            <td>Mid rising falling tone</td>
-                            <td class="description">Complex contour tone</td>
-                            <td>ma˧˦˧</td>
-                            </tr>
-                            <tr>
-                            <td class="diacritic">◌˩˨˩</td>
-                            <td>Low rising falling tone</td>
-                            <td>ma˩˨˩</td>
-                        </tr>
-                    </table>
+                <td class="IPA">◌˩˨</td>
+                <td>Low rising tone</td>
+                <td>ma˩˨</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌˥˦</td>
+                <td>High falling tone</td>
+                <td>ma˥˦</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌˨˩</td>
+                <td>Low falling tone</td>
+                <td>ma˨˩</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌˧˦˧</td>
+                <td>Mid rising falling tone</td>
+                <td>ma˧˦˧</td>
+            </tr>
+            <tr>
+                <td class="IPA">◌˩˨˩</td>
+                <td>Low rising falling tone</td>
+                <td>ma˩˨˩</td>
+            </tr>
+        </table>
+        </div>
+    </div>
     <div id="object"></div>
     <div class="text">
-        <p class="copyright">This content and audio is adapted from the IPA Chart website, and has been modified. Original source: <a href="https://ipachart.com">ipachart.com</a>. It doesn't look alike because the design is AI generated by Claude.</p></a>
+        <p class="copyright">This content and audio is adapted from the IPA Chart website, and has been modified. Original source: <a href="https://ipachart.com">ipachart.com</a>. It doesn't look alike because the design is AI generated by Claude.</p>
     </div>
-    Saved for later: <table class="rt">
-        <td class="interactive" onclick="ipa('Bilabial_approximant');"><span class="IPA">β̞</span>Voiced bilabial approximant</td>
-        </table>
     
     <!-- Container for floating IPA symbols -->
     <div class="ipa-symbols-container" id="ipaSymbolsContainer"></div>
 
     <script>
-      // IPA consonant symbols with descriptions
-      const consonants = [
-        { symbol: 'p', description: 'voiceless bilabial plosive' },
-        { symbol: 'b', description: 'voiced bilabial plosive' },
-        { symbol: 't', description: 'voiceless alveolar plosive' },
-        { symbol: 'd', description: 'voiced alveolar plosive' },
-        { symbol: 'k', description: 'voiceless velar plosive' },
-        { symbol: 'g', description: 'voiced velar plosive' },
-        { symbol: 'm', description: 'bilabial nasal' },
-        { symbol: 'n', description: 'alveolar nasal' },
-        { symbol: 'ŋ', description: 'velar nasal' },
-        { symbol: 'f', description: 'voiceless labiodental fricative' },
-        { symbol: 'v', description: 'voiced labiodental fricative' },
-        { symbol: 'θ', description: 'voiceless dental fricative' },
-        { symbol: 'ð', description: 'voiced dental fricative' },
-        { symbol: 's', description: 'voiceless alveolar fricative' },
-        { symbol: 'z', description: 'voiced alveolar fricative' },
-        { symbol: 'ʃ', description: 'voiceless postalveolar fricative' }
-      ];
-      
-      // IPA vowel symbols with positions for the vowel chart
-      const vowels = [
-        { symbol: 'i', top: '20%', left: '15%', description: 'close front unrounded vowel' },
-        { symbol: 'y', top: '20%', left: '35%', description: 'close front rounded vowel' },
-        { symbol: 'ɨ', top: '20%', left: '55%', description: 'close central unrounded vowel' },
-        { symbol: 'u', top: '20%', left: '85%', description: 'close back rounded vowel' },
-        { symbol: 'e', top: '40%', left: '15%', description: 'close-mid front unrounded vowel' },
-        { symbol: 'ø', top: '40%', left: '35%', description: 'close-mid front rounded vowel' },
-        { symbol: 'ə', top: '50%', left: '55%', description: 'mid central vowel' },
-        { symbol: 'o', top: '40%', left: '85%', description: 'close-mid back rounded vowel' },
-        { symbol: 'æ', top: '70%', left: '15%', description: 'near-open front unrounded vowel' },
-        { symbol: 'a', top: '85%', left: '25%', description: 'open front unrounded vowel' },
-        { symbol: 'ɑ', top: '85%', left: '75%', description: 'open back unrounded vowel' }
-      ];
       
       // All IPA symbols to use for the floating background
       const allIpaSymbols = [
-        'p', 'b', 't', 'd', 'k', 'g', 'm', 'n', 'ŋ', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ',
-        'h', 'r', 'l', 'j', 'w', 'i', 'y', 'ɨ', 'u', 'e', 'ø', 'ə', 'o', 'æ', 'a', 'ɑ', 'ɒ'
+        'p', 'b', 't', 'd', 'k', 'ɡ', 'm', 'n', 'ŋ', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ',
+        'h', 'r', 'l', 'j', 'w', 'i', 'y', 'ɨ', 'u', 'e', 'ø', 'ə', 'o', 'æ', 'a', 'ɑ', 'ɒ', '𝼆', 'ᶑ', 'ç', '𝼈', 'ʢ', 'ɰ', 'ʪ', 'ꞎ', '𝼊', 'ɬ', '𝼄', 'ʬ', 'ɘ', 'ᵻ', 'ɵ', 'ɤ', 'ɣ', 'ɓ', 'ɧ', 'ɥ', 'ʘ', 'ɱ', '𝼀', 'χ', 'ɞ', 'ɶ', '𝼂', 'ɢ', 'ɴ', 'ʞ', 'ʁ', 'q', '𝼃', 'ɸ', 'ȡ', 'ǀ', 'ʈ', 'ɖ', 'ȶ', 'ȡ', 'ʍ', 'c', 'ɟ', 'ʡ', 'ʔ', 'ɳ', 'ȵ', 'ɴ', 'ʙ', 'ʀ', 'ⱱ', 'ɾ', 'ɽ', 'ɺ', 'β', 'ʂ', 'ʐ', 'ɕ', 'ʑ', 'ʝ', 'ʩ', 'ħ', 'ʕ', 'ʜ', 'ɦ', 'ɮ', '𝼅', 'ʫ', 'ʋ', 'ɹ', 'ɻ', 'ɭ', 'ȴ', 'ʎ', 'ʟ', 'ǃ', 'ǂ', 'ɓ', 'ɗ', 'ʄ', 'ɠ', 'ʛ', '𝼁', '𝼇', 'ꞯ', 'ʭ', '¡', 'ǁ', 'ʉ', 'ɯ', 'ɪ', 'ʏ', 'ᵿ', 'ʊ', 'ɛ', 'œ', 'ɜ', 'ʌ', 'ɔ', 'ɐ', 'ᴀ'
       ];
       
       // Number of floating IPA symbols
@@ -1707,7 +1651,8 @@
           createFloatingIpaSymbol();
         }, animationDuration * 1000);
       }
-      
+        const consonants = [];
+        const vowels = [];
       // Populate the consonant chart
       const consonantChart = document.getElementById('consonantChart');
       consonants.forEach(consonant => {
