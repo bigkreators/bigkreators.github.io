@@ -9,7 +9,7 @@
             font-family: 'Georgia', serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f9f7f1;
@@ -31,12 +31,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .poems-section {
-            flex: 1;
+            flex: 1.5;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-height: 600px;
+            max-height: 700px;
             overflow-y: auto;
         }
         textarea, input {
@@ -46,10 +46,27 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-family: 'Georgia', serif;
+            box-sizing: border-box;
         }
         textarea {
-            height: 200px;
+            height: 150px;
             resize: vertical;
+        }
+        .file-input-container {
+            margin-bottom: 15px;
+        }
+        .file-input-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 4px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         button {
             background-color: #3498db;
@@ -95,6 +112,25 @@
             border-left: 4px solid #3498db;
             position: relative;
         }
+        .poem-with-cover {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        .poem-cover {
+            flex-shrink: 0;
+            width: 120px;
+        }
+        .poem-cover img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .poem-content {
+            flex: 1;
+        }
         .poem h3 {
             margin-top: 0;
             color: #2c3e50;
@@ -131,6 +167,16 @@
             font-style: italic;
             padding: 20px;
         }
+        .remove-image-btn {
+            background-color: #e74c3c;
+            font-size: 11px;
+            padding: 3px 8px;
+            margin-top: 5px;
+            margin-left: 0;
+        }
+        .remove-image-btn:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -142,6 +188,13 @@
             <input type="text" id="title" placeholder="Title">
             <textarea id="poem-text" placeholder="Write your poem here..."></textarea>
             <input type="text" id="author" placeholder="Your name">
+            
+            <div class="file-input-container">
+                <label class="file-input-label" for="cover-image">Cover Image (optional):</label>
+                <input type="file" id="cover-image" accept="image/*">
+                <div id="preview-container"></div>
+            </div>
+            
             <button id="save-poem">Save Poem</button>
         </div>
         
@@ -157,6 +210,10 @@
     </div>
 
     <script>
+        let currentCoverImage = null;
+        let isEditing = false;
+        let editingId = null;
+
         // Load poems from local storage when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadPoems();
@@ -164,7 +221,34 @@
             // Set up event listeners
             document.getElementById('save-poem').addEventListener('click', savePoem);
             document.getElementById('search').addEventListener('input', searchPoems);
+            document.getElementById('cover-image').addEventListener('change', handleImageUpload);
         });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('preview-container');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentCoverImage = e.target.result;
+                    previewContainer.innerHTML = `
+                        <img src="${currentCoverImage}" class="image-preview" alt="Cover preview">
+                        <button type="button" class="remove-image-btn" onclick="removeCoverImage()">Remove Image</button>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                currentCoverImage = null;
+                previewContainer.innerHTML = '';
+            }
+        }
+
+        function removeCoverImage() {
+            currentCoverImage = null;
+            document.getElementById('cover-image').value = '';
+            document.getElementById('preview-container').innerHTML = '';
+        }
 
         function savePoem() {
             const title = document.getElementById('title').value.trim();
@@ -172,7 +256,12 @@
             const author = document.getElementById('author').value.trim();
             
             if (!title || !text || !author) {
-                alert('Please fill in all fields');
+                alert('Please fill in all required fields (title, poem text, and author)');
+                return;
+            }
+            
+            if (isEditing) {
+                updatePoem(editingId);
                 return;
             }
             
@@ -181,7 +270,8 @@
                 title: title,
                 text: text,
                 author: author,
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString(),
+                coverImage: currentCoverImage
             };
             
             // Get existing poems from local storage
@@ -194,9 +284,7 @@
             localStorage.setItem('poems', JSON.stringify(poems));
             
             // Clear input fields
-            document.getElementById('title').value = '';
-            document.getElementById('poem-text').value = '';
-            document.getElementById('author').value = '';
+            resetForm();
             
             // Reload poems display
             loadPoems();
@@ -215,10 +303,23 @@
             document.getElementById('poem-text').value = poem.text;
             document.getElementById('author').value = poem.author;
             
+            // Set cover image if exists
+            if (poem.coverImage) {
+                currentCoverImage = poem.coverImage;
+                document.getElementById('preview-container').innerHTML = `
+                    <img src="${currentCoverImage}" class="image-preview" alt="Cover preview">
+                    <button type="button" class="remove-image-btn" onclick="removeCoverImage()">Remove Image</button>
+                `;
+            } else {
+                currentCoverImage = null;
+                document.getElementById('preview-container').innerHTML = '';
+            }
+            
             // Change the save button to update mode
             const saveBtn = document.getElementById('save-poem');
             saveBtn.textContent = 'Update Poem';
-            saveBtn.onclick = function() { updatePoem(poemId); };
+            isEditing = true;
+            editingId = poemId;
             
             // Scroll to the input section
             document.querySelector('.input-section').scrollIntoView({
@@ -232,7 +333,7 @@
             const author = document.getElementById('author').value.trim();
             
             if (!title || !text || !author) {
-                alert('Please fill in all fields');
+                alert('Please fill in all required fields (title, poem text, and author)');
                 return;
             }
             
@@ -247,6 +348,7 @@
                     title: title,
                     text: text,
                     author: author,
+                    coverImage: currentCoverImage,
                     date: poems[poemIndex].date // Keep original date
                 };
                 
@@ -271,10 +373,14 @@
             document.getElementById('title').value = '';
             document.getElementById('poem-text').value = '';
             document.getElementById('author').value = '';
+            document.getElementById('cover-image').value = '';
+            document.getElementById('preview-container').innerHTML = '';
+            currentCoverImage = null;
             
             const saveBtn = document.getElementById('save-poem');
             saveBtn.textContent = 'Save Poem';
-            saveBtn.onclick = savePoem;
+            isEditing = false;
+            editingId = null;
         }
         
         function deletePoem(poemId) {
@@ -321,20 +427,45 @@
             poems.forEach(poem => {
                 const poemElement = document.createElement('div');
                 poemElement.className = 'poem';
-                poemElement.innerHTML = `
-                    <h3>${poem.title}</h3>
-                    <p>${poem.text}</p>
-                    <div class="poem-footer">
-                        <div class="poem-buttons">
-                            <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
-                            <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                
+                if (poem.coverImage) {
+                    poemElement.innerHTML = `
+                        <div class="poem-with-cover">
+                            <div class="poem-cover">
+                                <img src="${poem.coverImage}" alt="Cover for ${poem.title}">
+                            </div>
+                            <div class="poem-content">
+                                <h3>${poem.title}</h3>
+                                <p>${poem.text}</p>
+                                <div class="poem-footer">
+                                    <div class="poem-buttons">
+                                        <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
+                                        <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                                    </div>
+                                    <div class="poem-meta">
+                                        <div class="author">By ${poem.author}</div>
+                                        <div class="date">${poem.date}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="poem-meta">
-                            <div class="author">By ${poem.author}</div>
-                            <div class="date">${poem.date}</div>
+                    `;
+                } else {
+                    poemElement.innerHTML = `
+                        <h3>${poem.title}</h3>
+                        <p>${poem.text}</p>
+                        <div class="poem-footer">
+                            <div class="poem-buttons">
+                                <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
+                                <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                            </div>
+                            <div class="poem-meta">
+                                <div class="author">By ${poem.author}</div>
+                                <div class="date">${poem.date}</div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
                 poemsContainer.appendChild(poemElement);
             });
         }
@@ -370,20 +501,45 @@
             filteredPoems.forEach(poem => {
                 const poemElement = document.createElement('div');
                 poemElement.className = 'poem';
-                poemElement.innerHTML = `
-                    <h3>${poem.title}</h3>
-                    <p>${poem.text}</p>
-                    <div class="poem-footer">
-                        <div class="poem-buttons">
-                            <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
-                            <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                
+                if (poem.coverImage) {
+                    poemElement.innerHTML = `
+                        <div class="poem-with-cover">
+                            <div class="poem-cover">
+                                <img src="${poem.coverImage}" alt="Cover for ${poem.title}">
+                            </div>
+                            <div class="poem-content">
+                                <h3>${poem.title}</h3>
+                                <p>${poem.text}</p>
+                                <div class="poem-footer">
+                                    <div class="poem-buttons">
+                                        <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
+                                        <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                                    </div>
+                                    <div class="poem-meta">
+                                        <div class="author">By ${poem.author}</div>
+                                        <div class="date">${poem.date}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="poem-meta">
-                            <div class="author">By ${poem.author}</div>
-                            <div class="date">${poem.date}</div>
+                    `;
+                } else {
+                    poemElement.innerHTML = `
+                        <h3>${poem.title}</h3>
+                        <p>${poem.text}</p>
+                        <div class="poem-footer">
+                            <div class="poem-buttons">
+                                <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
+                                <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
+                            </div>
+                            <div class="poem-meta">
+                                <div class="author">By ${poem.author}</div>
+                                <div class="date">${poem.date}</div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
                 poemsContainer.appendChild(poemElement);
             });
         }

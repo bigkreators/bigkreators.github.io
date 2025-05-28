@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Hidden Unicode Character Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .scanner-section {
+            background: #f9f9f9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            font-family: monospace;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .results {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .problem-char {
+            background: #ffcccc;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .safe-char {
+            background: #ccffcc;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .fix-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .fix-button:hover {
+            background: #45a049;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hidden Unicode Character Scanner</h1>
+    
+    <div class="warning">
+        <h3>⚠️ Common Problematic Characters in IPA Charts:</h3>
+        <ul>
+            <li><strong>Soft Hyphen (­)</strong> - U+00AD - Invisible, breaks file paths</li>
+            <li><strong>Non-breaking Space ( )</strong> - U+00A0 - Looks like space but isn't</li>
+            <li><strong>Zero Width Space</strong> - U+200B - Completely invisible</li>
+            <li><strong>En Dash (–)</strong> - U+2013 - Longer than regular dash</li>
+            <li><strong>Em Dash (—)</strong> - U+2014 - Even longer dash</li>
+        </ul>
+    </div>
+
+    <div class="scanner-section">
+        <h2>Paste Your HTML Code Here</h2>
+        <textarea id="inputText" placeholder="Paste your HTML code here, especially the parts with onclick='ipa(...)' calls..."></textarea>
+        <br>
+        <button class="fix-button" onclick="scanForProblems()">🔍 Scan for Hidden Characters</button>
+        <button class="fix-button" onclick="autoFix()">🔧 Auto-Fix Common Issues</button>
+    </div>
+
+    <div class="scanner-section">
+        <h2>Scan Results</h2>
+        <div id="scanResults" class="results">
+            Paste your code above and click "Scan for Hidden Characters" to see results.
+        </div>
+    </div>
+
+    <div class="scanner-section">
+        <h2>Fixed Code</h2>
+        <textarea id="fixedCode" placeholder="Fixed code will appear here..." readonly></textarea>
+        <br>
+        <button class="fix-button" onclick="copyFixed()">📋 Copy Fixed Code</button>
+    </div>
+
+    <script>
+        // Common problematic Unicode characters
+        const problematicChars = {
+            '\u00AD': 'Soft Hyphen (invisible)',
+            '\u00A0': 'Non-breaking Space',
+            '\u200B': 'Zero Width Space',
+            '\u200C': 'Zero Width Non-joiner',
+            '\u200D': 'Zero Width Joiner',
+            '\u2013': 'En Dash (–)',
+            '\u2014': 'Em Dash (—)',
+            '\u2010': 'Hyphen (‐)',
+            '\u2011': 'Non-breaking Hyphen',
+            '\u00AD': 'Soft Hyphen',
+            '\uFEFF': 'Byte Order Mark'
+        };
+
+        function scanForProblems() {
+            const text = document.getElementById('inputText').value;
+            const results = document.getElementById('scanResults');
+            
+            if (!text.trim()) {
+                results.innerHTML = '<p>Please paste some code to scan.</p>';
+                return;
+            }
+
+            let foundProblems = [];
+            let htmlOutput = '<h3>Character Analysis:</h3>';
+            
+            // Look for onclick="ipa(...)" patterns
+            const ipaMatches = text.match(/onclick="ipa\('([^']+)'\)"/g);
+            
+            if (ipaMatches) {
+                htmlOutput += '<h4>Found IPA function calls:</h4><ul>';
+                
+                ipaMatches.forEach((match, index) => {
+                    const filename = match.match(/ipa\('([^']+)'\)/)[1];
+                    htmlOutput += `<li><strong>Call ${index + 1}:</strong> <code>${filename}</code><br>`;
+                    
+                    // Check each character in the filename
+                    let charAnalysis = 'Characters: ';
+                    for (let i = 0; i < filename.length; i++) {
+                        const char = filename.charAt(i);
+                        const code = filename.charCodeAt(i);
+                        const hexCode = 'U+' + code.toString(16).toUpperCase().padStart(4, '0');
+                        
+                        if (problematicChars[char]) {
+                            charAnalysis += `<span class="problem-char">"${char}" (${hexCode} - ${problematicChars[char]})</span> `;
+                            foundProblems.push({
+                                char: char,
+                                code: hexCode,
+                                description: problematicChars[char],
+                                context: filename
+                            });
+                        } else if (char === ' ') {
+                            charAnalysis += `<span class="safe-char">SPACE (${hexCode})</span> `;
+                        } else {
+                            charAnalysis += `"${char}" `;
+                        }
+                    }
+                    htmlOutput += charAnalysis + '</li>';
+                });
+                htmlOutput += '</ul>';
+            }
+
+            // Summary
+            if (foundProblems.length > 0) {
+                htmlOutput += `<h4>🚨 Found ${foundProblems.length} problematic character(s):</h4><ul>`;
+                foundProblems.forEach(problem => {
+                    htmlOutput += `<li><span class="problem-char">${problem.char}</span> ${problem.code} - ${problem.description} in "${problem.context}"</li>`;
+                });
+                htmlOutput += '</ul>';
+                htmlOutput += '<p><strong>Recommendation:</strong> Click "Auto-Fix Common Issues" to clean these up.</p>';
+            } else {
+                htmlOutput += '<h4>✅ No problematic characters found!</h4>';
+            }
+
+            results.innerHTML = htmlOutput;
+        }
+
+        function autoFix() {
+            let text = document.getElementById('inputText').value;
+            
+            if (!text.trim()) {
+                alert('Please paste some code first.');
+                return;
+            }
+
+            let fixedText = text;
+            let changesCount = 0;
+
+            // Fix common problematic characters
+            const fixes = {
+                '\u00AD': '-',        // Soft hyphen → regular hyphen
+                '\u00A0': ' ',        // Non-breaking space → regular space
+                '\u200B': '',         // Zero width space → nothing
+                '\u200C': '',         // Zero width non-joiner → nothing
+                '\u200D': '',         // Zero width joiner → nothing
+                '\u2013': '-',        // En dash → regular hyphen
+                '\u2014': '-',        // Em dash → regular hyphen
+                '\u2010': '-',        // Hyphen → regular hyphen
+                '\u2011': '-',        // Non-breaking hyphen → regular hyphen
+                '\uFEFF': ''          // Byte order mark → nothing
+            };
+
+            for (const [problematic, replacement] of Object.entries(fixes)) {
+                const originalLength = fixedText.length;
+                fixedText = fixedText.replaceAll(problematic, replacement);
+                if (fixedText.length !== originalLength) {
+                    changesCount++;
+                }
+            }
+
+            document.getElementById('fixedCode').value = fixedText;
+            
+            if (changesCount > 0) {
+                alert(`Fixed ${changesCount} type(s) of problematic characters!`);
+                scanForProblems(); // Re-scan to show the results
+            } else {
+                alert('No problematic characters found to fix.');
+            }
+        }
+
+        function copyFixed() {
+            const fixedCode = document.getElementById('fixedCode');
+            fixedCode.select();
+            document.execCommand('copy');
+            alert('Fixed code copied to clipboard!');
+        }
+
+        // Pre-fill with the user's example
+        document.getElementById('inputText').value = `<td class="interactive IPA" onclick="ipa('Voiceless_bi­labial_affricate');"><span class="IPA">p͡ɸ</span></td>
+<td class="interactive IPA" onclick="ipa('Voiced_bi­labial_affricate');"><span class="IPA">b͡β</span></td>`;
+    </script>
+</body>
+</html>

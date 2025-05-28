@@ -1,9 +1,27 @@
 span {
     display: inline-block;
 }
-
-
-
+.Turned {
+    transform: rotate(180deg)
+}
+.grayed-out {
+            background-color: #d1d4da;
+        }
+a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: underline;
+    color: #0000EE;
+}
+.clickable-text {
+    cursor: pointer;
+}
+.clickable-text:hover {
+    background-color: #f0f0f0;
+}
 
 
 
@@ -13,7 +31,7 @@ body {
     padding: 20px;
 }
 .container {
-    max-width: 1305px;
+    max-width: 1463px;
     margin: 0 auto;
     background-color: white;
     border-radius: 8px;
