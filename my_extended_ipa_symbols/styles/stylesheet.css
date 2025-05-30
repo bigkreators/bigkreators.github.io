@@ -22,6 +22,12 @@ a:hover {
 .clickable-text:hover {
     background-color: #f0f0f0;
 }
+.otherones-table {
+width: 30%;
+margin-bottom: 20px;
+height: 133px;
+box-sizing: border-box;
+}
 
 
 
