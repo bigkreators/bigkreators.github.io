@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, user-scalable=no" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
     <link rel="preload" href="Noto_Sans.ttf" as="font" type="font/ttf" crossorigin>
     <title>All IPA Symbols</title>
     <style type="text/css">
@@ -193,7 +193,6 @@
         .IPA {
             font-family: "Noto Sans", Arial, sans-serif;
         }
-      }
       h2 {
           text-align: center;
           margin: 1em 0 0 0;
@@ -486,36 +485,23 @@
           zoom: 1;
           *display: inline;
       }
+        
+        /* Mobile responsive additions - ONLY minimal changes */
         @media (max-width: 768px) {
+          body {
+            padding: 10px;
+          }
+          
           .at {
             width: 100%;
             overflow-x: auto;
           }
-        }
-        .overflow {
-          contain: content;
-          will-change: transform;
-        }
-        /* Add these to your existing CSS */
-        @media (max-width: 768px) {
-          /* Improve table scrolling on mobile */
+          
           .overflow, .twins, .voweloverflow {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            max-width: 100%;
           }
           
-          /* Reduce font size for better fit on small screens */
-          body {
-            font-size: 14px;
-          }
-          
-          /* Improve spacing for mobile */
-          .at td, .rt td, .ct td {
-            padding: 0.08em;
-          }
-          
-          /* Make twins display vertically on mobile */
           .twins {
             display: flex;
             flex-direction: column;
@@ -526,29 +512,19 @@
             margin: 5px 0;
           }
           
-          /* Improve text readability */
           .text {
             max-width: 95%;
-            padding: 0.5em;
           }
           
-          /* Make symbols more tappable on mobile */
-          .interactive {
-            min-width: 2em;
-            min-height: 2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          /* Reduce floating symbols on mobile */
+          .ipa-symbol:nth-child(n+16) {
+            display: none;
           }
-          
-          /* Reduce floating symbols on mobile for better performance */
-          @media (max-width: 480px) {
-            .ipa-symbol {
-              display: none;
-            }
-            .ipa-symbol:nth-child(-n+15) {
-              display: block;
-            }
+        }
+
+        @media (max-width: 480px) {
+          .ipa-symbol:nth-child(n+11) {
+            display: none;
           }
         }
 </style>
@@ -1627,9 +1603,6 @@
         createFloatingIpaSymbol();
       }, animationDuration * 1000);
     }
-
-    // All the dead code has been removed!
-    // The floating IPA symbols should work perfectly now.
-    </script>
+</script>
 </body>
 </html>
