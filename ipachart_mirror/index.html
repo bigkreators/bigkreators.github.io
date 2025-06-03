@@ -1,1635 +1,1796 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, user-scalable=no" name="viewport"/>
-    <link rel="preload" href="Noto_Sans.ttf" as="font" type="font/ttf" crossorigin>
-    <title>All IPA Symbols</title>
-    <style type="text/css">
-    /* Setting up the base styles */
-    body {
-      background-color: #8B0000; /* Dark red background */
-      margin: 0;
-      padding: 0;
-      position: relative;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    font-family: sans-serif;
-    text-align: center;
-    }
-    
-    p {
-      color: green;
-      text-align: center;
-      margin: 10px;
-      z-index: 2;
-    }
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+    <link rel="preload" href="Noto_Sans.ttf" as="font" type="font/ttf" crossorigin>
+    <title>All IPA Symbols</title>
+    <style type="text/css">
+    /* Setting up the base styles */
+    body {
+      background-color: #8B0000; /* Dark red background */
+      margin: 0;
+      padding: 0;
+      position: relative;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    
+    p {
+      color: green;
+      text-align: center;
+      margin: 10px;
+      z-index: 2;
+    }
 
-    /* IPA symbols container */
-    .ipa-symbols-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
-        @font-face {
-          font-family: 'Noto Sans';
-          src: url('Noto_Sans.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-        
-    /* IPA symbol styling */
-    .ipa-symbol {
-        position: absolute;
-        color: rgba(255, 255, 25, 0.8);
-        font-size: 1.5em;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
-        user-select: none;
-        font-family: 'Noto Sans', Arial, sans-serif; /* Add Arial here */
-    }
+    /* IPA symbols container */
+    .ipa-symbols-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+        @font-face {
+          font-family: 'Noto Sans';
+          src: url('Noto_Sans.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+        }
+        
+    /* IPA symbol styling */
+    .ipa-symbol {
+        position: absolute;
+        color: rgba(255, 255, 25, 0.8);
+        font-size: 1.5em;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+        user-select: none;
+        font-family: 'Noto Sans', Arial, sans-serif;
+        will-change: transform;
+        backface-visibility: hidden;
+    }
 
-    /* Interactive phonetic chart */
-    .phonetic-chart {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 10px;
-      margin: 20px auto;
-      max-width: 800px;
-      z-index: 3;
-    }
+    /* Interactive phonetic chart */
+    .phonetic-chart {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 800px;
+      z-index: 3;
+    }
 
-    .phonetic-button {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 2px solid white;
-      border-radius: 8px;
-      padding: 10px;
-      color: white;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    .phonetic-button {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      border-radius: 8px;
+      padding: 10px;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-    .phonetic-button:hover {
-      background-color: rgba(255, 255, 255, 0.4);
-      transform: scale(1.05);
-    }
+    .phonetic-button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
 
-    /* Vowel quadrilateral */
-    .vowel-chart {
-      width: 300px;
-      height: 200px;
-      border: 2px solid white;
-      position: relative;
-      margin: 30px auto;
-      z-index: 3;
-    }
+    /* Vowel quadrilateral */
+    .vowel-chart {
+      width: 300px;
+      height: 200px;
+      border: 2px solid white;
+      position: relative;
+      margin: 30px auto;
+      z-index: 3;
+    }
 
-    .vowel-symbol {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+    .vowel-symbol {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-    .vowel-symbol:hover {
-      background-color: rgba(255, 255, 255, 0.6);
-      transform: scale(1.2);
-    }
+    .vowel-symbol:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+      transform: scale(1.2);
+    }
 
-    /* Keyframes for falling animation */
-    @keyframes fall {
-      0% {
-        transform: translateY(-10vh) translateX(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(100vh) translateX(20px);
-        opacity: 0;
-      }
-    }
+    /* Cross-browser animations with hardware acceleration */
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) translateX(0) translateZ(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(100vh) translateX(20px) translateZ(0);
+        opacity: 0;
+      }
+    }
 
-    /* Keyframes for rising animation */
-    @keyframes rise {
-      0% {
-        transform: translateY(110vh) translateX(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.7;
-      }
-      90% {
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(0vh) translateX(20px);
-        opacity: 0;
-      }
-    }
+    @keyframes rise {
+      0% {
+        transform: translateY(110vh) translateX(0) translateZ(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(0vh) translateX(20px) translateZ(0);
+        opacity: 0;
+      }
+    }
 
-    /* Keyframes for floating animation */
-    @keyframes float {
-      0% {
-        transform: translate(0, 0);
-        opacity: 0.3;
-      }
-      50% {
-        transform: translate(15px, 15px);
-        opacity: 0.8;
-      }
-      100% {
-        transform: translate(0, 0);
-        opacity: 0.3;
-      }
-    }
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) translateZ(0);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translate(15px, 15px) translateZ(0);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(0, 0) translateZ(0);
+        opacity: 0.3;
+      }
+    }
 
-    /* Keyframes for pulse animation */
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2);
-      }
-    }
-      table {
-                  border-collapse: collapse;
-                  margin-bottom: 20px;
-              }
-     th, td {
-         border: 1px solid #fff;
-                  padding: 10px;
-                  text-align: center;
-                  vertical-align: middle;
-              }
-      h1 {
-          text-align: center;
-          color: #333;
-          margin-bottom: 30px;
-      }
-        .IPA {
-            font-family: "Noto Sans", Arial, sans-serif;
-        }
-      }
-      h2 {
-          text-align: center;
-          margin: 1em 0 0 0;
-      }
-      .text h1, .text h2 {
-          margin: 0.25em 0;
-          text-align: left;
-      }
-      .nowrap {
-          white-space: nowrap;
-      }
-      .problem {
-          background-color: #faa;
-          border: 1px solid #f00;
-          padding: 0 1em;
-          margin: 1em auto;
-          max-width: 37em;
-      }
-      .chart-container {
-          background-color: white;
-          border: 1px solid #ddd;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-          padding: 20px;
-          border-radius: 5px;
-      }
-      .text {
-          background-color: #cfc;
-          border: 1px solid #bdb;
-          padding: 0 1em;
-          margin: 1em auto;
-          max-width: 37em;
-          text-align: left;
-      }
-      #object {
-          display: none;
-          margin: 1em 0;
-          padding: 0;
-          text-align: center;
-          height: 2em;
-      }
-      .footer {
-          margin-top: 30px;
-          text-align: center;
-          font-size: 12px;
-          color: #666;
-      }
-      #object object {
-          margin: 0;
-          padding: 0;
-          width: 20em;
-          height: 3em;
-      }
-      #noaudio {
-          display: none;
-      }
-      
-      .at, .ct, .rt {
-          text-align: center;
-          margin: 0.2em auto 0.1em auto;
-          border-spacing: 0.15em;
-      }
-      .at {
-          width: 49em;
-      }
-      .at td, .at th {
-          vertical-align: middle;
-      }
-      .at th {
-          line-height: 100%;
-          padding: 0.15em;
-      }
-      .at td {
-          width: 1.5em;
-          height: 1.5em;
-          padding: 0.1em;
-          line-height: 1.3em;
-      }
-      .at tr:nth-child(1) td:nth-child(1) {
-          background-color: #8B0000 !important;
-          min-width: 10em;
-      }
-      .at tr th:nth-child(even), .at tr .interactive:nth-child(4n+2), .at tr .interactive:nth-child(4n+3), .ct td, .rt td {
-          background-color: #8B0000;
-      }
-      .at tr th:nth-child(odd), .at tr .interactive:nth-child(4n+4), .at tr .interactive:nth-child(4n+1), .ct th, .rt th, .vowels .interactive {
-          background: linear-gradient(green, black);
-      }
-      .at td, .ct .blank {
-          background-color: #c6e3bf;
-      }
-      .interactive {
-          cursor: pointer;
-      }
-      .interactive:hover {
-          background: #22f !important;
-          color: #fff;
-      }
-      .at .extended:nth-child(even) {
-          padding-left: 3.85em !important;
-      }
-      .at .extended:nth-child(odd) {
-          padding-right: 3.85em !important;
-      }
-      .at .impossible {
-          background-color: #d2d2d2 !important;
-      }
-      .ct .IPA, .rt .IPA {
-          float: left;
-          display: block;
-          width: 2em;
-          text-align: center;
-      }
-      .nofloat {
-          float: none !important;
-          display: inline !important;
-          width: auto !important;
-          text-align: inherit !important;
-      }
-      .ct td, .rt td {
-          padding: 0.2em 1em 0.2em 0.2em;
-          text-align: left;
-          line-height: 1.5em;
-          white-space: nowrap;
-      }
-      .ct .IPA, .rt .IPA {
-          font-size: 1.3em;
-      }
-      .ct .impossible {
-          width: 10em;
-          background-color: #d2d2d2 !important;
-      }
-      .overflow, .twins, .voweloverflow {
-          overflow-x: auto;
-          overflow-y: hidden;
-      }
-      .voweloverflow {
-          position: relative;
-          max-width: 38em;
-          margin: 1.5em auto 0.1em auto;
-      }
-      .vowels {
-          position: relative;
-          width: 35em;
-          margin: 0 0 0 1.5em;
-      }
-        .vowels .trapezoid {
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-      .vowels .v {
-          width: 14%;
-          text-align: center;
-          position: absolute;
-      }
-      .vowels .close_front {
-          top: 4%;
-          left: 4%;
-      }
-      .vowels .close_central {
-          top: 4%;
-          left: 44%;
-      }
-      .vowels .close_back {
-          top: 4%;
-          left: 84%;
-      }
-      .vowels .nearclose_central {
-          top: 18%;
-          left: 44%;
-      }
-      .vowels .nearclose_nearfront {
-          top: 18%;
-          left: 23%;
-      }
-      .vowels .nearclose_nearback {
-          top: 18%;
-          left: 71%;
-      }
-      .vowels .closemid_front {
-          top: 33%;
-          left: 18%;
-      }
-      .vowels .closemid_central {
-          top: 33%;
-          left: 51%;
-      }
-      .vowels .closemid_back {
-          top: 33%;
-          left: 84%;
-      }
-      .vowels .mid_central {
-          top: 47%;
-          left: 54%;
-      }
-      .vowels .openmid_front {
-          top: 61%;
-          left: 31%;
-      }
-      .vowels .openmid_central {
-          top: 61%;
-          left: 58%;
-      }
-      .vowels .openmid_back {
-          top: 61%;
-          left: 84%;
-      }
-      .vowels .nearopen_front {
-          top: 79%;
-          left: 34%;
-      }
-      .vowels .nearopen_central {
-          top: 73%;
-          left: 60%;
-      }
-      .vowels .open_front {
-          top: 90%;
-          left: 44%;
-      }
-      .vowels .open_central {
-          top: 90%;
-          left: 60%;
-      }
-      .vowels .open_back {
-          top: 90%;
-          left: 84%;
-      }
-      .vowels .interactive {
-          font-size: 1.3em;
-          padding: 0.3em;
-      }
-      .vowels .l {
-          position: absolute;
-          font-size: 90%;
-      }
-      .vowels .front {
-          top: -1.5em;
-          left: 7%;
-      }
-      .vowels .central {
-          top: -1.5em;
-          left: 45%;
-      }
-      .vowels .back {
-          top: -1.5em;
-          left: 87%;
-      }
-      .vowels .close {
-          top: 5%;
-          left: -1.5em;
-      }
-      .vowels .closemid {
-          top: 34%;
-          left: -1.5em;
-      }
-        .vowels .mid {
-            top: 48%;
-            left: -1.5em;
-        }
-      .vowels .openmid {
-          top: 62%;
-          left: -1.5em;
-      }
-      .vowels .open {
-          top: 90%;
-          left: -1.5em;
-      }
-      .caption {
-          font-size: 90%;
-          text-align: center;
-          margin: 0.1em auto 0.2em auto;
-      }
-      .copyright {
-          font-size: 90%;
-          text-align: left;
-      }
-      .twins {
-          margin: 0;
-          padding: 0;
-          text-align: center;
-      }
-      .twin1, .twin2 {
-          margin: 0;
-          padding: 0;
-          display: -moz-inline-stack;
-          display: inline-block;
-          vertical-align: top;
-          margin: 5px;
-          zoom: 1;
-          *display: inline;
-      }
-        @media (max-width: 768px) {
-          .at {
-            width: 100%;
-            overflow-x: auto;
-          }
-        }
-        .overflow {
-          contain: content;
-          will-change: transform;
-        }
-        /* Add these to your existing CSS */
-        @media (max-width: 768px) {
-          /* Improve table scrolling on mobile */
-          .overflow, .twins, .voweloverflow {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            max-width: 100%;
-          }
-          
-          /* Reduce font size for better fit on small screens */
-          body {
-            font-size: 14px;
-          }
-          
-          /* Improve spacing for mobile */
-          .at td, .rt td, .ct td {
-            padding: 0.08em;
-          }
-          
-          /* Make twins display vertically on mobile */
-          .twins {
-            display: flex;
-            flex-direction: column;
-          }
-          
-          .twin1, .twin2 {
-            width: 100%;
-            margin: 5px 0;
-          }
-          
-          /* Improve text readability */
-          .text {
-            max-width: 95%;
-            padding: 0.5em;
-          }
-          
-          /* Make symbols more tappable on mobile */
-          .interactive {
-            min-width: 2em;
-            min-height: 2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          
-          /* Reduce floating symbols on mobile for better performance */
-          @media (max-width: 480px) {
-            .ipa-symbol {
-              display: none;
-            }
-            .ipa-symbol:nth-child(-n+15) {
-              display: block;
-            }
-          }
-        }
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1) translateZ(0);
+      }
+      50% {
+        transform: scale(1.2) translateZ(0);
+      }
+    }
+
+    table {
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    th, td {
+        border: 1px solid #fff;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    
+    .IPA {
+        font-family: "Noto Sans", Arial, sans-serif;
+    }
+    
+    h2 {
+        text-align: center;
+        margin: 1em 0 0 0;
+    }
+    
+    .text h1, .text h2 {
+        margin: 0.25em 0;
+        text-align: left;
+        color: #333;
+    }
+    
+    .nowrap {
+        white-space: nowrap;
+    }
+    
+    .problem {
+        background-color: #faa;
+        border: 1px solid #f00;
+        padding: 0 1em;
+        margin: 1em auto;
+        max-width: 37em;
+    }
+    
+    .chart-container {
+        background-color: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 20px;
+        border-radius: 5px;
+    }
+    
+    .text {
+        background-color: #cfc;
+        border: 1px solid #bdb;
+        padding: 0 1em;
+        margin: 1em auto;
+        max-width: 37em;
+        text-align: left;
+        color: #333;
+    }
+    
+    #object {
+        display: none;
+        margin: 1em 0;
+        padding: 0;
+        text-align: center;
+        height: 2em;
+    }
+    
+    .footer {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    #object object {
+        margin: 0;
+        padding: 0;
+        width: 20em;
+        height: 3em;
+    }
+    
+    #noaudio {
+        display: none;
+    }
+    
+    .at, .ct, .rt {
+        text-align: center;
+        margin: 0.2em auto 0.1em auto;
+        border-spacing: 0.15em;
+    }
+    
+    .at {
+        width: 49em;
+    }
+    
+    .at td, .at th {
+        vertical-align: middle;
+    }
+    
+    .at th {
+        line-height: 100%;
+        padding: 0.15em;
+    }
+    
+    .at td {
+        width: 1.5em;
+        height: 1.5em;
+        padding: 0.1em;
+        line-height: 1.3em;
+    }
+    
+    .at tr:nth-child(1) td:nth-child(1) {
+        background-color: #8B0000 !important;
+        min-width: 10em;
+    }
+    
+    .at tr th:nth-child(even), .at tr .interactive:nth-child(4n+2), .at tr .interactive:nth-child(4n+3), .ct td, .rt td {
+        background-color: #8B0000;
+    }
+    
+    .at tr th:nth-child(odd), .at tr .interactive:nth-child(4n+4), .at tr .interactive:nth-child(4n+1), .ct th, .rt th, .vowels .interactive {
+        background: linear-gradient(green, black);
+    }
+    
+    .at td, .ct .blank {
+        background-color: #c6e3bf;
+    }
+    
+    .interactive {
+        cursor: pointer;
+    }
+    
+    .interactive:hover {
+        background: #22f !important;
+        color: #fff;
+    }
+    
+    .at .extended:nth-child(even) {
+        padding-left: 3.85em !important;
+    }
+    
+    .at .extended:nth-child(odd) {
+        padding-right: 3.85em !important;
+    }
+    
+    .at .impossible {
+        background-color: #d2d2d2 !important;
+    }
+    
+    .ct .IPA, .rt .IPA {
+        float: left;
+        display: block;
+        width: 2em;
+        text-align: center;
+    }
+    
+    .nofloat {
+        float: none !important;
+        display: inline !important;
+        width: auto !important;
+        text-align: inherit !important;
+    }
+    
+    .ct td, .rt td {
+        padding: 0.2em 1em 0.2em 0.2em;
+        text-align: left;
+        line-height: 1.5em;
+        white-space: nowrap;
+    }
+    
+    .ct .IPA, .rt .IPA {
+        font-size: 1.3em;
+    }
+    
+    .ct .impossible {
+        width: 10em;
+        background-color: #d2d2d2 !important;
+    }
+    
+    .overflow, .twins, .voweloverflow {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .voweloverflow {
+        position: relative;
+        max-width: 38em;
+        margin: 1.5em auto 0.1em auto;
+    }
+    
+    .vowels {
+        position: relative;
+        width: 35em;
+        margin: 0 0 0 1.5em;
+    }
+    
+    .vowels .trapezoid {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .vowels .v {
+        width: 14%;
+        text-align: center;
+        position: absolute;
+    }
+    
+    .vowels .close_front {
+        top: 4%;
+        left: 4%;
+    }
+    
+    .vowels .close_central {
+        top: 4%;
+        left: 44%;
+    }
+    
+    .vowels .close_back {
+        top: 4%;
+        left: 84%;
+    }
+    
+    .vowels .nearclose_central {
+        top: 18%;
+        left: 44%;
+    }
+    
+    .vowels .nearclose_nearfront {
+        top: 18%;
+        left: 23%;
+    }
+    
+    .vowels .nearclose_nearback {
+        top: 18%;
+        left: 71%;
+    }
+    
+    .vowels .closemid_front {
+        top: 33%;
+        left: 18%;
+    }
+    
+    .vowels .closemid_central {
+        top: 33%;
+        left: 51%;
+    }
+    
+    .vowels .closemid_back {
+        top: 33%;
+        left: 84%;
+    }
+    
+    .vowels .mid_central {
+        top: 47%;
+        left: 54%;
+    }
+    
+    .vowels .openmid_front {
+        top: 61%;
+        left: 31%;
+    }
+    
+    .vowels .openmid_central {
+        top: 61%;
+        left: 58%;
+    }
+    
+    .vowels .openmid_back {
+        top: 61%;
+        left: 84%;
+    }
+    
+    .vowels .nearopen_front {
+        top: 79%;
+        left: 34%;
+    }
+    
+    .vowels .nearopen_central {
+        top: 73%;
+        left: 60%;
+    }
+    
+    .vowels .open_front {
+        top: 90%;
+        left: 44%;
+    }
+    
+    .vowels .open_central {
+        top: 90%;
+        left: 60%;
+    }
+    
+    .vowels .open_back {
+        top: 90%;
+        left: 84%;
+    }
+    
+    .vowels .interactive {
+        font-size: 1.3em;
+        padding: 0.3em;
+    }
+    
+    .vowels .l {
+        position: absolute;
+        font-size: 90%;
+    }
+    
+    .vowels .front {
+        top: -1.5em;
+        left: 7%;
+    }
+    
+    .vowels .central {
+        top: -1.5em;
+        left: 45%;
+    }
+    
+    .vowels .back {
+        top: -1.5em;
+        left: 87%;
+    }
+    
+    .vowels .close {
+        top: 5%;
+        left: -1.5em;
+    }
+    
+    .vowels .closemid {
+        top: 34%;
+        left: -1.5em;
+    }
+    
+    .vowels .mid {
+        top: 48%;
+        left: -1.5em;
+    }
+    
+    .vowels .openmid {
+        top: 62%;
+        left: -1.5em;
+    }
+    
+    .vowels .open {
+        top: 90%;
+        left: -1.5em;
+    }
+    
+    .caption {
+        font-size: 90%;
+        text-align: center;
+        margin: 0.1em auto 0.2em auto;
+    }
+    
+    .copyright {
+        font-size: 90%;
+        text-align: left;
+    }
+    
+    .twins {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    
+    .twin1, .twin2 {
+        margin: 0;
+        padding: 0;
+        display: -moz-inline-stack;
+        display: inline-block;
+        vertical-align: top;
+        margin: 5px;
+        zoom: 1;
+        *display: inline;
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        
+        .at {
+            width: 100%;
+            overflow-x: auto;
+            font-size: 0.8em;
+        }
+        
+        .overflow, .twins, .voweloverflow {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100%;
+        }
+        
+        body {
+            font-size: 14px;
+        }
+        
+        .at td, .rt td, .ct td {
+            padding: 0.08em;
+        }
+        
+        .twins {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .twin1, .twin2 {
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        .text {
+            max-width: 95%;
+            padding: 0.5em;
+        }
+        
+        .interactive {
+            min-width: 2em;
+            min-height: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .voweloverflow {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        
+        .vowels {
+            min-width: 300px;
+        }
+        
+        /* Reduce floating symbols on mobile for better performance */
+        .ipa-symbol:nth-child(n+16) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .ipa-symbol:nth-child(n+11) {
+            display: none;
+        }
+        
+        .at {
+            font-size: 0.7em;
+        }
+        
+        h1 {
+            font-size: 1.5em;
+        }
+        
+        h2 {
+            font-size: 1.2em;
+        }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+        .ipa-symbol {
+            animation: none !important;
+        }
+        
+        .interactive {
+            transition: none;
+        }
+        
+        .interactive:hover {
+            transform: none;
+        }
+    }
 </style>
 
 <script type="text/javascript">
-    // Simple local audio setup - force OGG format
-    var mobile = false;
-    var support = !!(document.createElement('audio').canPlayType);
-    var type = "ogg";  // Use OGG format for local files
-    var clips = [];
+    // Simple local audio setup - force OGG format
+    var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    var support = !!(document.createElement('audio').canPlayType);
+    var type = "ogg";  // Use OGG format for local files
+    var clips = [];
 
-    function ipa(sound) {
-        console.log("Playing sound:", sound);
-        console.log("Audio type:", type);
-        console.log("File path:", type + '/' + sound + '.' + type);
-        
-        if(support) {
-            if(!clips[sound]) {
-                clips[sound] = new Audio(type + '/' + sound + '.' + type);
-                clips[sound].addEventListener('error', function() {
-                    console.error("Failed to load:", type + '/' + sound + '.' + type);
-                });
-            }
-            clips[sound].play().catch(function(error) {
-                console.error("Play error:", error);
-            });
-        }
-    }
-    
-    function set_type(new_type) {
-        type = new_type;
-    }
+    function ipa(sound) {
+        console.log("Playing sound:", sound);
+        console.log("Audio type:", type);
+        console.log("File path:", type + '/' + sound + '.' + type);
+        
+        if(support) {
+            if(!clips[sound]) {
+                clips[sound] = new Audio(type + '/' + sound + '.' + type);
+                clips[sound].addEventListener('error', function() {
+                    console.error("Failed to load:", type + '/' + sound + '.' + type);
+                });
+            }
+            clips[sound].play().catch(function(error) {
+                console.error("Play error:", error);
+            });
+        }
+    }
+    
+    function set_type(new_type) {
+        type = new_type;
+    }
 </script>
 
 </head>
 <body>
-    <div class="text">
-  <h1>All IPA Symbols</h1>
-  <p>The <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet">International Phonetic Alphabet (IPA)</a> is a set of symbols that linguists use to describe the sounds of spoken languages.</p>
-  <p>This page lets you hear the sounds that the symbols represent, like <a href="https://ipachart.com">ipachart.com</a>, but with an addition of the  a diacritics chart, which doesn't have audio except the examples, and a modified chart that brings all the dedicated symbols into one place, but it doesn't have the diacritic combiniations necessary for filling in the rest of the chart, except the affricates, lateral affricates, and ejectives. Still remember that it is only a rough guide.</p>
-  <p>Hit a symbol to hear the sound it represents.</p>
-    </div>
-  <div class="problem" id="noaudio">
-      <p>For best results, please use a browser with HTML5 Audio support. The latest version of any popular web browser will do.</p>
-  </div>
-  <script type="text/javascript">
-      if(!support && !mobile) document.getElementById("noaudio").style.display = "block";
-  </script>
-  <noscript><div class="problem">
-      <p><strong>Sorry, you have JavaScript disabled or your web browser doesn't support it.</strong></p>
-      <p>This interactive chart won't work without JavaScript enabled. Please enable JavaScript or upgrade to a modern web browser.</p>
-  </div></noscript>
-  
-  <h2>Vowels</h2>
-  <p class="caption">Where symbols appear in pairs, the one to the left represents an unrounded vowel, and the one to the right represents a rounded vowel.</p>
-  <div class="voweloverflow">
-      <div class="vowels">
-          <img class="trapezoid" src="Blank_vowel_trapezoid.png"/>
-          <div class="l front">Front</div>
-          <div class="l central">Central</div>
-          <div class="l back">Back</div>
-          <div class="l close">Close</div>
-          <div class="l closemid">Close-mid</div>
-          <div class="l mid">Mid</div>
-          <div class="l openmid">Open-mid</div>
-          <div class="l open">Open</div>
-          <div class="v close_front"><span class="interactive IPA" onclick="ipa('Close_front_unrounded_vowel');">i</span> <span class="interactive IPA" onclick="ipa('Close_front_rounded_vowel');">y</span></div>
-          <div class="v close_central"><span class="interactive IPA" onclick="ipa('Close_central_unrounded_vowel');">ɨ</span> <span class="interactive IPA" onclick="ipa('Close_central_rounded_vowel');">ʉ</span></div>
-          <div class="v close_back"><span class="interactive IPA" onclick="ipa('Close_back_unrounded_vowel');">ɯ</span> <span class="interactive IPA" onclick="ipa('Close_back_rounded_vowel');">u</span></div>
-          <div class="v nearclose_nearfront"><span class="interactive IPA" onclick="ipa('Near-close_near-front_unrounded_vowel');">ɪ</span> <span class="interactive IPA" onclick="ipa('Near-close_near-front_rounded_vowel');">ʏ</span>
-          </div>
-          <div class="v nearclose_central"><span class="interactive IPA" onclick="ipa('Near-close_central_unrounded_vowel');">ᵻ</span> <span class="interactive IPA" onclick="ipa('Near-close_central_rounded_vowel');">ᵿ</span>
-          </div>
-          <div class="v nearclose_nearback"><span class="interactive IPA" onclick="ipa('Near-close_near-back_rounded_vowel');">ʊ</span></div>
-          <div class="v closemid_front"><span class="interactive IPA" onclick="ipa('Close-mid_front_unrounded_vowel');">e</span> <span class="interactive IPA" onclick="ipa('Close-mid_front_rounded_vowel');">ø</span></div>
-          <div class="v closemid_central"><span class="interactive IPA" onclick="ipa('Close-mid_central_unrounded_vowel');">ɘ</span> <span class="interactive IPA" onclick="ipa('Close-mid_central_rounded_vowel');">ɵ</span></div>
-          <div class="v closemid_back"><span class="interactive IPA" onclick="ipa('Close-mid_back_unrounded_vowel');">ɤ</span> <span class="interactive IPA" onclick="ipa('Close-mid_back_rounded_vowel');">o</span></div>
-          <div class="v mid_central"><span class="interactive IPA" onclick="ipa('Mid-central_vowel');">ə</span></div>
-          <div class="v openmid_front"><span class="interactive IPA" onclick="ipa('Open-mid_front_unrounded_vowel');">ɛ</span> <span class="interactive IPA" onclick="ipa('Open-mid_front_rounded_vowel');">œ</span></div>
-          <div class="v openmid_central"><span class="interactive IPA" onclick="ipa('Open-mid_central_unrounded_vowel');">ɜ</span> <span class="interactive IPA" onclick="ipa('Open-mid_central_rounded_vowel');">ɞ</span></div>
-          <div class="v openmid_back"><span class="interactive IPA" onclick="ipa('Open-mid_back_unrounded_vowel');">ʌ</span> <span class="interactive IPA" onclick="ipa('Open-mid_back_rounded_vowel');">ɔ</span></div>
-          <div class="v nearopen_front"><span class="interactive IPA" onclick="ipa('Near-open_front_unrounded_vowel');">æ</span></div>
-          <div class="v nearopen_central"><span class="interactive IPA" onclick="ipa('Near-open_central_unrounded_vowel');">ɐ</span></div>
-          <div class="v open_front"><span class="interactive IPA" onclick="ipa('Open_front_unrounded_vowel');">a</span> <span class="interactive IPA" onclick="ipa('Open_front_rounded_vowel');">ɶ</span></div>
-          <div class="v open_central"><span class="interactive IPA" onclick="ipa('Open_central_unrounded_vowel');">ᴀ</span>
-          </div>
-          <div class="v open_back"><span class="interactive IPA" onclick="ipa('Open_back_unrounded_vowel');">ɑ</span> <span class="interactive IPA" onclick="ipa('Open_back_rounded_vowel');">ɒ</span></div>
-      </div>
-  </div>
-  <h2>Pulmonic consonants</h2>
-  <p class="caption">Where symbols appear in pairs, the one to the left represents a voiceless consonant, and the one to the right represents a voiced consonant.</p>
-  <p class="caption">Areas shaded grey indicate articulations judged impossible.</p>
-  <div class="overflow">
-      <table class="at"><!-- at = articulation table -->
-          <tbody><tr>
-              <td></td>
-              <th colspan="2">Bi­labial</th>
-              <th colspan="2">Labio­dental</th>
-              <th colspan="2">Dental</th>
-              <th colspan="2">Alve<wbr/>olar</th>
-              <th colspan="2">Post alveolar</th>
-              <th colspan="2">Retro<wbr/>flex</th>
-              <th colspan="2">Alveolo-palatal</th>
-              <th colspan="2">Pala<wbr/>tal</th>
-              <th colspan="2">Velar</th>
-              <th colspan="2">velodorsal</th>
-              <th colspan="2">Uvu<wbr/>lar</th>
-              <th colspan="2">Velopharyngeal</th>
-              <th colspan="2">Phary<wbr/>ngeal</th>
-              <th colspan="2">Epiglottal</th>
-              <th colspan="2">Glot<wbr/>tal</th>
-          </tr>
-              <tr>
-                  <th>Plosive</th>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_plosive');">p</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_bilabial_plosive');">b</td>
-                  <td></td><td></td>
-                  <td colspan="3" class="interactive  extended IPA" onclick="ipa('Voiceless_alveolar_plosive');">t</td>
-                  </td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiced_alveolar_plosive');">d</td>
-                  </td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_plosive');">ʈ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_retroflex_plosive');">ɖ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_alveolo-palatal_plosive');">ȶ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_alveolo-palatal_plosive');">ȡ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_palatal_plosive');">c</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_palatal_plosive');">ɟ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_velar_plosive');">k</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_velar_plosive');">ɡ</td>
-                  <td class="interactive" onclick="ipa('Voiceless_velodorsal_plosive');">𝼃</td>
-                  <td></td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_uvular_plosive');">q</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_uvular_plosive');">ɢ</td>
-                  <td class= "impossible"></td>
-                      <td class= "impossible"></td>
-                          <td></td>
-                              <td class="impossible"></td>
-  <td class="interactive" onclick="ipa('Voiceless_epiglottal_plosive');"><span class="IPA">ʡ</span></td>
-                                  <td class="impossible"></td>
-                                  <td class="interactive IPA" onclick="ipa('Glottal_stop');">ʔ</td>
-                                  <td class="impossible"></td>
-                              </tr>
-              <tr>
-                  <th>Nasal</th>
-                  <td></td><td class="interactive IPA" onclick="ipa('Bilabial_nasal');">m</td>
-                  <td></td><td class="interactive IPA" onclick="ipa('Labiodental_nasal');">ɱ</td>
-                  <td colspan="3" class="extended"></td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_nasal');">n</td>
-                  </td>
-                  <td></td>
-                  <td class="interactive IPA" onclick="ipa('Retroflex_nasal');">ɳ</td>
-                  <td></td>
-                      <td class="interactive IPA" onclick="ipa('Alveolo-palatal_nasal');">ȵ</td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Palatal_nasal');">ɲ</td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Velar_nasal');">ŋ</td>
-                      <td></td>
-                      <td></td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Uvular_nasal');">ɴ</td>
-                      <td class="impossible"></td><td class="impossible"></td>
-                      <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
-                      <td class="impossible"></td><td class="impossible"></td>
-              </tr>
-              <tr>
-                  <th>Trill</th>
-                  <td></td>
-                  <td class="interactive IPA" onclick="ipa('Bilabial_trill');">ʙ</td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td colspan="3" class="extended"></td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_trill');">r</td>
-                  <td></td><td></td>
-                  <td></td><td></td><td></td><td></td>
-                  <td class="impossible"></td><td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td> </td><td class="interactive IPA" onclick="ipa('Uvular_trill');">ʀ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_velopharyngeal_trill');">𝼀</td>
-                  <td> </td>
-                  <td></td><td></td>
-                  <td></td><td></td>
-                  <td class="impossible"></td><td class="impossible"></td>
-              </tr>
-              <tr>
-                  <th>Tap or Flap</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="interactive IPA" onclick="ipa('Labiodental_flap');">ⱱ</td>
-                  <td colspan="3" class="extended"></td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_tap');">ɾ</td>
-                  <td></td><td class="interactive IPA" onclick="ipa('Retroflex_flap');">ɽ</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="impossible"></td><td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td></td><td></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td></td><td></td>
-                  <td></td><td></td>
-                  <td class="impossible"></td><td class="impossible"></td>
-              </tr>
-              <tr>
-                  <th>Lateral flap</th>
-                  <td class="impossible"></td>
-                      <td class="impossible"></td>
-                          <td class="impossible"></td>
-                              <td class="impossible"></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_flap');"><span class="IPA">ɺ</span></td>
-                                  <td>
-                                  </td>
-                                  <td>
-                                  </td>
-                                  <td>
-                                  </td>
-                                  <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_flap');"><span class="IPA">𝼈</span></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                              <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td class="impossible"></td>
-                                  <td class="impossible"></td>
-                                  <td class="impossible"></td>
-                                      <td class="impossible"></td>
-                                          <td class="impossible"></td>
-                                              <td class="impossible"></td>
-                                                  <td class="impossible"></td>
-                                                      <td class="impossible"></td>
-                                                      </tr>
-                  <tr>
-                  <th>Fricative</th>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_fricative');">ɸ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_bilabial_fricative');">β</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_labiodental_fricative');">f</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_labiodental_fricative');">v</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_dental_fricative');">θ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_dental_fricative');">ð</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_fricative');">s</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_alveolar_fricative');">z</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_postalveolar_fricative');">ʃ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_postalveolar_fricative');">ʒ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_fricative');">ʂ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_retroflex_fricative');">ʐ</td>
-                  <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_fricative');"><span class="IPA">ɕ</span></td>
-                  <td class="interactive" onclick="ipa('Voiced_alveolo-palatal_fricative');"><span class="IPA">ʑ</span></td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_palatal_fricative');">ç</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_palatal_fricative');">ʝ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_velar_fricative');">x</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_velar_fricative');">ɣ</td>
-                  <td></td>
-                  <td></td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_uvular_fricative');">χ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_uvular_fricative');">ʁ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_velopharyngeal_fricative');">ʩ</td>
-                  <td> </td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_pharyngeal_fricative');">ħ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_pharyngeal_fricative');">ʕ</td>
-                  <td class="interactive" onclick="ipa('Voiceless_epiglottal_fricative');"><span class="IPA">ʜ</span></td>
-                  <td class="interactive" onclick="ipa('Voiced_epiglottal_fricative');"><span class="IPA">ʢ</span></td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_glottal_fricative');">h</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_glottal_fricative');">ɦ</td>
-                  </tr>
-                  <tr>
-                  <th>Lateral Fricative</th>
-                  <td class="impossible"></td>
-<td class="impossible"></td>
-<td class="impossible"></td>
-<td class="impossible"></td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiceless_alveolar_lateral_fricative');">ɬ</td>
-                  <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiced_lateral_fricative');">ɮ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_lateral_fricative');">ꞎ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_retroflex_lateral_fricative');">𝼅</td>
-                  <td> </td>
-                  <td> </td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_palatal_lateral_fricative');">𝼆</td><td></td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_velar_lateral_fricative');">𝼄</td><td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td><td></td>
-                  <td class="impossible"></td>
-                      <td class="impossible"></td>
-                          <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
-                          <td class="impossible"></td>
-                          <td class="impossible"></td>
-              </tr>
-              <th>Lateral–median fricative</th>
-              <td class="impossible"></td>
-              <td class="impossible"></td>
-              <td class="impossible"></td>
-              <td class="impossible"></td>
-                  <td> </td>
-                  <td> </td>
-                  <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_lateral–median_fricative');">ʪ</td>
-                  <td class="interactive IPA" onclick="ipa('Voiced_alveolar_lateral–median_fricative');">ʫ</td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td> </td>
-                  <td></td>
-                  <td></td>
-                  <td> </td>
-                  <td> </td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <td class="impossible"></td>
-                  <tr>
-                      <th>Approximant</th>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-<td class="interactive IPA" onclick="ipa('Labiodental_approximant');">ʋ</td>
-                      <td colspan="3" class="extended"></td>
-                      <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_approximant');">ɹ</td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Retroflex_approximant');">ɻ</td>
-                      <td></td>
-                      <td></td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Palatal_approximant');">j</td>
-                      <td></td><td class="interactive IPA" onclick="ipa('Voiced_velar_approximant');">ɰ</td>
-                      <td></td>
-                      <td></td>
-                      <td></td><td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td><td></td>
-                      <td></td><td></td>
-                      <td class="impossible"></td>
-                      <td class="impossible"></td>
-                      </tr>
-                      <tr>
-                      <th>Lateral Approximant</th>
-                      <td class="impossible"></td>
-<td class="impossible"></td>
-<td class="impossible"></td>
-<td class="impossible"></td>
-                      <td colspan="3" class="extended"></td>
-                     <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_lateral_approximant');">l</td>
-                          <td></td>
-                          <td class="interactive IPA" onclick="ipa('Retroflex_lateral_approximant');">ɭ </td>
-                          <td></td>
-                          <td class="interactive IPA" onclick="ipa('Alveolo-palatal_lateral_approximant');">ȴ</td>
-                          <td>
-                          </td>
-                          <td class="interactive IPA" onclick="ipa('Palatal_lateral_approximant');">ʎ</td>
-                          <td></td><td class="interactive IPA" onclick="ipa('Velar_lateral_approximant');">ʟ</td>
-                          <td></td>
-                          <td></td>
-                          <td></td><td></td>
-                          <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
-                          <td class="impossible"></td><td class="impossible"></td>
-                          <td class="impossible"></td>
-                          <td class="impossible"></td>
-                  </tr>
-          </tbody></table>
-  </div>
-  <h2>Affricate consonants</h2>
-<table class="at"><!-- at = articulation table -->
-             <tbody><tr>
-                 <td></td>
-                 <th colspan="2">Bi­labial</th>
-                 <th colspan="2">Labio­dental</th>
-                 <th colspan="2">Dental</th>
-                 <th colspan="2">Alve<wbr/>olar</th>
-                 <th colspan="2">Post alveolar</th>
-                 <th colspan="2">Retro<wbr/>flex</th>
-                 <th colspan="2">Alveolo-palatal</th>
-                 <th colspan="2">Pala<wbr/>tal</th>
-                 <th colspan="2">Velar</th>
-                 <th colspan="2">Uvu<wbr/>lar</th>
-                 <th colspan="2">Velopharyngeal</th>
-                 <th colspan="2">Phary<wbr/>ngeal</th>
-                 <th colspan="2">Epiglottal</th>
-                 <th colspan="2">Glot<wbr/>tal</th>
-             </tr>
-                 <tr>
-                     <th>Affricate</th>
-                     <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_affricate');"><span class="IPA">p͡ɸ</span></td>
-                     <td class="interactive IPA" onclick="ipa('Voiced_bilabial_affricate');"><span class="IPA">b͡β</span></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_affricate');"><span class="IPA">t͡s</span></td>
-                     <td class="interactive IPA" onclick="ipa('Voiced_alveolar_affricate');"><span class="IPA">d͡z</span></td>
-                     <td class="interactive IPA" onclick="ipa('Voiceless_palato-alveolar_affricate');"><span class="IPA">t͡ʃ</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_postalveolar_affricate');"><span class="IPA">d͡ʒ</span></td>
-                     <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_affricate');"><span class="IPA">ʈ͡ʂ</span></td>
-                     <td class="interactive IPA" onclick="ipa('Voiced_retroflex_affricate');"><span class="IPA">ɖ͡ʐ</span></td>
-                     <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_affricate');"><span class="IPA">ȶ͡ɕ</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_alveolo-palatal_affricate');"><span class="IPA">ȡ͡ʑ</span></td>
-                     <td class="interactive" onclick="ipa('Voiceless_palatal_affricate');"><span class="IPA">c͡ç</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_palatal_affricate');"><span class="IPA">ɟ͡ʝ</span></td>
-                     <td class="interactive" onclick="ipa('Voiceless_velar_affricate');"><span class="IPA">k͡x</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_velar_affricate');"><span class="IPA">ɡ͡ɣ</span></td>
-                     <td class="interactive" onclick="ipa('Voiceless_uvular_affricate');"><span class="IPA">q͡χ</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_uvular_affricate');"><span class="IPA">ɢ͡ʁ</span></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td></td>
-                         <td></td>
-                         <td class="interactive" onclick="ipa('Voiceless_epiglottal_affricate');"><span class="IPA">ʡ͡ʜ</span></td>
-                         <td class="interactive" onclick="ipa('voiced_epiglottal_affricate');"><span class="IPA">ʡ͜ʢ</span></td>
-                         <td class="interactive" onclick="ipa('voiceless_glottal_affricate');"><span class="IPA">ʔ͡h</span></td>
-                             <td></td>
-                 </tr>
-                 <tr>
-                     <th>Lateral Affricate</th>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td> </td>
-                     <td> </td>
-                     <td class="interactive" onclick="ipa('Voiceless_alveolar_lateral_affricate');"><span class="IPA">t͡ɬ</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_affricate');"><span class="IPA">d͡ɮ</span></td>
-                     <td></td>
-                     <td></td>
-                     <td class="interactive" onclick="ipa('Voiceless_retroflex_lateral_affricate');"><span class="IPA">ʈ͡ꞎ</span></td>
-                     <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_affricate');"><span class="IPA">ɖ͡𝼅</span></td>
-                     <td></td>
-                     <td></td>
-                     <td class="interactive" onclick="ipa('Voiceless_palatal_lateral_affricate');"><span class="IPA">c͜𝼆</span></td>
-                     <td></td>
-                     <td class="interactive" onclick="ipa('Voiceless_velar_lateral_affricate');"><span class="IPA">k͜𝼄</span></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                     <td class="impossible"></td>
-                 </tr>
-</tbody></table>
-  <div class="twins">
-      <div class="twin1">
-          <h2>Co-articulated pulmonic consonants</h2>
-          <table class="rt"><!-- rt = rows table -->
-                  <tbody><tr>
-                      <tr><td class="interactive" onclick="ipa('Voiceless_labial-velar_plosive');"><span class="IPA">k͡p</span> Simultaneous k and p</td></tr>
-                      <tr><td class="interactive" onclick="ipa('Voiced_labial-velar_plosive');"><span class="IPA">ɡ͡b</span> Simultaneous ɡ and b</td></tr>
-                      <tr><td class="interactive" onclick="ipa('Labial-velar_nasal_stop');"><span class="IPA">ŋ͡m</span> Simultaneous ŋ and m</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Voiceless_labio-velar_fricative');"><span class="IPA">ʍ</span> Voiceless labial-velar fricative</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Voiced_labio-velar_approximant');"><span class="IPA">w</span> Voiced labial-velar approximant</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Labial-palatal_approximant');"><span class="IPA">ɥ</span> Voiced labial-palatal approximant</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Voiceless_dorso-palatal_velar_fricative');"><span class="IPA">ɧ</span> Simultaneous <span class="IPA nofloat">ʃ</span> and <span class="IPA nofloat">x</span></td></tr>
-                  </tbody></table>
-  </div>
-  <div class="twin2">
-                          <table class="rt">
-                              <tbody><tr>
-                                  <tr>
-          <td><span class="IPA">◌͡◌</span><span class="IPA">◌͜◌</span><br>Affricates and double articulations <br>
-          can be represented by two symbols <br>
-          joined by a tie bar if necessary.<br><a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf"><sup>[credit to]</sup></td>
-          </tr>
-          </table>
-  </div>
-  </div>
-  <h2>Non-pulmonic consonants</h2>
-  <div class="overflow">
-      <table class="ct"><!-- ct = columns table -->
-          <tbody>
-          <tr>
-              <th rowspan="2">Clicks</th>
-              <th>Voiced</th>
-              <th colspan="3"><span class="IPA">◌ʼ</span> Ejective</th>
-          </tr>
-          <tr>
-              <th>Implosives</th>
-              <th>Stops</th>
-              <th>Fricatives</th>
-              <th>Affricates</th>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Bilabial_click');"><span class="IPA">ʘ</span> Bilabial</td>
-              <td class="interactive" onclick="ipa('Voiced_bilabial_implosive');"><span class="IPA">ɓ</span> Bilabial</td>
-              <td class="interactive" onclick="ipa('Bilabial_ejective_plosive');"><span class="IPA">pʼ</span>Bilabial</td>
-              <td class="interactive" onclick="ipa('Bilabial_ejective_fricative');"><span class="IPA">ɸʼ</span> Bilabial</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="interactive" onclick="ipa('Labiodental_ejective_fricative');"><span class="IPA">fʼ</span> Labiodental</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Dental_click');"><span class="IPA">ǀ</span> Dental</td>
-              <td rowspan="2" class="interactive" onclick="ipa('Voiced_alveolar_implosive');"><span class="IPA">ɗ</span> Dental/alveolar</td>
-              <td rowspan="2" class="interactive" onclick="ipa('Alveolar_ejective_plosive');"><span class="IPA">tʼ</span> Dental/alveolar</td>
-              <td class="interactive" onclick="ipa('Dental_ejective_fricative');"><span class="IPA">θʼ</span> Dental</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Postalveolar_click');"><span class="IPA">ǃ</span> (Post)alveolar</td>
-              <td class="interactive" onclick="ipa('Alveolar_ejective_fricative');"><span class="IPA">sʼ</span> Alveolar</td>
-              <td class="interactive" onclick="ipa('Alveolar_ejective_affricate');"><span class="IPA">t͡sʼ</span> Alveolar</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="interactive" onclick="ipa('Palato-alveolar_ejective_fricative');"><span class="IPA">ʃʼ</span> Postalveolar</td>
-              <td class="interactive" onclick="ipa('Postalveolar_ejective_affricate');"><span class="IPA">t͡ʃʼ</span> Postalveolar</td>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Retroflex_click');"><span class="IPA">𝼊</span> Retroflex</td>
-              <td class="interactive" onclick="ipa('Voiced-retroflex-implosive');"><span class="IPA">ᶑ</span> Retroflex</td>
-              <td class="interactive" onclick="ipa('Retroflex_ejective');"><span class="IPA">ʈʼ</span> Retroflex</td>
-              <td class="interactive" onclick="ipa('Retroflex_ejective_fricative');"><span class="IPA">ʂʼ</span> Retroflex</td>
-              <td class="interactive" onclick="ipa('Retroflex_ejective_affricate');"><span class="IPA">ʈ͡ʂʼ</span> Retroflex</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="interactive" onclick="ipa('Alveolo-palatal_ejective_fricative');"><span class="IPA">ɕʼ</span> Alveolo-palatal</td>
-              <td class="interactive" onclick="ipa('Alveolo-palatal_ejective_affricate');"><span class="IPA">ȶ͡ɕʼ</span> Alveolo-palatal</td>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Palatoalveolar_click');"><span class="IPA">ǂ</span> Palatoalveolar</td>
-              <td class="interactive" onclick="ipa('Voiced_palatal_implosive');"><span class="IPA">ʄ</span> Palatal</td>
-              <td class="interactive" onclick="ipa('Palatal_ejective');"><span class="IPA">cʼ</span> Palatal</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td class="interactive" onclick="ipa('Velar_Click');"><span class="IPA">ʞ</span> Velar</td>
-              <td class="interactive" onclick="ipa('Voiced_velar_implosive');"><span class="IPA">ɠ</span> Velar</td>
-              <td class="interactive" onclick="ipa('Velar_ejective_plosive');"><span class="IPA">kʼ</span> Velar</td>
-              <td class="interactive" onclick="ipa('Velar_ejective_fricative');"><span class="IPA">xʼ</span> Velar</td>
-              <td class="interactive" onclick="ipa('Velar_ejective_affricate');"><span class="IPA">k͡xʼ</span> Velar</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td class="interactive" onclick="ipa('Voiced_uvular_implosive');"><span class="IPA">ʛ</span> Uvular</td>
-              <td class="interactive" onclick="ipa('Uvular_ejective_plosive');"><span class="IPA">qʼ</span> Uvular</td>
-              <td class="interactive" onclick="ipa('Uvular_ejective_fricative');"><span class="IPA">χʼ</span> Uvular</td>
-              <td class="interactive" onclick="ipa('Uvular_ejective_affricate');"><span class="IPA">q͡χʼ</span> Uvular</td>
-          </tr>
-          <tr>
-              <td class="impossible"></td>
-              <td class="impossible"></td>
-              <td class="interactive" onclick="ipa('Epiglottal_ejective');"><span class="IPA">ʡʼ</span> Epiglottal</td>
-              <td></td>
-              <td></td>
-          </tr>
-          </tbody>
-      </table>
-  </div>
-  
-<h2>Other symbols</h2>
-          <table class="rt"><!-- rt = rows table -->
-                                                                  <tbody>
-                                                                  <tr><td class="interactive" onclick="ipa('Voiced_velodorsal_plosive');"><span class="IPA">𝼁</span> Voiced velodorsal plosive</td></tr>
-                                                                                          <tr><td class="interactive" onclick="ipa('Velodorsal_nasal');"><span class="IPA">𝼇</span> Velodorsal nasal</td></tr>
-                                          <tr><td class="interactive" onclick="ipa('Voiceless_upper-pharyngeal_plosive');"><span class="IPA">ꞯ</span> Voiceless upper-pharyngeal plosive</td></tr>
-                                          <tr><td class="interactive" onclick="ipa('Voiced_upper-pharyngeal_plosive');"><span class="IPA">𝼂</span> Voiced upper-pharyngeal plosive</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Voiceless_bilabial_percussive');"><span class="IPA">ʬ</span> Bi­labial percussive</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Voiceless_bidental_percussive');"><span class="IPA">ʭ</span> Bidental percussive</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Percussive_alveolar_click');"><span class="IPA">¡</span> Sublaminal lower alveolar percussive</td></tr>
-                  <tr><td class="interactive" onclick="ipa('Alveolar_lateral_click');"><span class="IPA">ǁ</span> Alveolar lateral click</td></tr>
-              </tbody>
-          </table>
-  <h2>Diacritics</h2>
-  <table class="rt">
-      <tr>
-          <td class="IPA">◌̥ / ◌̊</td>
-          <td>Voiceless</td>
-          <td>n̥, l̥, n̊</td>
-          
-          <td class="IPA">◌ʱ / ◌̤</td>
-          <td>Breathy voiced</td>
-          <td>dʱ, bʱ, b̤, a̤</td>
-                  
-          <td class="IPA">◌ᶹ</td>
-          <td>Labiodental</td>
-          <td>tᶹ</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̬</td>
-          <td>Voiced</td>
-          <td>s̬, t̬</td>
-          
-          <td class="IPA">◌̰</td>
-          <td>Creaky voiced</td>
-          <td>b̰, a̰</td>
-          
-          <td class="IPA">◌̪</td>
-          <td>Dental</td>
-          <td>t̪, d̪</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌ʰ</td>
-          <td>Aspirated</td>
-          <td>tʰ, pʰ</td>
-          
-          <td class="IPA">◌̼</td>
-          <td>Linguolabial</td>
-          <td>t̼, d̼</td>
-                      
-          <td class="IPA">◌̺</td>
-          <td>Apical</td>
-          <td>t̺, d̺</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌˭</td>
-          <td>unaspirated</td>
-          <td>p˭</td>
-          
-          <td class="IPA">◌͍</td>
-          <td>labial spreading</td>
-          <td>s͍, u͍</td>
-          
-          <td class="IPA">◌̻</td>
-          <td>Laminal</td>
-          <td>t̻, d̻</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̹</td>
-          <td>More rounded</td>
-          <td>ɔ̹, ʊ̹</td>
-          
-          <td class="IPA">◌ꟹ</td>
-          <td>Open-labialized</td>
-          <td></td>
-          
-          <td class="IPA">◌̃</td>
-          <td>Nasalized</td>
-          <td>ẽ, õ</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̜</td>
-          <td>Less rounded</td>
-          <td>ɔ̜, ʊ̜</td>
-          
-          <td class="IPA">◌ʷ</td>
-          <td>Labialized</td>
-          <td>tʷ, kʷ</td>
-          
-          <td class="IPA">◌͊</td>
-          <td>Denasalized</td>
-          <td>m͊, n͊</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌ⁿ</td>
-          <td>Nasal release</td>
-          <td>dⁿ, tⁿ</td>
-          
-          <td class="IPA">◌ᵝ</td>
-          <td>compressed</td>
-          <td class="interactive" onclick="ipa('Close_back_compressed_vowel');"><span class="IPA">ɯᵝ</span> Close back compressed vowel</td>
-          
-          <td class="IPA">◌͋</td>
-          <td>Nasal fricative</td>
-          <td>n͋</td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          
-          <td class="IPA">◌͇</td>
-          <td>Alveolar</td>
-          <td class="interactive" onclick="ipa('Voiceless_alveolar_non-sibilant_fricative');"><span class="IPA">θ͇</span> Voiceless alveolar fricative</td>
-          
-          <td class="IPA">◌ˡ</td>
-          <td>Lateral release</td>
-          <td>dˡ, tˡ</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̟</td>
-          <td>Advanced</td>
-          <td>u̟, ɡ̟</td>
-          
-          <td class="IPA">◌ʲ</td>
-          <td>Palatalized</td>
-          <td>tʲ, dʲ</td>
-              
-          <td class="IPA">◌̚</td>
-          <td>No audible release</td>
-          <td>p̚, t̚, k̚</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̠</td>
-          <td>Retracted</td>
-          <td>i̠, t̠</td>
-          
-          <td class="IPA">◌ᶣ</td>
-          <td>Labio-palatalized</td>
-          <td></td>
-          
-          <td class="IPA">◌ᵊ</td>
-          <td>Mid central vowel release</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̈</td>
-          <td>Centralized</td>
-          <td>ë, ö</td>
-          
-          <td class="IPA">◌ˠ</td>
-          <td>Velarized</td>
-          <td>tˠ, bˠ</td>
-          
-          <td class="IPA">◌ᶿ</td>
-          <td>Voiceless dental fricative release</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̽</td>
-          <td>Mid-centralized</td>
-          <td>e̽, o̽</td>
-              
-          <td class="IPA">◌ʶ</td>
-          <td>Uvularized</td>
-          <td>tʶ</td>
-                                                          
-          <td class="IPA">◌ˣ</td>
-          <td>Voiceless velar fricative release</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̩</td>
-          <td>Syllabic</td>
-          <td>n̩, l̩</td>
-          
-          <td class="IPA">◌ˤ</td>
-          <td>Pharyngealized</td>
-          <td>tˤ, sˤ</td>
-                                                          
-          <td class="IPA">↑</td>
-          <td>Egressive airstream</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̯</td>
-          <td>Non-syllabic</td>
-          <td>e̯, u̯</td>
-          
-          <td class="IPA">◌̴</td>
-          <td>Velarized or pharyngealized</td>
-          <td class="interactive" onclick="ipa('Velarized_alveolar_lateral_approximant');"><span class="IPA">ɫ</span> Dark l</td>
-                                              
-          <td class="IPA">↓</td>
-          <td>Downstep</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td class="IPA">◌͈</td>
-          <td>strong articulation</td>
-          <td>f͈</td>
-          
-          <td class="IPA">◌ˀ</td>
-          <td>Glottalized</td>
-          <td>tˀ, kˀ</td>
-                                                                      
-      </tr>
-      <tr>
-          <td class="IPA">◌͉</td>
-          <td>weak articulation</td>
-          <td>v͉</td>
-                                                                         
-          <td class="IPA">◌̝</td>
-          <td>Raised</td>
-          <td class="interactive" onclick="ipa('Voiced_alveolar_non-sibilant_fricative');"><span class="IPA">ɹ̝</span> Voiced alveolar fricative</td>
-        </tr>
-      <tr>
-          <td class="IPA">◌͎</td>
-          <td>whistled articulation</td>
-          <td>s͎</td>
-                                          
-          <td class="IPA">◌̞</td>
-          <td>Lowered</td>
-          <td class="interactive" onclick="ipa('Voiced_bilabial_approximant');"><span class="IPA">β̞</span> Voiced bilabial approximant</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌˞</td>
-          <td>Rhoticity</td>
-          <td>ɚ, ɝ</td>
-          
-          <td class="IPA">◌̘</td>
-          <td>Advanced tongue root</td>
-          <td>e̘, o̘</td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          
-          <td class="IPA">◌̙</td>
-          <td>Retracted tongue root</td>
-          <td>e̙, o̙</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̋</td>
-          <td>Extra high tone</td>
-          <td>ő, ű</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌́</td>
-          <td>High tone</td>
-          <td>é, á</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̄</td>
-          <td>Mid tone</td>
-          <td>ē, ō</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̀</td>
-          <td>Low tone</td>
-          <td>è, ò</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̏</td>
-          <td>Extra low tone</td>
-          <td>ȅ, ȍ</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̌</td>
-          <td>Rising tone</td>
-          <td>ě, ǎ</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌̂</td>
-          <td>Falling tone</td>
-          <td>ê, ô</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌᷄</td>
-          <td>High-mid tone</td>
-          <td>e᷄, o᷄</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌᷅</td>
-          <td>Low-mid tone</td>
-          <td>e᷅, o᷅</td>
-      </tr>
-      <tr>
-          <td class="IPA">◌᷈</td>
-          <td>Rising-falling tone</td>
-          <td>e᷈, o᷈</td>
-      </tr>
-      <tr>
-          <td class="IPA">↗</td>
-          <td>Global rise</td>
-          <td>↗</td>
-      </tr>
-      <tr>
-          <td class="IPA">↘</td>
-          <td>Global fall</td>
-          <td>↘</td>
-      </tr>
-  </table>
-  </div>
+    <div class="text">
+        <h1>All IPA Symbols</h1>
+        <p>The <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet">International Phonetic Alphabet (IPA)</a> is a set of symbols that linguists use to describe the sounds of spoken languages.</p>
+        <p>This page lets you hear the sounds that the symbols represent, like <a href="https://ipachart.com">ipachart.com</a>, but with an addition of the  a diacritics chart, which doesn't have audio except the examples, and a modified chart that brings all the dedicated symbols into one place, but it doesn't have the diacritic combiniations necessary for filling in the rest of the chart, except the affricates, lateral affricates, and ejectives. Still remember that it is only a rough guide.</p>
+        <p>Hit a symbol to hear the sound it represents.</p>
+    </div>
+    
+    <div class="problem" id="noaudio">
+        <p>For best results, please use a browser with HTML5 Audio support. The latest version of any popular web browser will do.</p>
+    </div>
+    
+    <script type="text/javascript">
+        if(!support && !mobile) document.getElementById("noaudio").style.display = "block";
+    </script>
+    
+    <noscript><div class="problem">
+        <p><strong>Sorry, you have JavaScript disabled or your web browser doesn't support it.</strong></p>
+        <p>This interactive chart won't work without JavaScript enabled. Please enable JavaScript or upgrade to a modern web browser.</p>
+    </div></noscript>
+    
+    <h2>Vowels</h2>
+    <p class="caption">Where symbols appear in pairs, the one to the left represents an unrounded vowel, and the one to the right represents a rounded vowel.</p>
+    <div class="voweloverflow">
+        <div class="vowels">
+            <img class="trapezoid" src="Blank_vowel_trapezoid.png"/>
+            <div class="l front">Front</div>
+            <div class="l central">Central</div>
+            <div class="l back">Back</div>
+            <div class="l close">Close</div>
+            <div class="l closemid">Close-mid</div>
+            <div class="l mid">Mid</div>
+            <div class="l openmid">Open-mid</div>
+            <div class="l open">Open</div>
+            <div class="v close_front"><span class="interactive IPA" onclick="ipa('Close_front_unrounded_vowel');">i</span> <span class="interactive IPA" onclick="ipa('Close_front_rounded_vowel');">y</span></div>
+            <div class="v close_central"><span class="interactive IPA" onclick="ipa('Close_central_unrounded_vowel');">ɨ</span> <span class="interactive IPA" onclick="ipa('Close_central_rounded_vowel');">ʉ</span></div>
+            <div class="v close_back"><span class="interactive IPA" onclick="ipa('Close_back_unrounded_vowel');">ɯ</span> <span class="interactive IPA" onclick="ipa('Close_back_rounded_vowel');">u</span></div>
+            <div class="v nearclose_nearfront"><span class="interactive IPA" onclick="ipa('Near-close_near-front_unrounded_vowel');">ɪ</span> <span class="interactive IPA" onclick="ipa('Near-close_near-front_rounded_vowel');">ʏ</span>
+            </div>
+            <div class="v nearclose_central"><span class="interactive IPA" onclick="ipa('Near-close_central_unrounded_vowel');">ᵻ</span> <span class="interactive IPA" onclick="ipa('Near-close_central_rounded_vowel');">ᵿ</span>
+            </div>
+            <div class="v nearclose_nearback"><span class="interactive IPA" onclick="ipa('Near-close_near-back_rounded_vowel');">ʊ</span></div>
+            <div class="v closemid_front"><span class="interactive IPA" onclick="ipa('Close-mid_front_unrounded_vowel');">e</span> <span class="interactive IPA" onclick="ipa('Close-mid_front_rounded_vowel');">ø</span></div>
+            <div class="v closemid_central"><span class="interactive IPA" onclick="ipa('Close-mid_central_unrounded_vowel');">ɘ</span> <span class="interactive IPA" onclick="ipa('Close-mid_central_rounded_vowel');">ɵ</span></div>
+            <div class="v closemid_back"><span class="interactive IPA" onclick="ipa('Close-mid_back_unrounded_vowel');">ɤ</span> <span class="interactive IPA" onclick="ipa('Close-mid_back_rounded_vowel');">o</span></div>
+            <div class="v mid_central"><span class="interactive IPA" onclick="ipa('Mid-central_vowel');">ə</span></div>
+            <div class="v openmid_front"><span class="interactive IPA" onclick="ipa('Open-mid_front_unrounded_vowel');">ɛ</span> <span class="interactive IPA" onclick="ipa('Open-mid_front_rounded_vowel');">œ</span></div>
+            <div class="v openmid_central"><span class="interactive IPA" onclick="ipa('Open-mid_central_unrounded_vowel');">ɜ</span> <span class="interactive IPA" onclick="ipa('Open-mid_central_rounded_vowel');">ɞ</span></div>
+            <div class="v openmid_back"><span class="interactive IPA" onclick="ipa('Open-mid_back_unrounded_vowel');">ʌ</span> <span class="interactive IPA" onclick="ipa('Open-mid_back_rounded_vowel');">ɔ</span></div>
+            <div class="v nearopen_front"><span class="interactive IPA" onclick="ipa('Near-open_front_unrounded_vowel');">æ</span></div>
+            <div class="v nearopen_central"><span class="interactive IPA" onclick="ipa('Near-open_central_unrounded_vowel');">ɐ</span></div>
+            <div class="v open_front"><span class="interactive IPA" onclick="ipa('Open_front_unrounded_vowel');">a</span> <span class="interactive IPA" onclick="ipa('Open_front_rounded_vowel');">ɶ</span></div>
+            <div class="v open_central"><span class="interactive IPA" onclick="ipa('Open_central_unrounded_vowel');">ᴀ</span>
+            </div>
+            <div class="v open_back"><span class="interactive IPA" onclick="ipa('Open_back_unrounded_vowel');">ɑ</span> <span class="interactive IPA" onclick="ipa('Open_back_rounded_vowel');">ɒ</span></div>
+        </div>
+    </div>
+    
+    <h2>Pulmonic consonants</h2>
+    <p class="caption">Where symbols appear in pairs, the one to the left represents a voiceless consonant, and the one to the right represents a voiced consonant.</p>
+    <p class="caption">Areas shaded grey indicate articulations judged impossible.</p>
+    <div class="overflow">
+        <table class="at"><!-- at = articulation table -->
+            <tbody><tr>
+                <td></td>
+                <th colspan="2">Bi­labial</th>
+                <th colspan="2">Labio­dental</th>
+                <th colspan="2">Dental</th>
+                <th colspan="2">Alve<wbr/>olar</th>
+                <th colspan="2">Post alveolar</th>
+                <th colspan="2">Retro<wbr/>flex</th>
+                <th colspan="2">Alveolo-palatal</th>
+                <th colspan="2">Pala<wbr/>tal</th>
+                <th colspan="2">Velar</th>
+                <th colspan="2">velodorsal</th>
+                <th colspan="2">Uvu<wbr/>lar</th>
+                <th colspan="2">Velopharyngeal</th>
+                <th colspan="2">Phary<wbr/>ngeal</th>
+                <th colspan="2">Epiglottal</th>
+                <th colspan="2">Glot<wbr/>tal</th>
+            </tr>
+                <tr>
+                    <th>Plosive</th>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_plosive');">p</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_bilabial_plosive');">b</td>
+                    <td></td><td></td>
+                    <td colspan="3" class="interactive  extended IPA" onclick="ipa('Voiceless_alveolar_plosive');">t</td>
+                    </td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiced_alveolar_plosive');">d</td>
+                    </td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_plosive');">ʈ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_retroflex_plosive');">ɖ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_alveolo-palatal_plosive');">ȶ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_alveolo-palatal_plosive');">ȡ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_palatal_plosive');">c</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_palatal_plosive');">ɟ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_velar_plosive');">k</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_velar_plosive');">ɡ</td>
+                    <td class="interactive" onclick="ipa('Voiceless_velodorsal_plosive');">𝼃</td>
+                    <td></td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_uvular_plosive');">q</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_uvular_plosive');">ɢ</td>
+                    <td class= "impossible"></td>
+                        <td class= "impossible"></td>
+                            <td></td>
+                                <td class="impossible"></td>
+    <td class="interactive" onclick="ipa('Voiceless_epiglottal_plosive');"><span class="IPA">ʡ</span></td>
+                                    <td class="impossible"></td>
+                                    <td class="interactive IPA" onclick="ipa('Glottal_stop');">ʔ</td>
+                                    <td class="impossible"></td>
+                                </tr>
+                <tr>
+                    <th>Nasal</th>
+                    <td></td><td class="interactive IPA" onclick="ipa('Bilabial_nasal');">m</td>
+                    <td></td><td class="interactive IPA" onclick="ipa('Labiodental_nasal');">ɱ</td>
+                    <td colspan="3" class="extended"></td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_nasal');">n</td>
+                    </td>
+                    <td></td>
+                    <td class="interactive IPA" onclick="ipa('Retroflex_nasal');">ɳ</td>
+                    <td></td>
+                        <td class="interactive IPA" onclick="ipa('Alveolo-palatal_nasal');">ȵ</td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Palatal_nasal');">ɲ</td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Velar_nasal');">ŋ</td>
+                        <td></td>
+                        <td></td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Uvular_nasal');">ɴ</td>
+                        <td class="impossible"></td><td class="impossible"></td>
+                        <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
+                        <td class="impossible"></td><td class="impossible"></td>
+                </tr>
+                <tr>
+                    <th>Trill</th>
+                    <td></td>
+                    <td class="interactive IPA" onclick="ipa('Bilabial_trill');">ʙ</td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td colspan="3" class="extended"></td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_trill');">r</td>
+                    <td></td><td></td>
+                    <td></td><td></td><td></td><td></td>
+                    <td class="impossible"></td><td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td> </td><td class="interactive IPA" onclick="ipa('Uvular_trill');">ʀ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_velopharyngeal_trill');">𝼀</td>
+                    <td> </td>
+                    <td></td><td></td>
+                    <td></td><td></td>
+                    <td class="impossible"></td><td class="impossible"></td>
+                </tr>
+                <tr>
+                    <th>Tap or Flap</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="interactive IPA" onclick="ipa('Labiodental_flap');">ⱱ</td>
+                    <td colspan="3" class="extended"></td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_tap');">ɾ</td>
+                    <td></td><td class="interactive IPA" onclick="ipa('Retroflex_flap');">ɽ</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="impossible"></td><td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td></td><td></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td></td><td></td>
+                    <td></td><td></td>
+                    <td class="impossible"></td><td class="impossible"></td>
+                </tr>
+                <tr>
+                    <th>Lateral flap</th>
+                    <td class="impossible"></td>
+                        <td class="impossible"></td>
+                            <td class="impossible"></td>
+                                <td class="impossible"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_flap');"><span class="IPA">ɺ</span></td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_flap');"><span class="IPA">𝼈</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="impossible"></td>
+                                    <td class="impossible"></td>
+                                    <td class="impossible"></td>
+                                        <td class="impossible"></td>
+                                            <td class="impossible"></td>
+                                                <td class="impossible"></td>
+                                                    <td class="impossible"></td>
+                                                        <td class="impossible"></td>
+                                                        </tr>
+                    <tr>
+                    <th>Fricative</th>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_fricative');">ɸ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_bilabial_fricative');">β</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_labiodental_fricative');">f</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_labiodental_fricative');">v</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_dental_fricative');">θ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_dental_fricative');">ð</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_fricative');">s</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_alveolar_fricative');">z</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_postalveolar_fricative');">ʃ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_postalveolar_fricative');">ʒ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_fricative');">ʂ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_retroflex_fricative');">ʐ</td>
+                    <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_fricative');"><span class="IPA">ɕ</span></td>
+                    <td class="interactive" onclick="ipa('Voiced_alveolo-palatal_fricative');"><span class="IPA">ʑ</span></td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_palatal_fricative');">ç</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_palatal_fricative');">ʝ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_velar_fricative');">x</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_velar_fricative');">ɣ</td>
+                    <td></td>
+                    <td></td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_uvular_fricative');">χ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_uvular_fricative');">ʁ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_velopharyngeal_fricative');">ʩ</td>
+                    <td> </td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_pharyngeal_fricative');">ħ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_pharyngeal_fricative');">ʕ</td>
+                    <td class="interactive" onclick="ipa('Voiceless_epiglottal_fricative');"><span class="IPA">ʜ</span></td>
+                    <td class="interactive" onclick="ipa('Voiced_epiglottal_fricative');"><span class="IPA">ʢ</span></td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_glottal_fricative');">h</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_glottal_fricative');">ɦ</td>
+                    </tr>
+                    <tr>
+                    <th>Lateral Fricative</th>
+                    <td class="impossible"></td>
+    <td class="impossible"></td>
+    <td class="impossible"></td>
+    <td class="impossible"></td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiceless_alveolar_lateral_fricative');">ɬ</td>
+                    <td colspan="3" class="interactive extended IPA" onclick="ipa('Voiced_lateral_fricative');">ɮ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_lateral_fricative');">ꞎ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_retroflex_lateral_fricative');">𝼅</td>
+                    <td> </td>
+                    <td> </td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_palatal_lateral_fricative');">𝼆</td><td></td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_velar_lateral_fricative');">𝼄</td><td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td><td></td>
+                    <td class="impossible"></td>
+                        <td class="impossible"></td>
+                            <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
+                            <td class="impossible"></td>
+                            <td class="impossible"></td>
+                </tr>
+                <th>Lateral–median fricative</th>
+                <td class="impossible"></td>
+                <td class="impossible"></td>
+                <td class="impossible"></td>
+                <td class="impossible"></td>
+                    <td> </td>
+                    <td> </td>
+                    <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_lateral–median_fricative');">ʪ</td>
+                    <td class="interactive IPA" onclick="ipa('Voiced_alveolar_lateral–median_fricative');">ʫ</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td></td>
+                    <td></td>
+                    <td> </td>
+                    <td> </td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <td class="impossible"></td>
+                    <tr>
+                        <th>Approximant</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+    <td class="interactive IPA" onclick="ipa('Labiodental_approximant');">ʋ</td>
+                        <td colspan="3" class="extended"></td>
+                        <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_approximant');">ɹ</td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Retroflex_approximant');">ɻ</td>
+                        <td></td>
+                        <td></td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Palatal_approximant');">j</td>
+                        <td></td><td class="interactive IPA" onclick="ipa('Voiced_velar_approximant');">ɰ</td>
+                        <td></td>
+                        <td></td>
+                        <td></td><td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td><td></td>
+                        <td></td><td></td>
+                        <td class="impossible"></td>
+                        <td class="impossible"></td>
+                        </tr>
+                        <tr>
+                        <th>Lateral Approximant</th>
+                        <td class="impossible"></td>
+    <td class="impossible"></td>
+    <td class="impossible"></td>
+    <td class="impossible"></td>
+                        <td colspan="3" class="extended"></td>
+                       <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_lateral_approximant');">l</td>
+                            <td></td>
+                            <td class="interactive IPA" onclick="ipa('Retroflex_lateral_approximant');">ɭ </td>
+                            <td></td>
+                            <td class="interactive IPA" onclick="ipa('Alveolo-palatal_lateral_approximant');">ȴ</td>
+                            <td>
+                            </td>
+                            <td class="interactive IPA" onclick="ipa('Palatal_lateral_approximant');">ʎ</td>
+                            <td></td><td class="interactive IPA" onclick="ipa('Velar_lateral_approximant');">ʟ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td><td></td>
+                            <td class="impossible"></td><td class="impossible"></td><td class="impossible"></td><td class="impossible"></td>
+                            <td class="impossible"></td><td class="impossible"></td>
+                            <td class="impossible"></td>
+                            <td class="impossible"></td>
+                    </tr>
+            </tbody></table>
+    </div>
+    
+    <h2>Affricate consonants</h2>
+    <table class="at"><!-- at = articulation table -->
+                 <tbody><tr>
+                     <td></td>
+                     <th colspan="2">Bi­labial</th>
+                     <th colspan="2">Labio­dental</th>
+                     <th colspan="2">Dental</th>
+                     <th colspan="2">Alve<wbr/>olar</th>
+                     <th colspan="2">Post alveolar</th>
+                     <th colspan="2">Retro<wbr/>flex</th>
+                     <th colspan="2">Alveolo-palatal</th>
+                     <th colspan="2">Pala<wbr/>tal</th>
+                     <th colspan="2">Velar</th>
+                     <th colspan="2">Uvu<wbr/>lar</th>
+                     <th colspan="2">Velopharyngeal</th>
+                     <th colspan="2">Phary<wbr/>ngeal</th>
+                     <th colspan="2">Epiglottal</th>
+                     <th colspan="2">Glot<wbr/>tal</th>
+                 </tr>
+                     <tr>
+                         <th>Affricate</th>
+                         <td class="interactive IPA" onclick="ipa('Voiceless_bilabial_affricate');"><span class="IPA">p͡ɸ</span></td>
+                         <td class="interactive IPA" onclick="ipa('Voiced_bilabial_affricate');"><span class="IPA">b͡β</span></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td class="interactive IPA" onclick="ipa('Voiceless_alveolar_affricate');"><span class="IPA">t͡s</span></td>
+                         <td class="interactive IPA" onclick="ipa('Voiced_alveolar_affricate');"><span class="IPA">d͡z</span></td>
+                         <td class="interactive IPA" onclick="ipa('Voiceless_palato-alveolar_affricate');"><span class="IPA">t͡ʃ</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_postalveolar_affricate');"><span class="IPA">d͡ʒ</span></td>
+                         <td class="interactive IPA" onclick="ipa('Voiceless_retroflex_affricate');"><span class="IPA">ʈ͡ʂ</span></td>
+                         <td class="interactive IPA" onclick="ipa('Voiced_retroflex_affricate');"><span class="IPA">ɖ͡ʐ</span></td>
+                         <td class="interactive" onclick="ipa('Voiceless_alveolo-palatal_affricate');"><span class="IPA">ȶ͡ɕ</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_alveolo-palatal_affricate');"><span class="IPA">ȡ͡ʑ</span></td>
+                         <td class="interactive" onclick="ipa('Voiceless_palatal_affricate');"><span class="IPA">c͡ç</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_palatal_affricate');"><span class="IPA">ɟ͡ʝ</span></td>
+                         <td class="interactive" onclick="ipa('Voiceless_velar_affricate');"><span class="IPA">k͡x</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_velar_affricate');"><span class="IPA">ɡ͡ɣ</span></td>
+                         <td class="interactive" onclick="ipa('Voiceless_uvular_affricate');"><span class="IPA">q͡χ</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_uvular_affricate');"><span class="IPA">ɢ͡ʁ</span></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td></td>
+                             <td></td>
+                             <td class="interactive" onclick="ipa('Voiceless_epiglottal_affricate');"><span class="IPA">ʡ͡ʜ</span></td>
+                             <td class="interactive" onclick="ipa('voiced_epiglottal_affricate');"><span class="IPA">ʡ͜ʢ</span></td>
+                             <td class="interactive" onclick="ipa('voiceless_glottal_affricate');"><span class="IPA">ʔ͡h</span></td>
+                                 <td></td>
+                     </tr>
+                     <tr>
+                         <th>Lateral Affricate</th>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td> </td>
+                         <td> </td>
+                         <td class="interactive" onclick="ipa('Voiceless_alveolar_lateral_affricate');"><span class="IPA">t͡ɬ</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_alveolar_lateral_affricate');"><span class="IPA">d͡ɮ</span></td>
+                         <td></td>
+                         <td></td>
+                         <td class="interactive" onclick="ipa('Voiceless_retroflex_lateral_affricate');"><span class="IPA">ʈ͡ꞎ</span></td>
+                         <td class="interactive" onclick="ipa('Voiced_retroflex_lateral_affricate');"><span class="IPA">ɖ͡𝼅</span></td>
+                         <td></td>
+                         <td></td>
+                         <td class="interactive" onclick="ipa('Voiceless_palatal_lateral_affricate');"><span class="IPA">c͜𝼆</span></td>
+                         <td></td>
+                         <td class="interactive" onclick="ipa('Voiceless_velar_lateral_affricate');"><span class="IPA">k͜𝼄</span></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                         <td class="impossible"></td>
+                     </tr>
+    </tbody></table>
+    
+    <div class="twins">
+        <div class="twin1">
+            <h2>Co-articulated pulmonic consonants</h2>
+            <table class="rt"><!-- rt = rows table -->
+                    <tbody><tr>
+                        <tr><td class="interactive" onclick="ipa('Voiceless_labial-velar_plosive');"><span class="IPA">k͡p</span> Simultaneous k and p</td></tr>
+                        <tr><td class="interactive" onclick="ipa('Voiced_labial-velar_plosive');"><span class="IPA">ɡ͡b</span> Simultaneous ɡ and b</td></tr>
+                        <tr><td class="interactive" onclick="ipa('Labial-velar_nasal_stop');"><span class="IPA">ŋ͡m</span> Simultaneous ŋ and m</td></tr>
+                    <tr><td class="interactive" onclick="ipa('Voiceless_labio-velar_fricative');"><span class="IPA">ʍ</span> Voiceless labial-velar fricative</td></tr>
+                    <tr><td class="interactive" onclick="ipa('Voiced_labio-velar_approximant');"><span class="IPA">w</span> Voiced labial-velar approximant</td></tr>
+                    <tr><td class="interactive" onclick="ipa('Labial-palatal_approximant');"><span class="IPA">ɥ</span> Voiced labial-palatal approximant</td></tr>
+                    <tr><td class="interactive" onclick="ipa('Voiceless_dorso-palatal_velar_fricative');"><span class="IPA">ɧ</span> Simultaneous <span class="IPA nofloat">ʃ</span> and <span class="IPA nofloat">x</span></td></tr>
+                    </tbody></table>
+        </div>
+        <div class="twin2">
+                            <table class="rt">
+                                <tbody><tr>
+                                    <tr>
+            <td><span class="IPA">◌͡◌</span><span class="IPA">◌͜◌</span><br>Affricates and double articulations <br>
+            can be represented by two symbols <br>
+            joined by a tie bar if necessary.<br><a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf"><sup>[credit to]</sup></td>
+            </tr>
+            </table>
+        </div>
+        </div>
+        
+    <h2>Non-pulmonic consonants</h2>
+    <div class="overflow">
+        <table class="ct"><!-- ct = columns table -->
+            <tbody>
+            <tr>
+                <th rowspan="2">Clicks</th>
+                <th>Voiced</th>
+                <th colspan="3"><span class="IPA">◌ʼ</span> Ejective</th>
+            </tr>
+            <tr>
+                <th>Implosives</th>
+                <th>Stops</th>
+                <th>Fricatives</th>
+                <th>Affricates</th>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Bilabial_click');"><span class="IPA">ʘ</span> Bilabial</td>
+                <td class="interactive" onclick="ipa('Voiced_bilabial_implosive');"><span class="IPA">ɓ</span> Bilabial</td>
+                <td class="interactive" onclick="ipa('Bilabial_ejective_plosive');"><span class="IPA">pʼ</span>Bilabial</td>
+                <td class="interactive" onclick="ipa('Bilabial_ejective_fricative');"><span class="IPA">ɸʼ</span> Bilabial</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="interactive" onclick="ipa('Labiodental_ejective_fricative');"><span class="IPA">fʼ</span> Labiodental</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Dental_click');"><span class="IPA">ǀ</span> Dental</td>
+                <td rowspan="2" class="interactive" onclick="ipa('Voiced_alveolar_implosive');"><span class="IPA">ɗ</span> Dental/alveolar</td>
+                <td rowspan="2" class="interactive" onclick="ipa('Alveolar_ejective_plosive');"><span class="IPA">tʼ</span> Dental/alveolar</td>
+                <td class="interactive" onclick="ipa('Dental_ejective_fricative');"><span class="IPA">θʼ</span> Dental</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Postalveolar_click');"><span class="IPA">ǃ</span> (Post)alveolar</td>
+                <td class="interactive" onclick="ipa('Alveolar_ejective_fricative');"><span class="IPA">sʼ</span> Alveolar</td>
+                <td class="interactive" onclick="ipa('Alveolar_ejective_affricate');"><span class="IPA">t͡sʼ</span> Alveolar</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="interactive" onclick="ipa('Palato-alveolar_ejective_fricative');"><span class="IPA">ʃʼ</span> Postalveolar</td>
+                <td class="interactive" onclick="ipa('Postalveolar_ejective_affricate');"><span class="IPA">t͡ʃʼ</span> Postalveolar</td>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Retroflex_click');"><span class="IPA">𝼊</span> Retroflex</td>
+                <td class="interactive" onclick="ipa('Voiced-retroflex-implosive');"><span class="IPA">ᶑ</span> Retroflex</td>
+                <td class="interactive" onclick="ipa('Retroflex_ejective');"><span class="IPA">ʈʼ</span> Retroflex</td>
+                <td class="interactive" onclick="ipa('Retroflex_ejective_fricative');"><span class="IPA">ʂʼ</span> Retroflex</td>
+                <td class="interactive" onclick="ipa('Retroflex_ejective_affricate');"><span class="IPA">ʈ͡ʂʼ</span> Retroflex</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="interactive" onclick="ipa('Alveolo-palatal_ejective_fricative');"><span class="IPA">ɕʼ</span> Alveolo-palatal</td>
+                <td class="interactive" onclick="ipa('Alveolo-palatal_ejective_affricate');"><span class="IPA">ȶ͡ɕʼ</span> Alveolo-palatal</td>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Palatoalveolar_click');"><span class="IPA">ǂ</span> Palatoalveolar</td>
+                <td class="interactive" onclick="ipa('Voiced_palatal_implosive');"><span class="IPA">ʄ</span> Palatal</td>
+                <td class="interactive" onclick="ipa('Palatal_ejective');"><span class="IPA">cʼ</span> Palatal</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="interactive" onclick="ipa('Velar_Click');"><span class="IPA">ʞ</span> Velar</td>
+                <td class="interactive" onclick="ipa('Voiced_velar_implosive');"><span class="IPA">ɠ</span> Velar</td>
+                <td class="interactive" onclick="ipa('Velar_ejective_plosive');"><span class="IPA">kʼ</span> Velar</td>
+                <td class="interactive" onclick="ipa('Velar_ejective_fricative');"><span class="IPA">xʼ</span> Velar</td>
+                <td class="interactive" onclick="ipa('Velar_ejective_affricate');"><span class="IPA">k͡xʼ</span> Velar</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="interactive" onclick="ipa('Voiced_uvular_implosive');"><span class="IPA">ʛ</span> Uvular</td>
+                <td class="interactive" onclick="ipa('Uvular_ejective_plosive');"><span class="IPA">qʼ</span> Uvular</td>
+                <td class="interactive" onclick="ipa('Uvular_ejective_fricative');"><span class="IPA">χʼ</span> Uvular</td>
+                <td class="interactive" onclick="ipa('Uvular_ejective_affricate');"><span class="IPA">q͡χʼ</span> Uvular</td>
+            </tr>
+            <tr>
+                <td class="impossible"></td>
+                <td class="impossible"></td>
+                <td class="interactive" onclick="ipa('Epiglottal_ejective');"><span class="IPA">ʡʼ</span> Epiglottal</td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <h2>Other symbols</h2>
+    <table class="rt"><!-- rt = rows table -->
+        <tbody>
+        <tr><td class="interactive" onclick="ipa('Voiced_velodorsal_plosive');"><span class="IPA">𝼁</span> Voiced velodorsal plosive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Velodorsal_nasal');"><span class="IPA">𝼇</span> Velodorsal nasal</td></tr>
+        <tr><td class="interactive" onclick="ipa('Voiceless_upper-pharyngeal_plosive');"><span class="IPA">ꞯ</span> Voiceless upper-pharyngeal plosive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Voiced_upper-pharyngeal_plosive');"><span class="IPA">𝼂</span> Voiced upper-pharyngeal plosive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Voiceless_bilabial_percussive');"><span class="IPA">ʬ</span> Bi­labial percussive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Voiceless_bidental_percussive');"><span class="IPA">ʭ</span> Bidental percussive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Percussive_alveolar_click');"><span class="IPA">¡</span> Sublaminal lower alveolar percussive</td></tr>
+        <tr><td class="interactive" onclick="ipa('Alveolar_lateral_click');"><span class="IPA">ǁ</span> Alveolar lateral click</td></tr>
+        </tbody>
+    </table>
+    
+    <h2>Diacritics</h2>
+    <table class="rt">
+        <tr>
+            <td class="IPA">◌̥ / ◌̊</td>
+            <td>Voiceless</td>
+            <td>n̥, l̥, n̊</td>
+            
+            <td class="IPA">◌ʱ / ◌̤</td>
+            <td>Breathy voiced</td>
+            <td>dʱ, bʱ, b̤, a̤</td>
+                    
+            <td class="IPA">◌ᶹ</td>
+            <td>Labiodental</td>
+            <td>tᶹ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̬</td>
+            <td>Voiced</td>
+            <td>s̬, t̬</td>
+            
+            <td class="IPA">◌̰</td>
+            <td>Creaky voiced</td>
+            <td>b̰, a̰</td>
+            
+            <td class="IPA">◌̪</td>
+            <td>Dental</td>
+            <td>t̪, d̪</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌ʰ</td>
+            <td>Aspirated</td>
+            <td>tʰ, pʰ</td>
+            
+            <td class="IPA">◌̼</td>
+            <td>Linguolabial</td>
+            <td>t̼, d̼</td>
+                        
+            <td class="IPA">◌̺</td>
+            <td>Apical</td>
+            <td>t̺, d̺</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌˭</td>
+            <td>unaspirated</td>
+            <td>p˭</td>
+            
+            <td class="IPA">◌͍</td>
+            <td>labial spreading</td>
+            <td>s͍, u͍</td>
+            
+            <td class="IPA">◌̻</td>
+            <td>Laminal</td>
+            <td>t̻, d̻</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̹</td>
+            <td>More rounded</td>
+            <td>ɔ̹, ʊ̹</td>
+            
+            <td class="IPA">◌ꟹ</td>
+            <td>Open-labialized</td>
+            <td></td>
+            
+            <td class="IPA">◌̃</td>
+            <td>Nasalized</td>
+            <td>ẽ, õ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̜</td>
+            <td>Less rounded</td>
+            <td>ɔ̜, ʊ̜</td>
+            
+            <td class="IPA">◌ʷ</td>
+            <td>Labialized</td>
+            <td>tʷ, kʷ</td>
+            
+            <td class="IPA">◌͊</td>
+            <td>Denasalized</td>
+            <td>m͊, n͊</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌ⁿ</td>
+            <td>Nasal release</td>
+            <td>dⁿ, tⁿ</td>
+            
+            <td class="IPA">◌ᵝ</td>
+            <td>compressed</td>
+            <td class="interactive" onclick="ipa('Close_back_compressed_vowel');"><span class="IPA">ɯᵝ</span> Close back compressed vowel</td>
+            
+            <td class="IPA">◌͋</td>
+            <td>Nasal fricative</td>
+            <td>n͋</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+            <td class="IPA">◌͇</td>
+            <td>Alveolar</td>
+            <td class="interactive" onclick="ipa('Voiceless_alveolar_non-sibilant_fricative');"><span class="IPA">θ͇</span> Voiceless alveolar fricative</td>
+            
+            <td class="IPA">◌ˡ</td>
+            <td>Lateral release</td>
+            <td>dˡ, tˡ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̟</td>
+            <td>Advanced</td>
+            <td>u̟, ɡ̟</td>
+            
+            <td class="IPA">◌ʲ</td>
+            <td>Palatalized</td>
+            <td>tʲ, dʲ</td>
+                
+            <td class="IPA">◌̚</td>
+            <td>No audible release</td>
+            <td>p̚, t̚, k̚</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̠</td>
+            <td>Retracted</td>
+            <td>i̠, t̠</td>
+            
+            <td class="IPA">◌ᶣ</td>
+            <td>Labio-palatalized</td>
+            <td></td>
+            
+            <td class="IPA">◌ᵊ</td>
+            <td>Mid central vowel release</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̈</td>
+            <td>Centralized</td>
+            <td>ë, ö</td>
+            
+            <td class="IPA">◌ˠ</td>
+            <td>Velarized</td>
+            <td>tˠ, bˠ</td>
+            
+            <td class="IPA">◌ᶿ</td>
+            <td>Voiceless dental fricative release</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̽</td>
+            <td>Mid-centralized</td>
+            <td>e̽, o̽</td>
+                
+            <td class="IPA">◌ʶ</td>
+            <td>Uvularized</td>
+            <td>tʶ</td>
+                                                            
+            <td class="IPA">◌ˣ</td>
+            <td>Voiceless velar fricative release</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̩</td>
+            <td>Syllabic</td>
+            <td>n̩, l̩</td>
+            
+            <td class="IPA">◌ˤ</td>
+            <td>Pharyngealized</td>
+            <td>tˤ, sˤ</td>
+                                                            
+            <td class="IPA">↑</td>
+            <td>Egressive airstream</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̯</td>
+            <td>Non-syllabic</td>
+            <td>e̯, u̯</td>
+            
+            <td class="IPA">◌̴</td>
+            <td>Velarized or pharyngealized</td>
+            <td class="interactive" onclick="ipa('Velarized_alveolar_lateral_approximant');"><span class="IPA">ɫ</span> Dark l</td>
+                                                
+            <td class="IPA">↓</td>
+            <td>Downstep</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="IPA">◌͈</td>
+            <td>strong articulation</td>
+            <td>f͈</td>
+            
+            <td class="IPA">◌ˀ</td>
+            <td>Glottalized</td>
+            <td>tˀ, kˀ</td>
+                                                                        
+        </tr>
+        <tr>
+            <td class="IPA">◌͉</td>
+            <td>weak articulation</td>
+            <td>v͉</td>
+                                                                           
+            <td class="IPA">◌̝</td>
+            <td>Raised</td>
+            <td class="interactive" onclick="ipa('Voiced_alveolar_non-sibilant_fricative');"><span class="IPA">ɹ̝</span> Voiced alveolar fricative</td>
+          </tr>
+        <tr>
+            <td class="IPA">◌͎</td>
+            <td>whistled articulation</td>
+            <td>s͎</td>
+                                            
+            <td class="IPA">◌̞</td>
+            <td>Lowered</td>
+            <td class="interactive" onclick="ipa('Voiced_bilabial_approximant');"><span class="IPA">β̞</span> Voiced bilabial approximant</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌˞</td>
+            <td>Rhoticity</td>
+            <td>ɚ, ɝ</td>
+            
+            <td class="IPA">◌̘</td>
+            <td>Advanced tongue root</td>
+            <td>e̘, o̘</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+            <td class="IPA">◌̙</td>
+            <td>Retracted tongue root</td>
+            <td>e̙, o̙</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̋</td>
+            <td>Extra high tone</td>
+            <td>ő, ű</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌́</td>
+            <td>High tone</td>
+            <td>é, á</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̄</td>
+            <td>Mid tone</td>
+            <td>ē, ō</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̀</td>
+            <td>Low tone</td>
+            <td>è, ò</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̏</td>
+            <td>Extra low tone</td>
+            <td>ȅ, ȍ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̌</td>
+            <td>Rising tone</td>
+            <td>ě, ǎ</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌̂</td>
+            <td>Falling tone</td>
+            <td>ê, ô</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷄</td>
+            <td>High-mid tone</td>
+            <td>e᷄, o᷄</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷅</td>
+            <td>Low-mid tone</td>
+            <td>e᷅, o᷅</td>
+        </tr>
+        <tr>
+            <td class="IPA">◌᷈</td>
+            <td>Rising-falling tone</td>
+            <td>e᷈, o᷈</td>
+        </tr>
+        <tr>
+            <td class="IPA">↗</td>
+            <td>Global rise</td>
+            <td>↗</td>
+        </tr>
+        <tr>
+            <td class="IPA">↘</td>
+            <td>Global fall</td>
+            <td>↘</td>
+        </tr>
+    </table>
 
-  <div class="twins">
-      <div class="twin1">
-  <div class="chart-section">
-      <h3>Suprasegmentals</h3>
-      
-      <table class="rt">
-          <tr>
-              <td class="IPA">ˈ◌</td>
-              <td>Primary stress</td>
-              <td>foʊˈnɛtɪks</td>
-          </tr>
-          <tr>
-              <td class="IPA">ˌ◌</td>
-              <td>Secondary stress</td>
-              <td>ˌɪntərˈnæʃənəl</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌ː</td>
-              <td>Long</td>
-              <td>iː, uː</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌ˑ</td>
-              <td>Half-long</td>
-              <td>eˑ, oˑ</td>
-          </tr>
-          <tr>
-          <td class="IPA">◌̆</td>
-          <td>Extra-short</td>
-          <td>ă, ĕ</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌|◌</td>
-              <td>Minor (foot) group</td>
-              <td>words | words</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌‖◌</td>
-              <td>Major (intonation) group</td>
-              <td>words ‖ words</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌.◌</td>
-              <td>Syllable break</td>
-              <td>ri.ækt</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌‿◌</td>
-              <td>Linking (absence of a break)</td>
-              <td>rock‿and‿roll</td>
-          </tr>
-      </table>
-  </div>
-      </div>
-      <div class="twin2">
-  <div class="chart-section">
-      <h3>Tone and Word Accents</h3>
-      
-      <table class="rt">
-          <tr>
-              <td class="IPA">◌˥</td>
-              <td>Extra high tone</td>
-              <td>ma˥</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˦</td>
-              <td>High tone</td>
-              <td>ma˦</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˧</td>
-              <td>Mid tone</td>
-              <td>ma˧</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˨</td>
-              <td>Low tone</td>
-              <td>ma˨</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˩</td>
-              <td>Extra low tone</td>
-              <td>ma˩</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˩˥</td>
-              <td>Rising tone</td>
-              <td>ma˩˥</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˥˩</td>
-              <td>Falling tone</td>
-              <td>ma˥˩</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˦˥</td>
-              <td>High rising tone</td>
-              <td>ma˦˥</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˩˨</td>
-              <td>Low rising tone</td>
-              <td>ma˩˨</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˥˦</td>
-              <td>High falling tone</td>
-              <td>ma˥˦</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˨˩</td>
-              <td>Low falling tone</td>
-              <td>ma˨˩</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˧˦˧</td>
-              <td>Mid rising falling tone</td>
-              <td>ma˧˦˧</td>
-          </tr>
-          <tr>
-              <td class="IPA">◌˩˨˩</td>
-              <td>Low rising falling tone</td>
-              <td>ma˩˨˩</td>
-          </tr>
-      </table>
-      </div>
-  </div>
-  <div id="object"></div>
-  <div class="text">
-      <p class="copyright">This content and audio is adapted from the IPA Chart website, and has been modified. Original source: <a href="https://ipachart.com">ipachart.com</a>. Note: The audio has been updated or new audio has been added from Wikimedia Commons, and it doesn't look alike because the design is AI generated by Claude.</p>
-  </div>
-  
-  <!-- Container for floating IPA symbols -->
-  <div class="ipa-symbols-container" id="ipaSymbolsContainer"></div>
+    <div class="twins">
+        <div class="twin1">
+            <div class="chart-section">
+                <h3>Suprasegmentals</h3>
+                
+                <table class="rt">
+                    <tr>
+                        <td class="IPA">ˈ◌</td>
+                        <td>Primary stress</td>
+                        <td>foʊˈnɛtɪks</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">ˌ◌</td>
+                        <td>Secondary stress</td>
+                        <td>ˌɪntərˈnæʃənəl</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌ː</td>
+                        <td>Long</td>
+                        <td>iː, uː</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌ˑ</td>
+                        <td>Half-long</td>
+                        <td>eˑ, oˑ</td>
+                    </tr>
+                    <tr>
+                    <td class="IPA">◌̆</td>
+                    <td>Extra-short</td>
+                    <td>ă, ĕ</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌|◌</td>
+                        <td>Minor (foot) group</td>
+                        <td>words | words</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌‖◌</td>
+                        <td>Major (intonation) group</td>
+                        <td>words ‖ words</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌.◌</td>
+                        <td>Syllable break</td>
+                        <td>ri.ækt</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌‿◌</td>
+                        <td>Linking (absence of a break)</td>
+                        <td>rock‿and‿roll</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="twin2">
+            <div class="chart-section">
+                <h3>Tone and Word Accents</h3>
+                
+                <table class="rt">
+                    <tr>
+                        <td class="IPA">◌˥</td>
+                        <td>Extra high tone</td>
+                        <td>ma˥</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˦</td>
+                        <td>High tone</td>
+                        <td>ma˦</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˧</td>
+                        <td>Mid tone</td>
+                        <td>ma˧</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˨</td>
+                        <td>Low tone</td>
+                        <td>ma˨</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˩</td>
+                        <td>Extra low tone</td>
+                        <td>ma˩</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˩˥</td>
+                        <td>Rising tone</td>
+                        <td>ma˩˥</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˥˩</td>
+                        <td>Falling tone</td>
+                        <td>ma˥˩</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˦˥</td>
+                        <td>High rising tone</td>
+                        <td>ma˦˥</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˩˨</td>
+                        <td>Low rising tone</td>
+                        <td>ma˩˨</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˥˦</td>
+                        <td>High falling tone</td>
+                        <td>ma˥˦</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˨˩</td>
+                        <td>Low falling tone</td>
+                        <td>ma˨˩</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˧˦˧</td>
+                        <td>Mid rising falling tone</td>
+                        <td>ma˧˦˧</td>
+                    </tr>
+                    <tr>
+                        <td class="IPA">◌˩˨˩</td>
+                        <td>Low rising falling tone</td>
+                        <td>ma˩˨˩</td>
+                    </tr>
+                </table>
+                </div>
+        </div>
+    </div>
+    
+    <div id="object"></div>
+    
+    <div class="text">
+        <p class="copyright">This content and audio is adapted from the IPA Chart website, and has been modified. Original source: <a href="https://ipachart.com">ipachart.com</a>. Note: The audio has been updated or new audio has been added from Wikimedia Commons, and it doesn't look alike because the design is AI generated by Claude.</p>
+    </div>
+    
+    <!-- Container for floating IPA symbols -->
+    <div class="ipa-symbols-container" id="ipaSymbolsContainer"></div>
+
 <script>
-    // All IPA symbols to use for the floating background
-    const allIpaSymbols = [
-      'p', 'b', 't', 'd', 'k', 'ɡ', 'm', 'n', 'ŋ', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ',
-      'h', 'r', 'l', 'j', 'w', 'i', 'y', 'ɨ', 'u', 'e', 'ø', 'ə', 'o', 'æ', 'a', 'ɑ', 'ɒ', '𝼆', 'ᶑ', 'ç', '𝼈', 'ʢ', 'ɰ', 'ʪ', 'ꞎ', '𝼊', 'ɬ', '𝼄', 'ʬ', 'ɘ', 'ᵻ', 'ɵ', 'ɤ', 'ɣ', 'ɓ', 'ɧ', 'ɥ', 'ʘ', 'ɱ', '𝼀', 'χ', 'ɞ', 'ɶ', '𝼂', 'ɢ', 'ɴ', 'ʞ', 'ʁ', 'q', '𝼃', 'ɸ', 'ȡ', 'ǀ', 'ʈ', 'ɖ', 'ȶ', 'ȡ', 'ʍ', 'c', 'ɟ', 'ʡ', 'ʔ', 'ɳ', 'ȵ', 'ɴ', 'ʙ', 'ʀ', 'ⱱ', 'ɾ', 'ɽ', 'ɺ', 'β', 'ʂ', 'ʐ', 'ɕ', 'ʑ', 'ʝ', 'ʩ', 'ħ', 'ʕ', 'ʜ', 'ɦ', 'ɮ', '𝼅', 'ʫ', 'ʋ', 'ɹ', 'ɻ', 'ɭ', 'ȴ', 'ʎ', 'ʟ', 'ǃ', 'ǂ', 'ɓ', 'ɗ', 'ʄ', 'ɠ', 'ʛ', '𝼁', '𝼇', 'ꞯ', 'ʭ', '¡', 'ǁ', 'ʉ', 'ɯ', 'ɪ', 'ʏ', 'ᵿ', 'ʊ', 'ɛ', 'œ', 'ɜ', 'ʌ', 'ɔ', 'ɐ', 'ᴀ'
-    ];
+    // All IPA symbols to use for the floating background
+    const allIpaSymbols = [
+        'p', 'b', 't', 'd', 'k', 'ɡ', 'm', 'n', 'ŋ', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ',
+        'h', 'r', 'l', 'j', 'w', 'i', 'y', 'ɨ', 'u', 'e', 'ø', 'ə', 'o', 'æ', 'a', 'ɑ', 'ɒ', '𝼆', 'ᶑ', 'ç', '𝼈', 'ʢ', 'ɰ', 'ʪ', 'ꞎ', '𝼊', 'ɬ', '𝼄', 'ʬ', 'ɘ', 'ᵻ', 'ɵ', 'ɤ', 'ɣ', 'ɓ', 'ɧ', 'ɥ', 'ʘ', 'ɱ', '𝼀', 'χ', 'ɞ', 'ɶ', '𝼂', 'ɢ', 'ɴ', 'ʞ', 'ʁ', 'q', '𝼃', 'ɸ', 'ȡ', 'ǀ', 'ʈ', 'ɖ', 'ȶ', 'ȡ', 'ʍ', 'c', 'ɟ', 'ʡ', 'ʔ', 'ɳ', 'ȵ', 'ɴ', 'ʙ', 'ʀ', 'ⱱ', 'ɾ', 'ɽ', 'ɺ', 'β', 'ʂ', 'ʐ', 'ɕ', 'ʑ', 'ʝ', 'ʩ', 'ħ', 'ʕ', 'ʜ', 'ɦ', 'ɮ', '𝼅', 'ʫ', 'ʋ', 'ɹ', 'ɻ', 'ɭ', 'ȴ', 'ʎ', 'ʟ', 'ǃ', 'ǂ', 'ɓ', 'ɗ', 'ʄ', 'ɠ', 'ʛ', '𝼁', '𝼇', 'ꞯ', 'ʭ', '¡', 'ǁ', 'ʉ', 'ɯ', 'ɪ', 'ʏ', 'ᵿ', 'ʊ', 'ɛ', 'œ', 'ɜ', 'ʌ', 'ɔ', 'ɐ', 'ᴀ'
+    ];
 
-    // Number of floating IPA symbols
-    const numFloatingSymbols = 50;
+    // Detect if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Detect mobile devices
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Number of floating IPA symbols (reduced on mobile)
+    const numFloatingSymbols = prefersReducedMotion ? 0 : (isMobile ? 15 : 50);
 
-    // Container for floating IPA symbols
-    const ipaSymbolsContainer = document.getElementById('ipaSymbolsContainer');
+    // Container for floating IPA symbols
+    const ipaSymbolsContainer = document.getElementById('ipaSymbolsContainer');
 
-    // Create floating IPA symbols
-    for (let i = 0; i < numFloatingSymbols; i++) {
-      createFloatingIpaSymbol();
-    }
+    // Create floating IPA symbols only if not reduced motion
+    if (!prefersReducedMotion && numFloatingSymbols > 0) {
+        for (let i = 0; i < numFloatingSymbols; i++) {
+            setTimeout(() => createFloatingIpaSymbol(), i * 200);
+        }
+    }
 
-    // Function to create a floating IPA symbol
-    function createFloatingIpaSymbol() {
-      const ipaSymbol = document.createElement('div');
-      ipaSymbol.className = 'ipa-symbol';
-      
-      // Select a random IPA symbol
-      const randomSymbol = allIpaSymbols[Math.floor(Math.random() * allIpaSymbols.length)];
-      ipaSymbol.innerHTML = randomSymbol;
-      
-      // Random positioning
-      const startPositionX = Math.random() * window.innerWidth;
-      const startPositionY = Math.random() * window.innerHeight;
-      ipaSymbol.style.left = startPositionX + 'px';
-      ipaSymbol.style.top = startPositionY + 'px';
-      
-      // Random size
-      const size = (Math.random() * 1.5) + 0.5;
-      ipaSymbol.style.fontSize = size + 'em';
-      
-      // Random animation
-      const animationType = Math.random() > 0.5 ? 'fall' : 'rise';
-      const animationDuration = Math.random() * 15 + 5; // 5-20 seconds
-      
-      if (animationType === 'fall') {
-        ipaSymbol.style.top = '-20px';
-        ipaSymbol.style.animation = `fall ${animationDuration}s linear forwards`;
-      } else {
-        ipaSymbol.style.top = '100vh';
-        ipaSymbol.style.animation = `rise ${animationDuration}s linear forwards`;
-      }
-      
-      // Append to container
-      ipaSymbolsContainer.appendChild(ipaSymbol);
-      
-      // Remove and recreate after animation is complete
-      setTimeout(() => {
-        ipaSymbol.remove();
-        createFloatingIpaSymbol();
-      }, animationDuration * 1000);
-    }
+    // Function to create a floating IPA symbol with better cross-browser support
+    function createFloatingIpaSymbol() {
+        if (prefersReducedMotion) return;
+        
+        const ipaSymbol = document.createElement('div');
+        ipaSymbol.className = 'ipa-symbol';
+        
+        // Select a random IPA symbol
+        const randomSymbol = allIpaSymbols[Math.floor(Math.random() * allIpaSymbols.length)];
+        ipaSymbol.textContent = randomSymbol;
+        
+        // Random positioning
+        const startPositionX = Math.random() * (window.innerWidth - 50);
+        ipaSymbol.style.left = startPositionX + 'px';
+        
+        // Random size
+        const size = (Math.random() * 1.5) + 0.5;
+        ipaSymbol.style.fontSize = size + 'em';
+        
+        // Random animation with better cross-browser support
+        const animationType = Math.random() > 0.5 ? 'fall' : 'rise';
+        const animationDuration = Math.random() * 15 + 5; // 5-20 seconds
+        
+        if (animationType === 'fall') {
+            ipaSymbol.style.top = '-50px';
+            ipaSymbol.style.animation = `fall ${animationDuration}s linear forwards`;
+        } else {
+            ipaSymbol.style.top = (window.innerHeight + 50) + 'px';
+            ipaSymbol.style.animation = `rise ${animationDuration}s linear forwards`;
+        }
+        
+        // Add to container
+        ipaSymbolsContainer.appendChild(ipaSymbol);
+        
+        // Remove and recreate after animation is complete
+        setTimeout(() => {
+            if (ipaSymbol.parentNode) {
+                ipaSymbol.remove();
+            }
+            // Only create new symbol if container still exists and motion not reduced
+            if (ipaSymbolsContainer && !prefersReducedMotion) {
+                createFloatingIpaSymbol();
+            }
+        }, animationDuration * 1000);
+    }
 
-    // All the dead code has been removed!
-    // The floating IPA symbols should work perfectly now.
-    </script>
+    // Handle window resize
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            // Update mobile detection on resize
+            const newIsMobile = window.innerWidth <= 768;
+            if (newIsMobile !== isMobile) {
+                location.reload(); // Simple solution for major layout changes
+            }
+        }, 250);
+    });
+
+    // Handle audio error more gracefully
+    window.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'AUDIO') {
+            console.log('Audio file not found, continuing without sound');
+        }
+    });
+
+    // Accessibility: Add keyboard support for interactive elements
+    document.addEventListener('keydown', function(e) {
+        if (e.target.classList.contains('interactive') && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            e.target.click();
+        }
+    });
+
+    // Add focus indicators for accessibility
+    document.addEventListener('DOMContentLoaded', function() {
+        const interactiveElements = document.querySelectorAll('.interactive');
+        interactiveElements.forEach(element => {
+            element.setAttribute('tabindex', '0');
+            element.setAttribute('role', 'button');
+        });
+    });
+</script>
 </body>
 </html>

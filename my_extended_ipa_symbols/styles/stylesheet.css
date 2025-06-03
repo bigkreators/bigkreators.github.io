@@ -1,9 +1,9 @@
 span {
     display: inline-block;
 }
-.Turned {
-    transform: rotate(180deg)
-}
+.turned {
+transform: rotate(180deg);
+        }
 .grayed-out {
             background-color: #d1d4da;
         }
@@ -27,6 +27,13 @@ width: 30%;
 margin-bottom: 20px;
 height: 133px;
 box-sizing: border-box;
+}
+small-capital {
+font-variant: small-caps;
+}
+.otherones-table_with-images {
+width: 30%;
+margin-bottom: 20px;
 }
 
 

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndieSearch - Your Independent Search Engine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .api-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .api-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            border: 2px solid #dee2e6;
+        }
+
+        .status-online {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-color: #28a745;
+        }
+
+        .api-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+
+        .control-btn.success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        .control-btn.warning {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+        }
+
+        .results-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item {
+            border-bottom: 1px solid #e1e8ed;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+            margin: 0 -10px;
+            padding: 20px 10px;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a0dab;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .result-snippet {
+            color: #545454;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .result-metadata {
+            font-size: 12px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .api-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 15px;
+        }
+
+        .log-entry {
+            margin-bottom: 2px;
+        }
+
+        .log-info { color: #00bfff; }
+        .log-success { color: #00ff00; }
+        .log-error { color: #ff4444; }
+        .log-warning { color: #ffaa00; }
+
+        .data-source {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .data-source h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .source-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="search-container">
+            <div class="logo">🔍 IndieSearch</div>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search the independent web...">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="api-panel">
+            <h3 style="margin-bottom: 20px;">🚀 IndieSearch API Status</h3>
+            
+            <div class="api-status">
+                <div class="status-item status-online" id="apiStatus">API: Online</div>
+                <div class="status-item" id="indexSize">Index: 0 pages</div>
+                <div class="status-item" id="lastUpdate">Last Update: Never</div>
+                <div class="status-item" id="apiVersion">Version: 1.0.0</div>
+            </div>
+
+            <div class="api-controls">
+                <button class="control-btn success" onclick="initializeAPI()">Initialize API</button>
+                <button class="control-btn primary" onclick="refreshIndex()">Refresh Index</button>
+                <button class="control-btn warning" onclick="clearCache()">Clear Cache</button>
+                <button class="control-btn" onclick="showAPIStats()">View Stats</button>
+            </div>
+
+            <div class="data-source">
+                <h4>📊 Data Sources</h4>
+                <div class="source-stats">
+                    <span>Wikipedia: <strong id="wikiCount">0</strong></span>
+                    <span>Academic: <strong id="academicCount">0</strong></span>
+                    <span>Tech Docs: <strong id="techCount">0</strong></span>
+                    <span>News: <strong id="newsCount">0</strong></span>
+                </div>
+            </div>
+
+            <div class="api-log" id="apiLog"></div>
+        </div>
+
+        <div class="results-container">
+            <div id="searchResults">
+                <div class="no-results">
+                    <h3>🔍 IndieSearch Ready</h3>
+                    <p>Your independent search API is ready. Try searching for topics like "impossible consonants", "machine learning", or "quantum physics".</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class IndieSearchAPI {
+            constructor() {
+                this.index = new Map();
+                this.cache = new Map();
+                this.stats = {
+                    totalQueries: 0,
+                    totalResults: 0,
+                    avgResponseTime: 0,
+                    lastQuery: null
+                };
+                this.dataSources = {
+                    wikipedia: 0,
+                    academic: 0,
+                    tech: 0,
+                    news: 0
+                };
+                this.isInitialized = false;
+            }
+
+            async initialize() {
+                this.log('Initializing IndieSearch API...', 'info');
+                
+                // Simulate API initialization
+                await this.delay(1000);
+                
+                // Load sample data
+                await this.loadSampleData();
+                
+                this.isInitialized = true;
+                this.updateStatus();
+                this.log('API initialization complete!', 'success');
+            }
+
+            async loadSampleData() {
+                this.log('Loading knowledge base...', 'info');
+                
+                const sampleData = [
+                    {
+                        id: 'wiki_consonants',
+                        title: 'Impossible Consonants in Phonetics',
+                        content: 'In phonetics, impossible consonants refer to theoretical consonant sounds that cannot be physically produced by the human vocal tract. These include sounds that would require simultaneous articulation at incompatible places of articulation, such as a bilabial-velar stop with conflicting airflow mechanisms. Linguists study these theoretical constraints to understand the limits of human speech production.',
+                        url: 'https://en.wikipedia.org/wiki/Impossible_consonants',
+                        source: 'wikipedia',
+                        timestamp: Date.now(),
+                        tags: ['phonetics', 'linguistics', 'consonants', 'speech', 'vocal tract']
+                    },
+                    {
+                        id: 'ling_ejective',
+                        title: 'Ejective Consonants and Articulatory Constraints',
+                        content: 'Ejective consonants are stops or fricatives made with a glottalic egressive airstream. While common in many languages, certain combinations with other airstream mechanisms create impossible consonants. The study of these constraints helps understand universal patterns in human language phonology.',
+                        url: 'https://linguistics.example.com/ejectives',
+                        source: 'academic',
+                        timestamp: Date.now(),
+                        tags: ['ejectives', 'airstream', 'phonology', 'constraints']
+                    },
+                    {
+                        id: 'ml_basics',
+                        title: 'Machine Learning Fundamentals',
+                        content: 'Machine learning algorithms enable computers to learn patterns from data without explicit programming. Key approaches include supervised learning (classification and regression), unsupervised learning (clustering and dimensionality reduction), and reinforcement learning. Modern applications span from image recognition to natural language processing.',
+                        url: 'https://ml.guide/fundamentals',
+                        source: 'tech',
+                        timestamp: Date.now(),
+                        tags: ['machine learning', 'algorithms', 'AI', 'data science']
+                    },
+                    {
+                        id: 'quantum_computing',
+                        title: 'Quantum Physics and Computing',
+                        content: 'Quantum computing leverages quantum mechanical phenomena like superposition and entanglement to process information. Unlike classical bits, quantum bits (qubits) can exist in multiple states simultaneously, potentially enabling exponential speedups for certain computational problems.',
+                        url: 'https://quantum.research.edu/computing',
+                        source: 'academic',
+                        timestamp: Date.now(),
+                        tags: ['quantum', 'computing', 'physics', 'qubits', 'superposition']
+                    },
+                    {
+                        id: 'neural_networks',
+                        title: 'Deep Neural Networks and AI',
+                        content: 'Deep neural networks are computational models inspired by biological neural networks. They consist of multiple layers of interconnected nodes that can learn complex patterns from data. Applications include computer vision, natural language processing, and game playing.',
+                        url: 'https://ai.tech/neural-networks',
+                        source: 'tech',
+                        timestamp: Date.now(),
+                        tags: ['neural networks', 'deep learning', 'AI', 'computer vision']
+                    },
+                    {
+                        id: 'phonetic_theory',
+                        title: 'Phonetic Theory and Sound Systems',
+                        content: 'Phonetic theory studies the physical properties of speech sounds across human languages. It examines articulatory constraints, acoustic properties, and perceptual mechanisms. Understanding these principles helps explain why certain sound combinations are impossible in human language.',
+                        url: 'https://phonetics.wiki/theory',
+                        source: 'wikipedia',
+                        timestamp: Date.now(),
+                        tags: ['phonetics', 'theory', 'sounds', 'articulation', 'acoustics']
+                    }
+                ];
+
+                for (const item of sampleData) {
+                    this.index.set(item.id, item);
+                    this.dataSources[item.source]++;
+                    await this.delay(200); // Simulate loading delay
+                    this.log(`Loaded: ${item.title}`, 'success');
+                }
+
+                this.updateSourceStats();
+            }
+
+            async search(query, options = {}) {
+                const startTime = Date.now();
+                this.stats.totalQueries++;
+                this.stats.lastQuery = query;
+                
+                this.log(`Searching for: "${query}"`, 'info');
+
+                // Check cache first
+                const cacheKey = query.toLowerCase();
+                if (this.cache.has(cacheKey)) {
+                    this.log('Cache hit - returning cached results', 'info');
+                    return this.cache.get(cacheKey);
+                }
+
+                const results = [];
+                const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 1);
+                
+                for (const [id, item] of this.index) {
+                    const score = this.calculateRelevanceScore(item, searchTerms);
+                    
+                    if (score > 0) {
+                        const snippet = this.generateSnippet(item.content, searchTerms);
+                        results.push({
+                            id: item.id,
+                            title: item.title,
+                            url: item.url,
+                            snippet: snippet,
+                            source: item.source,
+                            score: score,
+                            timestamp: item.timestamp,
+                            tags: item.tags
+                        });
+                    }
+                }
+
+                // Sort by relevance score
+                results.sort((a, b) => b.score - a.score);
+                
+                // Apply pagination
+                const page = options.page || 1;
+                const limit = options.limit || 10;
+                const startIndex = (page - 1) * limit;
+                const paginatedResults = results.slice(startIndex, startIndex + limit);
+
+                const searchResult = {
+                    query: query,
+                    results: paginatedResults,
+                    totalResults: results.length,
+                    page: page,
+                    totalPages: Math.ceil(results.length / limit),
+                    responseTime: Date.now() - startTime
+                };
+
+                // Cache results
+                this.cache.set(cacheKey, searchResult);
+                this.stats.totalResults += results.length;
+                this.stats.avgResponseTime = (this.stats.avgResponseTime + searchResult.responseTime) / 2;
+
+                this.log(`Found ${results.length} results in ${searchResult.responseTime}ms`, 'success');
+                
+                return searchResult;
+            }
+
+            calculateRelevanceScore(item, searchTerms) {
+                let score = 0;
+                const titleLower = item.title.toLowerCase();
+                const contentLower = item.content.toLowerCase();
+                const tagsLower = item.tags.join(' ').toLowerCase();
+
+                searchTerms.forEach(term => {
+                    // Title matches are weighted highest
+                    const titleMatches = (titleLower.match(new RegExp(term, 'g')) || []).length;
+                    score += titleMatches * 20;
+
+                    // Tag matches are weighted high
+                    const tagMatches = (tagsLower.match(new RegExp(term, 'g')) || []).length;
+                    score += tagMatches * 15;
+
+                    // Content matches
+                    const contentMatches = (contentLower.match(new RegExp(term, 'g')) || []).length;
+                    score += contentMatches * 5;
+
+                    // Exact phrase bonus
+                    if (titleLower.includes(term) || contentLower.includes(term)) {
+                        score += 10;
+                    }
+                });
+
+                return score;
+            }
+
+            generateSnippet(content, searchTerms) {
+                const sentences = content.split(/[.!?]+/);
+                
+                // Find sentence with most search term matches
+                let bestSentence = '';
+                let maxMatches = 0;
+
+                for (const sentence of sentences) {
+                    const sentenceLower = sentence.toLowerCase();
+                    let matches = 0;
+                    
+                    searchTerms.forEach(term => {
+                        if (sentenceLower.includes(term)) matches++;
+                    });
+
+                    if (matches > maxMatches) {
+                        maxMatches = matches;
+                        bestSentence = sentence.trim();
+                    }
+                }
+
+                if (bestSentence) {
+                    let snippet = bestSentence.substring(0, 200);
+                    
+                    // Highlight search terms
+                    searchTerms.forEach(term => {
+                        const regex = new RegExp(`(${term})`, 'gi');
+                        snippet = snippet.replace(regex, '<span class="highlight">$1</span>');
+                    });
+                    
+                    return snippet + (bestSentence.length > 200 ? '...' : '');
+                }
+
+                return content.substring(0, 200) + '...';
+            }
+
+            refreshIndex() {
+                this.log('Refreshing search index...', 'info');
+                this.cache.clear();
+                this.log('Cache cleared, index refreshed', 'success');
+                this.updateStatus();
+            }
+
+            clearCache() {
+                this.cache.clear();
+                this.log('Cache cleared successfully', 'warning');
+            }
+
+            updateStatus() {
+                document.getElementById('indexSize').textContent = `Index: ${this.index.size} pages`;
+                document.getElementById('lastUpdate').textContent = `Last Update: ${new Date().toLocaleTimeString()}`;
+            }
+
+            updateSourceStats() {
+                document.getElementById('wikiCount').textContent = this.dataSources.wikipedia;
+                document.getElementById('academicCount').textContent = this.dataSources.academic;
+                document.getElementById('techCount').textContent = this.dataSources.tech;
+                document.getElementById('newsCount').textContent = this.dataSources.news;
+            }
+
+            showStats() {
+                this.log(`=== API Statistics ===`, 'info');
+                this.log(`Total Queries: ${this.stats.totalQueries}`, 'info');
+                this.log(`Total Results: ${this.stats.totalResults}`, 'info');
+                this.log(`Avg Response Time: ${Math.round(this.stats.avgResponseTime)}ms`, 'info');
+                this.log(`Cache Size: ${this.cache.size} entries`, 'info');
+                this.log(`Index Size: ${this.index.size} documents`, 'info');
+            }
+
+            log(message, type = 'info') {
+                const logEl = document.getElementById('apiLog');
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logEl.appendChild(entry);
+                logEl.scrollTop = logEl.scrollHeight;
+
+                // Keep log size manageable
+                if (logEl.children.length > 100) {
+                    logEl.removeChild(logEl.firstChild);
+                }
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize API
+        const searchAPI = new IndieSearchAPI();
+
+        // Event handlers
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        async function initializeAPI() {
+            if (!searchAPI.isInitialized) {
+                await searchAPI.initialize();
+            } else {
+                searchAPI.log('API already initialized', 'warning');
+            }
+        }
+
+        function refreshIndex() {
+            searchAPI.refreshIndex();
+        }
+
+        function clearCache() {
+            searchAPI.clearCache();
+        }
+
+        function showAPIStats() {
+            searchAPI.showStats();
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (!query) {
+                resultsContainer.innerHTML = '<div class="no-results"><h3>Enter a search query</h3></div>';
+                return;
+            }
+
+            if (!searchAPI.isInitialized) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>API Not Initialized</h3>
+                        <p>Click "Initialize API" to load the knowledge base first.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Show loading
+            resultsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Searching via IndieSearch API...</p>
+                </div>
+            `;
+
+            try {
+                const searchResult = await searchAPI.search(query);
+                displayResults(searchResult);
+            } catch (error) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Search Error</h3>
+                        <p>An error occurred while searching. Please try again.</p>
+                    </div>
+                `;
+                searchAPI.log(`Search error: ${error.message}`, 'error');
+            }
+        }
+
+        function displayResults(searchResult) {
+            const resultsContainer = document.getElementById('searchResults');
+            const { query, results, totalResults, responseTime } = searchResult;
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No results found for "${query}"</h3>
+                        <p>Try different keywords or check the API logs for more information.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const resultsHtml = results.map(result => `
+                <div class="result-item">
+                    <a href="${result.url}" target="_blank" class="result-title">${result.title}</a>
+                    <div class="result-url">${result.url}</div>
+                    <div class="result-snippet">${result.snippet}</div>
+                    <div class="result-metadata">
+                        Source: ${result.source} | Score: ${result.score} | Tags: ${result.tags.join(', ')}
+                    </div>
+                </div>
+            `).join('');
+
+            resultsContainer.innerHTML = `
+                <div style="margin-bottom: 20px; color: #666; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Found ${totalResults} result${totalResults === 1 ? '' : 's'} for "${query}"</span>
+                    <span style="font-size: 12px;">Response time: ${responseTime}ms</span>
+                </div>
+                ${resultsHtml}
+            `;
+        }
+
+        // Auto-initialize on page load
+        setTimeout(() => {
+            initializeAPI();
+        }, 1000);
+    </script>
+</body>
+</html>

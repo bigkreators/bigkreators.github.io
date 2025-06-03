@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Web Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-engines {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .engine-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .engine-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .engine-btn:hover::before {
+            left: 100%;
+        }
+
+        .google { background: linear-gradient(135deg, #4285f4, #34a853); }
+        .bing { background: linear-gradient(135deg, #0078d4, #106ebe); }
+        .duckduckgo { background: linear-gradient(135deg, #de5833, #ff6b35); }
+        .yahoo { background: linear-gradient(135deg, #720e9e, #9013fe); }
+        .yandex { background: linear-gradient(135deg, #ff0000, #cc0000); }
+        .baidu { background: linear-gradient(135deg, #2932e1, #1e88e5); }
+
+        .engine-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .quick-search {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .quick-search h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-btn {
+            padding: 8px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 20px;
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .search-engines {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Universal Web Search</h1>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search the web..." id="searchInput">
+            <button class="search-btn" onclick="searchDefault()">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="search-engines">
+            <button class="engine-btn google" onclick="searchEngine('google')">
+                <span>🔍</span> Google
+            </button>
+            <button class="engine-btn bing" onclick="searchEngine('bing')">
+                <span>🔍</span> Bing
+            </button>
+            <button class="engine-btn duckduckgo" onclick="searchEngine('duckduckgo')">
+                <span>🦆</span> DuckDuckGo
+            </button>
+            <button class="engine-btn yahoo" onclick="searchEngine('yahoo')">
+                <span>🔍</span> Yahoo
+            </button>
+            <button class="engine-btn yandex" onclick="searchEngine('yandex')">
+                <span>🔍</span> Yandex
+            </button>
+            <button class="engine-btn baidu" onclick="searchEngine('baidu')">
+                <span>🔍</span> Baidu
+            </button>
+        </div>
+
+        <div class="quick-search">
+            <h3>Quick Searches</h3>
+            <div class="quick-buttons">
+                <button class="quick-btn" onclick="quickSearch('news today')">📰 News Today</button>
+                <button class="quick-btn" onclick="quickSearch('weather forecast')">🌤️ Weather</button>
+                <button class="quick-btn" onclick="quickSearch('stock market')">📈 Stocks</button>
+                <button class="quick-btn" onclick="quickSearch('trending topics')">🔥 Trending</button>
+                <button class="quick-btn" onclick="quickSearch('translate')">🌍 Translate</button>
+                <button class="quick-btn" onclick="quickSearch('maps')">🗺️ Maps</button>
+                <button class="quick-btn" onclick="quickSearch('images')">🖼️ Images</button>
+                <button class="quick-btn" onclick="quickSearch('videos')">🎥 Videos</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchEngines = {
+            google: 'https://www.google.com/search?q=',
+            bing: 'https://www.bing.com/search?q=',
+            duckduckgo: 'https://duckduckgo.com/?q=',
+            yahoo: 'https://search.yahoo.com/search?p=',
+            yandex: 'https://yandex.com/search/?text=',
+            baidu: 'https://www.baidu.com/s?wd='
+        };
+
+        const searchInput = document.getElementById('searchInput');
+        
+        // Add enter key functionality
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDefault();
+            }
+        });
+
+        function searchEngine(engine) {
+            const query = searchInput.value.trim();
+            if (query) {
+                const url = searchEngines[engine] + encodeURIComponent(query);
+                window.open(url, '_blank');
+            } else {
+                alert('Please enter a search term');
+            }
+        }
+
+        function searchDefault() {
+            searchEngine('google');
+        }
+
+        function quickSearch(term) {
+            searchInput.value = term;
+            searchDefault();
+        }
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const engineButtons = document.querySelectorAll('.engine-btn');
+            const quickButtons = document.querySelectorAll('.quick-btn');
+            
+            // Stagger animation for engine buttons
+            engineButtons.forEach((btn, index) => {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    btn.style.transition = 'all 0.5s ease';
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add hover sound effect simulation
+            engineButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px) scale(1.02)';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Add search suggestions (mock functionality)
+        let suggestions = [];
+        const popularSearches = [
+            'artificial intelligence', 'climate change', 'cryptocurrency', 'space exploration',
+            'renewable energy', 'machine learning', 'quantum computing', 'biotechnology',
+            'virtual reality', 'blockchain', 'sustainable living', 'electric vehicles'
+        ];
+
+        searchInput.addEventListener('input', function() {
+            const value = this.value.toLowerCase();
+            if (value.length > 2) {
+                suggestions = popularSearches.filter(term => 
+                    term.toLowerCase().includes(value)
+                ).slice(0, 5);
+            }
+        });
+    </script>
+</body>
+</html>

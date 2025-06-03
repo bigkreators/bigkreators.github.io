@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCrawler Pro - Independent Search Engine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn, .crawl-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover, .crawl-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .crawl-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            margin-left: 10px;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .crawler-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .crawler-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            border: 2px solid #dee2e6;
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-color: #28a745;
+        }
+
+        .crawl-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .depth-selector {
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .results-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item {
+            border-bottom: 1px solid #e1e8ed;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+            margin: 0 -10px;
+            padding: 20px 10px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a0dab;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .result-snippet {
+            color: #545454;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-results h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .crawl-log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 15px;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-success { color: #28a745; }
+        .log-error { color: #dc3545; }
+        .log-info { color: #17a2b8; }
+
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo {
+                margin-right: 0;
+            }
+            
+            .crawl-controls {
+                flex-direction: column;
+            }
+            
+            .url-input {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="search-container">
+            <div class="logo">🕷️ WebCrawler Pro</div>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+            <button class="crawl-btn" onclick="toggleCrawlPanel()">Crawl Web</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="crawler-panel" id="crawlerPanel" style="display: none;">
+            <h3 style="margin-bottom: 20px;">🕸️ Web Crawler Control Panel</h3>
+            
+            <div class="crawler-status">
+                <div class="status-item" id="crawlStatus">Status: Ready</div>
+                <div class="status-item" id="pageCount">Pages Indexed: 0</div>
+                <div class="status-item" id="crawlTime">Crawl Time: 0s</div>
+            </div>
+
+            <div class="crawl-controls">
+                <input type="url" class="url-input" id="seedUrl" placeholder="Enter starting URL (e.g., https://example.com)">
+                <select class="depth-selector" id="crawlDepth">
+                    <option value="1">Depth: 1</option>
+                    <option value="2" selected>Depth: 2</option>
+                    <option value="3">Depth: 3</option>
+                </select>
+                <button class="crawl-btn" onclick="startCrawling()">Start Crawl</button>
+                <button class="search-btn" onclick="stopCrawling()">Stop</button>
+            </div>
+
+            <div class="crawl-log" id="crawlLog"></div>
+        </div>
+
+        <div class="results-container">
+            <div id="searchResults">
+                <div class="no-results">
+                    <h3>🔍 Welcome to WebCrawler Pro</h3>
+                    <p>Your independent search engine. Start by crawling some websites or search our existing index.</p>
+                    <p style="margin-top: 15px; font-size: 14px; color: #888;">
+                        Try crawling: news sites, documentation, blogs, or any website you want to index!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class WebCrawler {
+            constructor() {
+                this.index = new Map(); // URL -> {title, content, links, timestamp}
+                this.crawling = false;
+                this.crawledUrls = new Set();
+                this.pendingUrls = [];
+                this.crawlStartTime = 0;
+                this.maxPages = 50; // Prevent infinite crawling
+            }
+
+            async crawlWebsite(startUrl, maxDepth = 2) {
+                this.crawling = true;
+                this.crawlStartTime = Date.now();
+                this.pendingUrls = [{url: startUrl, depth: 0}];
+                this.crawledUrls.clear();
+                
+                this.updateStatus('Crawling...', true);
+                this.log('Starting crawl from: ' + startUrl, 'info');
+
+                while (this.pendingUrls.length > 0 && this.crawling && this.crawledUrls.size < this.maxPages) {
+                    const {url, depth} = this.pendingUrls.shift();
+                    
+                    if (this.crawledUrls.has(url) || depth > maxDepth) {
+                        continue;
+                    }
+
+                    try {
+                        await this.crawlPage(url, depth, maxDepth);
+                        await this.delay(500); // Be nice to servers
+                    } catch (error) {
+                        this.log(`Error crawling ${url}: ${error.message}`, 'error');
+                    }
+                }
+
+                this.crawling = false;
+                this.updateStatus('Crawl Complete');
+                this.log(`Crawl finished. Indexed ${this.crawledUrls.size} pages.`, 'success');
+            }
+
+            async crawlPage(url, depth, maxDepth) {
+                if (this.crawledUrls.has(url)) return;
+
+                this.log(`Crawling: ${url} (depth: ${depth})`, 'info');
+                this.crawledUrls.add(url);
+
+                try {
+                    // Simulate web crawling with CORS proxy
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+                    const response = await fetch(proxyUrl);
+                    const data = await response.json();
+                    
+                    if (!data.contents) {
+                        throw new Error('No content received');
+                    }
+
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data.contents, 'text/html');
+                    
+                    // Extract page information
+                    const title = doc.querySelector('title')?.textContent || 'No Title';
+                    const content = this.extractTextContent(doc);
+                    const links = this.extractLinks(doc, url);
+                    
+                    // Store in index
+                    this.index.set(url, {
+                        title: title.trim(),
+                        content: content,
+                        links: links,
+                        timestamp: Date.now(),
+                        url: url
+                    });
+
+                    this.log(`✓ Indexed: ${title}`, 'success');
+                    this.updatePageCount();
+
+                    // Add new URLs to crawl queue
+                    if (depth < maxDepth) {
+                        links.forEach(link => {
+                            if (!this.crawledUrls.has(link) && this.isValidUrl(link)) {
+                                this.pendingUrls.push({url: link, depth: depth + 1});
+                            }
+                        });
+                    }
+
+                } catch (error) {
+                    this.log(`✗ Failed: ${url} - ${error.message}`, 'error');
+                }
+            }
+
+            extractTextContent(doc) {
+                // Remove script and style elements
+                const scripts = doc.querySelectorAll('script, style, nav, footer, header');
+                scripts.forEach(el => el.remove());
+                
+                // Get main content
+                const content = doc.querySelector('main, article, .content, #content') || doc.body;
+                const text = content?.textContent || '';
+                
+                // Clean up text
+                return text.replace(/\s+/g, ' ').trim().substring(0, 1000);
+            }
+
+            extractLinks(doc, baseUrl) {
+                const links = [];
+                const linkElements = doc.querySelectorAll('a[href]');
+                
+                linkElements.forEach(link => {
+                    try {
+                        const href = link.getAttribute('href');
+                        const absoluteUrl = new URL(href, baseUrl).toString();
+                        
+                        if (this.isValidUrl(absoluteUrl)) {
+                            links.push(absoluteUrl);
+                        }
+                    } catch (e) {
+                        // Invalid URL, skip
+                    }
+                });
+
+                return [...new Set(links)]; // Remove duplicates
+            }
+
+            isValidUrl(url) {
+                try {
+                    const urlObj = new URL(url);
+                    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+                } catch {
+                    return false;
+                }
+            }
+
+            search(query) {
+                const results = [];
+                const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 2);
+                
+                if (searchTerms.length === 0) return [];
+
+                for (const [url, page] of this.index) {
+                    const titleLower = page.title.toLowerCase();
+                    const contentLower = page.content.toLowerCase();
+                    
+                    let score = 0;
+                    let matches = [];
+
+                    searchTerms.forEach(term => {
+                        const titleMatches = (titleLower.match(new RegExp(term, 'g')) || []).length;
+                        const contentMatches = (contentLower.match(new RegExp(term, 'g')) || []).length;
+                        
+                        score += titleMatches * 10 + contentMatches;
+                        
+                        if (titleMatches > 0 || contentMatches > 0) {
+                            matches.push(term);
+                        }
+                    });
+
+                    if (score > 0) {
+                        const snippet = this.generateSnippet(page.content, matches);
+                        results.push({
+                            url: url,
+                            title: page.title,
+                            snippet: snippet,
+                            score: score,
+                            timestamp: page.timestamp
+                        });
+                    }
+                }
+
+                return results.sort((a, b) => b.score - a.score).slice(0, 20);
+            }
+
+            generateSnippet(content, terms) {
+                const sentences = content.split(/[.!?]+/);
+                
+                for (const sentence of sentences) {
+                    const sentenceLower = sentence.toLowerCase();
+                    const hasMatch = terms.some(term => sentenceLower.includes(term));
+                    
+                    if (hasMatch) {
+                        let snippet = sentence.trim().substring(0, 200);
+                        
+                        // Highlight search terms
+                        terms.forEach(term => {
+                            const regex = new RegExp(`(${term})`, 'gi');
+                            snippet = snippet.replace(regex, '<span class="highlight">$1</span>');
+                        });
+                        
+                        return snippet + (sentence.length > 200 ? '...' : '');
+                    }
+                }
+                
+                return content.substring(0, 200) + '...';
+            }
+
+            updateStatus(status, isActive = false) {
+                const statusEl = document.getElementById('crawlStatus');
+                statusEl.textContent = `Status: ${status}`;
+                statusEl.className = `status-item ${isActive ? 'status-active' : ''}`;
+                
+                if (!isActive) {
+                    const elapsed = Math.round((Date.now() - this.crawlStartTime) / 1000);
+                    document.getElementById('crawlTime').textContent = `Crawl Time: ${elapsed}s`;
+                }
+            }
+
+            updatePageCount() {
+                document.getElementById('pageCount').textContent = `Pages Indexed: ${this.index.size}`;
+            }
+
+            log(message, type = 'info') {
+                const logEl = document.getElementById('crawlLog');
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logEl.appendChild(entry);
+                logEl.scrollTop = logEl.scrollHeight;
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            stopCrawling() {
+                this.crawling = false;
+                this.updateStatus('Stopped');
+                this.log('Crawling stopped by user.', 'info');
+            }
+        }
+
+        // Initialize crawler
+        const crawler = new WebCrawler();
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function toggleCrawlPanel() {
+            const panel = document.getElementById('crawlerPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function startCrawling() {
+            const url = document.getElementById('seedUrl').value.trim();
+            const depth = parseInt(document.getElementById('crawlDepth').value);
+
+            if (!url) {
+                alert('Please enter a starting URL');
+                return;
+            }
+
+            if (!crawler.isValidUrl(url)) {
+                alert('Please enter a valid HTTP/HTTPS URL');
+                return;
+            }
+
+            await crawler.crawlWebsite(url, depth);
+        }
+
+        function stopCrawling() {
+            crawler.stopCrawling();
+        }
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (!query) {
+                resultsContainer.innerHTML = '<div class="no-results"><h3>Enter a search query</h3></div>';
+                return;
+            }
+
+            if (crawler.index.size === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No pages indexed yet</h3>
+                        <p>Use the "Crawl Web" feature to index websites first, then search!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Show loading
+            resultsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Searching indexed pages...</p>
+                </div>
+            `;
+
+            // Simulate search delay
+            setTimeout(() => {
+                const results = crawler.search(query);
+                displayResults(results, query);
+            }, 500);
+        }
+
+        function displayResults(results, query) {
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No results found for "${query}"</h3>
+                        <p>Try different keywords or crawl more websites to expand the index.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const resultsHtml = results.map(result => `
+                <div class="result-item">
+                    <a href="${result.url}" target="_blank" class="result-title">${result.title}</a>
+                    <div class="result-url">${result.url}</div>
+                    <div class="result-snippet">${result.snippet}</div>
+                </div>
+            `).join('');
+
+            resultsContainer.innerHTML = `
+                <div style="margin-bottom: 20px; color: #666;">
+                    Found ${results.length} result${results.length === 1 ? '' : 's'} for "${query}"
+                </div>
+                ${resultsHtml}
+            `;
+        }
+
+        // Add some sample data for demo
+        setTimeout(() => {
+            crawler.index.set('https://example.com', {
+                title: 'Example Domain',
+                content: 'This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.',
+                links: [],
+                timestamp: Date.now(),
+                url: 'https://example.com'
+            });
+            
+            crawler.index.set('https://demo.com/tech', {
+                title: 'Technology News and Updates',
+                content: 'Latest technology news, software development updates, artificial intelligence breakthroughs, and programming tutorials for developers.',
+                links: [],
+                timestamp: Date.now(),
+                url: 'https://demo.com/tech'
+            });
+            
+            crawler.updatePageCount();
+        }, 1000);
+    </script>
+</body>
+</html>
