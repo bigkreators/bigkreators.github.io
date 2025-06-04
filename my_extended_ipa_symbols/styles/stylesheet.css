@@ -1,3 +1,51 @@
+.notetag {
+  position: relative;
+  cursor: help;
+}
+
+.notetag:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: #333;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.overlay-target {
+    position: relative;
+    display: inline-block;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.overlay-target_with-AncientSans {
+    position: relative;
+    display: inline-block;
+    font-family: AncientSans;
+}
+
+.overlay_with-AncientSans {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: AncientSans;
+}
+
+
+
+
+
+
+
 span {
     display: inline-block;
 }
