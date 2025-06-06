@@ -42,7 +42,7 @@
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search symbols...">
-            <button id="searchButton" class="search-btn">Search</button>
+            <button id="searchButton" class="search-btn">🔍 Search</button>
         </div>
                                                                             
         <div class="tabs">
@@ -390,7 +390,7 @@
              <td></td>
              <td></td>
              <td>ƾ</td>
-             <td><span class="clickable-text" data-audio-url="audio/voiceless_glottal_approximant.mp3"></span></td>
+             <td><span class="clickable-text" data-audio-url="audio/voiceless_glottal_approximant.mp3"><span class="mirrored">ꜧ</span></span></td>
              <td class="clickable-text" data-audio-url="audio/Creaky-voiced_glottal_approximant.wav.mp3">ꜧ</td>
          </tr>
                         <tr>
@@ -607,7 +607,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><span class="overlay-target_with-AncientSans">ԡ<span class="overlay_with-AncientSans">ʎ</span></span></td>
+                            <td><span class="overlay-target_with-AncientSans-or-Copperplate">ԡ<span class="overlay_with-AncientSans-or-Copperplate">ʎ</span></span></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -707,7 +707,15 @@
                         </tr>
                     </table>
                                         <h2 style="text-align: center">Other ones</h2>
-                    <p style="text-align: center;"><small-capital style="font-family: Menlo;">ɱ</small-capital> voiceless labiodental nasal</p>
+                    <p style="text-align: center;"><small-capital style="font-family: Menlo;">ɱ</small-capital> voiceless labiodental nasal<br>
+                    <span class="clickable-text" data-audio-url="audio/Voiced_velar_lateral_fricative.ogg.mp3">voiced velar lateral fricative ʟ̧</span><br>
+                        <span class="clickable-text" data-audio-url="audio/Voiceless_postalveolar_stop.ogg.mp3">ᴛ voiceless post-alveolar plosive</span><br>
+                        ᴅ voiced post-alveolar plosive<br>
+                    ʗ voiceless palatal trill<br>
+                    ᶉ voiced palatal trill<br>
+                    voiced retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ<span class="overlay">ꭈ</span></span><br>
+                    voiceless retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ˚<span class="overlay">ꭈ</span></span><br>
+                    ꝧ voiceless post-alveolar non-sibilant fricative<b></p>
                     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
                         <!-- Row 1 -->
                         <table class="otherones-table">
@@ -859,9 +867,6 @@
                     </tbody>
                 </table>
 </div>
-                    <p><span class="clickable-text" data-audio-url="audio/Voiced_velar_lateral_fricative.ogg.mp3">voiced velar lateral fricative ʟ̧</span><br>
-                        <span class="clickable-text" data-audio-url="audio/Voiceless_postalveolar_stop.ogg.mp3">ᴛ voiceless post-alveolar plosive</span><br>
-                        ᴅ voiced post-alveolar plosive<br></p>
                     <h2 style="text-align: center">Impossible ones (ruin it! ruin it!)</h2>
                     <table>
                         <tr>
@@ -902,7 +907,7 @@
                     <td></td>
                     <td></td>
                     <td style="background-color: #d1d4da;">kꭗ</td>
-                    <td style="background-color: #d1d4da;">ɡʀ̟</td>
+                    <td style="background-color: #d1d4da;">ɡǥ</td>
                     <td style="background-color: #d1d4da;">ʔⴙ</td>
                     <td style="background-color: #d1d4da;">ʔ̬ⴙ̬</td>
                 </tr>
@@ -920,9 +925,6 @@
                     <td style="background-color: #d1d4da;"><span class="clickable-text" data-audio-url="audio/Voiced_velar_trill.wav.ogg">ǥ</span></td>
                 </tr>
             </table>
-                    ʗ ȷ palatal trill<br>
-                    voiced retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ<span class="overlay">ꭈ</span></span>
-                    (voiceless retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ʅ<span class="overlay">ꭈ</span></span>
         </div>
         <!-- Vowels Tab Content -->
         <div id="vowels" class="tab-content">
@@ -1040,10 +1042,12 @@
             </div>
         </div>
         <!-- Diacritics Tab Content -->
-                <div id="diacritics" class="tab-content active">
+                <div id="diacritics" class="tab-content">
                     <div class="category-tabs">
-                        <li>◌᷊ ◌ͬ trill</li>
-                        </div>
+    <ul>
+        <li>◌᷊ ◌ͬ trill</li>
+    </ul>
+</div>
                     </div>
         <!-- Examples Tab Content -->
         <div id="examples" class="tab-content">
@@ -1054,12 +1058,12 @@
         <!-- Proposals Tab Content -->
         <div id="proposals" class="tab-content">
             <h2>Propose New Symbols</h2>
-            <p>Note that when your proposal has been reviewed, you should recieve a notification.</p>
+            <p>Note that when your proposal has been reviewed, you should receive a notification.</p>
 
             <div class="proposal-form">
                 <div class="form-group">
                     <label for="symbol">Unicode character or approximation, image, or description:</label>
-                    <input type="text" id="symbol" placeholder="Enter your proposed symbol as a Unicode character or approximation, an image of it, or describe it">
+                    <input type="text" id="symbol" placeholder="Enter your proposed symbol as a Unicode character or approximation, an image of it, or describe it" autocomplete="off">
                     <div class="file-upload">
                         <input type="file" id="symbol-image" accept="image/*">
                     </div>
@@ -1081,7 +1085,7 @@
                 
                 <div class="form-group">
                     <label for="rationale">Rationale for Addition:</label>
-                    <textarea id="rationale" rows="4" placeholder="Explain why this symbol should be added to our additional IPA set" style="resize: none;"></textarea>
+                    <textarea id="rationale" class="form-control" rows="5" placeholder="Explain why this symbol should be added to our additional IPA set"></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -1095,7 +1099,7 @@
                 </div>
             </div>
 
-            <button class="proposal-submit-btn" id="submit-proposal">Submit Proposal</button>
+            <button type="button" class="proposal-submit-btn" id="submit-proposal">Submit Proposal</button>
             <h3>Current Proposals</h3>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
@@ -1605,7 +1609,7 @@
                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                     // Search functionality
-                                                                                                                                                                                                                                                                                                    const searchInput = document.querySelector('.search-box input');
+                                                                                                                                                     
                                                                                                                                                                                                                                                                                                     if (searchInput) {
                                                                                                                                                                                                                                                                                                         searchInput.addEventListener('input', function() {
                                                                                                                                                                                                                                                                                                             const searchTerm = this.value.toLowerCase();
@@ -1790,8 +1794,7 @@
                                                                                                                                                                                                                                                                                                         alert('Please enter a search term');
                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                 }
-
-                                                                                                                                                                                                                                                                                                // Helper function to escape special characters in regex
+                                                                                                                                                                                                                                                                                                 // Helper function to escape special characters in regex
                                                                                                                                                                                                                                                                                                 function escapeRegExp(string) {
                                                                                                                                                                                                                                                                                                     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                                                                                                                                                                                                                                                                                                 }
@@ -1838,7 +1841,7 @@
                                                                                                                                                                                                                                                                                                 const searchContainer = document.querySelector('.search-container');
                                                                                                                                                                                                                                                                                                 const clearButton = document.createElement('button');
                                                                                                                                                                                                                                                                                                 clearButton.id = 'clearButton';
-                                                                                                                                                                                                                                                                                                clearButton.textContent = 'Clear';
+                                                                                                                                                                                                                                                                                                clearButton.textContent = '✨ Clear';
                                                                                                                                                                                                                                                                                                 clearButton.style.padding = '10px 15px';
                                                                                                                                                                                                                                                                                                 clearButton.style.backgroundColor = '#f44336';
                                                                                                                                                                                                                                                                                                 clearButton.style.color = 'white';
