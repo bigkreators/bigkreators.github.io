@@ -69,6 +69,13 @@
             box-shadow: 0 20px 40px var(--shadow);
         }
 
+        .container > p {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
         h1 {
             text-align: center;
             color: var(--text-primary);
@@ -190,6 +197,12 @@
             color: var(--text-primary);
             margin-bottom: 20px;
             font-size: 1.8em;
+        }
+
+        .saved-items h2 #noteCount {
+            font-size: 0.7em;
+            color: var(--text-muted);
+            font-weight: normal;
         }
 
         .item {
@@ -585,7 +598,7 @@
 <body>
     <div class="container">
         <h1>📝 NoteWebsite</h1>
-        <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+        <button class="theme-toggle" id="themeToggle">Dark Mode</button>
         <p>You can save notes in text here privately without anyone seeing it, unless you share it. Please note that if you clear your browser, you'll lose your notes.</p>
         
         <div class="folder-management">
@@ -639,7 +652,7 @@
         </div>
         
         <div class="saved-items">
-            <h2>Saved notes</h2>
+            <h2>Saved notes <span id="noteCount">(0)</span></h2>
             <div class="folder-filter">
                 <div class="folder-filter-top">
                     <label for="viewFolderSelect">View folder:</label>
@@ -671,6 +684,7 @@
         const STORAGE_KEY = 'textStorageApp';
         const FOLDERS_KEY = 'textStorageAppFolders';
         const DRAFT_KEY = 'textStorageAppDraft';
+        const DEFAULTS_CREATED_KEY = 'textStorageAppDefaultsCreated';
         
         // Auto-save variables
         let autoSaveTimeout;
@@ -714,8 +728,8 @@
             document.getElementById('content').style.fontFamily = 'inherit';
             document.getElementById('customFont').classList.remove('show');
             document.getElementById('customFont').value = '';
-            // Reset folder selector
-            document.getElementById('folderSelect').value = '';
+            // Reset folder selector to default
+            document.getElementById('folderSelect').value = 'Meeting Notes';
             // Reset word count
             updateWordCount();
             displayItems();
@@ -735,6 +749,12 @@
                 fontFamily = 'inherit';
             }
             
+            // Ensure a folder is selected (default to first option if none selected)
+            let selectedFolder = folderSelect.value;
+            if (!selectedFolder) {
+                selectedFolder = 'Meeting Notes'; // Default to first folder
+            }
+            
             console.log('Saving font:', fontFamily); // Debug log
             
             const newItem = {
@@ -742,7 +762,7 @@
                 title: title,
                 content: content,
                 font: fontFamily,
-                folder: folderSelect.value || null,
+                folder: selectedFolder,
                 date: new Date().toLocaleString(),
                 dateCreated: new Date().toISOString(),
                 dateEdited: new Date().toISOString(),
@@ -777,34 +797,44 @@
             const folders = getFolders();
             const folderSelect = document.getElementById('folderSelect');
             const viewFolderSelect = document.getElementById('viewFolderSelect');
-            const folderList = document.getElementById('folderList');
             
-            // Clear existing options except "None"/"All folders"
-            folderSelect.innerHTML = '<option value="">None</option>';
-            viewFolderSelect.innerHTML = '<option value="">All folders</option><option value="Hidden">Hidden</option>';
+            // Clear existing options and add default folders (no "None" option)
+            folderSelect.innerHTML = `
+                <option value="Meeting Notes">Meeting Notes</option>
+                <option value="To-Do Lists">To-Do Lists</option>
+                <option value="Ideas">Ideas</option>
+                <option value="Daily Journal">Daily Journal</option>
+            `;
             
-            // Add folder options to both selectors
+            viewFolderSelect.innerHTML = `
+                <option value="">All folders</option>
+                <option value="Hidden">Hidden</option>
+                <option value="Meeting Notes">Meeting Notes</option>
+                <option value="To-Do Lists">To-Do Lists</option>
+                <option value="Ideas">Ideas</option>
+                <option value="Daily Journal">Daily Journal</option>
+            `;
+
+            // Add custom folder options to both selectors
+            const defaultFolders = ['Meeting Notes', 'To-Do Lists', 'Ideas', 'Daily Journal'];
             folders.forEach(folder => {
-                // Add to create note selector
-                const option1 = document.createElement('option');
-                option1.value = folder;
-                option1.textContent = folder;
-                folderSelect.appendChild(option1);
-                
-                // Add to view filter selector
-                const option2 = document.createElement('option');
-                option2.value = folder;
-                option2.textContent = folder;
-                viewFolderSelect.appendChild(option2);
+                if (!defaultFolders.includes(folder)) { // Only add non-default folders
+                    // Add to create note selector
+                    const option1 = document.createElement('option');
+                    option1.value = folder;
+                    option1.textContent = folder;
+                    folderSelect.appendChild(option1);
+                    
+                    // Add to view filter selector
+                    const option2 = document.createElement('option');
+                    option2.value = folder;
+                    option2.textContent = folder;
+                    viewFolderSelect.appendChild(option2);
+                }
             });
             
-            // Add "None" option to view filter for unfiled notes
-            if (folders.length > 0) {
-                const noneOption = document.createElement('option');
-                noneOption.value = 'None';
-                noneOption.textContent = 'Unfiled Notes';
-                viewFolderSelect.appendChild(noneOption);
-            }
+            // Remove the "None" option from view filter since all notes now have folders
+            // (keeping this commented out - we don't need "Unfiled Notes" anymore)
             
             // Update folder list display
             updateFolderList();
@@ -813,18 +843,24 @@
         function updateFolderList() {
             const folders = getFolders();
             const folderList = document.getElementById('folderList');
+            const defaultFolders = ['Meeting Notes', 'To-Do Lists', 'Ideas', 'Daily Journal'];
             
-            if (folders.length === 0) {
-                folderList.innerHTML = '<p style="color: #666; font-style: italic; margin: 10px 0;">No folders created yet.</p>';
+            // Only show custom folders (non-default folders)
+            const customFolders = folders.filter(f => !defaultFolders.includes(f));
+            
+            if (customFolders.length === 0) {
+                folderList.innerHTML = '<p style="color: #666; font-style: italic; margin: 10px 0;">No custom folders created yet.</p>';
                 return;
             }
             
-            folderList.innerHTML = folders.map(folder => `
-                <div class="folder-item">
-                    <span>${escapeHtml(folder)}</span>
-                    <button class="folder-delete-btn" onclick="deleteFolder('${escapeHtml(folder)}')" title="Delete folder">×</button>
-                </div>
-            `).join('');
+            folderList.innerHTML = customFolders.map(folder => {
+                return `
+                    <div class="folder-item">
+                        <span>${escapeHtml(folder)}</span>
+                        <button class="folder-delete-btn" onclick="deleteFolder('${escapeHtml(folder)}')" title="Delete folder">×</button>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Pin/Hide functionality
@@ -858,9 +894,16 @@
         function createNewFolder() {
             const folderNameInput = document.getElementById('folderNameInput');
             const folderName = folderNameInput.value.trim();
+            const defaultFolders = ['Meeting Notes', 'To-Do Lists', 'Ideas', 'Daily Journal'];
             
             if (!folderName) {
                 alert('Please enter a folder name!');
+                return;
+            }
+            
+            // Check if it's a default folder name
+            if (defaultFolders.includes(folderName)) {
+                alert('This folder already exists as a default folder!');
                 return;
             }
             
@@ -880,6 +923,14 @@
         }
 
         function deleteFolder(folderName) {
+            const defaultFolders = ['Meeting Notes', 'To-Do Lists', 'Ideas', 'Daily Journal'];
+            
+            // Prevent deletion of default folders
+            if (defaultFolders.includes(folderName)) {
+                alert('Default folders cannot be deleted!');
+                return;
+            }
+            
             // Check if folder has notes
             const items = getItems();
             const notesInFolder = items.filter(item => item.folder === folderName);
@@ -957,8 +1008,12 @@
             const items = getItems();
             const viewFolderSelect = document.getElementById('viewFolderSelect');
             const sortSelect = document.getElementById('sortSelect');
+            const noteCountEl = document.getElementById('noteCount');
             const selectedFolder = viewFolderSelect.value;
             const sortBy = sortSelect.value;
+            
+            // Update note count
+            noteCountEl.textContent = `(${items.length})`;
             
             if (items.length === 0) {
                 itemsList.innerHTML = '<div class="no-items">No saved notes yet. Start by writing some notes above!</div>';
@@ -968,10 +1023,7 @@
             // Filter items based on selected folder
             let filteredItems = items;
             if (selectedFolder !== '') {
-                if (selectedFolder === 'None') {
-                    // Show only unfiled notes (notes with no folder or null folder)
-                    filteredItems = items.filter(item => !item.folder || item.folder === '');
-                } else if (selectedFolder === 'Hidden') {
+                if (selectedFolder === 'Hidden') {
                     // Show only hidden notes
                     filteredItems = items.filter(item => item.hidden || item.folder === 'Hidden');
                 } else {
@@ -987,9 +1039,7 @@
             filteredItems = sortItems(filteredItems, sortBy);
             
             if (filteredItems.length === 0) {
-                const folderName = selectedFolder === 'None' ? 'Unfiled Notes' : 
-                                 selectedFolder === 'Hidden' ? 'Hidden' :
-                                 selectedFolder || 'All folders';
+                const folderName = selectedFolder === 'Hidden' ? 'Hidden' : selectedFolder || 'All folders';
                 itemsList.innerHTML = `<div class="no-items">No notes in "${folderName}" yet.</div>`;
                 return;
             }
@@ -1010,19 +1060,15 @@
                 // Group regular items by folder
                 const itemsByFolder = {};
                 regularItems.forEach(item => {
-                    const folder = item.folder || 'None';
+                    const folder = item.folder || 'Other'; // Fallback for any items without folders
                     if (!itemsByFolder[folder]) {
                         itemsByFolder[folder] = [];
                     }
                     itemsByFolder[folder].push(item);
                 });
                 
-                // Sort folders - "None" first, then alphabetically
-                const sortedFolders = Object.keys(itemsByFolder).sort((a, b) => {
-                    if (a === 'None') return -1;
-                    if (b === 'None') return 1;
-                    return a.localeCompare(b);
-                });
+                // Sort folders alphabetically
+                const sortedFolders = Object.keys(itemsByFolder).sort();
                 
                 let html = itemsList.innerHTML;
                 
@@ -1037,8 +1083,8 @@
                 // Add regular items grouped by folder
                 sortedFolders.forEach(folder => {
                     if (itemsByFolder[folder].length > 0) {
-                        if (folder !== 'None' || sortedFolders.length > 1 || pinnedItems.length > 0) {
-                            html += `<div class="folder-header"><h3>${folder === 'None' ? 'Unfiled Notes' : folder}</h3></div>`;
+                        if (sortedFolders.length > 1 || pinnedItems.length > 0) {
+                            html += `<div class="folder-header"><h3>${folder}</h3></div>`;
                         }
                         
                         itemsByFolder[folder].forEach(item => {
@@ -1220,7 +1266,6 @@
 
         // Word count and auto-save functionality
         titleInput.addEventListener('input', function() {
-            updateWordCount();
             scheduleAutoSave();
         });
 
@@ -1230,19 +1275,10 @@
         });
 
         function updateWordCount() {
-            const title = titleInput.value;
             const content = contentInput.value;
             
-            // Only combine with space if BOTH have content
-            let totalText;
-            if (title && content) {
-                totalText = title + ' ' + content;
-            } else {
-                totalText = title + content; // No space needed
-            }
-            
-            const charCount = totalText.length;
-            const wordCount = totalText.trim() === '' ? 0 : totalText.trim().split(/\s+/).length;
+            const charCount = content.length;
+            const wordCount = content.trim() === '' ? 0 : content.trim().split(/\s+/).length;
             
             wordCountEl.textContent = `${charCount} characters; ${wordCount} words`;
         }
@@ -1413,11 +1449,11 @@
             
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
-                themeToggle.textContent = '🌙 Dark Mode';
+                themeToggle.textContent = 'Dark Mode';
                 localStorage.setItem('theme', 'light');
             } else {
                 body.setAttribute('data-theme', 'dark');
-                themeToggle.textContent = '☀️ Light Mode';
+                themeToggle.textContent = 'Light Mode';
                 localStorage.setItem('theme', 'dark');
             }
         }
@@ -1428,9 +1464,9 @@
             
             if (savedTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
-                themeToggle.textContent = '☀️ Light Mode';
+                themeToggle.textContent = 'Light Mode';
             } else {
-                themeToggle.textContent = '🌙 Dark Mode';
+                themeToggle.textContent = 'Dark Mode';
             }
         }
     </script>
