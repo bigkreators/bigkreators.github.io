@@ -8,45 +8,15 @@
     <script src="infobox-templates.js"></script>
 </head>
 <body>
-    <div class="container">
+        <div class="container">
         <div class="header">
             <h1>My Additional IPA Symbols<br>(addIPA)</h1>
-            <p>If you want to propose your own symbols, or discuss something with me, you can talk <a class="blue_underline" href="https://github.com/BodhiHarper/bigkreators.github.io/tree/master/my_extended_ipa_symbols">right here</a>
-            <div class="notification-container">
-                <button class="bell-button" id="notificationBell">
-                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" alt="A notification bell">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                    <span class="notification-badge" id="notificationBadge">0</span>
-                </button>
-                
-                <div class="notifications-dropdown" id="notificationsDropdown">
-                    <div class="notifications-header">
-                        <span>Notifications</span>
-                        <button id="refreshNotifications" class="dismiss-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M23 4v6h-6"></path>
-                                <path d="M1 20v-6h6"></path>
-                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
-                                <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <div class="notifications-list" id="notificationsList">
-                        <!-- Notifications will be populated here -->
-                        <div class="loading-spinner"></div>
-                    </div>
-                </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search symbols...">
+                <button id="searchButton" class="search-btn" onclick="performSearch()">🔍 Search</button>
+                <button id="clearButton" class="clear-btn" onclick="clearSearch()">✨ Clear</button>
             </div>
         </div>
-        <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search symbols...">
-    <button id="searchButton" class="search-btn">🔍 Search</button>
-    <button id="clearButton" class="clear-btn">✨ Clear</button>
-</div>
-                                                                            
         <div class="tabs">
             <div class="tab active" data-tab="consonants" id="consonants-tab">Consonants</div>
             <div class="tab" data-tab="vowels" id="vowels-tab">Vowels</div>
@@ -54,8 +24,8 @@
             <div class="tab" data-tab="examples" id="examples-tab">Examples</div>
         </div>
         <p>These files are from Wikimedia Commons, and since some are copyrighted under the Creative Commons Attribution-Share Alike 3.0 Unported and some are copyrighted under Creative Commons CC0 1.0 Universal Public Domain Dedication, this page and stuff is licensed under the <a class="blue_underline" href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">Creative Commons Attribution-Share Alike 3.0 Unported license</a>. Here are the files:<br>
-        <a class="blue_underline" href="images">images</a><br>
-        <a class="blue_underline" href="audio">audio</a></p>
+        <a class="blue_underline" href="images">📁 images</a><br>
+        <a class="blue_underline" href="audio">🔊 audio</a></p>
         <!-- Consonants Tab Content -->
                 <div id="consonants" class="tab-content active">
                     <div class="category-tabs">
@@ -785,7 +755,9 @@
                     ꝧ voiceless post-alveolar non-sibilant fricative<br>
                     <span class="mirrored">ꭉ</span> voiceless alveolo-palatal trill<br>
                     voiced post-alveolar sibilant fricative ℥<br>
-                    <span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_lateral_flap.wav.ogg">Voiceless retroflex lateral flap 𝼈̊</span></p>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_lateral_flap.wav.ogg">Voiceless retroflex lateral flap 𝼈̊</span><br>
+                    ⱶ voiceless epiglottal tap or flap<br>
+<span class="clickable-text" data-audio-url="audio/Epiglottal_flap.oga.mp3" title="voiced epiglottal tap or flap">ꟶ</span></p>
                     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
                         <!-- Row 1 -->
                          <table class="otherones-table">
