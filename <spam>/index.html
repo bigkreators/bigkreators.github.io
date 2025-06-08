@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Custom HTML <spam> tag</title>
+<style>
+body {
+font-family: Arial
+}
+</style>
+</head>
+<body>
+<p style="text-align: center">Custom HTML <xmp><spam></xmp> tag</p>
+<h1>Purpose</h1>
+<p>This custom HTML tag repeats stuff for however many times chosen, with an option spliter.
+<h1>Examples</h1>
+<h3>Periods</h3>
+<spam times="3">.</spam>        <!-- becomes ... -->
+<h3>Exclamation points</h3>
+<spam times="5">!</spam>        <!-- becomes !!!!! -->
+<h3>Ha's</h3>
+<spam times="3" separator=", ">Ha</spam>  <!-- becomes Ha, Ha, Ha -->
+<h3>Lateral click</h3>
+<spam times="3">ǁ</spam><br>        <!-- becomes ǁǁǁ -->
+<spam times="5">ǁ</spam><br>        <!-- becomes ǁǁǁǁǁ -->
+<spam times="10">ǁ</spam>       <!-- becomes ǁǁǁǁǁǁǁǁǁǁ -->
+<h3>Dashes</h3>
+<spam times="20">-</spam> <!-- becomes -------------------- -->
+<h3>Stars</h3>
+<spam times="8">★</spam> <!-- becomes ★★★★★★★★ -->
+<h1>You want to know how to do this in your own html?</h1>
+<p>First, you need javascript, so copy and paste this:</p>
+<xmp><script>
+document.querySelectorAll('spam').forEach(el => {
+  const times = parseInt(el.getAttribute('times')) || 1;
+  const separator = el.getAttribute('separator') || '';
+  const text = el.textContent;
+  
+  el.textContent = Array(times).fill(text).join(separator);
+});
+</script></xmp>
+<p>Then, to actually use it as if it was an html element, use the <xmp><spam></spam></xmp> tags with the parameter <xmp>times</xmp> to specify how much times the thing is repeated, for example <xmp><spam times="9">oo</spam></xmp>. There is also an optional parameter <xmp>separator</xmp>, which specifies which thing separates the repeating stuff, for example <xmp><spam times="9" separator=" ">oo</spam></xmp>, but the <xmp>times</xmp> parameter is not optional.</p>
+</body>
+<script>
+document.querySelectorAll('spam').forEach(el => {
+  const times = parseInt(el.getAttribute('times')) || 1;
+  const separator = el.getAttribute('separator') || '';
+  const text = el.textContent;
+  
+  el.textContent = Array(times).fill(text).join(separator);
+});
+</script>
+</html>
