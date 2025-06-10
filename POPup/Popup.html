@@ -26,7 +26,7 @@ outline: none;
 cursor: pointer;
 font-size: 22px;
 font-weight: 500;
-border radius: 30px;
+border-radius: 30px; /* Fixed: was "border radius" */
 }
 .popup{
 width: 400px;
@@ -52,7 +52,7 @@ transform: translate(-50%, -50%) scale(1);
 width: 100px;
 margin-top: -50px;
 border-radius: 50%;
-box-shadow: 0 2px 5px rgba (0, 0, 0, 0.2);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Fixed: removed spaces in rgba */
 }
 .popup h2{
 font-size: 38px;
@@ -63,22 +63,22 @@ margin: 30px 0 10px;
 width: 100%;
 margin-top: 50px;
 padding: 10px 0;
-background: #6fd649
+background: #6fd649; /* Fixed: added semicolon */
 color: #fff;
 border: 0;
 outline: none;
 font-size: 18px;
 border-radius: 4px;
 cursor: pointer;
-box-shadow: 0 2px 5px rgba (0, 0, 0, 0.2);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Fixed: removed spaces in rgba */
 }
 </style>
 </head>
 <body>
-<div class="container"></div>
+<div class="container">
 <button type="submit" class="btn" onclick="openPopup()">Submit</button>
 <div class="popup" id="popup">
-<img src"tick.png">
+<img src="404-tick.png" alt="Success">
 <h2>Thank You!</h2>
 <p>Your details has been successfully submitted. Thanks!</p>
 <button type="button" onclick="closePopup()">OK</button>
@@ -95,7 +95,6 @@ popup.classList.add("open-popup");
 function closePopup(){
 popup.classList.remove("open-popup");
 }
-
 </script>
 </body>
 </html>
