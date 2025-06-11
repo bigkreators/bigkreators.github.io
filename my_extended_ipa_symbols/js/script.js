@@ -39,6 +39,69 @@ function highlightTextInElement(element, searchTerm) {
     });
 }
 
+// Function to add a notification
+function addNotification(title, message, type = 'info') {
+    // Check for duplicate notifications within the last 1 second
+    if (window.notifications) {
+        const now = Date.now();
+        const recent = window.notifications.find(n => 
+            n.title === title && 
+            n.message === message && 
+            (now - n.id) < 1000 // within 1 second (using id as timestamp)
+        );
+        if (recent) {
+            return; // Don't add duplicate
+        }
+    }
+    
+    const notification = {
+        id: Date.now(), // Unique ID
+        title: title,
+        message: message,
+        type: type,
+        time: 'Just now'
+    };
+    
+    // Add to notifications array (create if doesn't exist)
+    if (!window.notifications) {
+        window.notifications = [];
+    }
+    window.notifications.unshift(notification); // Add to beginning
+    
+    // Update notification badge
+    updateNotificationBadge();
+    
+    // If notifications dropdown is open, refresh the display
+    const dropdown = document.getElementById('notificationsDropdown');
+    if (dropdown && dropdown.classList.contains('show')) {
+        refreshNotificationDisplay();
+    }
+}
+
+// Function to remove a notification
+function removeNotification(notificationId) {
+    if (window.notifications) {
+        window.notifications = window.notifications.filter(n => n.id !== notificationId);
+        updateNotificationBadge();
+        refreshNotificationDisplay();
+    }
+}
+
+// Function to update notification badge count
+function updateNotificationBadge() {
+    const badge = document.getElementById('notificationBadge');
+    if (badge) {
+        const count = window.notifications ? window.notifications.length : 0;
+        badge.textContent = count;
+        // Show badge when there are notifications, hide when zero
+        if (count > 0) {
+            badge.style.display = '';  // Let CSS handle the display style
+        } else {
+            badge.style.display = 'none';  // Hide when zero
+        }
+    }
+}
+
 // Search function - moved to global scope so HTML onclick can find it
 function performSearch() {
     const searchInput = document.getElementById('searchInput');
@@ -113,11 +176,12 @@ function performSearch() {
         
         // Show a message if no results were found
         if (!foundAny) {
-            alert(`No matches found for: ${searchTerm}`);
+            // Add notification for no search results
+            addNotification('Search Alert', `No matches found for: ${searchTerm}`, 'warning');
         }
     } else {
-        clearSearch();
-        alert('Please enter a search term');
+        // Add notification for empty search - don't call clearSearch() here
+        addNotification('Search Input Required', 'Please enter a search term', 'warning');
     }
 }
 
@@ -169,6 +233,9 @@ function clearSearch() {
     if (searchInput) {
         searchInput.value = '';
     }
+    
+    // Update notification badge immediately after clearing
+    updateNotificationBadge();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -206,7 +273,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const audio = new Audio(audioUrl);
                 audio.play().catch(e => {
                     console.error('Error playing audio:', e);
-                    alert('Unable to play audio sample. The audio file may be missing or your browser may not support this feature.');
+                    // Add notification for audio error (removed alert)
+                    addNotification('Audio Error', 'Unable to play audio sample. The audio file may be missing or your browser may not support this feature.', 'error');
                 });
             }
         });
@@ -223,4 +291,153 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+// Notification setup function
+function setupNotifications() {
+    // Declare ALL variables in the same scope
+    const notificationBell = document.getElementById('notificationBell');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    const notificationsList = document.getElementById('notificationsList');
+    const refreshNotifications = document.getElementById('refreshNotifications');
+    
+    // Only proceed if notification elements exist
+    if (!notificationBell || !notificationsDropdown || !notificationsList) {
+        return;
+    }
+    
+    // Function to refresh notification display
+    function refreshNotificationDisplay() {
+        // First clear any existing notifications
+        while (notificationsList.firstChild) {
+            notificationsList.removeChild(notificationsList.firstChild);
+        }
+        
+        if (!window.notifications || window.notifications.length === 0) {
+            const emptyNote = document.createElement('div');
+            emptyNote.className = 'empty-notifications';
+            emptyNote.textContent = 'No notifications at this time.';
+            notificationsList.appendChild(emptyNote);
+        } else {
+            window.notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = `notification-item notification-${notification.type}`;
+                
+                item.innerHTML = `
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">${notification.time}</div>
+                    </div>
+                    <button class="notification-dismiss" onclick="removeNotification(${notification.id})" title="Dismiss">×</button>
+                `;
+                
+                notificationsList.appendChild(item);
+            });
+        }
+        
+        // Don't update badge here - it's causing flickering
+    }
+    
+    // Function to load notifications
+    function loadNotifications() {
+        // Initialize notifications array if it doesn't exist
+        if (!window.notifications) {
+            window.notifications = [];
+        }
+        
+        // First clear any existing content
+        while (notificationsList.firstChild) {
+            notificationsList.removeChild(notificationsList.firstChild);
+        }
+        
+        // Add loading spinner
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'loading-spinner';
+        notificationsList.appendChild(loadingSpinner);
+        
+        // Simulate loading delay
+        setTimeout(() => {
+            // Display existing notifications
+            refreshNotificationDisplay();
+        }, 300);
+    }
+    
+    // Combined click handler that does both toggle AND load
+    notificationBell.addEventListener('click', function() {
+        const wasOpen = notificationsDropdown.classList.contains('show');
+        
+        // Toggle the dropdown visibility
+        notificationsDropdown.classList.toggle('show');
+        
+        // Load notifications only when opening (not when closing)
+        if (!wasOpen) {
+            loadNotifications();
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!notificationBell.contains(event.target) && !notificationsDropdown.contains(event.target)) {
+            notificationsDropdown.classList.remove('show');
+        }
+    });
+    
+    // Refresh button functionality
+    if (refreshNotifications) {
+        refreshNotifications.addEventListener('click', function() {
+            refreshNotificationDisplay();
+        });
+    }
+    
+    // Add CSS for dropdown visibility and notification styling
+    const style = document.createElement('style');
+    style.textContent = `
+        .notifications-dropdown.show {
+            display: block;
+        }
+        .notification-item {
+            position: relative;
+            padding-right: 30px;
+        }
+        .notification-dismiss {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #666;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .notification-dismiss:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .notification-warning {
+            border-left: 3px solid #ff9800;
+        }
+        .notification-error {
+            border-left: 3px solid #f44336;
+        }
+        .notification-info {
+            border-left: 3px solid #2196f3;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Initial load of notifications
+    loadNotifications();
+}
+
+// Initialize notifications when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setupNotifications();
+    // Don't call updateNotificationBadge() here - let it show naturally
 });

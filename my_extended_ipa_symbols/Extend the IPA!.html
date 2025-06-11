@@ -11,10 +11,40 @@
         <div class="container">
         <div class="header">
             <h1>My Additional IPA Symbols<br>(addIPA)</h1>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search symbols...">
-                <button id="searchButton" class="search-btn" onclick="performSearch()">🔍 Search</button>
-                <button id="clearButton" class="clear-btn" onclick="clearSearch()">✨ Clear</button>
+            <div class="header-controls">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search symbols...">
+                    <button id="searchButton" class="search-btn" onclick="performSearch()">🔍 Search</button>
+                    <button id="clearButton" class="clear-btn" onclick="clearSearch()">✨ Clear</button>
+                </div>
+                <div class="notification-container">
+                    <button class="bell-button" id="notificationBell">
+                        <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" alt="A notification bell">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notification-badge" id="notificationBadge">0</span>
+                    </button>
+                    
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header">
+                            <span>Notifications</span>
+                            <button id="refreshNotifications" class="dismiss-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M23 4v6h-6"></path>
+                                    <path d="M1 20v-6h6"></path>
+                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                                    <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="notifications-list" id="notificationsList">
+                            <!-- Notifications will be populated here -->
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tabs">
@@ -32,6 +62,7 @@
                     </div>
                     <div class="overflow">
 <table>
+𝼖 voiced palatal tap or flap
                         <tr>
                             <th></th>
                             <th colspan="2" scope="col">Bilabial</th>
@@ -218,10 +249,10 @@
                         </tr>
                         <tr>
                         <td class="label-cell">Sibilant affricate</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                            <td style="background-color: #d1d4da;">pϕ</td>
+                            <td style="background-color: #d1d4da;">bϐ</td>
+                            <td style="background-color: #d1d4da;">p̪ғ</td>
+                            <td style="background-color: #d1d4da;">b̪ꝟ</td>
                         <td style="background-color: #d1d4da;">t̼s̼</td>
                             <td style="background-color: #d1d4da;">d̼z̼</td>
                             <td></td>
@@ -230,8 +261,8 @@
                         <td></td>
                         <td></td>
                         <td>ᴅ͡℥</td>
-                        <td class="grayed-out">tᶘ</td>
-                        <td class="grayed-out">dᶚ</td>
+                        <td class="grayed-out"></td>
+                        <td class="grayed-out"></td>
                         <td></td>
                         <td></td>
                          <td></td>
@@ -271,8 +302,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td class="grayed-out">ᶘ</td>
-                            <td class="grayed-out">ᶚ</td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -351,7 +382,7 @@
              <td><span class="clickable-text" data-audio-url="audio/Voiced_dental_approximant.ogg.mp3">ᴆ</span></td>
              <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_approximant.ogg.mp3">ᴚ</span></td>
              <td></td>
-             <td></td>
+             <td><span class="turned">ꝶ</span></td>
              <td class="clickable-text" data-audio-url="audio/Postalveolar_approximant.ogg.mp3"><span class="turned">ꝵ</span></td>
              <td></td>
              <td></td>
@@ -375,7 +406,7 @@
              <td></td>
              <td></td>
              <td></td>
-             <td>ƾ</td>
+             <td class="clickable-text" data-audio-url="audio/Voiced_epiglottal_trill.ogg.mp3">ƾ</td>
              <td><span class="clickable-text" data-audio-url="audio/voiceless_glottal_approximant.mp3">ⱨ</span></td>
              <td class="clickable-text" data-audio-url="audio/Creaky-voiced_glottal_approximant.wav.mp3">ꜧ</td>
          </tr>
@@ -432,7 +463,7 @@
                             <td>𝼨</td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiceless_alveolar_trill.ogg.mp3"><span class="mirrored">r</span></span></td>
                             <td></td>
-                            <td><a href="https://www.youtube.com/watch?v=-PNAb2XbgYw">ꝵ̥</a></td>
+                            <td><a href="https://www.youtube.com/watch?v=-PNAb2XbgYw" title="Voiceless postalveolar trill">ꝵ̥</a></td>
                             <td><span class="clickable-text" data-audio-url="audio/Voiced_postalveolar_trill.ogg.mp3">ꝵ</span></td>
                             <td></td>
                             <td></td>
@@ -752,12 +783,15 @@
                     </div>
                                         <h2 class="centralized">Other ones</h2>
                     <p class="centralized"><span class="clickable-text" data-audio-url="audio/Voiceless_labiodental_nasal.ogg.mp3"><small-capital style="font-family: Menlo;">ɱ</small-capital> voiceless labiodental nasal</span><br>
-                    voiced retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ<span class="overlay">ꭈ</span></span><br>
-                    voiceless retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ˚<span class="overlay">ꭈ</span></span><br>
-                    ꝧ voiceless post-alveolar non-sibilant fricative<br>
+                    <span class="clickable-text" data-audio-url="audio/Voiced_retroflex_trill.ogg.mp3">voiced retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ<span class="overlay">ꭈ</span></span></span><br>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_trill.ogg.mp3">voiceless retroflex trill <span style="font-family: Noto Sans;" class="overlay-target">ɽ˚<span class="overlay">ꭈ</span></span></span><br>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless_postalveolar_non-sibilant_fricative.ogg.mp3">ꝧ voiceless post-alveolar non-sibilant fricative</span><br>
                     <span class="mirrored">ꭉ</span> voiceless alveolo-palatal trill<br>
                     voiced post-alveolar sibilant fricative ℥<br>
-                    <span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_lateral_flap.wav.ogg">Voiceless retroflex lateral flap 𝼈̊</span></p>
+                    <span class="clickable-text" data-audio-url="audio/Voiceless_retroflex_lateral_flap.wav.ogg">Voiceless retroflex lateral flap 𝼈̊</span><br>
+                    <td><span class="grayed-out">ſ voiceless labiodental lateral fricative</span></td><br>
+                    ᶚ voiced laminal retroflex fricative<br>
+                    ᶘ voiceless laminal retroflex fricative</p>
                     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
                         <!-- Row 1 -->
                          <table class="otherones-table">
@@ -913,21 +947,6 @@
                     </tbody>
                 </table>
 </div>
-                    <h2 class="centralized">Impossible ones (ruin it! ruin it!)</h2>
-                    <table>
-                        <tr>
-                            <th></th>
-                            <th colspan="2" scope="col">Bilabial</th>
-                            <th colspan="2" scope="col">Labiodental</th>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Sibilant affricate</td>
-                            <td style="background-color: #d1d4da;">pϕ</td>
-                            <td style="background-color: #d1d4da;">bϐ</td>
-                            <td style="background-color: #d1d4da;">p̪ғ</td>
-                            <td style="background-color: #d1d4da;">b̪ꝟ</td>
-                        </tr>
-            </table>
         </div>
         <!-- Vowels Tab Content -->
         <div id="vowels" class="tab-content">
@@ -1060,4 +1079,5 @@
             </div>
         <script src="js/script.js"></script>
         </body>
-       </html>
+       </html>-url="audio/Mid_back_unrounded_vowel.ogg">ⱻ</span></td>
+                    <td><span class="clickable-text vowel-symbol" data-audio
