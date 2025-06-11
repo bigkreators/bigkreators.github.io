@@ -93,14 +93,41 @@ function updateNotificationBadge() {
     if (badge) {
         const count = window.notifications ? window.notifications.length : 0;
         badge.textContent = count;
-        // Show badge when there are notifications, hide when zero
-        if (count > 0) {
-            badge.style.display = '';  // Let CSS handle the display style
-        } else {
-            badge.style.display = 'none';  // Hide when zero
-        }
     }
 }
+
+    // Function to refresh notification display
+    function refreshNotificationDisplay() {
+        // First clear any existing notifications
+        while (notificationsList.firstChild) {
+            notificationsList.removeChild(notificationsList.firstChild);
+        }
+        
+        if (!window.notifications || window.notifications.length === 0) {
+            const emptyNote = document.createElement('div');
+            emptyNote.className = 'empty-notifications';
+            emptyNote.textContent = 'No notifications at this time.';
+            notificationsList.appendChild(emptyNote);
+        } else {
+            window.notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = `notification-item notification-${notification.type}`;
+                
+                item.innerHTML = `
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">${notification.time}</div>
+                    </div>
+                    <button class="notification-dismiss" onclick="removeNotification(${notification.id})" title="Dismiss">×</button>
+                `;
+                
+                notificationsList.appendChild(item);
+            });
+        }
+        
+        // Don't update badge here - it's causing flickering
+    }
 
 // Search function - moved to global scope so HTML onclick can find it
 function performSearch() {
@@ -304,39 +331,6 @@ function setupNotifications() {
     // Only proceed if notification elements exist
     if (!notificationBell || !notificationsDropdown || !notificationsList) {
         return;
-    }
-    
-    // Function to refresh notification display
-    function refreshNotificationDisplay() {
-        // First clear any existing notifications
-        while (notificationsList.firstChild) {
-            notificationsList.removeChild(notificationsList.firstChild);
-        }
-        
-        if (!window.notifications || window.notifications.length === 0) {
-            const emptyNote = document.createElement('div');
-            emptyNote.className = 'empty-notifications';
-            emptyNote.textContent = 'No notifications at this time.';
-            notificationsList.appendChild(emptyNote);
-        } else {
-            window.notifications.forEach(notification => {
-                const item = document.createElement('div');
-                item.className = `notification-item notification-${notification.type}`;
-                
-                item.innerHTML = `
-                    <div class="notification-content">
-                        <div class="notification-title">${notification.title}</div>
-                        <div class="notification-message">${notification.message}</div>
-                        <div class="notification-time">${notification.time}</div>
-                    </div>
-                    <button class="notification-dismiss" onclick="removeNotification(${notification.id})" title="Dismiss">×</button>
-                `;
-                
-                notificationsList.appendChild(item);
-            });
-        }
-        
-        // Don't update badge here - it's causing flickering
     }
     
     // Function to load notifications
