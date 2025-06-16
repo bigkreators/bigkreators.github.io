@@ -51,83 +51,99 @@ class TemplateSystem {
 // Create the global template system
 const WikiTemplates = new TemplateSystem();
 
-// Register the IPA Infobox template
+// Register the IPA Infobox template - matches manual table styling exactly
 WikiTemplates.registerTemplate('InfoboxIPA', function(params) {
     // Default values
     const defaults = {
         title: 'IPA Symbol',
         ipasymbol: '',
-        audio: '',
         topbgcolor: '#f2f2ce',
-        mainbgcolor: '#ffffe6'
+        mainbgcolor: '#ffffe6',
+        imagefile: '',
+        imagewidth: '',
+        imageheight: '',
+        imagestyle: '',
+        audiofile: ''
     };
     
     // Merge defaults with provided params
     const p = {...defaults, ...params};
     
-    // Generate image HTML if provided
+    // Build image HTML if provided
     let imageHtml = '';
     if (p.imagefile) {
-        const size = p.imagesize || '150px';
-        imageHtml = `<img src="${p.imagefile}" alt="IPA symbol ${p.ipasymbol}" style="width: ${size};">`;
+        let imgAttributes = `src="${p.imagefile}"`;
+        
+        // Add optional width
+        if (p.imagewidth) {
+            imgAttributes += ` width="${p.imagewidth}"`;
+        }
+        
+        // Add optional height  
+        if (p.imageheight) {
+            imgAttributes += ` height="${p.imageheight}"`;
+        }
+        
+        // Add optional custom style
+        if (p.imagestyle) {
+            imgAttributes += ` style="${p.imagestyle}"`;
+        }
+        
+        imageHtml = `<br><img ${imgAttributes} />`;
     }
     
-    // Create rows HTML for all provided parameters
-    const createRow = (label, value) => {
-        if (!value) return ''; // Skip empty values
-        return `
-            <tr>
-                <th style="width: 40%; text-align: right; padding-right: 10px;">${label}:</th>
-                <td style="padding-left: 10px;">${value}</td>
-            </tr>
-        `;
-    };
+    // Build audio HTML if provided
+    let audioHtml = '';
+    if (p.audiofile) {
+        audioHtml = `<tr>
+            <td>
+                <span>
+                    <audio src="${p.audiofile}" controls></audio>
+                </span>
+            </td>
+        </tr>`;
+    }
     
-    // Build rows
-    const rows = [
-        createRow('IPA number', p.ipanumber),
-        createRow('Decimal', p.decimal),
-        createRow('X-SAMPA', p.xsampa),
-        createRow('Braille', p.braille),
-        createRow('Braille (alt)', p.braille2)
-    ].filter(row => row !== '').join('');
+    // Add clickable-text class and data-audio-url if audio is provided
+    let symbolClass = '';
+    let audioAttr = '';
+    if (p.audiofile) {
+        symbolClass = ' class="clickable-text"';
+        audioAttr = ` data-audio-url="${p.audiofile}"`;
+    }
     
-    // Build full HTML
+    // Build simple HTML that matches your manual tables exactly
     return `
-        <table style="width: 30%; margin-bottom: 20px; box-sizing: border-box;" class="infobox-ipa">
+        <table class="otherones-table">
             <tbody>
                 <tr>
-                    <th colspan="2" style="background: ${p.topbgcolor};">
+                    <th style="background: ${p.topbgcolor};">
                         ${p.title}
                     </th>
                 </tr>
                 <tr>
-                    <th class="infobox-header" colspan="2" style="background: ${p.mainbgcolor}; text-align: center;">
-                        <span style="font-size: 5em; line-height: 1.2em; font-weight: normal;">
-                            <span class="IPA nowrap">
-                                ${p.ipasymbol}
-                            </span>
+                    <td style="background: ${p.mainbgcolor};">
+                        <span${symbolClass}${audioAttr} style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                            ${p.ipasymbol}
                         </span>
-                        ${imageHtml ? `<div style="margin-top: 10px;">${imageHtml}</div>` : ''}
-                    </th>
+                        ${imageHtml}
+                        ${audioHtml}
+                    </td>
                 </tr>
-                ${rows}
             </tbody>
         </table>
     `;
 });
 
-// Register the Dual Column IPA Symbol template
+// Register the Dual Column IPA Symbol template - also uses otherones-table class
 WikiTemplates.registerTemplate('DualIPA', function(params) {
     // Default values
     const defaults = {
         title: 'IPA Symbol',
         symbol1: '',
         symbol2: '',
-        width: '30%', // Narrower default width
         topbgcolor: '#f2f2ce',
-        mainbgcolor: '#ffffe6',
-        fontfamily: 'Arial, sans-serif' // Default font family
+        mainbgcolor: '#ffffe6'
     };
     
     // Merge defaults with provided params
@@ -136,40 +152,40 @@ WikiTemplates.registerTemplate('DualIPA', function(params) {
     // Determine if we should use two columns or one
     const hasTwoSymbols = p.symbol2 && p.symbol2.trim() !== '';
     
-    // Build full HTML
+    // Build HTML that matches manual table styling
     let html = `
-        <table style="width: ${p.width}; margin-bottom: 20px; font-family: ${p.fontfamily}; table-layout: fixed;">
+        <table class="otherones-table">
             <tbody>
                 <tr>
-                    <th style="background: ${p.topbgcolor}; font-weight: normal;" colspan="${hasTwoSymbols ? '2' : '1'}">
+                    <th style="background: ${p.topbgcolor};" colspan="${hasTwoSymbols ? '2' : '1'}">
                         ${p.title}
                     </th>
                 </tr>`;
                 
     if (hasTwoSymbols) {
-        // Two symbol layout with border between cells and equal width columns
+        // Two symbol layout with border between cells
         html += `
                 <tr>
-                    <th style="background: ${p.mainbgcolor}; border-right: 1px solid #ccc; width: 50%;">
+                    <td style="background: ${p.mainbgcolor}; border-right: 1px solid #ccc; width: 50%;">
                         <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
                             ${p.symbol1}
                         </span>
-                    </th>
-                    <th style="background: ${p.mainbgcolor}; width: 50%;">
+                    </td>
+                    <td style="background: ${p.mainbgcolor}; width: 50%;">
                         <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
                             ${p.symbol2}
                         </span>
-                    </th>
+                    </td>
                 </tr>`;
     } else {
         // Single symbol layout
         html += `
                 <tr>
-                    <th style="background: ${p.mainbgcolor};">
+                    <td style="background: ${p.mainbgcolor};">
                         <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
                             ${p.symbol1}
                         </span>
-                    </th>
+                    </td>
                 </tr>`;
     }
     
@@ -180,6 +196,12 @@ WikiTemplates.registerTemplate('DualIPA', function(params) {
     
     return html;
 });
+
+// Create and append a stylesheet link
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'styles/stylesheet.css';
+document.head.appendChild(link);
 
 // You can register more templates here
 // Example: WikiTemplates.registerTemplate('AnotherTemplate', function(params) {...});

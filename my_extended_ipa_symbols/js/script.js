@@ -96,38 +96,39 @@ function updateNotificationBadge() {
     }
 }
 
-    // Function to refresh notification display
-    function refreshNotificationDisplay() {
-        // First clear any existing notifications
-        while (notificationsList.firstChild) {
-            notificationsList.removeChild(notificationsList.firstChild);
-        }
-        
-        if (!window.notifications || window.notifications.length === 0) {
-            const emptyNote = document.createElement('div');
-            emptyNote.className = 'empty-notifications';
-            emptyNote.textContent = 'No notifications at this time.';
-            notificationsList.appendChild(emptyNote);
-        } else {
-            window.notifications.forEach(notification => {
-                const item = document.createElement('div');
-                item.className = `notification-item notification-${notification.type}`;
-                
-                item.innerHTML = `
-                    <div class="notification-content">
-                        <div class="notification-title">${notification.title}</div>
-                        <div class="notification-message">${notification.message}</div>
-                        <div class="notification-time">${notification.time}</div>
-                    </div>
-                    <button class="notification-dismiss" onclick="removeNotification(${notification.id})" title="Dismiss">×</button>
-                `;
-                
-                notificationsList.appendChild(item);
-            });
-        }
-        
-        // Don't update badge here - it's causing flickering
+// Function to refresh notification display
+function refreshNotificationDisplay() {
+    const notificationsList = document.getElementById('notificationsList');
+    if (!notificationsList) return;
+    
+    // First clear any existing notifications
+    while (notificationsList.firstChild) {
+        notificationsList.removeChild(notificationsList.firstChild);
     }
+    
+    if (!window.notifications || window.notifications.length === 0) {
+        const emptyNote = document.createElement('div');
+        emptyNote.className = 'empty-notifications';
+        emptyNote.textContent = 'No notifications at this time.';
+        notificationsList.appendChild(emptyNote);
+    } else {
+        window.notifications.forEach(notification => {
+            const item = document.createElement('div');
+            item.className = `notification-item notification-${notification.type}`;
+            
+            item.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-time">${notification.time}</div>
+                </div>
+                <button class="notification-dismiss" onclick="removeNotification(${notification.id})" title="Dismiss">×</button>
+            `;
+            
+            notificationsList.appendChild(item);
+        });
+    }
+}
 
 // Search function - moved to global scope so HTML onclick can find it
 function performSearch() {
@@ -160,30 +161,16 @@ function performSearch() {
             }
         });
         
-        // Search in infoboxes
-        const infoboxes = document.querySelectorAll('.infobox');
+        // Search in template-generated tables (otherones-table)
+        const otherTables = document.querySelectorAll('.otherones-table');
         
-        infoboxes.forEach(infobox => {
-            const symbolElement = infobox.querySelector('.IPA');
-            const titleElement = infobox.querySelector('.infobox-above');
+        otherTables.forEach(table => {
+            const titleElement = table.querySelector('th');
+            const symbolElements = table.querySelectorAll('td span');
             
             let matches = false;
             
-            // Check symbol text
-            if (symbolElement) {
-                const symbolText = symbolElement.textContent;
-                
-                if (symbolText.toLowerCase().includes(searchTerm)) {
-                    if (!symbolElement.hasAttribute('data-original-html')) {
-                        symbolElement.setAttribute('data-original-html', symbolElement.innerHTML);
-                    }
-                    highlightTextInElement(symbolElement, searchTerm);
-                    matches = true;
-                    foundAny = true;
-                }
-            }
-            
-            // Check title/description
+            // Check title text
             if (titleElement) {
                 const titleText = titleElement.textContent;
                 
@@ -197,8 +184,22 @@ function performSearch() {
                 }
             }
             
-            // Add a subtle indicator to the whole infobox if any part matches
-            infobox.style.boxShadow = matches ? '0 0 8px #4285f4' : '';
+            // Check symbol text
+            symbolElements.forEach(symbolElement => {
+                const symbolText = symbolElement.textContent;
+                
+                if (symbolText.toLowerCase().includes(searchTerm)) {
+                    if (!symbolElement.hasAttribute('data-original-html')) {
+                        symbolElement.setAttribute('data-original-html', symbolElement.innerHTML);
+                    }
+                    highlightTextInElement(symbolElement, searchTerm);
+                    matches = true;
+                    foundAny = true;
+                }
+            });
+            
+            // Add a subtle indicator to the whole table if any part matches
+            table.style.boxShadow = matches ? '0 0 8px #4285f4' : '';
         });
         
         // Show a message if no results were found
@@ -224,22 +225,12 @@ function clearSearchHighlights() {
         }
     });
     
-    // Reset all infobox elements
-    document.querySelectorAll('.infobox').forEach(infobox => {
-        infobox.style.boxShadow = '';
+    // Reset all template-generated table elements
+    document.querySelectorAll('.otherones-table').forEach(table => {
+        table.style.boxShadow = '';
         
-        // Reset IPA span
-        const symbolElement = infobox.querySelector('.IPA');
-        if (symbolElement) {
-            const originalHTML = symbolElement.getAttribute('data-original-html');
-            if (originalHTML) {
-                symbolElement.innerHTML = originalHTML;
-                symbolElement.removeAttribute('data-original-html');
-            }
-        }
-        
-        // Reset title element
-        const titleElement = infobox.querySelector('.infobox-above');
+        // Reset title elements
+        const titleElement = table.querySelector('th');
         if (titleElement) {
             const originalHTML = titleElement.getAttribute('data-original-html');
             if (originalHTML) {
@@ -247,6 +238,16 @@ function clearSearchHighlights() {
                 titleElement.removeAttribute('data-original-html');
             }
         }
+        
+        // Reset symbol elements
+        const symbolElements = table.querySelectorAll('td span');
+        symbolElements.forEach(symbolElement => {
+            const originalHTML = symbolElement.getAttribute('data-original-html');
+            if (originalHTML) {
+                symbolElement.innerHTML = originalHTML;
+                symbolElement.removeAttribute('data-original-html');
+            }
+        });
     });
 }
 
@@ -433,5 +434,4 @@ function setupNotifications() {
 // Initialize notifications when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     setupNotifications();
-    // Don't call updateNotificationBadge() here - let it show naturally
 });
