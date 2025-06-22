@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+@font-face {
+    font-family: 'Gentium Plus Compact';
+    src: url('../fonts/GentiumPlusCompact-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* rest of your CSS... */
+
 h2 {
 border-bottom: 1px solid #a2a9b1;
 }
