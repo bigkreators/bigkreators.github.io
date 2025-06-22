@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@font-face {
+    font-family: 'Gentium Plus';
+    src: url('../fonts/GentiumPlus-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 @font-face {
     font-family: 'Gentium Plus Compact';
@@ -8,7 +14,7 @@
     font-display: swap;
 }
 
-/* rest of your CSS... */
+/* Rest of your CSS... */
 
 h2 {
 border-bottom: 1px solid #a2a9b1;
@@ -430,3 +436,4 @@ th {
     text-align: center;
     color: #999;
 }
+
