@@ -1,5 +1,8 @@
+h2 {
+border-bottom: 1px solid #a2a9b1;
+}
 .STIX_Two_Math-or_Symbola {
-    font-family: "STIX Two Math", "Symbola"; 
+    font-family: "STIX Two Math", "Symbola";
 }
 
 .clear-btn { 
@@ -101,8 +104,8 @@ small-capital {
 }
 
 body { 
-    font-family: Arial, sans-serif; 
-    background-color: #f5f7fa; 
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
     padding: 20px; 
 }
 
