@@ -1694,893 +1694,235 @@
       }, animationDuration * 1000);
     }
 
-// Enhanced font fallback detection and replacement
-function checkFontSupport() {
-    // First check if Noto Sans is available/blocked
-    const notoSansAvailable = checkNotoSansAvailability();
-    
-    if (!notoSansAvailable) {
-        applyArialFallback();
+    // Helper function to escape special regex characters
+    function escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\ ');
     }
-    
-    // Then check for symbol support with multiple detection methods
-    const detectionMethods = [
-        () => checkByRendering(),
-        () => checkByCanvas(),
-        () => checkByFontFaceAPI()
-    ];
-    
-    let needsFallback = false;
-    
-    // Try each detection method
-    for (const method of detectionMethods) {
-        try {
-            const result = method();
-            if (result !== null) {
-                needsFallback = result;
-                break;
-            }
-        } catch (e) {
-            console.warn('Font detection method failed:', e);
-            continue;
-        }
-    }
-    
-    if (needsFallback) {
-        replaceFallbackSymbols();
-    } else {
-        // Even if main symbols work, check specifically for velodorsal symbols
-        checkVelodorsalSymbols();
-    }
-}
 
-// Check if Noto Sans font is available and not blocked
-function checkNotoSansAvailability() {
-    // Method 1: Font Face API check (most reliable if available)
-    if (document.fonts && document.fonts.check) {
-        try {
-            const isNotoAvailable = document.fonts.check("16px 'Noto Sans'");
-            if (!isNotoAvailable) {
-                console.info('Noto Sans not detected via Font Face API');
-                return false;
-            }
-        } catch (e) {
-            console.warn('Font Face API check failed:', e);
-        }
-    }
-    
-    // Method 2: Rendering comparison check
-    const testContainer = document.createElement('div');
-    testContainer.style.cssText = `
-        position: absolute;
-        left: -9999px;
-        top: -9999px;
-        visibility: hidden;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: normal;
-        letter-spacing: 0;
-        line-height: normal;
-        text-transform: none;
-        white-space: nowrap;
-    `;
-    
-    // Test with a distinctive character that varies between fonts
-    const testText = 'mmmmmmmmmmlli'; // Combination of wide and narrow chars
-    
-    // Create test elements with different font stacks
-    const notoTest = document.createElement('span');
-    notoTest.style.fontFamily = "'Noto Sans'";
-    notoTest.textContent = testText;
-    
-    const arialTest = document.createElement('span');
-    arialTest.style.fontFamily = 'Arial, sans-serif';
-    arialTest.textContent = testText;
-    
-    const sansSerifTest = document.createElement('span');
-    sansSerifTest.style.fontFamily = 'sans-serif';
-    sansSerifTest.textContent = testText;
-    
-    testContainer.appendChild(notoTest);
-    testContainer.appendChild(arialTest);
-    testContainer.appendChild(sansSerifTest);
-    document.body.appendChild(testContainer);
-    
-    // Get measurements
-    const notoWidth = notoTest.offsetWidth;
-    const arialWidth = arialTest.offsetWidth;
-    const sansSerifWidth = sansSerifTest.offsetWidth;
-    
-    document.body.removeChild(testContainer);
-    
-    // If Noto Sans renders exactly like Arial or generic sans-serif, it's likely not loaded
-    const isNotoLikelyAvailable = notoWidth !== arialWidth && notoWidth !== sansSerifWidth && notoWidth > 0;
-    
-    if (!isNotoLikelyAvailable) {
-        console.info('Noto Sans appears to be unavailable (width-based detection)');
-        return false;
-    }
-    
-    // Method 3: Check for font loading errors (if we can detect them)
-    return checkFontLoadingErrors();
-}
-
-// Check for font loading errors or CSP blocks
-function checkFontLoadingErrors() {
-    return new Promise((resolve) => {
-        // If fonts API supports loading detection
-        if (document.fonts && document.fonts.load) {
-            document.fonts.load("16px 'Noto Sans'")
-                .then((loadedFonts) => {
-                    const notoLoaded = loadedFonts.some(font => 
-                        font.family.toLowerCase().includes('noto sans')
-                    );
-                    resolve(notoLoaded);
-                })
-                .catch(() => {
-                    console.info('Noto Sans loading failed');
-                    resolve(false);
-                });
+    // Font fallback system for unsupported IPA symbols
+    function checkAndApplyFallbacks() {
+        console.log('Checking for unsupported IPA symbols...');
+        
+        // Test if velodorsal symbols are supported
+        const testContainer = document.createElement('div');
+        testContainer.style.cssText = 'position: absolute; left: -9999px; font-size: 20px; visibility: hidden;';
+        document.body.appendChild(testContainer);
+        
+        const testSymbol = document.createElement('span');
+        testSymbol.textContent = '𝼃'; // Test velodorsal symbol
+        testContainer.appendChild(testSymbol);
+        
+        const symbolWidth = testSymbol.offsetWidth;
+        document.body.removeChild(testContainer);
+        
+        // If symbol renders very narrow or not at all, apply fallbacks
+        if (symbolWidth < 8) {
+            console.log('Applying symbol fallbacks...');
+            applySymbolFallbacks();
         } else {
-            // Fallback: assume available if we can't detect otherwise
-            resolve(true);
+            console.log('IPA symbols appear to be supported');
         }
-    });
-}
+    }
 
-// Apply Arial fallback when Noto Sans is blocked/unavailable
-function applyArialFallback() {
-    console.info('Applying Arial fallback for Noto Sans');
-    
-    // Update all font-family declarations to prioritize Arial
-    const elementsWithNoto = document.querySelectorAll('*');
-    
-    elementsWithNoto.forEach(element => {
-        const computedStyle = window.getComputedStyle(element);
-        const fontFamily = computedStyle.fontFamily;
+    // Apply fallbacks for unsupported symbols
+    function applySymbolFallbacks() {
+        const fallbacks = {
+            '𝼃': { replacement: 'k', description: 'Voiceless velodorsal plosive (mirrored k)', mirror: true },
+            '𝼁': { replacement: 'ɡ', description: 'Voiced velodorsal plosive (mirrored ɡ)', mirror: true },
+            '𝼇': { replacement: 'ŋ', description: 'Voiced velodorsal nasal (mirrored ŋ)', mirror: true },
+            '𝼊': { replacement: 'ǃ̢', description: 'Retroflex click (approximated)', mirror: false },
+            '𝼈': { replacement: 'ɺ̢', description: 'Retroflex lateral flap (approximated)', mirror: false },
+            '𝼂': { replacement: 'ɢ̠', description: 'Voiced pharyngeal plosive (approximated)', mirror: false },
+            '𝼄': { replacement: 'ʟ̝̊', description: 'Voiceless velar lateral fricative (approximated)', mirror: false },
+            '𝼅': { replacement: 'ɮ̢', description: 'Voiced retroflex lateral fricative (approximated)', mirror: false },
+            '𝼆': { replacement: 'ʎ̝̊', description: 'Voiceless palatal lateral fricative (approximated)', mirror: false },
+            'ꞎ': { replacement: 'ɬ̢', description: 'Voiceless retroflex lateral fricative (approximated)', mirror: false }
+        };
         
-        if (fontFamily && fontFamily.toLowerCase().includes('noto sans')) {
-            // Replace Noto Sans with Arial in the font stack
-            const newFontFamily = fontFamily
-                .replace(/'Noto Sans'/gi, 'Arial')
-                .replace(/"Noto Sans"/gi, 'Arial')
-                .replace(/Noto Sans/gi, 'Arial');
+        const ipaElements = document.querySelectorAll('.IPA, td.interactive, .ipa-symbol');
+        let replacementCount = 0;
+        
+        ipaElements.forEach(element => {
+            let content = element.innerHTML;
+            let hasReplacements = false;
             
-            element.style.fontFamily = newFontFamily;
-        }
-    });
-    
-    // Update CSS styles dynamically
-    updateCSSFontFallback();
-    
-    // Add notification about font fallback
-    addFontFallbackNotification();
-}
-
-// Update CSS font declarations
-function updateCSSFontFallback() {
-    // Create a new style element with Arial-first font declarations
-    const fallbackStyle = document.createElement('style');
-    fallbackStyle.id = 'arial-fallback-styles';
-    fallbackStyle.textContent = `
-        body, .IPA, .ipa-symbol, .interactive {
-            font-family: Arial, 'Helvetica', sans-serif !important;
-        }
-        
-        /* Ensure Arial renders IPA symbols acceptably */
-        .IPA, .ipa-symbol {
-            font-variant-ligatures: none;
-            font-feature-settings: normal;
-            text-rendering: optimizeLegibility;
-        }
-    `;
-    
-    document.head.appendChild(fallbackStyle);
-}
-
-// Add notification about font fallback to Arial
-function addFontFallbackNotification() {
-    const notification = document.createElement('div');
-    notification.id = 'font-fallback-notification';
-    notification.innerHTML = `
-        <div style="
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(33, 150, 243, 0.95);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-size: 12px;
-            z-index: 1001;
-            max-width: 300px;
-            border-left: 4px solid #1976d2;
-        ">
-            <strong>📝 Font Notice</strong><br>
-            Noto Sans unavailable. Using Arial for IPA symbols.
-            <button onclick="this.parentElement.parentElement.remove()" style="
-                float: right;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-                margin-left: 10px;
-            ">×</button>
-        </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Auto-hide after 8 seconds
-    setTimeout(() => {
-        const notif = document.getElementById('font-fallback-notification');
-        if (notif) notif.remove();
-    }, 8000);
-}
-
-// Method 1: Check by rendering dimensions (updated for font family detection)
-function checkByRendering() {
-    const container = document.createElement('div');
-    container.style.cssText = `
-        position: absolute;
-        left: -9999px;
-        font-size: 20px;
-        white-space: nowrap;
-        visibility: hidden;
-    `;
-    
-    // Get the actual font family being used
-    const computedStyle = window.getComputedStyle(document.body);
-    const currentFontFamily = computedStyle.fontFamily || "Arial, sans-serif";
-    container.style.fontFamily = currentFontFamily;
-    
-    // Test multiple symbols for better accuracy
-    const testSymbols = ['𝼊', '𝼈', '𝼃', '𝼁'];
-    const referenceChar = 'M'; // Wide reference character
-    
-    const reference = document.createElement('span');
-    reference.textContent = referenceChar;
-    container.appendChild(reference);
-    
-    document.body.appendChild(container);
-    const referenceWidth = reference.offsetWidth;
-    
-    let unsupportedCount = 0;
-    
-    testSymbols.forEach(symbol => {
-        const testSpan = document.createElement('span');
-        testSpan.textContent = symbol;
-        container.appendChild(testSpan);
-        
-        const testWidth = testSpan.offsetWidth;
-        
-        // Check for typical fallback indicators
-        // In Arial, unsupported symbols often render as narrow boxes or use default glyph width
-        if (testWidth < 5 || testWidth < referenceWidth * 0.2 || testWidth === referenceWidth) {
-            unsupportedCount++;
-        }
-        
-        container.removeChild(testSpan);
-    });
-    
-    document.body.removeChild(container);
-    
-    // If more than half the test symbols appear unsupported
-    return unsupportedCount > testSymbols.length / 2;
-}
-
-// Method 2: Canvas-based detection (updated for current font)
-function checkByCanvas() {
-    if (!document.createElement('canvas').getContext) return null;
-    
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 100;
-    canvas.height = 50;
-    
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'center';
-    
-    // Use the current effective font family
-    const computedStyle = window.getComputedStyle(document.body);
-    const currentFontFamily = computedStyle.fontFamily || "Arial, sans-serif";
-    ctx.font = `20px ${currentFontFamily}`;
-    
-    // Draw a test symbol
-    ctx.fillText('𝼊', 50, 25);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    
-    // Check if anything was actually drawn (non-transparent pixels)
-    const pixels = imageData.data;
-    let hasContent = false;
-    
-    for (let i = 3; i < pixels.length; i += 4) { // Check alpha channel
-        if (pixels[i] > 0) {
-            hasContent = true;
-            break;
-        }
-    }
-    
-    return !hasContent;
-}
-
-// Method 3: Font Face API detection (if available)
-function checkByFontFaceAPI() {
-    if (!document.fonts || !document.fonts.check) return null;
-    
-    try {
-        // Check if the font is loaded and available
-        const isLoaded = document.fonts.check("20px 'Noto Sans'");
-        if (!isLoaded) {
-            return true; // Assume fallback needed if font not loaded
-        }
-        
-        // Additional check could go here
-        return null; // Unable to determine definitively
-    } catch (e) {
-        return null;
-    }
-}
-
-function replaceFallbackSymbols() {
-    // Enhanced fallback mappings with better alternatives
-    const fallbacks = {
-        '𝼊': { 
-            replacement: 'ǃ̢', 
-            description: 'Retroflex click (approximated)',
-            copyOriginal: false 
-        },
-        '𝼈': { 
-            replacement: 'ɺ̢', 
-            description: 'Retroflex lateral flap (approximated)',
-            copyOriginal: false 
-        },
-        '𝼃': { 
-            replacement: 'k', 
-            description: 'Voiceless velodorsal plosive (mirrored k)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼁': {
-            replacement: 'ɡ', 
-            description: 'Voiced velodorsal plosive (mirrored ɡ)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼇': {
-            replacement: 'ŋ', 
-            description: 'Voiced velodorsal nasal (mirrored ŋ)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼂': { 
-            replacement: 'ɢ̠', 
-            description: 'Voiced pharyngeal plosive (approximated)',
-            copyOriginal: false 
-        },
-        '𝼄': { 
-            replacement: 'ʟ̝̊', 
-            description: 'Voiceless velar lateral fricative (approximated)',
-            copyOriginal: false 
-        },
-        '𝼅': { 
-            replacement: 'ɮ̢', 
-            description: 'Voiced retroflex lateral fricative (approximated)',
-            copyOriginal: false 
-        },
-        '𝼆': { 
-            replacement: 'ʎ̝̊', 
-            description: 'Voiceless palatal lateral fricative (approximated)',
-            copyOriginal: false 
-        },
-        'ꞎ': { 
-            replacement: 'ɬ̢', 
-            description: 'Voiceless retroflex lateral fricative (approximated)',
-            copyOriginal: false 
-        }
-    };
-    
-    // Track replaced elements for better copy functionality
-    const replacedElements = new Set();
-    
-    // Find all relevant elements
-    const ipaElements = document.querySelectorAll('.IPA, td.interactive, .ipa-symbol');
-    
-    ipaElements.forEach(element => {
-        let content = element.innerHTML;
-        let hasReplacements = false;
-        
-        for (const [original, config] of Object.entries(fallbacks)) {
-            if (content.includes(original)) {
-                hasReplacements = true;
-                
-                if (config.mirror) {
-                    // Create mirrored version with enhanced styling
-                    const mirroredSpan = `<span 
-                        class="fallback-symbol mirrored" 
-                        style="transform: scaleX(-1); display: inline-block; font-feature-settings: normal;" 
-                        data-original="${original}"
-                        title="${config.description}"
-                        aria-label="${config.description}"
-                    >${config.replacement}</span>`;
-                    content = content.replace(new RegExp(escapeRegex(original), 'g'), mirroredSpan);
-                } else {
-                    // Regular replacement with metadata
-                    const replacementSpan = `<span 
-                        class="fallback-symbol" 
-                        data-original="${original}"
-                        title="${config.description}"
-                        aria-label="${config.description}"
-                    >${config.replacement}</span>`;
-                    content = content.replace(new RegExp(escapeRegex(original), 'g'), replacementSpan);
+            for (const [original, config] of Object.entries(fallbacks)) {
+                if (content.includes(original)) {
+                    hasReplacements = true;
+                    replacementCount++;
+                    
+                    if (config.mirror) {
+                        // Create mirrored version
+                        const mirroredSpan = `<span 
+                            class="fallback-symbol mirrored" 
+                            style="transform: scaleX(-1); display: inline-block;" 
+                            data-original="${original}"
+                            title="${config.description}"
+                        >${config.replacement}</span>`;
+                        content = content.replace(new RegExp(escapeRegex(original), 'g'), mirroredSpan);
+                    } else {
+                        // Regular replacement
+                        const replacementSpan = `<span 
+                            class="fallback-symbol" 
+                            data-original="${original}"
+                            title="${config.description}"
+                        >${config.replacement}</span>`;
+                        content = content.replace(new RegExp(escapeRegex(original), 'g'), replacementSpan);
+                    }
                 }
             }
-        }
-        
-        if (hasReplacements) {
-            element.innerHTML = content;
-            replacedElements.add(element);
-            element.classList.add('has-fallbacks');
-        }
-    });
-    
-    // Add visual indicator for fallback usage
-    if (replacedElements.size > 0) {
-        addFallbackNotification();
-    }
-}
-
-// Check specifically for velodorsal symbols that need mirroring
-function checkVelodorsalSymbols() {
-    const velodorsalSymbols = ['𝼃', '𝼁', '𝼇'];
-    let needsVelodorsalFallback = false;
-    
-    const container = document.createElement('div');
-    container.style.cssText = `
-        position: absolute;
-        left: -9999px;
-        font-size: 20px;
-        white-space: nowrap;
-        visibility: hidden;
-    `;
-    
-    // Use current effective font
-    const computedStyle = window.getComputedStyle(document.body);
-    const currentFontFamily = computedStyle.fontFamily || "Arial, sans-serif";
-    container.style.fontFamily = currentFontFamily;
-    
-    document.body.appendChild(container);
-    
-    velodorsalSymbols.forEach(symbol => {
-        const testSpan = document.createElement('span');
-        testSpan.textContent = symbol;
-        container.appendChild(testSpan);
-        
-        const testWidth = testSpan.offsetWidth;
-        
-        // These symbols are very new and unlikely to be supported even in Noto Sans
-        // If width is very small or zero, they need fallback
-        if (testWidth < 8) {
-            needsVelodorsalFallback = true;
-        }
-        
-        container.removeChild(testSpan);
-    });
-    
-    document.body.removeChild(container);
-    
-    if (needsVelodorsalFallback) {
-        replaceVelodorsalSymbols();
-    }
-}
-
-// Replace only the velodorsal symbols with mirrored versions
-function replaceVelodorsalSymbols() {
-    const velodorsalFallbacks = {
-        '𝼃': { 
-            replacement: 'k', 
-            description: 'Voiceless velodorsal plosive (mirrored k)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼁': { 
-            replacement: 'ɡ', 
-            description: 'Voiced velodorsal plosive (mirrored ɡ)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼇': { 
-            replacement: 'ŋ', 
-            description: 'Voiced velodorsal nasal (mirrored ŋ)',
-            mirror: true,
-            copyOriginal: true 
-        }
-    };
-    
-    const ipaElements = document.querySelectorAll('.IPA, td.interactive, .ipa-symbol');
-    let hasReplacements = false;
-    
-    ipaElements.forEach(element => {
-        let content = element.innerHTML;
-        
-        for (const [original, config] of Object.entries(velodorsalFallbacks)) {
-            if (content.includes(original)) {
-                hasReplacements = true;
-                
-                // Create mirrored version
-                const mirroredSpan = `<span 
-                    class="fallback-symbol mirrored" 
-                    style="transform: scaleX(-1); display: inline-block; font-feature-settings: normal;" 
-                    data-original="${original}"
-                    title="${config.description}"
-                    aria-label="${config.description}"
-                >${config.replacement}</span>`;
-                content = content.replace(new RegExp(escapeRegex(original), 'g'), mirroredSpan);
-            }
-        }
-        
-        if (content !== element.innerHTML) {
-            element.innerHTML = content;
-            element.classList.add('has-fallbacks');
-        }
-    });
-    
-    // Show notification if we made velodorsal replacements
-    if (hasReplacements) {
-        addVelodorsalNotification();
-    }
-}
-
-// Specific notification for velodorsal symbol replacements
-function addVelodorsalNotification() {
-    // Check if notification already exists
-    if (document.getElementById('velodorsal-notification')) return;
-    
-    const notification = document.createElement('div');
-    notification.id = 'velodorsal-notification';
-    notification.innerHTML = `
-        <div style="
-            position: fixed;
-            top: 60px;
-            right: 10px;
-            background: rgba(156, 39, 176, 0.95);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-size: 12px;
-            z-index: 999;
-            max-width: 300px;
-            border-left: 4px solid #9c27b0;
-        ">
-            <strong>🔄 Mirrored Symbols</strong><br>
-            Velodorsal symbols (𝼃, 𝼁, 𝼇) using mirrored approximations.
-            <button onclick="this.parentElement.parentElement.remove()" style="
-                float: right;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-                margin-left: 10px;
-            ">×</button>
-        </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Auto-hide after 8 seconds
-    setTimeout(() => {
-        const notif = document.getElementById('velodorsal-notification');
-        if (notif) notif.remove();
-    }, 8000);
-}
-
-// Helper function to escape special regex characters
-function escapeRegex(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\// Replace only the velodorsal symbols with mirrored versions
-function replaceVelodorsalSymbols() {
-    const velodorsalFallbacks = {
-        '𝼃': { 
-            replacement: 'k', 
-            description: 'Voiceless velodorsal plosive (mirrored k)',
-            mirror: true,
-            copyOriginal: true 
-        },
-        '𝼁': { 
-            replacement: 'ɡ', 
-            description: 'Voiced velodorsal plosive (mirrored ɡ)',
-            mirror: true,
-            copyOriginal: true 
-        }
-    };
-    
-    const ipaElements = document.querySelectorAll('.IPA, td.interactive, .ipa-symbol');
-    let hasReplacements = false;
-    
-    ipaElements.forEach(element => {
-        let content = element.innerHTML;
-        
-        for (const [original, config] of Object.entries(velodorsalFallbacks)) {
-            if (content.includes(original)) {
-                hasReplacements = true;
-                
-                // Create mirrored version
-                const mirroredSpan = `<span 
-                    class="fallback-symbol mirrored" 
-                    style="transform: scaleX(-1); display: inline-block; font-feature-settings: normal;" 
-                    data-original="${original}"
-                    title="${config.description}"
-                    aria-label="${config.description}"
-                >${config.replacement}</span>`;
-                content = content.replace(new RegExp(escapeRegex(original), 'g'), mirroredSpan);
-            }
-        }
-        
-        if (content !== element.innerHTML) {
-            element.innerHTML = content;
-            element.classList.add('has-fallbacks');
-        }
-    });
-    
-    // Show notification if we made velodorsal replacements
-    if (hasReplacements) {
-        addVelodorsalNotification();
-    }
-}
-}
-
-// Specific notification for velodorsal symbol replacements
-function addVelodorsalNotification() {
-    // Check if notification already exists
-    if (document.getElementById('velodorsal-notification')) return;
-    
-    const notification = document.createElement('div');
-    notification.id = 'velodorsal-notification';
-    notification.innerHTML = `
-        <div style="
-            position: fixed;
-            top: 60px;
-            right: 10px;
-            background: rgba(156, 39, 176, 0.95);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-size: 12px;
-            z-index: 999;
-            max-width: 300px;
-            border-left: 4px solid #9c27b0;
-        ">
-            <strong>🔄 Mirrored Symbols</strong><br>
-            Velodorsal symbols (𝼃, 𝼁, 𝼇) using mirrored approximations.
-            <button onclick="this.parentElement.parentElement.remove()" style="
-                float: right;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-                margin-left: 10px;
-            ">×</button>
-        </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Auto-hide after 8 seconds
-    setTimeout(() => {
-        const notif = document.getElementById('velodorsal-notification');
-        if (notif) notif.remove();
-    }, 8000);
-}
-function escapeRegex(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\// Method 3: Font Face API detection (if available)
-function checkByFontFaceAPI() {
-    if (!document.fonts || !document.fonts.check) return null;
-    
-    try {
-        // Check if the font is loaded and available
-        const isLoaded = document.fonts.check("20px 'Noto Sans'");
-        if (!isLoaded) {
-            return true; // Assume fallback needed if font not loaded
-        }
-        
-        // Additional check could go here
-        return null; // Unable to determine definitively
-    } catch (e) {
-        return null;
-    }
-}');
-}');
-}
-
-// Add notification about fallback symbols
-function addFallbackNotification() {
-    // Check if notification already exists
-    if (document.getElementById('fallback-notification')) return;
-    
-    const notification = document.createElement('div');
-    notification.id = 'fallback-notification';
-    notification.innerHTML = `
-        <div style="
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-size: 12px;
-            z-index: 1000;
-            max-width: 300px;
-            border-left: 4px solid #ff9800;
-        ">
-            <strong>⚠️ Font Fallback Active</strong><br>
-            Some IPA symbols are using approximations. Hover over symbols for details.
-            <button onclick="this.parentElement.parentElement.remove()" style="
-                float: right;
-                background: none;
-                border: none;
-                font-size: 16px;
-                cursor: pointer;
-                margin-left: 10px;
-            ">×</button>
-        </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Auto-hide after 10 seconds
-    setTimeout(() => {
-        const notif = document.getElementById('fallback-notification');
-        if (notif) notif.remove();
-    }, 10000);
-}
-
-// Enhanced initialization with Noto Sans detection
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize font fallback system
-    initializeFontFallback();
-});
-
-function initializeFontFallback() {
-    let attempts = 0;
-    const maxAttempts = 3;
-    
-    function attemptFontCheck() {
-        attempts++;
-        
-        try {
-            // Check if document fonts API is available for better timing
-            if (document.fonts && document.fonts.ready) {
-                document.fonts.ready.then(() => {
-                    // Small delay to ensure rendering is complete
-                    setTimeout(checkFontSupport, 100);
-                }).catch(() => {
-                    // Fallback to timer-based check
-                    setTimeout(checkFontSupport, 1000);
-                });
-            } else {
-                // No fonts API, use timer with increasing delays
-                setTimeout(checkFontSupport, attempts * 500);
-            }
             
-            // Additional check after page is fully loaded
-            if (document.readyState === 'complete') {
-                setTimeout(checkFontSupport, 200);
-            } else {
-                window.addEventListener('load', () => {
-                    setTimeout(checkFontSupport, 200);
-                });
+            if (hasReplacements) {
+                element.innerHTML = content;
+                element.classList.add('has-fallbacks');
             }
-            
-        } catch (error) {
-            console.warn('Font fallback initialization error:', error);
-            if (attempts < maxAttempts) {
-                setTimeout(attemptFontCheck, 1000 * attempts);
-            } else {
-                // Last resort: apply Arial fallback
-                console.warn('Font detection failed, applying Arial fallback');
-                applyArialFallback();
-            }
+        });
+        
+        if (replacementCount > 0) {
+            console.log(`Applied ${replacementCount} symbol fallbacks`);
+            showFallbackNotification();
         }
     }
-    
-    attemptFontCheck();
-}
 
-// Manual fallback triggers for testing and user override
-window.triggerFallback = function() {
-    replaceFallbackSymbols();
-    console.log('Manual symbol fallback triggered');
-};
-
-window.triggerArialFallback = function() {
-    applyArialFallback();
-    console.log('Manual Arial fallback triggered');
-};
-
-// Enhanced copy event listener with better selection handling
-document.addEventListener('copy', function(e) {
-    const selection = window.getSelection();
-    if (selection.rangeCount === 0) return;
-    
-    // Get the original selection text
-    let originalText = selection.toString();
-    let modifiedText = originalText;
-    let hasReplacements = false;
-    
-    // Find all fallback symbols in the selection
-    const range = selection.getRangeAt(0);
-    const container = document.createElement('div');
-    container.appendChild(range.cloneContents());
-    
-    const fallbackSymbols = container.querySelectorAll('.fallback-symbol[data-original]');
-    
-    fallbackSymbols.forEach(element => {
-        const original = element.getAttribute('data-original');
-        const fallbackText = element.textContent;
+    // Show notification about fallback usage
+    function showFallbackNotification() {
+        const notification = document.createElement('div');
+        notification.id = 'fallback-notification';
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: rgba(255, 152, 0, 0.95);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                font-size: 12px;
+                z-index: 1000;
+                max-width: 300px;
+                border-left: 4px solid #ff9800;
+            ">
+                <strong>⚠️ Symbol Fallbacks Active</strong><br>
+                Some IPA symbols are using approximations. Hover over symbols for details.
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    float: right;
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 16px;
+                    cursor: pointer;
+                    margin-left: 10px;
+                ">×</button>
+            </div>
+        `;
+        document.body.appendChild(notification);
         
-        // Replace the fallback text with original symbol
-        const regex = new RegExp(escapeRegex(fallbackText), 'g');
-        modifiedText = modifiedText.replace(regex, original);
-        hasReplacements = true;
-    });
-    
-    // Only override clipboard if we made actual replacements
-    if (hasReplacements && modifiedText !== originalText) {
-        e.clipboardData.setData('text/plain', modifiedText);
-        e.preventDefault();
-        
-        // Optional: Show a brief notification that copy was enhanced
-        showCopyNotification();
+        // Auto-hide after 8 seconds
+        setTimeout(() => {
+            const notif = document.getElementById('fallback-notification');
+            if (notif) notif.remove();
+        }, 8000);
     }
-});
 
-// Show brief notification when copy is enhanced
-function showCopyNotification() {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-size: 14px;
-        z-index: 2000;
-        pointer-events: none;
-    `;
-    notification.textContent = 'Copied with original IPA symbols';
-    document.body.appendChild(notification);
-    
-    setTimeout(() => notification.remove(), 1500);
-}
-
-// Tab switching functionality
-const tabs = document.querySelectorAll('.tab');
-const tabContents = document.querySelectorAll('.tab-content');
-
-// Set initial state - vowels should be active by default
-document.getElementById('vowels').classList.add('active');
-document.getElementById('vowels-tab').classList.add('active');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', function() {
-        // Remove active class from all tabs
-        tabs.forEach(t => t.classList.remove('active'));
-        // Add active class to clicked tab
-        this.classList.add('active');
-
-        // Hide all tab contents
-        tabContents.forEach(content => content.classList.remove('active'));
-        // Show the corresponding tab content
-        const tabId = this.getAttribute('data-tab');
-        document.getElementById(tabId).classList.add('active');
+    // Enhanced copy functionality to preserve original symbols
+    document.addEventListener('copy', function(e) {
+        const selection = window.getSelection();
+        if (selection.rangeCount === 0) return;
+        
+        let originalText = selection.toString();
+        let modifiedText = originalText;
+        let hasReplacements = false;
+        
+        // Find all fallback symbols in the selection
+        const range = selection.getRangeAt(0);
+        const container = document.createElement('div');
+        container.appendChild(range.cloneContents());
+        
+        const fallbackSymbols = container.querySelectorAll('.fallback-symbol[data-original]');
+        
+        fallbackSymbols.forEach(element => {
+            const original = element.getAttribute('data-original');
+            const fallbackText = element.textContent;
+            
+            // Replace the fallback text with original symbol
+            const regex = new RegExp(escapeRegex(fallbackText), 'g');
+            modifiedText = modifiedText.replace(regex, original);
+            hasReplacements = true;
+        });
+        
+        // Only override clipboard if we made actual replacements
+        if (hasReplacements && modifiedText !== originalText) {
+            e.clipboardData.setData('text/plain', modifiedText);
+            e.preventDefault();
+            
+            // Show brief notification
+            showCopyNotification();
+        }
     });
-});
+
+    // Show brief notification when copy is enhanced
+    function showCopyNotification() {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 2000;
+            pointer-events: none;
+        `;
+        notification.textContent = 'Copied with original IPA symbols';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.remove(), 1500);
+    }
+
+    // Tab switching and initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded, initializing...');
+        
+        // Initialize font fallbacks after a delay to ensure fonts are loaded
+        setTimeout(checkAndApplyFallbacks, 500);
+        
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        console.log('Found', tabs.length, 'tabs and', tabContents.length, 'tab contents');
+
+        // Set initial state - vowels should be active by default
+        const vowelsTab = document.getElementById('vowels');
+        const vowelsTabButton = document.getElementById('vowels-tab');
+        
+        if (vowelsTab) vowelsTab.classList.add('active');
+        if (vowelsTabButton) vowelsTabButton.classList.add('active');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                console.log('Tab clicked:', this.getAttribute('data-tab'));
+                
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.remove('active'));
+                // Show the corresponding tab content
+                const tabId = this.getAttribute('data-tab');
+                const targetContent = document.getElementById(tabId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                    console.log('Switched to tab:', tabId);
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

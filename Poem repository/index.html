@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poem Repository</title>
+    <title>Bodhi's and Jonny's Poem Repository</title>
     <style>
         body {
             font-family: 'Georgia', serif;
@@ -19,6 +19,10 @@
             text-align: center;
             margin-bottom: 30px;
         }
+        h2 {
+        color: #2c3e50;
+            text-align: center;
+            }
         .container {
             display: flex;
             gap: 30px;
@@ -80,6 +84,10 @@
         }
         button:hover {
             background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
         }
         .delete-btn {
             background-color: #e74c3c;
@@ -177,14 +185,59 @@
         .remove-image-btn:hover {
             background-color: #c0392b;
         }
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+        }
+        .error {
+            text-align: center;
+            color: #e74c3c;
+            padding: 20px;
+            background-color: #fadbd8;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .success {
+            text-align: center;
+            color: #27ae60;
+            padding: 10px;
+            background-color: #d5f4e6;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .public-notice {
+            background-color: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        .refresh-btn {
+            background-color: #27ae60;
+            font-size: 12px;
+            padding: 5px 10px;
+            margin-bottom: 15px;
+        }
+        .refresh-btn:hover {
+            background-color: #229954;
+        }
     </style>
 </head>
 <body>
-    <h1>Poem Repository</h1>
+    <h1>Bodhi's and Jonny's Public Poem Repository</h1>
     
     <div class="container">
         <div class="input-section">
+            <div class="public-notice">
+                🚀 <strong>PocketBase Ready:</strong> This code is set up for PocketBase! Currently using local storage - follow setup instructions below for true public sharing.
+            </div>
+            
             <h2>Add a New Poem</h2>
+            <div id="message-container"></div>
+            
             <input type="text" id="title" placeholder="Title">
             <textarea id="poem-text" placeholder="Write your poem here..."></textarea>
             <input type="text" id="author" placeholder="Your name">
@@ -199,22 +252,45 @@
         </div>
         
         <div class="poems-section">
-            <h2>Saved Poems</h2>
+            <h2>Shared Poems</h2>
+            <button id="refresh-poems" class="refresh-btn">🔄 Refresh Poems</button>
             <div class="search-bar">
                 <input type="text" id="search" placeholder="Search poems...">
             </div>
             <div id="poems-container">
-                <div class="no-poems">No poems added yet. Be the first to add a poem!</div>
+                <div class="loading">Loading poems...</div>
             </div>
         </div>
     </div>
-
+<h2>Resources/Saved for later:</h2>
+<p style="text-align: center;"><a href="https://educalingo.com/en/dic-uk/krosentse">Ukrainian words</a><br>
+<a href="https://www.deepl.com/en/translator">Translator</a><br>
+<a href="https://sk.azrhymes.com/?r%C3%BDmy=L%C3%A1ska">Word rhymer</a></p>
+    <!-- Firebase SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8h9P7qXZvXkFH8rJ4L6mN2oQwE5tYzKs",
+            authDomain: "poem-repository-public.firebaseapp.com",
+            projectId: "poem-repository-public",
+            storageBucket: "poem-repository-public.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
         let currentCoverImage = null;
         let isEditing = false;
         let editingId = null;
+        let allPoems = [];
 
-        // Load poems from local storage when page loads
+        // Load poems when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadPoems();
             
@@ -222,13 +298,70 @@
             document.getElementById('save-poem').addEventListener('click', savePoem);
             document.getElementById('search').addEventListener('input', searchPoems);
             document.getElementById('cover-image').addEventListener('change', handleImageUpload);
+            document.getElementById('refresh-poems').addEventListener('click', loadPoems);
         });
+
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function showError(message) {
+            showMessage(message, 'error');
+        }
+
+        async function loadPoems() {
+            const poemsContainer = document.getElementById('poems-container');
+            poemsContainer.innerHTML = '<div class="loading">Loading poems...</div>';
+            
+            try {
+                const snapshot = await db.collection('poems').orderBy('timestamp', 'desc').get();
+                allPoems = [];
+                
+                snapshot.forEach((doc) => {
+                    allPoems.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                displayPoems(allPoems);
+                
+            } catch (error) {
+                console.error('Error loading poems:', error);
+                poemsContainer.innerHTML = '<div class="error">Failed to load poems. Please check your internet connection and try refreshing.</div>';
+            }
+        }
+
+        async function savePoems(poem) {
+            try {
+                if (isEditing) {
+                    await db.collection('poems').doc(editingId).update(poem);
+                } else {
+                    await db.collection('poems').add(poem);
+                }
+                return true;
+            } catch (error) {
+                console.error('Error saving poem:', error);
+                return false;
+            }
+        }
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('preview-container');
             
             if (file) {
+                // Check file size (limit to 1MB for performance)
+                if (file.size > 1024 * 1024) {
+                    showError('Image file too large. Please choose an image smaller than 1MB.');
+                    event.target.value = '';
+                    return;
+                }
+                
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     currentCoverImage = e.target.result;
@@ -250,52 +383,52 @@
             document.getElementById('preview-container').innerHTML = '';
         }
 
-        function savePoem() {
+        async function savePoem() {
             const title = document.getElementById('title').value.trim();
             const text = document.getElementById('poem-text').value.trim();
             const author = document.getElementById('author').value.trim();
+            const saveBtn = document.getElementById('save-poem');
             
             if (!title || !text || !author) {
-                alert('Please fill in all required fields (title, poem text, and author)');
+                showError('Please fill in all required fields (title, poem text, and author)');
                 return;
             }
             
-            if (isEditing) {
-                updatePoem(editingId);
-                return;
+            // Disable button during save
+            saveBtn.disabled = true;
+            saveBtn.textContent = isEditing ? 'Updating...' : 'Saving...';
+            
+            try {
+                const poem = {
+                    title: title,
+                    text: text,
+                    author: author,
+                    date: new Date().toLocaleDateString(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    coverImage: currentCoverImage
+                };
+                
+                const success = await savePoems(poem);
+                if (success) {
+                    showMessage(isEditing ? 'Poem updated successfully! ✨' : 'Poem saved successfully! 🎉');
+                    resetForm();
+                    loadPoems(); // Reload to get latest from server
+                } else {
+                    showError('Failed to save poem. Please try again.');
+                }
+            } catch (error) {
+                showError('An error occurred while saving. Please try again.');
+                console.error('Save error:', error);
+            } finally {
+                // Re-enable button
+                saveBtn.disabled = false;
+                saveBtn.textContent = isEditing ? 'Update Poem' : 'Save Poem';
             }
-            
-            const poem = {
-                id: Date.now(),
-                title: title,
-                text: text,
-                author: author,
-                date: new Date().toLocaleDateString(),
-                coverImage: currentCoverImage
-            };
-            
-            // Get existing poems from local storage
-            let poems = JSON.parse(localStorage.getItem('poems')) || [];
-            
-            // Add new poem
-            poems.push(poem);
-            
-            // Save back to local storage
-            localStorage.setItem('poems', JSON.stringify(poems));
-            
-            // Clear input fields
-            resetForm();
-            
-            // Reload poems display
-            loadPoems();
         }
         
         function editPoem(poemId) {
-            // Get existing poems from local storage
-            let poems = JSON.parse(localStorage.getItem('poems')) || [];
-            
             // Find the poem to edit
-            const poem = poems.find(p => p.id === poemId);
+            const poem = allPoems.find(p => p.id === poemId);
             if (!poem) return;
             
             // Fill the input fields with current poem data
@@ -327,46 +460,157 @@
             });
         }
         
-        function updatePoem(poemId) {
-            const title = document.getElementById('title').value.trim();
-            const text = document.getElementById('poem-text').value.trim();
-            const author = document.getElementById('author').value.trim();
+        function resetForm() {
+            document.getElementById('title').value = '';
+            document.getElementById('poem-text').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('cover-image').value = '';
+            document.getElementById('preview-container').innerHTML = '';
+            currentCoverImage = null;
             
-            if (!title || !text || !author) {
-                alert('Please fill in all required fields (title, poem text, and author)');
+            const saveBtn = document.getElementById('save-poem');
+            saveBtn.textContent = 'Save Poem';
+            isEditing = false;
+            editingId = null;
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('preview-container');
+            
+            if (file) {
+                // Check file size (limit to 1MB for performance)
+                if (file.size > 1024 * 1024) {
+                    showError('Image file too large. Please choose an image smaller than 1MB.');
+                    event.target.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentCoverImage = e.target.result;
+                    previewContainer.innerHTML = `
+                        <img src="${currentCoverImage}" class="image-preview" alt="Cover preview">
+                        <button type="button" class="remove-image-btn" onclick="removeCoverImage()">Remove Image</button>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                currentCoverImage = null;
+                previewContainer.innerHTML = '';
+            }
+        }
+
+        function removeCoverImage() {
+            currentCoverImage = null;
+            document.getElementById('cover-image').value = '';
+            document.getElementById('preview-container').innerHTML = '';
+        }
+        
+        async function deletePoem(poemId) {
+            // Find the poem to get its title for confirmation
+            const poem = allPoems.find(p => p.id === poemId);
+            if (!poem) return;
+            
+            // Confirm deletion
+            if (confirm(`Are you sure you want to delete "${poem.title}"? This action cannot be undone and will remove it for everyone.`)) {
+                try {
+                    // Remove from local array
+                    allPoems = allPoems.filter(p => p.id !== poemId);
+                    // In real PocketBase: await pb.deleteRecord('poems', poemId);
+                    
+                    showMessage('Poem deleted successfully.');
+                    displayPoems(allPoems);
+                    
+                    // Clear search if active
+                    const searchTerm = document.getElementById('search').value;
+                    if (searchTerm) {
+                        document.getElementById('search').value = '';
+                    }
+                } catch (error) {
+                    showError('Failed to delete poem. Please try again.');
+                    console.error('Delete error:', error);
+                }
+            }
+        }
+        
+        function displayPoems(poems) {
+            const poemsContainer = document.getElementById('poems-container');
+            
+            if (poems.length === 0) {
+                poemsContainer.innerHTML = '<div class="no-poems">No poems added yet. Be the first to add a poem!</div>';
                 return;
             }
             
-            // Get existing poems from local storage
-            let poems = JSON.parse(localStorage.getItem('poems')) || [];
+            // Sort poems by creation date (newest first)
+            const sortedPoems = [...poems].sort((a, b) => new Date(b.created || b.date) - new Date(a.created || a.date));
             
-            // Find and update the poem
-            const poemIndex = poems.findIndex(p => p.id === poemId);
-            if (poemIndex !== -1) {
-                poems[poemIndex] = {
-                    ...poems[poemIndex],
-                    title: title,
-                    text: text,
-                    author: author,
-                    coverImage: currentCoverImage,
-                    date: poems[poemIndex].date // Keep original date
-                };
+            // Display poems
+            poemsContainer.innerHTML = '';
+            sortedPoems.forEach(poem => {
+                const poemElement = document.createElement('div');
+                poemElement.className = 'poem';
                 
-                // Save back to local storage
-                localStorage.setItem('poems', JSON.stringify(poems));
+                const displayDate = new Date(poem.created || poem.date).toLocaleDateString();
                 
-                // Clear input fields and reset button
-                resetForm();
-                
-                // Reload poems display
-                loadPoems();
-                
-                // Clear search if active to show updated results
-                const searchTerm = document.getElementById('search').value;
-                if (searchTerm) {
-                    searchPoems();
+                if (poem.coverImage) {
+                    poemElement.innerHTML = `
+                        <div class="poem-with-cover">
+                            <div class="poem-cover">
+                                <img src="${poem.coverImage}" alt="Cover for ${poem.title}">
+                            </div>
+                            <div class="poem-content">
+                                <h3>${poem.title}</h3>
+                                <p>${poem.text}</p>
+                                <div class="poem-footer">
+                                    <div class="poem-buttons">
+                                        <button class="edit-btn" onclick="editPoem('${poem.id}')">Edit</button>
+                                        <button class="delete-btn" onclick="deletePoem('${poem.id}')">Delete</button>
+                                    </div>
+                                    <div class="poem-meta">
+                                        <div class="author">By ${poem.author}</div>
+                                        <div class="date">${displayDate}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    poemElement.innerHTML = `
+                        <h3>${poem.title}</h3>
+                        <p>${poem.text}</p>
+                        <div class="poem-footer">
+                            <div class="poem-buttons">
+                                <button class="edit-btn" onclick="editPoem('${poem.id}')">Edit</button>
+                                <button class="delete-btn" onclick="deletePoem('${poem.id}')">Delete</button>
+                            </div>
+                            <div class="poem-meta">
+                                <div class="author">By ${poem.author}</div>
+                                <div class="date">${displayDate}</div>
+                            </div>
+                        </div>
+                    `;
                 }
+                poemsContainer.appendChild(poemElement);
+            });
+        }
+        
+        function searchPoems() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            
+            if (allPoems.length === 0) {
+                document.getElementById('poems-container').innerHTML = '<div class="no-poems">No poems added yet. Be the first to add a poem!</div>';
+                return;
             }
+            
+            // Filter poems
+            const filteredPoems = allPoems.filter(poem => {
+                return poem.title.toLowerCase().includes(searchTerm) ||
+                       poem.text.toLowerCase().includes(searchTerm) ||
+                       poem.author.toLowerCase().includes(searchTerm);
+            });
+            
+            displayPoems(filteredPoems);
         }
         
         function resetForm() {
@@ -383,36 +627,37 @@
             editingId = null;
         }
         
-        function deletePoem(poemId) {
-            // Get existing poems from local storage
-            let poems = JSON.parse(localStorage.getItem('poems')) || [];
-            
+        async function deletePoem(poemId) {
             // Find the poem to get its title for confirmation
-            const poem = poems.find(p => p.id === poemId);
+            const poem = allPoems.find(p => p.id === poemId);
             if (!poem) return;
             
             // Confirm deletion
-            if (confirm(`Are you sure you want to delete "${poem.title}"? This action cannot be undone.`)) {
+            if (confirm(`Are you sure you want to delete "${poem.title}"? This action cannot be undone and will remove it for everyone.`)) {
                 // Remove poem from array
-                poems = poems.filter(p => p.id !== poemId);
+                allPoems = allPoems.filter(p => p.id !== poemId);
                 
-                // Save updated array back to local storage
-                localStorage.setItem('poems', JSON.stringify(poems));
-                
-                // Reload poems display
-                loadPoems();
-                
-                // Clear search if active to show updated results
-                const searchTerm = document.getElementById('search').value;
-                if (searchTerm) {
-                    searchPoems();
+                const success = await savePoems(allPoems);
+                if (success) {
+                    showMessage('Poem deleted successfully.');
+                    displayPoems(allPoems);
+                    
+                    // Clear search if active to show updated results
+                    const searchTerm = document.getElementById('search').value;
+                    if (searchTerm) {
+                        searchPoems();
+                    }
+                } else {
+                    showError('Failed to delete poem. Please try again.');
+                    // Add the poem back since delete failed
+                    allPoems.push(poem);
+                    allPoems.sort((a, b) => b.id - a.id);
                 }
             }
         }
         
-        function loadPoems() {
+        function displayPoems(poems) {
             const poemsContainer = document.getElementById('poems-container');
-            const poems = JSON.parse(localStorage.getItem('poems')) || [];
             
             if (poems.length === 0) {
                 poemsContainer.innerHTML = '<div class="no-poems">No poems added yet. Be the first to add a poem!</div>';
@@ -420,11 +665,11 @@
             }
             
             // Sort poems by date (newest first)
-            poems.sort((a, b) => b.id - a.id);
+            const sortedPoems = [...poems].sort((a, b) => b.id - a.id);
             
             // Display poems
             poemsContainer.innerHTML = '';
-            poems.forEach(poem => {
+            sortedPoems.forEach(poem => {
                 const poemElement = document.createElement('div');
                 poemElement.className = 'poem';
                 
@@ -472,76 +717,28 @@
         
         function searchPoems() {
             const searchTerm = document.getElementById('search').value.toLowerCase();
-            const poems = JSON.parse(localStorage.getItem('poems')) || [];
-            const poemsContainer = document.getElementById('poems-container');
             
-            if (poems.length === 0) {
-                poemsContainer.innerHTML = '<div class="no-poems">No poems added yet. Be the first to add a poem!</div>';
+            if (allPoems.length === 0) {
+                document.getElementById('poems-container').innerHTML = '<div class="no-poems">No poems added yet. Be the first to add a poem!</div>';
                 return;
             }
             
             // Filter poems
-            const filteredPoems = poems.filter(poem => {
+            const filteredPoems = allPoems.filter(poem => {
                 return poem.title.toLowerCase().includes(searchTerm) ||
                        poem.text.toLowerCase().includes(searchTerm) ||
                        poem.author.toLowerCase().includes(searchTerm);
             });
             
             // Display filtered poems
-            poemsContainer.innerHTML = '';
+            const poemsContainer = document.getElementById('poems-container');
             
             if (filteredPoems.length === 0) {
                 poemsContainer.innerHTML = '<div class="no-poems">No matching poems found</div>';
                 return;
             }
             
-            // Sort filtered poems by date (newest first)
-            filteredPoems.sort((a, b) => b.id - a.id);
-            
-            filteredPoems.forEach(poem => {
-                const poemElement = document.createElement('div');
-                poemElement.className = 'poem';
-                
-                if (poem.coverImage) {
-                    poemElement.innerHTML = `
-                        <div class="poem-with-cover">
-                            <div class="poem-cover">
-                                <img src="${poem.coverImage}" alt="Cover for ${poem.title}">
-                            </div>
-                            <div class="poem-content">
-                                <h3>${poem.title}</h3>
-                                <p>${poem.text}</p>
-                                <div class="poem-footer">
-                                    <div class="poem-buttons">
-                                        <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
-                                        <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
-                                    </div>
-                                    <div class="poem-meta">
-                                        <div class="author">By ${poem.author}</div>
-                                        <div class="date">${poem.date}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    poemElement.innerHTML = `
-                        <h3>${poem.title}</h3>
-                        <p>${poem.text}</p>
-                        <div class="poem-footer">
-                            <div class="poem-buttons">
-                                <button class="edit-btn" onclick="editPoem(${poem.id})">Edit</button>
-                                <button class="delete-btn" onclick="deletePoem(${poem.id})">Delete</button>
-                            </div>
-                            <div class="poem-meta">
-                                <div class="author">By ${poem.author}</div>
-                                <div class="date">${poem.date}</div>
-                            </div>
-                        </div>
-                    `;
-                }
-                poemsContainer.appendChild(poemElement);
-            });
+            displayPoems(filteredPoems);
         }
     </script>
 </body>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to IPA Translator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #444;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .translate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .translate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .translate-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 30px;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 80px;
+            font-size: 1.3em;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .result-box.has-content {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .word-pair {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .original-word {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .ipa-result {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .examples {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .examples h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .example-words {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .example-word {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .example-word:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .examples {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multilingual IPA Translator</h1>
+        <p class="subtitle">Convert words to phonetic transcription using the International Phonetic Alphabet</p>
+        
+        <div class="input-section">
+            <label for="languageSelect">Select Language:</label>
+            <select id="languageSelect" onchange="updateExamples()">
+                <option value="english">English</option>
+                <option value="dagaare">Dagaare</option>
+                <option value="french">French</option>
+                <option value="spanish">Spanish</option>
+                <option value="german">German</option>
+                <option value="mandarin">Mandarin Chinese</option>
+                <option value="arabic">Arabic</option>
+                <option value="japanese">Japanese</option>
+            </select>
+            
+            <label for="englishInput">Enter word(s):</label>
+            <input type="text" id="englishInput" placeholder="Type a word or sentence..." autocomplete="off">
+            <button class="translate-btn" onclick="translateToIPA()">Translate to IPA</button>
+        </div>
+
+        <div class="result-section">
+            <label>IPA Translation:</label>
+            <div class="result-box" id="resultBox">
+                <span style="color: #aaa;">Your IPA translation will appear here</span>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h3>Try these example words:</h3>
+            <div class="example-words">
+                <!-- Examples will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive phonetic mapping for English
+        const phonemeMap = {
+            // Vowels
+            'a': {
+                'cat': 'æ',
+                'car': 'ɑː',
+                'care': 'eə',
+                'about': 'ə',
+                'face': 'eɪ'
+            },
+            'e': {
+                'bed': 'e',
+                'be': 'iː',
+                'her': 'ɜː',
+                'the': 'ə'
+            },
+            'i': {
+                'bit': 'ɪ',
+                'machine': 'iː',
+                'find': 'aɪ'
+            },
+            'o': {
+                'hot': 'ɒ',
+                'go': 'əʊ',
+                'for': 'ɔː',
+                'do': 'uː'
+            },
+            'u': {
+                'put': 'ʊ',
+                'cute': 'juː',
+                'up': 'ʌ',
+                'blue': 'uː'
+            },
+            'y': {
+                'yes': 'j',
+                'my': 'aɪ',
+                'gym': 'ɪ'
+            }
+        };
+
+        // Multilingual phonetic transcription mappings
+        const languageMappings = {
+            english: {
+                'hello': 'həˈloʊ',
+                'world': 'wɜːɹɫd̩',
+                'water': 'ˈwɔːɾəɹ',
+                'feel': 'fiːɫ',
+                'fill': 'fɪɫ',
+                'through': 'θɹuː',
+                'thought': 'θɔːt',
+                'computer': 'kʰəmˈpʰjuːɾəɹ',
+                'language': 'ˈlæŋɡwɪdʒ'
+            },
+            dagaare: {
+                // Dagaare words with distinctive sounds
+                'gaana': 'ɡaːna',   // word-initial g = stop [ɡ]
+                'kyie': 'kʲie',     // palatalized consonant
+                'nyaare': 'ɲaːɹe', // palatal nasal
+                'boe': 'bo̧e',      // creaky voice
+                'kpɔɔ': 'k͡pɔː',   // labial-velar stop
+                'gbɔɔ': 'ɡ͡bɔː',   // voiced labial-velar stop
+                'puori': 'puoɹi',  // diphthong
+                'waala': 'waːla',  // long vowel
+                'nɛɛ': 'nɛː',      // long front vowel
+                'yɔɔ': 'jɔː',      // long back vowel
+                'goo': 'ɡoː',      // word-initial g = stop [ɡ]
+                'laga': 'laɡ̆a',    // intervocalic g = tap [ɡ̆]
+                'bagr': 'baɡr'     // final g = stop [ɡ]
+            },
+            french: {
+                'bonjour': 'bɔ̃ˈʒuʁ',  // nasal vowel + uvular R
+                'rouge': 'ʁuʒ',        // uvular fricative
+                'eau': 'o',            // simple vowel
+                'oui': 'wi',           // glide
+                'très': 'tʁɛ',         // uvular R
+                'français': 'fʁɑ̃ˈsɛ',  // multiple nasals
+                'chat': 'ʃa',          // voiceless postalveolar
+                'je': 'ʒə',            // voiced postalveolar + schwa
+                'un': 'œ̃',             // nasal front rounded vowel
+                'pain': 'pɛ̃'           // nasal vowel
+            },
+            spanish: {
+                'hola': 'ˈola',        // no /h/ sound
+                'rojo': 'ˈroxo',       // trill + velar fricative
+                'español': 'espaˈɲol', // palatal nasal
+                'lluvia': 'ˈʎuβja',   // palatal lateral + fricative
+                'mañana': 'maˈɲana',  // palatal nasal
+                'perro': 'ˈpero',     // alveolar trill
+                'pero': 'ˈpeɾo',      // alveolar tap
+                'joven': 'ˈxoβen',    // velar fricative + fricative
+                'agua': 'ˈaɣwa',      // voiced velar fricative
+                'casa': 'ˈkasa'       // simple consonants
+            },
+            german: {
+                'hallo': 'ˈhalo',     // clear /l/
+                'ich': 'ɪç',          // voiceless palatal fricative
+                'ach': 'ax',          // voiceless velar fricative
+                'über': 'ˈyːbɐ',      // front rounded vowel + vocalic R
+                'schön': 'ʃøːn',      // front rounded vowel
+                'deutsch': 'dɔʏtʃ',   // diphthong
+                'mädchen': 'ˈmɛːtçən', // palatal fricative
+                'wasser': 'ˈvasɐ',    // vocalic R
+                'pferd': 'pfeːɐt',    // affricate
+                'zeit': 'tsaɪt'       // affricate + diphthong
+            },
+            mandarin: {
+                // Mandarin with tones (using tone numbers)
+                'nǐ': 'ni³',          // third tone
+                'hǎo': 'xaʊ³',        // third tone + diphthong
+                'zhōng': 'ʈʂʊŋ¹',    // retroflex + first tone
+                'guó': 'kuo²',        // second tone
+                'xiè': 'ɕje⁴',        // alveolopalatal + fourth tone
+                'xie': 'ɕje',         // neutral tone
+                'qǐng': 'tɕʰiŋ³',     // aspirated + third tone
+                'wèn': 'wən⁴',        // fourth tone
+                'shì': 'ʂɨ⁴',         // retroflex + fourth tone
+                'de': 'tə'            // neutral particle
+            },
+            arabic: {
+                // Arabic with pharyngeal and emphatic consonants
+                'salaam': 'saˈlaːm',   // long vowel
+                'allah': 'ʔalˈlaːh',   // glottal stop + pharyngeal fricative
+                'shukran': 'ʃukˈran', // postalveolar
+                'ahlan': 'ʔahˈlan',   // glottal stop
+                'hadha': 'haːˈðaː',   // voiced dental fricative
+                'sabaah': 'saˈbaːħ',  // pharyngeal fricative
+                'kitaab': 'kiˈtaːb',  // long vowel
+                'bayt': 'bajt',       // diphthong
+                'rajul': 'raˈʒul',    // voiced postalveolar
+                'qamar': 'qaˈmar'     // uvular stop
+            },
+            japanese: {
+                // Japanese with special mora structure
+                'konnichiwa': 'kon.ni.tʃi.wa', // clear syllable boundaries
+                'arigatou': 'a.ɾi.ɡa.to.ɯ',   // tap + high back unrounded
+                'sayounara': 'sa.jo.ɯ.na.ɾa', // long vowel sequence
+                'sushi': 'sɯ.ɕi',             // alveolopalatal
+                'tokyo': 'to.kjo.ɯ',          // palatalized + long vowel
+                'nihon': 'ni.hoɴ',            // moraic nasal
+                'sakura': 'sa.kɯ.ɾa',         // tap
+                'tsunami': 'tsɯ.na.mi',       // affricate
+                'ramen': 'ɾa.meɴ',            // moraic nasal
+                'kimono': 'ki.mo.no'          // simple structure
+            }
+        };
+
+        // Letter to phoneme mappings for basic conversion
+        const basicPhonemeMap = {
+            'a': 'æ', 'b': 'b', 'c': 'k', 'd': 'd', 'e': 'e',
+            'f': 'f', 'g': 'ɡ', 'h': 'h', 'i': 'ɪ', 'j': 'dʒ',
+            'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'ɒ',
+            'p': 'p', 'q': 'kw', 'r': 'r', 's': 's', 't': 't',
+            'u': 'ʌ', 'v': 'v', 'w': 'w', 'x': 'ks', 'y': 'j',
+            'z': 'z'
+        };
+
+        // Common digraphs and trigraphs for phonetic transcription
+        const digraphMap = {
+            'th': 'θ',     // voiceless th (thin)
+            'dh': 'ð',     // voiced th (this) - will handle contextually
+            'sh': 'ʃ', 
+            'ch': 'tʃ', 
+            'ph': 'f',
+            'gh': '',      // often silent in modern English
+            'ng': 'ŋ', 
+            'ck': 'k', 
+            'qu': 'kw',
+            'wh': 'w',
+            'oo': 'u',     // book/food context dependent
+            'ee': 'i',     // long i sound
+            'ea': 'i',     // eat, tea (context dependent)
+            'ou': 'aʊ',    // house
+            'ow': 'oʊ',    // know (context dependent: cow vs know)
+            'oy': 'ɔɪ', 
+            'oi': 'ɔɪ',
+            'ai': 'eɪ', 
+            'ay': 'eɪ', 
+            'ie': 'i',     // field
+            'ue': 'u',     // blue
+            'ar': 'ɑr',    // car
+            'er': 'ər',    // her
+            'ir': 'ər',    // bird
+            'or': 'ɔr',    // for
+            'ur': 'ər'     // turn
+        };
+
+        function convertWordToIPA(word) {
+            const lowerWord = word.toLowerCase().trim();
+            
+            // Check if we have a direct mapping
+            if (wordMappings[lowerWord]) {
+                return wordMappings[lowerWord];
+            }
+
+            // Basic pattern-based conversion
+            let result = lowerWord;
+            
+            // Apply digraph replacements first
+            for (const [digraph, ipa] of Object.entries(digraphMap)) {
+                const regex = new RegExp(digraph, 'g');
+                result = result.replace(regex, ipa);
+            }
+
+            // Apply basic letter replacements
+            result = result.split('').map(char => {
+                return basicPhonemeMap[char] || char;
+            }).join('');
+
+            // Clean up and format
+            result = result.replace(/[^a-zA-Zɪɛæɑɒɔʊʌəɜɪʏøœɨɯɤɣɸβθðʃʒʧʤŋɲɳɽɻɺɹɭʎʟɦɥʋɱɴqɢʡʕʜʢħʔˈˌːˑ̥̤̰̼̺̪̟̠̺̼̊]/g, '');
+            
+            return result || lowerWord;
+        }
+
+        function translateToIPA() {
+            const input = document.getElementById('englishInput').value;
+            const resultBox = document.getElementById('resultBox');
+            
+            if (!input.trim()) {
+                resultBox.innerHTML = '<span style="color: #aaa;">Please enter a word or sentence</span>';
+                resultBox.classList.remove('has-content');
+                return;
+            }
+
+            // Split input into words and process each
+            const words = input.split(/\s+/);
+            let resultHTML = '';
+
+            words.forEach((word, index) => {
+                const cleanWord = word.replace(/[^\w]/g, '');
+                if (cleanWord) {
+                    const ipaTranslation = convertWordToIPA(cleanWord);
+                    resultHTML += `
+                        <div class="word-pair">
+                            <div class="original-word">${word}</div>
+                            <div class="ipa-result">/${ipaTranslation}/</div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (resultHTML) {
+                resultBox.innerHTML = resultHTML;
+                resultBox.classList.add('has-content');
+            } else {
+                resultBox.innerHTML = '<span style="color: #aaa;">No valid words found</span>';
+                resultBox.classList.remove('has-content');
+            }
+        }
+
+        function fillExample(word) {
+            document.getElementById('englishInput').value = word;
+            translateToIPA();
+        }
+
+        // Initialize with English examples
+        document.addEventListener('DOMContentLoaded', function() {
+            updateExamples();
+        });
+
+        // Allow Enter key to translate
+        document.getElementById('englishInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                translateToIPA();
+            }
+        });
+
+        // Real-time translation as user types (with debounce)
+        let debounceTimer;
+        document.getElementById('englishInput').addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (this.value.trim()) {
+                    translateToIPA();
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
