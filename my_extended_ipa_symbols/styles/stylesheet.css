@@ -16,8 +16,9 @@
 
 /* Rest of your CSS... */
 
-h2 {
+h2, h3 {
 border-bottom: 1px solid #a2a9b1;
+text-align: center;
 }
 .STIX_Two_Math-or_Symbola {
     font-family: "STIX Two Math", "Symbola";
@@ -124,7 +125,7 @@ small-capital {
 body { 
     font-family: Arial, sans-serif;
     background-color: #f5f7fa;
-    padding: 20px; 
+    padding: 20px;
 }
 
 .container {
@@ -133,7 +134,7 @@ body {
     background-color: white; 
     border-radius: 8px; 
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-    padding: 20px; 
+    padding: 20px;
 }
 
 .header {
@@ -225,17 +226,17 @@ table {
 th, td { 
     border: 1px solid #ddd; 
     padding: 10px; 
-    text-align: center; 
+    text-align: center;
 }
 
 th { 
     background-color: #f8f9fa; 
-    font-weight: normal; 
+    font-weight: normal;
 }
 
 .label-cell { 
     background-color: #f8f9fa; 
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .tab-content { 

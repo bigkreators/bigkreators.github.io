@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+</head>
+<body>
+    <script>
+        async function createAndSaveModel() {
+            console.log('Creating model directly in TensorFlow.js...');
+            
+            // Create model using TensorFlow.js directly (no Python conversion issues)
+            const model = tf.sequential({
+                layers: [
+                    tf.layers.reshape({
+                        inputShape: [75, 100, 50, 3],
+                        targetShape: [75, 15000]
+                    }),
+                    tf.layers.globalAveragePooling1d(),
+                    tf.layers.dense({
+                        units: 28,
+                        activation: 'softmax'
+                    })
+                ]
+            });
+            
+            console.log('Model created successfully!');
+            console.log('Model summary:', model);
+            
+            // Save the model
+            await model.save('downloads://web_model_direct');
+            console.log('✅ Model saved to downloads!');
+        }
+        
+        createAndSaveModel().catch(console.error);
+    </script>
+</body>
+</html>

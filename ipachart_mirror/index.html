@@ -549,7 +549,7 @@
 </style>
 
 <script type="text/javascript">
-    // Enhanced audio setup
+    // Audio setup
     var mobile = false;
     var support = !!(document.createElement('audio').canPlayType);
     var type = "ogg";
@@ -1696,47 +1696,78 @@
 
     // Helper function to escape special regex characters
     function escapeRegex(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\ ');
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    // Font fallback system for unsupported IPA symbols
+    // Show manual fallback option
+    function showFallbackOption() {
+        // Remove any existing notification
+        const existing = document.getElementById('fallback-option');
+        if (existing) existing.remove();
+        
+        const notification = document.createElement('div');
+        notification.id = 'fallback-option';
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: rgba(0, 123, 255, 0.95);
+                color: white;
+                padding: 12px 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                font-size: 13px;
+                z-index: 1000;
+                max-width: 320px;
+                line-height: 1.4;
+            ">
+                If some of these symbols aren't rendering properly, hit this button to see fallback symbols.
+                <br>
+                <button onclick="applySymbolFallbacks(); this.parentElement.parentElement.remove();" style="
+                    background: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 6px 12px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    margin: 8px 8px 0 0;
+                    font-size: 12px;
+                ">Fallback symbols</button>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    position: absolute;
+                    top: 5px;
+                    right: 8px;
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 18px;
+                    cursor: pointer;
+                    line-height: 1;
+                ">×</button>
+            </div>
+        `;
+        document.body.appendChild(notification);
+    }
+
     function checkAndApplyFallbacks() {
-        console.log('Checking for unsupported IPA symbols...');
-        
-        // Test if velodorsal symbols are supported
-        const testContainer = document.createElement('div');
-        testContainer.style.cssText = 'position: absolute; left: -9999px; font-size: 20px; visibility: hidden;';
-        document.body.appendChild(testContainer);
-        
-        const testSymbol = document.createElement('span');
-        testSymbol.textContent = '𝼃'; // Test velodorsal symbol
-        testContainer.appendChild(testSymbol);
-        
-        const symbolWidth = testSymbol.offsetWidth;
-        document.body.removeChild(testContainer);
-        
-        // If symbol renders very narrow or not at all, apply fallbacks
-        if (symbolWidth < 8) {
-            console.log('Applying symbol fallbacks...');
-            applySymbolFallbacks();
-        } else {
-            console.log('IPA symbols appear to be supported');
-        }
+        console.log('Showing manual fallback option...');
+        showFallbackOption();
     }
 
     // Apply fallbacks for unsupported symbols
     function applySymbolFallbacks() {
         const fallbacks = {
-            '𝼃': { replacement: 'k', description: 'Voiceless velodorsal plosive (mirrored k)', mirror: true },
-            '𝼁': { replacement: 'ɡ', description: 'Voiced velodorsal plosive (mirrored ɡ)', mirror: true },
-            '𝼇': { replacement: 'ŋ', description: 'Voiced velodorsal nasal (mirrored ŋ)', mirror: true },
-            '𝼊': { replacement: 'ǃ̢', description: 'Retroflex click (approximated)', mirror: false },
-            '𝼈': { replacement: 'ɺ̢', description: 'Retroflex lateral flap (approximated)', mirror: false },
-            '𝼂': { replacement: 'ɢ̠', description: 'Voiced pharyngeal plosive (approximated)', mirror: false },
-            '𝼄': { replacement: 'ʟ̝̊', description: 'Voiceless velar lateral fricative (approximated)', mirror: false },
-            '𝼅': { replacement: 'ɮ̢', description: 'Voiced retroflex lateral fricative (approximated)', mirror: false },
-            '𝼆': { replacement: 'ʎ̝̊', description: 'Voiceless palatal lateral fricative (approximated)', mirror: false },
-            'ꞎ': { replacement: 'ɬ̢', description: 'Voiceless retroflex lateral fricative (approximated)', mirror: false }
+            '𝼃': { replacement: 'k', description: 'Voiceless velodorsal plosive (mirrored k)', mirror: true, copyOriginal: true },
+            '𝼁': { replacement: 'ɡ', description: 'Voiced velodorsal plosive (mirrored ɡ)', mirror: true, copyOriginal: true },
+            '𝼇': { replacement: 'ŋ', description: 'Voiced velodorsal nasal (mirrored ŋ)', mirror: true, copyOriginal: true },
+            '𝼊': { replacement: 'ǃ̢', description: 'Retroflex click (approximated)', mirror: false, copyOriginal: false },
+            '𝼈': { replacement: 'ɺ̢', description: 'Retroflex lateral flap (approximated)', mirror: false, copyOriginal: false },
+            '𝼂': { replacement: 'ɢ̠', description: 'Voiced pharyngeal plosive (approximated)', mirror: false, copyOriginal: false },
+            '𝼄': { replacement: 'ʟ̝̊', description: 'Voiceless velar lateral fricative (approximated)', mirror: false, copyOriginal: false },
+            '𝼅': { replacement: 'ɮ̢', description: 'Voiced retroflex lateral fricative (approximated)', mirror: false, copyOriginal: false },
+            '𝼆': { replacement: 'ʎ̝̊', description: 'Voiceless palatal lateral fricative (approximated)', mirror: false, copyOriginal: false },
+            'ꞎ': { replacement: 'ɬ̢', description: 'Voiceless retroflex lateral fricative (approximated)', mirror: false, copyOriginal: false }
         };
         
         const ipaElements = document.querySelectorAll('.IPA, td.interactive, .ipa-symbol');
@@ -1752,21 +1783,16 @@
                     replacementCount++;
                     
                     if (config.mirror) {
-                        // Create mirrored version
-                        const mirroredSpan = `<span 
-                            class="fallback-symbol mirrored" 
-                            style="transform: scaleX(-1); display: inline-block;" 
-                            data-original="${original}"
-                            title="${config.description}"
-                        >${config.replacement}</span>`;
+                        // Create mirrored version with click handler for copyOriginal symbols only
+                        const mirroredSpan = config.copyOriginal ? 
+                            `<span class="fallback-symbol mirrored" style="transform: scaleX(-1); display: inline-block; cursor: pointer;" data-original="${original}" data-copy-original="${config.copyOriginal}" title="${config.description} (click to copy original)" onclick="copyOriginalSymbol('${original}')">${config.replacement}</span>` :
+                            `<span class="fallback-symbol mirrored" style="transform: scaleX(-1); display: inline-block;" data-original="${original}" data-copy-original="${config.copyOriginal}" title="${config.description}">${config.replacement}</span>`;
                         content = content.replace(new RegExp(escapeRegex(original), 'g'), mirroredSpan);
                     } else {
-                        // Regular replacement
-                        const replacementSpan = `<span 
-                            class="fallback-symbol" 
-                            data-original="${original}"
-                            title="${config.description}"
-                        >${config.replacement}</span>`;
+                        // Regular replacement with click handler for copyOriginal symbols only
+                        const replacementSpan = config.copyOriginal ? 
+                            `<span class="fallback-symbol" style="cursor: pointer;" data-original="${original}" data-copy-original="${config.copyOriginal}" title="${config.description} (click to copy original)" onclick="copyOriginalSymbol('${original}')">${config.replacement}</span>` :
+                            `<span class="fallback-symbol" data-original="${original}" data-copy-original="${config.copyOriginal}" title="${config.description}">${config.replacement}</span>`;
                         content = content.replace(new RegExp(escapeRegex(original), 'g'), replacementSpan);
                     }
                 }
@@ -1782,6 +1808,57 @@
             console.log(`Applied ${replacementCount} symbol fallbacks`);
             showFallbackNotification();
         }
+    }
+
+    function copyOriginalSymbol(originalSymbol) {
+        console.log('Attempting to copy symbol:', originalSymbol);
+        
+        // Try modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(originalSymbol).then(() => {
+                console.log('Copied original symbol:', originalSymbol);
+                showCopyNotification(originalSymbol);
+            }).catch(err => {
+                console.error('Clipboard API failed:', err);
+                // Fallback to older method
+                fallbackCopyTextToClipboard(originalSymbol);
+            });
+        } else {
+            // Fallback for older browsers
+            fallbackCopyTextToClipboard(originalSymbol);
+        }
+    }
+
+    // Fallback copy method for older browsers
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                console.log('Fallback copy successful:', text);
+                showCopyNotification(text);
+            } else {
+                console.error('Fallback copy failed');
+                showCopyFailedNotification();
+            }
+        } catch (err) {
+            console.error('Fallback copy error:', err);
+            showCopyFailedNotification();
+        }
+        
+        document.body.removeChild(textArea);
     }
 
     // Show notification about fallback usage
@@ -1804,7 +1881,7 @@
                 border-left: 4px solid #ff9800;
             ">
                 <strong>⚠️ Symbol Fallbacks Active</strong><br>
-                Some IPA symbols are using approximations. Hover over symbols for details.
+                Click on mirrored symbols to copy the original. Other symbols are approximations.
                 <button onclick="this.parentElement.parentElement.remove()" style="
                     float: right;
                     background: none;
@@ -1824,42 +1901,6 @@
             if (notif) notif.remove();
         }, 8000);
     }
-
-    // Enhanced copy functionality to preserve original symbols
-    document.addEventListener('copy', function(e) {
-        const selection = window.getSelection();
-        if (selection.rangeCount === 0) return;
-        
-        let originalText = selection.toString();
-        let modifiedText = originalText;
-        let hasReplacements = false;
-        
-        // Find all fallback symbols in the selection
-        const range = selection.getRangeAt(0);
-        const container = document.createElement('div');
-        container.appendChild(range.cloneContents());
-        
-        const fallbackSymbols = container.querySelectorAll('.fallback-symbol[data-original]');
-        
-        fallbackSymbols.forEach(element => {
-            const original = element.getAttribute('data-original');
-            const fallbackText = element.textContent;
-            
-            // Replace the fallback text with original symbol
-            const regex = new RegExp(escapeRegex(fallbackText), 'g');
-            modifiedText = modifiedText.replace(regex, original);
-            hasReplacements = true;
-        });
-        
-        // Only override clipboard if we made actual replacements
-        if (hasReplacements && modifiedText !== originalText) {
-            e.clipboardData.setData('text/plain', modifiedText);
-            e.preventDefault();
-            
-            // Show brief notification
-            showCopyNotification();
-        }
-    });
 
     // Show brief notification when copy is enhanced
     function showCopyNotification() {
