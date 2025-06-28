@@ -319,11 +319,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Initialize notifications after DOM is loaded
+    setupNotifications();
 });
 
 // Notification setup function
 function setupNotifications() {
-    // Declare ALL variables in the same scope
+    // Get all notification elements
     const notificationBell = document.getElementById('notificationBell');
     const notificationsDropdown = document.getElementById('notificationsDropdown');
     const notificationsList = document.getElementById('notificationsList');
@@ -331,6 +334,7 @@ function setupNotifications() {
     
     // Only proceed if notification elements exist
     if (!notificationBell || !notificationsDropdown || !notificationsList) {
+        console.warn('Notification elements not found');
         return;
     }
     
@@ -355,11 +359,14 @@ function setupNotifications() {
         setTimeout(() => {
             // Display existing notifications
             refreshNotificationDisplay();
-        }, 300);
+        }, 500);
     }
     
-    // Combined click handler that does both toggle AND load
-    notificationBell.addEventListener('click', function() {
+    // Bell click handler
+    notificationBell.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
         const wasOpen = notificationsDropdown.classList.contains('show');
         
         // Toggle the dropdown visibility
@@ -378,11 +385,25 @@ function setupNotifications() {
         }
     });
     
-    // Refresh button functionality
+    // Refresh button functionality - FIXED VERSION
     if (refreshNotifications) {
-        refreshNotifications.addEventListener('click', function() {
-            refreshNotificationDisplay();
+        refreshNotifications.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Refresh button clicked'); // Debug log
+            
+            // Show loading spinner briefly without clearing notifications
+            notificationsList.innerHTML = '<div class="loading-spinner"></div>';
+            
+            // Simulate refresh delay and then update display
+            setTimeout(() => {
+                refreshNotificationDisplay();
+            }, 500);
         });
+        
+        console.log('Refresh button event listener attached'); // Debug log
+    } else {
+        console.warn('Refresh notifications button not found');
     }
     
     // Add CSS for dropdown visibility and notification styling
@@ -427,11 +448,7 @@ function setupNotifications() {
     `;
     document.head.appendChild(style);
     
-    // Initial load of notifications
+    // Initial load of notifications and badge update
+    updateNotificationBadge();
     loadNotifications();
 }
-
-// Initialize notifications when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    setupNotifications();
-});

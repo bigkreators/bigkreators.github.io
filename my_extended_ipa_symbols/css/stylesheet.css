@@ -437,4 +437,7 @@ th {
     text-align: center;
     color: #999;
 }
-
+/* This targets any text containing the character */
+*:contains("𝼋") {
+    font-family: 'Gentium Plus' !important;
+}

@@ -272,141 +272,6 @@
       .overflow, .twins, .voweloverflow {
           overflow-x: auto;
       }
-      .voweloverflow {
-          overflow-y: visible;
-          position: relative;
-          max-width: 38em;
-          margin: 3em auto 0.1em auto;
-          padding-top: 2em;
-      }
-      .vowels {
-          position: relative;
-          width: 35em;
-          margin: 0 0 0 1.5em;
-      }
-        .vowels .trapezoid {
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-      .vowels .v {
-          width: 14%;
-          text-align: center;
-          position: absolute;
-      }
-      .vowels .close_front {
-          top: 4%;
-          left: 4%;
-      }
-      .vowels .close_central {
-          top: 4%;
-          left: 44%;
-      }
-      .vowels .close_back {
-          top: 4%;
-          left: 84%;
-      }
-      .vowels .nearclose_central {
-          top: 18%;
-          left: 44%;
-      }
-      .vowels .nearclose_nearfront {
-          top: 18%;
-          left: 23%;
-      }
-      .vowels .nearclose_nearback {
-          top: 18%;
-          left: 71%;
-      }
-      .vowels .closemid_front {
-          top: 33%;
-          left: 18%;
-      }
-      .vowels .closemid_central {
-          top: 33%;
-          left: 51%;
-      }
-      .vowels .closemid_back {
-          top: 33%;
-          left: 84%;
-      }
-      .vowels .mid_central {
-          top: 47%;
-          left: 54%;
-      }
-      .vowels .openmid_front {
-          top: 61%;
-          left: 31%;
-      }
-      .vowels .openmid_central {
-          top: 61%;
-          left: 58%;
-      }
-      .vowels .openmid_back {
-          top: 61%;
-          left: 84%;
-      }
-      .vowels .nearopen_front {
-          top: 79%;
-          left: 34%;
-      }
-      .vowels .nearopen_central {
-          top: 73%;
-          left: 60%;
-      }
-      .vowels .open_front {
-          top: 90%;
-          left: 44%;
-      }
-      .vowels .open_central {
-          top: 90%;
-          left: 60%;
-      }
-      .vowels .open_back {
-          top: 90%;
-          left: 84%;
-      }
-      .vowels .interactive {
-          font-size: 1.3em;
-          padding: 0.3em;
-      }
-      .vowels .l {
-    position: absolute;
-    font-size: 90%;
-}
-      .vowels .front {
-          top: -1.5em;
-          left: 7%;
-      }
-      .vowels .central {
-          top: -1.5em;
-          left: 45%;
-      }
-      .vowels .back {
-          top: -1.5em;
-          left: 87%;
-      }
-      .vowels .close {
-          top: 5%;
-          left: -1.5em;
-      }
-      .vowels .closemid {
-          top: 34%;
-          left: -1.5em;
-      }
-        .vowels .mid {
-            top: 48%;
-            left: -1.5em;
-        }
-      .vowels .openmid {
-          top: 62%;
-          left: -1.5em;
-      }
-      .vowels .open {
-          top: 90%;
-          left: -1.5em;
-      }
       .caption {
           font-size: 90%;
           text-align: center;
@@ -608,38 +473,106 @@
   <h2>Vowels</h2>
   <p class="caption">Where symbols appear in pairs, the one to the left represents an unrounded vowel, and the one to the right represents a rounded vowel.</p>
   <div class="voweloverflow">
-      <div class="vowels">
-          <img class="trapezoid" src="Blank_vowel_trapezoid.png"/>
-          <div class="l front">Front</div>
-          <div class="l central">Central</div>
-          <div class="l back">Back</div>
-          <div class="l close">Close</div>
-          <div class="l closemid">Close-mid</div>
-          <div class="l mid">Mid</div>
-          <div class="l openmid">Open-mid</div>
-          <div class="l open">Open</div>
-          <div class="v close_front"><span class="interactive IPA" onclick="ipa('Close_front_unrounded_vowel');">i</span> <span class="interactive IPA" onclick="ipa('Close_front_rounded_vowel');">y</span></div>
-          <div class="v close_central"><span class="interactive IPA" onclick="ipa('Close_central_unrounded_vowel');">ɨ</span> <span class="interactive IPA" onclick="ipa('Close_central_rounded_vowel');">ʉ</span></div>
-          <div class="v close_back"><span class="interactive IPA" onclick="ipa('Close_back_unrounded_vowel');">ɯ</span> <span class="interactive IPA" onclick="ipa('Close_back_rounded_vowel');">u</span></div>
-          <div class="v nearclose_nearfront"><span class="interactive IPA" onclick="ipa('Near-close_near-front_unrounded_vowel');">ɪ</span> <span class="interactive IPA" onclick="ipa('Near-close_near-front_rounded_vowel');">ʏ</span>
-          </div>
-          <div class="v nearclose_central"><span class="interactive IPA" onclick="ipa('Near-close_central_unrounded_vowel');">ᵻ</span> <span class="interactive IPA" onclick="ipa('Near-close_central_rounded_vowel');">ᵿ</span>
-          </div>
-          <div class="v nearclose_nearback"><span class="interactive IPA" onclick="ipa('Near-close_near-back_rounded_vowel');">ʊ</span></div>
-          <div class="v closemid_front"><span class="interactive IPA" onclick="ipa('Close-mid_front_unrounded_vowel');">e</span> <span class="interactive IPA" onclick="ipa('Close-mid_front_rounded_vowel');">ø</span></div>
-          <div class="v closemid_central"><span class="interactive IPA" onclick="ipa('Close-mid_central_unrounded_vowel');">ɘ</span> <span class="interactive IPA" onclick="ipa('Close-mid_central_rounded_vowel');">ɵ</span></div>
-          <div class="v closemid_back"><span class="interactive IPA" onclick="ipa('Close-mid_back_unrounded_vowel');">ɤ</span> <span class="interactive IPA" onclick="ipa('Close-mid_back_rounded_vowel');">o</span></div>
-          <div class="v mid_central"><span class="interactive IPA" onclick="ipa('Mid-central_vowel');">ə</span></div>
-          <div class="v openmid_front"><span class="interactive IPA" onclick="ipa('Open-mid_front_unrounded_vowel');">ɛ</span> <span class="interactive IPA" onclick="ipa('Open-mid_front_rounded_vowel');">œ</span></div>
-          <div class="v openmid_central"><span class="interactive IPA" onclick="ipa('Open-mid_central_unrounded_vowel');">ɜ</span> <span class="interactive IPA" onclick="ipa('Open-mid_central_rounded_vowel');">ɞ</span></div>
-          <div class="v openmid_back"><span class="interactive IPA" onclick="ipa('Open-mid_back_unrounded_vowel');">ʌ</span> <span class="interactive IPA" onclick="ipa('Open-mid_back_rounded_vowel');">ɔ</span></div>
-          <div class="v nearopen_front"><span class="interactive IPA" onclick="ipa('Near-open_front_unrounded_vowel');">æ</span></div>
-          <div class="v nearopen_central"><span class="interactive IPA" onclick="ipa('Near-open_central_unrounded_vowel');">ɐ</span></div>
-          <div class="v open_front"><span class="interactive IPA" onclick="ipa('Open_front_unrounded_vowel');">a</span> <span class="interactive IPA" onclick="ipa('Open_front_rounded_vowel');">ɶ</span></div>
-          <div class="v open_central"><span class="interactive IPA" onclick="ipa('Open_central_unrounded_vowel');">ᴀ</span>
-          </div>
-          <div class="v open_back"><span class="interactive IPA" onclick="ipa('Open_back_unrounded_vowel');">ɑ</span> <span class="interactive IPA" onclick="ipa('Open_back_rounded_vowel');">ɒ</span></div>
-      </div>
+      <table class="at"><!-- at = articulation table -->
+<tr>
+<td></td>
+          <th colspan="2">Front</th>
+          <th colspan="2">Near-front</th>
+          <th colspan="2">Central</th>
+<th colspan="2">Near-back</th>
+          <th colspan="2">Back</th>
+</tr>
+<tr>
+<th>Close</th>
+          <td><span class="interactive IPA" onclick="ipa('Close_front_unrounded_vowel');">i</span></td>
+<td><span class="interactive IPA" onclick="ipa('Close_front_rounded_vowel');">y</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Close_central_unrounded_vowel');">ɨ</span></td>
+          <td><span class="interactive IPA" onclick="ipa('Close_central_rounded_vowel');">ʉ</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Close_back_unrounded_vowel');">ɯ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Close_back_rounded_vowel');">u</span></td>
+</tr>
+<tr>
+<th>Near-close</th>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Near-close_near-front_unrounded_vowel');">ɪ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Near-close_near-front_rounded_vowel');">ʏ</span>
+          </td>
+          <td><span class="interactive IPA" onclick="ipa('Near-close_central_unrounded_vowel');">ᵻ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Near-close_central_rounded_vowel');">ᵿ</span>
+          </td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Near-close_near-back_rounded_vowel');">ʊ</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Close-mid</th>
+          <td><span class="interactive IPA" onclick="ipa('Close-mid_front_unrounded_vowel');">e</span></td>
+<td><span class="interactive IPA" onclick="ipa('Close-mid_front_rounded_vowel');">ø</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Close-mid_central_unrounded_vowel');">ɘ</span>
+<td><span class="interactive IPA" onclick="ipa('Close-mid_central_rounded_vowel');">ɵ</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Close-mid_back_unrounded_vowel');">ɤ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Close-mid_back_rounded_vowel');">o</span></td>
+</tr>
+<tr>
+<th>Mid</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+          <td colspan="2"><span class="interactive IPA" onclick="ipa('Mid-central_vowel');">ə</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Open-mid</th>
+          <td><span class="interactive IPA" onclick="ipa('Open-mid_front_unrounded_vowel');">ɛ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Open-mid_front_rounded_vowel');">œ</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Open-mid_central_unrounded_vowel');">ɜ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Open-mid_central_rounded_vowel');">ɞ</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Open-mid_back_unrounded_vowel');">ʌ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Open-mid_back_rounded_vowel');">ɔ</span></td>
+</tr>
+<th>Near-open</th>
+          <td><span class="interactive IPA" onclick="ipa('Near-open_front_unrounded_vowel');">æ</span></td>
+<td></td>
+<td></td>
+<td></td>
+          <td colspan="2"><span class="interactive IPA" onclick="ipa('Near-open_central_unrounded_vowel');">ɐ</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<tr>
+<th>Open</th>
+          <td><span class="interactive IPA" onclick="ipa('Open_front_unrounded_vowel');">a</span></td>
+<td><span class="interactive IPA" onclick="ipa('Open_front_rounded_vowel');">ɶ</span></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Open_central_unrounded_vowel');">ᴀ</span>
+          </td>
+          <td></td>
+<td></td>
+<td></td>
+          <td><span class="interactive IPA" onclick="ipa('Open_back_unrounded_vowel');">ɑ</span></td>
+<td><span class="interactive IPA" onclick="ipa('Open_back_rounded_vowel');">ɒ</span></td>
+</tr>
+      </table>
   </div>
   </div>
   
@@ -710,7 +643,6 @@
                   <td></td><td class="interactive IPA" onclick="ipa('Labiodental_nasal');">ɱ</td>
                   <td colspan="3" class="extended"></td>
                   <td colspan="3" class="interactive extended IPA" onclick="ipa('Alveolar_nasal');">n</td>
-                  </td>
                   <td></td>
                   <td class="interactive IPA" onclick="ipa('Retroflex_nasal');">ɳ</td>
                   <td></td>
