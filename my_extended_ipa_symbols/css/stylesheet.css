@@ -1,3 +1,5 @@
+/* Fonts */
+
 @font-face {
     font-family: 'Gentium Plus';
     src: url('../fonts/GentiumPlus-Regular.ttf') format('truetype');
@@ -13,8 +15,18 @@
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+    font-family: 'Quivira';
+    src: url('../fonts/Quivira.otf') format('opentype');
+    font-display: swap; /* Correct choice for essential symbols */
+}
+@font-face {
+font-family: 'Noto Sans';
+src: url('../fonts/NotoSans-Regular.ttf') format('truetype');
+font-display: swap;
+}
 
-/* Rest of your CSS... */
+/* Rest of the CSS */
 
 h2, h3 {
 border-bottom: 1px solid #a2a9b1;
@@ -437,7 +449,80 @@ th {
     text-align: center;
     color: #999;
 }
+
 /* This targets any text containing the character */
 *:contains("𝼋") {
     font-family: 'Gentium Plus' !important;
+}
+
+/* ========== MOBILE OPTIMIZATIONS (ONLY) ========== */
+@media (max-width: 768px) {
+    /* Basic layout adjustments */
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+        margin: 0 5px;
+    }
+    
+    /* Header stack vertically on mobile */
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    /* Search controls stack on mobile */
+    .search-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #searchInput {
+        border-radius: 4px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .search-btn, .clear-btn {
+        width: 100%;
+    }
+    
+    /* Tabs wrap on mobile */
+    .tabs {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .tab {
+        flex: 1;
+        margin-right: 0;
+        min-width: 120px;
+    }
+    
+    /* Make notification bell easier to tap */
+    .bell-button:hover {
+        transform: scale(1.05); /* Less dramatic on mobile */
+    }
+    
+    /* Responsive notification dropdown */
+    .notifications-dropdown {
+        width: calc(100vw - 40px);
+        max-width: 350px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+    
+    /* Improve table scrolling experience */
+    .overflow {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Make "other ones" tables full width on mobile */
+    .otherones-table, 
+    .otherones-table_with-images {
+        width: 100%;
+        height: auto;
+    }
 }
