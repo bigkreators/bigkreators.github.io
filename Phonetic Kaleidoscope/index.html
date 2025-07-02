@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonetic Kaleidoscope</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 300% 300%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .mic-button {
+            background: linear-gradient(45deg, #ff4757, #ff3742);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .mic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+        }
+
+        .mic-button.active {
+            background: linear-gradient(45deg, #2ed573, #1abc9c);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .status {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-left: 10px;
+        }
+
+        #kaleidoscope {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .phoneme-display {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .current-phoneme {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4ecdc4;
+            text-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+        }
+
+        .phoneme-info {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .recent-phonemes {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phoneme-chip {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .phoneme-chip:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 50;
+            opacity: 0.7;
+            transition: opacity 0.5s ease;
+        }
+
+        .instructions.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .volume-indicator {
+            position: absolute;
+            top: 120px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .volume-bar {
+            width: 6px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .volume-fill {
+            width: 100%;
+            background: linear-gradient(to top, #ff4757, #ffa502, #2ed573);
+            transition: height 0.1s ease;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Phonetic Kaleidoscope</h1>
+            <div class="controls">
+                <button id="micButton" class="mic-button">🎤 Start Listening</button>
+                <div id="status" class="status">Click to begin</div>
+            </div>
+        </div>
+
+        <canvas id="kaleidoscope"></canvas>
+
+        <div class="instructions" id="instructions">
+            <h3>🎵 Speak into your microphone</h3>
+            <p>Watch as your voice creates beautiful patterns and reveals phonetic symbols</p>
+        </div>
+
+        <div class="phoneme-display" id="phonemeDisplay" style="display: none;">
+            <div class="current-phoneme" id="currentPhoneme">∅</div>
+            <div class="phoneme-info" id="phonemeInfo">Silence</div>
+            <div class="recent-phonemes" id="recentPhonemes"></div>
+        </div>
+
+        <div class="volume-indicator">
+            <div class="volume-bar">
+                <div class="volume-fill" id="volumeFill" style="height: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PhoneticKaleidoscope {
+            constructor() {
+                this.canvas = document.getElementById('kaleidoscope');
+                this.ctx = this.canvas.getContext('2d');
+                this.micButton = document.getElementById('micButton');
+                this.status = document.getElementById('status');
+                this.instructions = document.getElementById('instructions');
+                this.phonemeDisplay = document.getElementById('phonemeDisplay');
+                this.currentPhoneme = document.getElementById('currentPhoneme');
+                this.phonemeInfo = document.getElementById('phonemeInfo');
+                this.recentPhonemes = document.getElementById('recentPhonemes');
+                this.volumeFill = document.getElementById('volumeFill');
+
+                this.audioContext = null;
+                this.microphone = null;
+                this.analyser = null;
+                this.dataArray = null;
+                this.isListening = false;
+                this.animationId = null;
+
+                this.recentPhonemesList = [];
+                this.currentVolume = 0;
+                this.previousVolume = 0;
+                this.frequencyData = new Uint8Array(256);
+                this.lastPhonemeTime = 0;
+                this.phonemeStability = 0;
+
+                // Phoneme mapping based on frequency characteristics
+                this.phonemeMap = {
+                    vowels: [
+                        { symbol: 'i', name: 'Close front unrounded vowel', freq: [270, 2290], color: '#ff6b6b' },
+                        { symbol: 'ɪ', name: 'Near-close front unrounded vowel', freq: [390, 1990], color: '#ff7675' },
+                        { symbol: 'e', name: 'Close-mid front unrounded vowel', freq: [530, 1840], color: '#fdcb6e' },
+                        { symbol: 'ɛ', name: 'Open-mid front unrounded vowel', freq: [610, 1730], color: '#e17055' },
+                        { symbol: 'æ', name: 'Near-open front unrounded vowel', freq: [660, 1720], color: '#d63031' },
+                        { symbol: 'ɑ', name: 'Open back unrounded vowel', freq: [730, 1090], color: '#74b9ff' },
+                        { symbol: 'ɔ', name: 'Open-mid back rounded vowel', freq: [570, 840], color: '#0984e3' },
+                        { symbol: 'o', name: 'Close-mid back rounded vowel', freq: [450, 880], color: '#6c5ce7' },
+                        { symbol: 'ʊ', name: 'Near-close back rounded vowel', freq: [470, 1160], color: '#a29bfe' },
+                        { symbol: 'u', name: 'Close back rounded vowel', freq: [300, 870], color: '#fd79a8' }
+                    ],
+                    consonants: [
+                        { symbol: 's', name: 'Voiceless alveolar fricative', freq: [4000, 8000], color: '#00cec9' },
+                        { symbol: 'ʃ', name: 'Voiceless postalveolar fricative', freq: [2500, 6000], color: '#00b894' },
+                        { symbol: 'f', name: 'Voiceless labiodental fricative', freq: [1400, 7000], color: '#55a3ff' },
+                        { symbol: 'θ', name: 'Voiceless dental fricative', freq: [1500, 7000], color: '#81ecec' },
+                        { symbol: 'h', name: 'Voiceless glottal fricative', freq: [1000, 4000], color: '#fab1a0' },
+                        { symbol: 't', name: 'Voiceless alveolar plosive', freq: [1500, 4000], color: '#e84393' },
+                        { symbol: 'k', name: 'Voiceless velar plosive', freq: [1500, 3500], color: '#9b59b6' },
+                        { symbol: 'p', name: 'Voiceless bilabial plosive', freq: [1000, 3000], color: '#ff7675' }
+                    ]
+                };
+
+                this.setupCanvas();
+                this.setupEventListeners();
+                this.animate();
+            }
+
+            setupCanvas() {
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            setupEventListeners() {
+                this.micButton.addEventListener('click', () => this.toggleMicrophone());
+            }
+
+            async toggleMicrophone() {
+                if (!this.isListening) {
+                    await this.startListening();
+                } else {
+                    this.stopListening();
+                }
+            }
+
+            async startListening() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: { 
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: true 
+                        } 
+                    });
+                    
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.microphone = this.audioContext.createMediaStreamSource(stream);
+                    this.analyser = this.audioContext.createAnalyser();
+                    
+                    this.analyser.fftSize = 512;
+                    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+                    
+                    this.microphone.connect(this.analyser);
+                    
+                    this.isListening = true;
+                    this.micButton.textContent = '🔴 Stop Listening';
+                    this.micButton.classList.add('active');
+                    this.status.textContent = 'Listening...';
+                    this.instructions.classList.add('hidden');
+                    this.phonemeDisplay.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    this.status.textContent = 'Microphone access denied';
+                }
+            }
+
+            stopListening() {
+                this.isListening = false;
+                this.micButton.textContent = '🎤 Start Listening';
+                this.micButton.classList.remove('active');
+                this.status.textContent = 'Click to begin';
+                this.instructions.classList.remove('hidden');
+                this.phonemeDisplay.style.display = 'none';
+                
+                if (this.audioContext) {
+                    this.audioContext.close();
+                }
+            }
+
+            analyzeAudio() {
+                if (!this.isListening || !this.analyser) return;
+
+                this.analyser.getByteFrequencyData(this.dataArray);
+                
+                // Calculate volume
+                const sum = this.dataArray.reduce((a, b) => a + b, 0);
+                this.currentVolume = sum / this.dataArray.length / 255;
+                this.volumeFill.style.height = `${this.currentVolume * 100}%`;
+
+                // Detect phonemes based on frequency analysis
+                if (this.currentVolume > 0.05) {
+                    const phoneme = this.detectPhoneme();
+                    
+                    // Add stability check to avoid rapid switching
+                    const now = Date.now();
+                    if (this.lastDetectedPhoneme && this.lastDetectedPhoneme.symbol === phoneme.symbol) {
+                        this.phonemeStability++;
+                    } else {
+                        this.phonemeStability = 0;
+                        this.lastDetectedPhoneme = phoneme;
+                        this.lastPhonemeTime = now;
+                    }
+                    
+                    // Only update display if phoneme is stable or enough time has passed
+                    if (this.phonemeStability > 2 || now - this.lastPhonemeTime > 300) {
+                        this.updatePhonemeDisplay(phoneme);
+                    }
+                } else {
+                    this.updatePhonemeDisplay({ symbol: '∅', name: 'Silence', color: '#666' });
+                    this.phonemeStability = 0;
+                }
+            }
+
+            detectPhoneme() {
+                // Analyze frequency spectrum more accurately
+                const sampleRate = this.audioContext.sampleRate;
+                const binWidth = sampleRate / this.analyser.fftSize;
+                
+                // Calculate energy in different frequency bands
+                const lowEnergy = this.getEnergyInRange(0, 800 / binWidth);      // 0-800 Hz
+                const midEnergy = this.getEnergyInRange(800 / binWidth, 2500 / binWidth);  // 800-2500 Hz
+                const highEnergy = this.getEnergyInRange(2500 / binWidth, 8000 / binWidth); // 2500-8000 Hz
+                const veryHighEnergy = this.getEnergyInRange(8000 / binWidth, this.dataArray.length); // 8000+ Hz
+                
+                const totalEnergy = lowEnergy + midEnergy + highEnergy + veryHighEnergy;
+                
+                if (totalEnergy < 0.1) {
+                    return { symbol: '∅', name: 'Silence', color: '#666' };
+                }
+                
+                // Find dominant frequencies (formants)
+                const peaks = this.findFrequencyPeaks(this.dataArray);
+                
+                // Classify based on energy distribution ratios
+                const highRatio = highEnergy / totalEnergy;
+                const veryHighRatio = veryHighEnergy / totalEnergy;
+                const lowRatio = lowEnergy / totalEnergy;
+                const midRatio = midEnergy / totalEnergy;
+                
+                // Debug logging (comment out in production)
+                // console.log(`Energies - Low: ${lowRatio.toFixed(2)}, Mid: ${midRatio.toFixed(2)}, High: ${highRatio.toFixed(2)}, VHigh: ${veryHighRatio.toFixed(2)}`);
+                
+                // Fricatives detection - very high frequency energy
+                if (veryHighRatio > 0.25 || highRatio > 0.4) {
+                    if (veryHighRatio > 0.35) return { symbol: 's', name: 'Voiceless alveolar fricative', color: '#00cec9' };
+                    if (veryHighRatio > 0.25) return { symbol: 'ʃ', name: 'Voiceless postalveolar fricative', color: '#00b894' };
+                    if (highRatio > 0.5) return { symbol: 'f', name: 'Voiceless labiodental fricative', color: '#55a3ff' };
+                    return { symbol: 'θ', name: 'Voiceless dental fricative', color: '#81ecec' };
+                }
+                
+                // Plosive detection
+                if (this.detectPlosive()) {
+                    if (highRatio > 0.3) return { symbol: 't', name: 'Voiceless alveolar plosive', color: '#e84393' };
+                    if (midRatio > 0.4) return { symbol: 'k', name: 'Voiceless velar plosive', color: '#9b59b6' };
+                    return { symbol: 'p', name: 'Voiceless bilabial plosive', color: '#ff7675' };
+                }
+                
+                // Vowel detection based on energy distribution and spectral characteristics
+                // Use simplified vowel detection based on energy ratios rather than precise formants
+                if (lowRatio > 0.5) {
+                    // Low frequency dominant - back vowels
+                    if (midRatio > 0.25) return { symbol: 'ɔ', name: 'Open-mid back rounded vowel', color: '#0984e3' };
+                    if (lowRatio > 0.6) return { symbol: 'u', name: 'Close back rounded vowel', color: '#fd79a8' };
+                    return { symbol: 'o', name: 'Close-mid back rounded vowel', color: '#6c5ce7' };
+                } else if (midRatio > 0.4) {
+                    // Mid frequency dominant - front vowels
+                    if (highRatio > 0.15) return { symbol: 'i', name: 'Close front unrounded vowel', color: '#ff6b6b' };
+                    if (lowRatio > 0.3) return { symbol: 'e', name: 'Close-mid front unrounded vowel', color: '#fdcb6e' };
+                    return { symbol: 'ɛ', name: 'Open-mid front unrounded vowel', color: '#e17055' };
+                } else {
+                    // Balanced energy - central or open vowels
+                    if (lowRatio > 0.35 && midRatio > 0.3) return { symbol: 'ɑ', name: 'Open back unrounded vowel', color: '#74b9ff' };
+                    if (midRatio > lowRatio) return { symbol: 'æ', name: 'Near-open front unrounded vowel', color: '#d63031' };
+                    return { symbol: 'ə', name: 'Mid central vowel (schwa)', color: '#636e72' };
+                }
+            }
+            
+            getEnergyInRange(startBin, endBin) {
+                let energy = 0;
+                const start = Math.max(0, Math.floor(startBin));
+                const end = Math.min(this.dataArray.length, Math.ceil(endBin));
+                
+                for (let i = start; i < end; i++) {
+                    energy += this.dataArray[i] / 255;
+                }
+                return energy / (end - start);
+            }
+            
+            detectPlosive() {
+                // Simple plosive detection based on sudden energy changes
+                if (!this.previousVolume) {
+                    this.previousVolume = this.currentVolume;
+                    return false;
+                }
+                
+                const volumeChange = this.currentVolume - this.previousVolume;
+                this.previousVolume = this.currentVolume;
+                
+                // Plosives have rapid onset - more sensitive detection
+                return volumeChange > 0.2 && this.currentVolume > 0.3;
+            }
+
+            findFrequencyPeaks(data) {
+                const peaks = [];
+                const threshold = Math.max(30, Math.max(...data) * 0.3); // Dynamic threshold
+                
+                for (let i = 2; i < data.length - 2; i++) {
+                    // Check if current point is a local maximum
+                    if (data[i] > data[i-1] && data[i] > data[i+1] && 
+                        data[i] > data[i-2] && data[i] > data[i+2] && 
+                        data[i] > threshold) {
+                        
+                        // Convert bin to frequency and store with amplitude
+                        const frequency = (i * this.audioContext.sampleRate) / this.analyser.fftSize;
+                        peaks.push({ bin: i, frequency: frequency, amplitude: data[i] });
+                    }
+                }
+                
+                // Sort by amplitude and return top peaks
+                return peaks.sort((a, b) => b.amplitude - a.amplitude).slice(0, 5);
+            }
+
+            updatePhonemeDisplay(phoneme) {
+                this.currentPhoneme.textContent = phoneme.symbol;
+                this.currentPhoneme.style.color = phoneme.color;
+                this.phonemeInfo.textContent = phoneme.name;
+
+                // Add to recent phonemes if different from last
+                if (phoneme.symbol !== '∅' && 
+                    (this.recentPhonemesList.length === 0 || 
+                     this.recentPhonemesList[this.recentPhonemesList.length - 1].symbol !== phoneme.symbol)) {
+                    
+                    this.recentPhonemesList.push(phoneme);
+                    if (this.recentPhonemesList.length > 8) {
+                        this.recentPhonemesList.shift();
+                    }
+                    this.updateRecentPhonemes();
+                }
+            }
+
+            updateRecentPhonemes() {
+                this.recentPhonemes.innerHTML = '';
+                this.recentPhonemesList.forEach(phoneme => {
+                    const chip = document.createElement('div');
+                    chip.className = 'phoneme-chip';
+                    chip.textContent = phoneme.symbol;
+                    chip.style.borderColor = phoneme.color;
+                    this.recentPhonemes.appendChild(chip);
+                });
+            }
+
+            animate() {
+                this.analyzeAudio();
+                this.drawKaleidoscope();
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+
+            drawKaleidoscope() {
+                const { width, height } = this.canvas;
+                const centerX = width / 2;
+                const centerY = height / 2;
+                
+                // Clear with fade effect
+                this.ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+                this.ctx.fillRect(0, 0, width, height);
+
+                if (!this.isListening || this.currentVolume < 0.01) {
+                    // Draw subtle ambient pattern when not speaking
+                    this.drawAmbientPattern(centerX, centerY);
+                    return;
+                }
+
+                // Draw kaleidoscope pattern based on audio
+                this.drawAudioPattern(centerX, centerY);
+            }
+
+            drawAmbientPattern(centerX, centerY) {
+                const time = Date.now() * 0.001;
+                this.ctx.save();
+                
+                for (let i = 0; i < 6; i++) {
+                    this.ctx.save();
+                    this.ctx.translate(centerX, centerY);
+                    this.ctx.rotate((i * Math.PI * 2) / 6 + time * 0.1);
+                    
+                    this.ctx.strokeStyle = `rgba(78, 205, 196, ${0.1 + Math.sin(time + i) * 0.05})`;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.arc(0, 100, 20 + Math.sin(time * 2 + i) * 10, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                    
+                    this.ctx.restore();
+                }
+                
+                this.ctx.restore();
+            }
+
+            drawAudioPattern(centerX, centerY) {
+                const time = Date.now() * 0.001;
+                
+                this.ctx.save();
+                this.ctx.translate(centerX, centerY);
+                
+                // Create kaleidoscopic symmetry
+                const segments = 8;
+                for (let segment = 0; segment < segments; segment++) {
+                    this.ctx.save();
+                    this.ctx.rotate((segment * Math.PI * 2) / segments);
+                    
+                    // Reflect every other segment
+                    if (segment % 2 === 1) {
+                        this.ctx.scale(-1, 1);
+                    }
+                    
+                    this.drawSegmentPattern(time);
+                    this.ctx.restore();
+                }
+                
+                this.ctx.restore();
+            }
+
+            drawSegmentPattern(time) {
+                if (!this.dataArray) return;
+                
+                const radius = Math.min(this.canvas.width, this.canvas.height) * 0.3;
+                
+                for (let i = 0; i < this.dataArray.length / 4; i++) {
+                    const amplitude = this.dataArray[i] / 255;
+                    const angle = (i / (this.dataArray.length / 4)) * Math.PI;
+                    
+                    const x = Math.cos(angle) * radius * amplitude;
+                    const y = Math.sin(angle) * radius * amplitude;
+                    
+                    // Color based on frequency
+                    const hue = (i / (this.dataArray.length / 4)) * 360 + time * 50;
+                    const saturation = 70 + amplitude * 30;
+                    const lightness = 50 + amplitude * 30;
+                    
+                    this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${0.6 + amplitude * 0.4})`;
+                    this.ctx.strokeStyle = `hsla(${hue}, ${saturation}%, ${lightness + 20}%, ${0.8 + amplitude * 0.2})`;
+                    this.ctx.lineWidth = 1 + amplitude * 3;
+                    
+                    // Draw geometric shapes
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, 2 + amplitude * 8, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Draw connecting lines
+                    if (i > 0) {
+                        const prevAmplitude = this.dataArray[i-1] / 255;
+                        const prevAngle = ((i-1) / (this.dataArray.length / 4)) * Math.PI;
+                        const prevX = Math.cos(prevAngle) * radius * prevAmplitude;
+                        const prevY = Math.sin(prevAngle) * radius * prevAmplitude;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(prevX, prevY);
+                        this.ctx.lineTo(x, y);
+                        this.ctx.stroke();
+                    }
+                    
+                    // Add sparkle effects for high amplitudes
+                    if (amplitude > 0.7) {
+                        this.ctx.fillStyle = `rgba(255, 255, 255, ${amplitude * 0.8})`;
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 1, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                }
+            }
+        }
+
+        // Initialize the kaleidoscope when the page loads
+        window.addEventListener('load', () => {
+            new PhoneticKaleidoscope();
+        });
+    </script>
+</body>
+</html>

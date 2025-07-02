@@ -3,8 +3,17 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <title>All IPA Symbols</title>
     <style type="text/css">
+    @font-face {
+font-family: 'Noto Sans';
+src: url('../my_extended_ipa_symbols/fonts/NotoSans-Regular.ttf') format('truetype');
+font-display: swap;
+}
     /* Setting up the base styles */
     body {
       background-color: #8B0000; /* Dark red background */
@@ -45,7 +54,7 @@
         font-size: 1.5em;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
         user-select: none;
-        font-family: 'Noto Sans', 'Arial', 'Helvetica', sans-serif;
+        font-family: 'Noto Sans';
         filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
     }
 
@@ -126,7 +135,7 @@
           margin-bottom: 30px;
       }
         .IPA {
-            font-family: "Noto Sans", Arial, sans-serif;
+            font-family: 'Noto Sans';
         }
 
       h2 {
@@ -146,13 +155,6 @@
           padding: 0 1em;
           margin: 1em auto;
           max-width: 37em;
-      }
-      .chart-container {
-          background-color: white;
-          border: 1px solid #ddd;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-          padding: 20px;
-          border-radius: 5px;
       }
       .text {
           background-color: #cfc;
@@ -546,6 +548,7 @@
           <td class="interactive IPA" onclick="ipa('Open-mid_back_unrounded_vowel');">ʌ</td>
 <td class="interactive IPA" onclick="ipa('Open-mid_back_rounded_vowel');">ɔ</td>
 </tr>
+<tr>
 <th>Near-open</th>
           <td class="interactive IPA" onclick="ipa('Near-open_front_unrounded_vowel');">æ</td>
 <td></td>
@@ -556,6 +559,7 @@
 <td></td>
 <td></td>
 <td></td>
+</tr>
 <tr>
 <th>Open</th>
           <td class="interactive IPA" onclick="ipa('Open_front_unrounded_vowel');">a</td>
@@ -995,6 +999,7 @@
   <div class="overflow">
       <table class="at"><!-- at = articulation table -->
           <tbody>
+          <tr>
           <td colspan="2"></td>
           <th colspan="2">Bilabial</th>
           <th colspan="2">Labiodental</th>
@@ -1003,6 +1008,7 @@
           <th colspan="2">Postalveolar</th>
           <th colspan="2">Retroflex</th>
           <th colspan="2">Alveolo-palatal</th>
+          </tr>
           <tr>
           <th colspan="2">Click</th>
               <td class="interactive IPA" onclick="ipa('Bilabial_click');">ʘ</td>
@@ -1013,7 +1019,7 @@
               <td></td>
               <td style="padding-right: 3.85em;" colspan="3" class="interactive extended IPA" onclick="ipa('Postalveolar_click');">ǃ</td>
               <td></td>
-              <td class="interactive" onclick="ipa('Retroflex_click');"><span class="IPA">𝼊</span> Retroflex</td>
+              <td class="interactive IPA" onclick="ipa('Retroflex_click');">𝼊</td>
               <td></td>
               <td></td>
               <td></td>
@@ -1058,13 +1064,13 @@
               <td class="impossible"></td>
               <td class="interactive IPA" onclick="ipa('Dental_ejective_fricative');">θʼ</td>
               <td class="impossible"></td>
-              <td class="interactive" onclick="ipa('Alveolar_ejective_fricative');"><span class="IPA">sʼ</span> Alveolar</td>
+              <td class="interactive IPA" onclick="ipa('Alveolar_ejective_fricative');">sʼ</td>
               </tr>
               <tr>
           <th>Lateral Fricative</th>
-          <td></td>
+          <td class="impossible"></td>
               <td class="impossible"></td>
-              <td></td>
+              <td class="impossible"></td>
               <td class="impossible"></td>
               <td></td>
               <td class="impossible"></td>
@@ -1085,7 +1091,7 @@
               <td class="impossible"></td>
               <td></td>
               <td class="impossible"></td>
-              <td></td>
+              <td class="interactive IPA" onclick="ipa('Alveolar_ejective_affricate');">t͡sʼ</td>
               <td class="impossible"></td>
               <td></td>
               <td class="impossible"></td>
@@ -1112,10 +1118,10 @@
               <td class="impossible"></td>
           </tr>
           <tr>
-              <td class="interactive" onclick="ipa('Alveolar_ejective_affricate');"><span class="IPA">t͡sʼ</span> Alveolar</td>
               <td rowspan="2" class="interactive" onclick="ipa('Alveolar_ejective_plosive');"><span class="IPA">tʼ</span> Dental/alveolar</td>
           </tr>
-          <tr><td class="interactive" onclick="ipa('Alveolar_lateral_click');"><span class="IPA">ǁ</span> Alveolar lateral</td>
+          <tr>
+          <td class="interactive" onclick="ipa('Alveolar_lateral_click');"><span class="IPA">ǁ</span> Alveolar lateral</td>
           <td class="interactive" onclick="ipa('Alveolar_lateral_ejective_fricative');"><span class="IPA">ɬʼ</span> Alveolar lateral</td>
           <td class="interactive" onclick="ipa('Alveolar_lateral_ejective_affricate');"><span class="IPA">t͡ɬʼ</span> Alveolar lateral</td>
           </tr>
@@ -1460,7 +1466,6 @@
 
   <div class="twins">
       <div class="twin1">
-  <div class="chart-section">
       <h3>Suprasegmentals</h3>
       
       <table class="rt">
@@ -1510,7 +1515,6 @@
               <td>rock‿and‿roll</td>
           </tr>
       </table>
-  </div>
       </div>
       <div class="twin2">
   <div class="chart-section">
@@ -1522,7 +1526,6 @@
               <td class="IPA">◌̋</td>
               <td>Extra high tone</td>
               <td>ma˥, ő, ű</td>
-      </tr>
           </tr>
           <tr>
               <td class="IPA">◌˦</td>
