@@ -25,15 +25,50 @@ font-family: 'Noto Sans';
 src: url('../fonts/NotoSans-Regular.ttf') format('truetype');
 font-display: swap;
 }
+.STIX_Two_Math-or_Symbola {
+    font-family: "STIX Two Math", "Symbola";
+}
+.AncientSans-or-Copperplate {
+    font-family: AncientSans, Copperplate, sans-serif; 
+}
 
 /* Rest of the CSS */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 20px; 
+}
+
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    text-align: center;
+}
+
+th { 
+    background-color: #f8f9fa; 
+    font-weight: normal;
+}
+
+.label-cell { 
+    background-color: #f8f9fa; 
+    font-weight: bold;
+}
 
 h2, h3 {
 border-bottom: 1px solid #a2a9b1;
 text-align: center;
 }
-.STIX_Two_Math-or_Symbola {
-    font-family: "STIX Two Math", "Symbola";
+.sideways {
+    display: inline-block;
+    transform: rotate(-90deg);
 }
 
 .clear-btn { 
@@ -78,10 +113,6 @@ text-align: center;
     position: absolute; 
     left: 0; 
     top: 0; 
-}
-
-.AncientSans-or-Copperplate { 
-    font-family: AncientSans, Copperplate, sans-serif; 
 }
 
 span { 
@@ -133,13 +164,6 @@ small-capital {
     width: 30%; 
     margin-bottom: 20px; 
 }
-
-body { 
-    font-family: Arial, sans-serif;
-    background-color: #f5f7fa;
-    padding: 20px;
-}
-
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -227,28 +251,6 @@ body {
     margin: 0 2px 5px 0;
     flex-grow: 1;
     border-radius: 5px;
-}
-
-table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-bottom: 20px; 
-}
-
-th, td { 
-    border: 1px solid #ddd; 
-    padding: 10px; 
-    text-align: center;
-}
-
-th { 
-    background-color: #f8f9fa; 
-    font-weight: normal;
-}
-
-.label-cell { 
-    background-color: #f8f9fa; 
-    font-weight: bold;
 }
 
 .tab-content { 

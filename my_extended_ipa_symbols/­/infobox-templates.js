@@ -200,7 +200,7 @@ WikiTemplates.registerTemplate('DualIPA', function(params) {
 // Create and append a stylesheet link
 const link = document.createElement('link');
 link.rel = 'stylesheet';
-link.href = 'styles/stylesheet.css';
+link.href = 'css/stylesheet.css';
 document.head.appendChild(link);
 
 // You can register more templates here
