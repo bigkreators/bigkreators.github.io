@@ -3,235 +3,1854 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultra Simple HTML Editor</title>
+    <title>Comprehensive HTML Validator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            background-color: #f0f0f0;
         }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        
-        .editor-container {
-            max-width: 900px;
+
+        .container {
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
-        
-        #code-input {
-            width: 100%;
-            height: 300px;
-            font-family: monospace;
-            padding: 10px;
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-section h2 {
+            color: #333;
             margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
+            font-size: 1.5rem;
         }
-        
-        .button-bar {
+
+        .textarea-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #htmlInput {
+            width: 100%;
+            height: 400px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        #htmlInput:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.2);
+            background: white;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .validate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            font-weight: 600;
+        }
+
+        .validate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .validate-btn:active {
+            transform: translateY(0);
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-group label {
+            color: #555;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .option-group input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            border-radius: 15px;
             margin-bottom: 20px;
             text-align: center;
         }
-        
-        button {
-            padding: 8px 16px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0 5px;
+
+        .summary.valid {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
         }
-        
-        button:hover {
-            background-color: #357ae8;
+
+        .summary.invalid {
+            background: linear-gradient(135deg, #ffd3a5 0%, #fd9853 100%);
         }
-        
-        .preview-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 4px;
-            background-color: white;
-            min-height: 200px;
+
+        .summary.critical {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
         }
-        
-        .separator {
-            margin: 20px 0;
-            border-top: 1px solid #ddd;
+
+        .summary h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
         }
-        
-        #status-message {
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-number.critical { color: #dc3545; }
+        .stat-number.errors { color: #e74c3c; }
+        .stat-number.warnings { color: #f39c12; }
+        .stat-number.info { color: #3498db; }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .category-filter {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .category-filter.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .category-filter:hover {
+            border-color: #4facfe;
+        }
+
+        .issues {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .issue {
+            padding: 20px;
+            border-left: 5px solid;
+            margin-bottom: 1px;
+            transition: all 0.3s ease;
+            display: block;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .issue:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .issue.hidden {
             display: none;
         }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
+
+        .issue.critical {
+            border-left-color: #dc3545;
+            background: linear-gradient(90deg, #ffebee 0%, #fff 50%);
         }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
+
+        .issue.error {
+            border-left-color: #e74c3c;
+            background: linear-gradient(90deg, #ffeaea 0%, #fff 50%);
         }
-    </style>
-</head>
-<body>
-    <h1>Ultra Simple HTML Editor</h1>
-    
-    <div class="editor-container">
-        <label for="code-input">HTML Code:</label>
-        <textarea id="code-input"><!DOCTYPE html>
-<html>
-<head>
-    <title>My Test Page</title>
-    <style>
+
+        .issue.warning {
+            border-left-color: #f39c12;
+            background: linear-gradient(90deg, #fff8e1 0%, #fff 50%);
+        }
+
+        .issue.info {
+            border-left-color: #3498db;
+            background: linear-gradient(90deg, #e3f2fd 0%, #fff 50%);
+        }
+
+        .issue h4 {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .issue.critical h4 { color: #c82333; }
+        .issue.error h4 { color: #c0392b; }
+        .issue.warning h4 { color: #d68910; }
+        .issue.info h4 { color: #2980b9; }
+
+        .issue h4 .title-text {
+            flex: 1;
+            min-width: 200px;
+            word-wrap: break-word;
+        }
+
+        .issue p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .line-number {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            margin-left: auto;
+        }
+
+        .category-badge {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .code-snippet {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            overflow-x: auto;
+        }
+
+        .no-issues {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-issues .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .tab.active {
+            background: white;
+            color: #4facfe;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .preview-container {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: white;
+            min-height: 300px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .preview-header {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+            color: #495057;
+            margin: -15px -15px 15px -15px;
+        }
+
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        #editorInput, #splitInput {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        #editorInput:focus, #splitInput:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.2);
+            background: white;
+        }
+        /* Custom HTML <spam> tag */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            color: #2c3e50;
-        }
+  font-family: Arial, sans-serif;
+}
+code {
+  background-color: #f5f5f5;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+.code-block {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-family: monospace;
+  white-space: pre-wrap;
+  border-left: 4px solid #ccc;
+}
+h1 {
+text-align: center;
+}
     </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This is a test HTML page. Edit the code and click "Update Preview" to see changes.</p>
+    <div class="container">
+        <div class="header">
+            <h1>HTML Validator & Live Editor</h1>
+            <p>Professional validation, live preview, and testing in one comprehensive tool</p>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('validator')">🔍 Validator</button>
+                <button class="tab" onclick="switchTab('split-editor')">✏️ Split View Editor</button>
+                <button class="tab" onclick="switchTab('Custom_HTML_spam_tag')">🏷️ Custom HTML spam tag</button>
+            </div>
+
+            <!-- Validator Tab -->
+            <div id="validator-tab" class="tab-content active">
+                <div class="input-section">
+                    <h2>Enter HTML Code</h2>
+                    <div class="textarea-container">
+                        <textarea id="htmlInput" placeholder="Paste your HTML code here..."><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Page</title>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>This is a sample paragraph with <a href="https://example.com">a link</a>.</p>
+    <img src="image.jpg" alt="Sample image">
+    <form>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html></textarea>
-        
-        <div class="button-bar">
-            <button id="preview-button">Update Preview</button>
-            <button id="clear-button" onclick="clearEditor()">Clear Editor</button>
-            <button id="download-button" onclick="downloadHTML()">Download HTML</button>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="validate-btn" onclick="validateHTML()">🔍 Validate HTML</button>
+                        
+                        <div class="options">
+                            <div class="option-group">
+                                <input type="checkbox" id="strictMode" checked>
+                                <label for="strictMode">Strict Mode</label>
+                            </div>
+                            <div class="option-group">
+                                <input type="checkbox" id="accessibilityChecks" checked>
+                                <label for="accessibilityChecks">Accessibility Checks</label>
+                            </div>
+                            <div class="option-group">
+                                <input type="checkbox" id="seoChecks" checked>
+                                <label for="seoChecks">SEO Validation</label>
+                            </div>
+                            <div class="option-group">
+                                <input type="checkbox" id="performanceChecks">
+                                <label for="performanceChecks">Performance Hints</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar" id="progressBar" style="display: none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div class="results" id="results">
+                    <div class="summary" id="summary">
+                        <h3 id="summaryTitle">Validation Results</h3>
+                        <p id="summaryText">Click "Validate HTML" to check your code</p>
+                    </div>
+
+                    <div class="stats" id="stats"></div>
+
+                    <div class="category-filters" id="categoryFilters"></div>
+
+                    <div class="issues" id="issues"></div>
+                </div>
+            </div>
+
+            <!-- Split View Editor Tab -->
+            <div id="split-editor-tab" class="tab-content">
+                    <h2>Split View - Editor & Preview</h2>
+                    <div class="editor-controls">
+                        <button class="btn btn-primary" onclick="updateSplitPreview()">🔄 Update Preview</button>
+                        <button class="btn btn-primary" onclick="validateFromSplit()">🔍 Validate</button>
+                        <button class="btn btn-success" onclick="downloadFromSplit()">💾 Download</button>
+                        <button class="btn btn-secondary" onclick="clearSplit()">🗑️ Clear</button>
+                    </div>
+                    
+                    <div class="split-view">
+                        <div>
+                            <h3>📝 Editor</h3>
+                            <textarea id="splitInput" placeholder="Write HTML here..."><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Split View Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .highlight { background: yellow; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Split View Editor</h1>
+    <p class="highlight">Code on the left, preview on the right!</p>
+</body>
+</html></textarea>
+                        </div>
+                        
+                        <div>
+                            <h3>Preview</h3>
+                            <div class="preview-container" id="splitPreviewContainer">
+                                <div id="splitPreviewContent">Update preview to see rendered HTML</div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Custom HTML spam tag Tab -->
+            <div id="Custom_HTML_spam_tag-tab" class="tab-content">
+                    <h1>🌟 HTML Showcase - Custom HTML <code>spam&gt;</code> tag</h1>
+                    <p style="color: #666; margin-bottom: 20px;">This custom HTML tag repeats stuff for however many times chosen, with an optional separator.</p>
+<script>
+// Define the custom spam element before it's used
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('spam').forEach(el => {
+    const times = parseInt(el.getAttribute('times')) || 1;
+    const separator = el.getAttribute('separator') || '';
+    const text = el.textContent;
+    
+    el.textContent = Array(times).fill(text).join(separator);
+  });
+});
+</script>
+
+<h2>Examples</h2>
+<h3>Periods</h3>
+<spam times="3">.</spam>        <!-- becomes ... -->
+
+<h3>Exclamation points</h3>
+<spam times="5">!</spam>        <!-- becomes !!!!! -->
+
+<h3>Ha's</h3>
+<spam times="3" separator=", ">Ha</spam>  <!-- becomes Ha, Ha, Ha -->
+
+<h3>Lateral click</h3>
+<spam times="3">ǁ</spam><br>        <!-- becomes ǁǁǁ -->
+<spam times="5">ǁ</spam><br>        <!-- becomes ǁǁǁǁǁ -->
+<spam times="10">ǁ</spam>       <!-- becomes ǁǁǁǁǁǁǁǁǁǁ -->
+
+<h3>Dashes</h3>
+<spam times="20">-</spam> <!-- becomes 20 dashes -->
+
+<h3>Stars</h3>
+<spam times="8">★</spam> <!-- becomes ★★★★★★★★ -->
+
+<h2>You want to know how to do this in your own html?</h2>
+<p>First, you need javascript, so copy and paste this:</p>
+<div class="code-block">&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('spam').forEach(el =&gt; {
+    const times = parseInt(el.getAttribute('times')) || 1;
+    const separator = el.getAttribute('separator') || '';
+    const text = el.textContent;
+    
+    el.textContent = Array(times).fill(text).join(separator);
+  });
+});
+&lt;/script&gt;</div>
+
+<p>Then, to actually use it as if it was an html element, use the <code>&lt;spam&gt;&lt;/spam&gt;</code> tags with the parameter <code>times</code> to specify how many times the thing is repeated, for example <code>&lt;spam times="9"&gt;oo&lt;/spam&gt;</code>. There is also an optional parameter <code>separator</code>, which specifies which thing separates the repeating stuff, for example <code>&lt;spam times="9" separator=" "&gt;oo&lt;/spam&gt;</code>, but the <code>times</code> parameter is not optional.</p>
+                    </div>
         </div>
-        
-        <div class="separator"></div>
-        
-        <label>Preview:</label>
-        <div class="preview-container" id="preview-container">
-            <!-- Preview content will be inserted here -->
-        </div>
-        
-        <div id="status-message"></div>
-    </div>
+            </div>
     <script>
-        // Direct references to DOM elements
-        var codeInput = document.getElementById('code-input');
-        var previewContainer = document.getElementById('preview-container');
-        var previewButton = document.getElementById('preview-button');
-        var clearButton = document.getElementById('clear-button');
-        var downloadButton = document.getElementById('download-button');
-        var statusMessage = document.getElementById('status-message');
-        
-        // Using the most direct inline approach possible
-        previewButton.onclick = function() {
-            updatePreview();
+        let allIssues = [];
+        let activeFilters = new Set(['all']);
+
+        // Comprehensive validation system
+        const validationEngine = {
+            // Void elements that don't need closing tags
+            voidElements: ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'],
+            
+            // Deprecated elements that still work but are discouraged
+            deprecatedElements: ['acronym', 'applet', 'basefont', 'bgsound', 'big', 'blink', 'center', 'dir', 'font', 'frame', 'frameset', 'isindex', 'keygen', 'listing', 'marquee', 'multicol', 'nextid', 'nobr', 'noembed', 'noframes', 'plaintext', 's', 'spacer', 'strike', 'tt', 'u', 'xmp'],
+            
+            // Completely obsolete elements that should not be used
+            obsoleteElements: ['hgroup'],
+            
+            // Required attributes for specific elements
+            requiredAttributes: {
+                'img': ['src', 'alt'],
+                'a': [], // href not always required
+                'form': [],
+                'input': ['type'],
+                'label': [],
+                'script': [],
+                'link': ['rel'],
+                'meta': [],
+                'html': ['lang']
+            },
+
+            // Valid parents for elements
+            validParents: {
+                'li': ['ul', 'ol'],
+                'dt': ['dl'],
+                'dd': ['dl'],
+                'thead': ['table'],
+                'tbody': ['table'],
+                'tfoot': ['table'],
+                'tr': ['table', 'thead', 'tbody', 'tfoot'],
+                'th': ['tr'],
+                'td': ['tr'],
+                'caption': ['table'],
+                'colgroup': ['table'],
+                'col': ['colgroup'],
+                'option': ['select', 'optgroup'],
+                'optgroup': ['select']
+            },
+
+            // Block level elements
+            blockElements: ['address', 'article', 'aside', 'blockquote', 'details', 'dialog', 'dd', 'div', 'dl', 'dt', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'li', 'main', 'nav', 'ol', 'p', 'pre', 'section', 'table', 'ul'],
+            
+            // Inline elements
+            inlineElements: ['a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn', 'em', 'i', 'img', 'input', 'kbd', 'label', 'map', 'object', 'q', 'samp', 'script', 'select', 'small', 'span', 'strong', 'sub', 'sup', 'textarea', 'time', 'tt', 'var'],
+
+            // HTML entities
+            validEntities: ['&lt;', '&gt;', '&amp;', '&quot;', '&apos;', '&nbsp;', '&copy;', '&reg;', '&trade;'],
+
+            // Character encoding declarations
+            validCharsets: ['UTF-8', 'ISO-8859-1', 'Windows-1252'],
+
+            // Valid ARIA roles
+            validAriaRoles: ['alert', 'alertdialog', 'application', 'article', 'banner', 'button', 'cell', 'checkbox', 'columnheader', 'combobox', 'complementary', 'contentinfo', 'definition', 'dialog', 'directory', 'document', 'feed', 'figure', 'form', 'grid', 'gridcell', 'group', 'heading', 'img', 'link', 'list', 'listbox', 'listitem', 'log', 'main', 'marquee', 'math', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'navigation', 'none', 'note', 'option', 'presentation', 'progressbar', 'radio', 'radiogroup', 'region', 'row', 'rowgroup', 'rowheader', 'scrollbar', 'search', 'searchbox', 'separator', 'slider', 'spinbutton', 'status', 'switch', 'tab', 'table', 'tablist', 'tabpanel', 'term', 'textbox', 'timer', 'toolbar', 'tooltip', 'tree', 'treegrid', 'treeitem']
         };
-        
-        clearButton.onclick = function() {
-            clearEditor();
-        };
-        
-        downloadButton.onclick = function() {
-            downloadHTML();
-        };
-        
-        // Function to clear the editor - simplified to absolute basics
-        function clearEditor() {
-            document.getElementById('code-input').value = '';
-            showMessage('Editor cleared!', 'success');
+
+        function validateHTML() {
+            const input = document.getElementById('htmlInput').value.trim();
+            if (!input) {
+                alert('Please enter some HTML code to validate.');
+                return;
+            }
+
+            // Show progress bar
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            progressBar.style.display = 'block';
+            
+            // Reset issues
+            allIssues = [];
+            
+            const options = {
+                strictMode: document.getElementById('strictMode').checked,
+                accessibilityChecks: document.getElementById('accessibilityChecks').checked,
+                seoChecks: document.getElementById('seoChecks').checked,
+                performanceChecks: document.getElementById('performanceChecks').checked
+            };
+
+            // Simulate progress for better UX
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+            }, 100);
+
+            // Run validation with slight delay for progress animation
+            setTimeout(() => {
+                runComprehensiveValidation(input, options);
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    displayResults();
+                }, 300);
+            }, 800);
         }
-        
-        // Function to update the preview (without using iframe)
-        function updatePreview() {
-            try {
-                if (!codeInput || !previewContainer) {
-                    throw new Error('Required elements not found');
+
+        function runComprehensiveValidation(html, options) {
+            const lines = html.split('\n');
+
+            // 1. DOCTYPE and Document Structure
+            checkDocumentStructure(html, lines, options);
+            
+            // 2. Character Encoding
+            checkCharacterEncoding(html, lines, options);
+            
+            // 3. Tag Structure and Nesting
+            checkTagStructure(html, lines, options);
+            
+            // 4. Attributes
+            checkAttributes(html, lines, options);
+            
+            // 5. Content Model Violations
+            checkContentModel(html, lines, options);
+            
+            // 6. Entity References
+            checkEntityReferences(html, lines, options);
+            
+            // 7. Accessibility (ARIA)
+            if (options.accessibilityChecks) {
+                checkAccessibility(html, lines, options);
+            }
+            
+            // 8. SEO Validation
+            if (options.seoChecks) {
+                checkSEO(html, lines, options);
+            }
+            
+            // 9. Performance Hints
+            if (options.performanceChecks) {
+                checkPerformance(html, lines, options);
+            }
+            
+            // 10. Form Validation
+            checkFormValidation(html, lines, options);
+            
+            // 11. Deprecated Elements
+            checkDeprecatedElements(html, lines, options);
+            
+            // 12. Comments and Processing Instructions
+            checkComments(html, lines, options);
+            
+            // 13. URL and Link Validation
+            checkURLs(html, lines, options);
+            
+            // 14. Media Elements
+            checkMediaElements(html, lines, options);
+            
+            // 15. Table Structure
+            checkTableStructure(html, lines, options);
+        }
+
+        function checkDocumentStructure(html, lines, options) {
+            // DOCTYPE validation
+            const doctypeRegex = /<!DOCTYPE\s+html>/i;
+            if (!doctypeRegex.test(html)) {
+                if (!html.toLowerCase().includes('<!doctype')) {
+                    addIssue('critical', 'Missing DOCTYPE Declaration', 
+                        'HTML5 documents must start with <!DOCTYPE html>', 1, 'doctype');
+                } else {
+                    addIssue('error', 'Invalid DOCTYPE Declaration', 
+                        'DOCTYPE declaration is malformed. Use <!DOCTYPE html> for HTML5', 1, 'doctype');
                 }
-                
-                // Create a sandbox div to hold the HTML content
-                var html = codeInput.value;
-                
-                // Use the most basic approach - just set innerHTML
-                previewContainer.innerHTML = '<div style="border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 5px;">' +
-                    '<strong>Preview</strong> (Note: JavaScript execution is limited)' +
-                    '</div>' + html;
-                
-                showMessage('Preview updated!', 'success');
-            } catch (err) {
-                console.error('Preview error:', err);
-                showMessage('Error updating preview: ' + err.message, 'error');
+            }
+
+            // Check if DOCTYPE is at the beginning
+            const firstLine = lines[0]?.trim();
+            if (firstLine && !firstLine.toLowerCase().startsWith('<!doctype')) {
+                addIssue('error', 'DOCTYPE Not at Beginning', 
+                    'DOCTYPE declaration must be the first line of the document', 1, 'doctype');
+            }
+
+            // Required structure elements
+            const htmlMatch = html.match(/<html[^>]*>/i);
+            const headMatch = html.match(/<head[^>]*>/i);
+            const bodyMatch = html.match(/<body[^>]*>/i);
+
+            if (!htmlMatch) {
+                addIssue('critical', 'Missing HTML Root Element', 
+                    'Document must have an <html> root element', 1, 'structure');
+            }
+
+            if (!headMatch) {
+                addIssue('critical', 'Missing HEAD Section', 
+                    'Document must have a <head> section with metadata', 1, 'structure');
+            }
+
+            if (!bodyMatch) {
+                addIssue('critical', 'Missing BODY Section', 
+                    'Document must have a <body> section with content', 1, 'structure');
+            }
+
+            // Check for content outside html tags
+            const beforeHtml = html.substring(0, html.search(/<html/i));
+            const afterHtml = html.substring(html.lastIndexOf('</html>') + 7);
+            
+            if (beforeHtml.replace(/<!DOCTYPE[^>]*>/i, '').trim()) {
+                addIssue('error', 'Content Before HTML Tag', 
+                    'No content should appear before the <html> tag', 1, 'structure');
+            }
+            
+            if (afterHtml.trim()) {
+                addIssue('error', 'Content After HTML Tag', 
+                    'No content should appear after the closing </html> tag', 
+                    lines.length, 'structure');
             }
         }
-        
-        // Function to download HTML content - ultra simplified
-        function downloadHTML() {
-            // Get content from textarea
-            var htmlContent = document.getElementById('code-input').value;
+
+        function checkCharacterEncoding(html, lines, options) {
+            // Check for charset declaration
+            const charsetRegex = /<meta[^>]+charset\s*=\s*["']?([^"'\s>]+)/i;
+            const charsetMatch = html.match(charsetRegex);
             
-            // Create a blob with the content
-            var blob = new Blob([htmlContent], {type: 'text/html'});
-            
-            // Create object URL from blob
-            var url = window.URL.createObjectURL(blob);
-            
-            // Create link element
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = 'my-html-file.html';
-            
-            // Append link to body
-            document.body.appendChild(link);
-            
-            // Force click the link
-            link.click();
-            
-            // Clean up
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            
-            // Show success message
-            showMessage('HTML downloaded successfully!', 'success');
+            if (!charsetMatch) {
+                addIssue('error', 'Missing Character Encoding', 
+                    'Document should specify character encoding with <meta charset="UTF-8">', 1, 'encoding');
+            } else {
+                const charset = charsetMatch[1].toUpperCase();
+                if (!validationEngine.validCharsets.includes(charset)) {
+                    addIssue('warning', 'Invalid Character Encoding', 
+                        `Character encoding "${charset}" is not recommended. Use UTF-8`, 1, 'encoding');
+                }
+            }
+
+            // Check for invalid characters
+            lines.forEach((line, index) => {
+                // Check for control characters (except tab, newline, carriage return)
+                const invalidChars = line.match(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g);
+                if (invalidChars) {
+                    addIssue('error', 'Invalid Characters', 
+                        `Line contains invalid control characters: ${invalidChars.join(', ')}`, 
+                        index + 1, 'encoding');
+                }
+            });
         }
-        
-        // Function to show status messages
-        function showMessage(text, type) {
-            if (!statusMessage) return;
+
+        function checkTagStructure(html, lines, options) {
+            const tagStack = [];
             
-            statusMessage.textContent = text;
-            statusMessage.className = type;
-            statusMessage.style.display = 'block';
+            lines.forEach((line, lineIndex) => {
+                const lineNum = lineIndex + 1;
+                // More precise regex to extract tag names, handling attributes properly
+                const tagRegex = /<\s*\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*>/g;
+                let match;
+                
+                while ((match = tagRegex.exec(line)) !== null) {
+                    const fullTag = match[0];
+                    const tagName = match[1].toLowerCase();
+                    
+                    // Skip comments, DOCTYPE, and other special constructs
+                    if (fullTag.startsWith('<!--') || fullTag.startsWith('<!DOCTYPE') || fullTag.startsWith('<?')) {
+                        continue;
+                    }
+
+                    // Check for self-closing syntax on non-void elements
+                    if (fullTag.endsWith('/>') && !validationEngine.voidElements.includes(tagName)) {
+                        if (options.strictMode) {
+                            addIssue('warning', 'Self-Closing Tag on Non-Void Element', 
+                                `<${tagName}/> syntax is discouraged. Use <${tagName}></${tagName}> instead`, 
+                                lineNum, 'syntax');
+                        }
+                    }
+
+                    if (fullTag.match(/^<\s*\//)) {
+                        // Closing tag
+                        const lastOpen = tagStack.pop();
+                        if (!lastOpen || lastOpen.name !== tagName) {
+                            // Only report as error if we actually have mismatched tags
+                            if (lastOpen) {
+                                addIssue('error', 'Mismatched Closing Tag', 
+                                    `Closing tag </${tagName}> doesn't match expected opening tag <${lastOpen.name}>`, 
+                                    lineNum, 'nesting');
+                                // Put the mismatched tag back on the stack
+                                tagStack.push(lastOpen);
+                            } else {
+                                addIssue('error', 'Unexpected Closing Tag', 
+                                    `Closing tag </${tagName}> found without matching opening tag`, 
+                                    lineNum, 'nesting');
+                            }
+                        }
+                    } else if (!validationEngine.voidElements.includes(tagName) && !fullTag.endsWith('/>')) {
+                        // Opening tag (non-void, non-self-closing)
+                        tagStack.push({ name: tagName, line: lineNum });
+                    }
+
+                    // Check for case consistency in XHTML mode
+                    if (options.strictMode && match[1] !== match[1].toLowerCase()) {
+                        addIssue('error', 'Mixed Case Tag', 
+                            `Tag names must be lowercase in XHTML: ${fullTag}`, 
+                            lineNum, 'syntax');
+                    }
+                }
+            });
+
+            // Check for unclosed tags
+            tagStack.forEach(tag => {
+                addIssue('error', 'Unclosed Tag', 
+                    `Tag <${tag.name}> opened but never closed`, 
+                    tag.line, 'nesting');
+            });
+        }
+
+        function checkAttributes(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for unquoted attribute values
+                const unquotedAttrRegex = /(\w+)\s*=\s*([^"'\s>][^\s>]*)/g;
+                let match;
+                while ((match = unquotedAttrRegex.exec(line)) !== null) {
+                    if (options.strictMode) {
+                        addIssue('warning', 'Unquoted Attribute Value', 
+                            `Attribute ${match[1]}="${match[2]}" should be quoted: ${match[1]}="${match[2]}"`, 
+                            lineNum, 'attributes');
+                    }
+                }
+
+                // Check for duplicate attributes
+                const attrRegex = /(\w+)\s*=/g;
+                const attributes = [];
+                while ((match = attrRegex.exec(line)) !== null) {
+                    const attrName = match[1].toLowerCase();
+                    if (attributes.includes(attrName)) {
+                        addIssue('error', 'Duplicate Attribute', 
+                            `Attribute "${attrName}" appears multiple times in the same tag`, 
+                            lineNum, 'attributes');
+                    }
+                    attributes.push(attrName);
+                }
+
+                // Check required attributes
+                const tagMatch = line.match(/<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/);
+                if (tagMatch) {
+                    const tagName = tagMatch[1].toLowerCase();
+                    const tagContent = tagMatch[0];
+                    
+                    if (validationEngine.requiredAttributes[tagName]) {
+                        validationEngine.requiredAttributes[tagName].forEach(requiredAttr => {
+                            const attrPattern = new RegExp(`\\b${requiredAttr}\\s*=`, 'i');
+                            if (!attrPattern.test(tagContent)) {
+                                if (tagName === 'img' && requiredAttr === 'alt') {
+                                    addIssue('error', 'Missing Alt Attribute', 
+                                        'Images must have alt attributes for accessibility', 
+                                        lineNum, 'accessibility');
+                                } else if (tagName === 'html' && requiredAttr === 'lang') {
+                                    addIssue('warning', 'Missing Language Attribute', 
+                                        'HTML element should have a lang attribute for accessibility', 
+                                        lineNum, 'accessibility');
+                                } else {
+                                    addIssue('error', 'Missing Required Attribute', 
+                                        `Element <${tagName}> requires attribute "${requiredAttr}"`, 
+                                        lineNum, 'attributes');
+                                }
+                            }
+                        });
+                    }
+                }
+
+                // Check for presentation attributes (info level suggestions)
+                const presentationTagMatch = line.match(/<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/);
+                if (presentationTagMatch) {
+                    const tagName = presentationTagMatch[1].toLowerCase();
+                    const tagContent = presentationTagMatch[0];
+                    
+                    // Presentation attributes that are valid but CSS is preferred
+                    const presentationAttributes = {
+                        'table': ['bgcolor', 'border', 'cellpadding', 'cellspacing'],
+                        'td': ['bgcolor', 'align', 'valign'],
+                        'th': ['bgcolor', 'align', 'valign'],
+                        'tr': ['bgcolor', 'align', 'valign'],
+                        'body': ['bgcolor'],
+                        'p': ['align'],
+                        'div': ['align'],
+                        'h1': ['align'], 'h2': ['align'], 'h3': ['align'], 'h4': ['align'], 'h5': ['align'], 'h6': ['align']
+                    };
+                    
+                    if (presentationAttributes[tagName] && options.strictMode) {
+                        presentationAttributes[tagName].forEach(attr => {
+                            const presentationRegex = new RegExp(`\\b${attr}\\s*=`, 'i');
+                            if (presentationRegex.test(tagContent)) {
+                                addIssue('info', 'Presentation Attribute', 
+                                    `Consider using CSS instead of "${attr}" attribute for better maintainability`, 
+                                    lineNum, 'performance');
+                            }
+                        });
+                    }
+                }
+
+                // Check for deprecated attributes (context-specific)
+                // Note: Most presentation attributes are still valid in HTML5, just discouraged
+                const deprecatedTagMatch = line.match(/<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/);
+                if (deprecatedTagMatch) {
+                    const tagName = deprecatedTagMatch[1].toLowerCase();
+                    const tagContent = deprecatedTagMatch[0];
+                    
+                    // Only flag truly obsolete attributes
+                    // Check for discouraged attributes (still work but invalid HTML5)
+                const discouragedTagMatch = line.match(/<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/);
+                if (discouragedTagMatch) {
+                    const tagName = discouragedTagMatch[1].toLowerCase();
+                    const tagContent = discouragedTagMatch[0];
+                    
+                    // Attributes that still work but are invalid in HTML5
+                    const discouragedAttributes = {
+                        'body': ['text', 'link', 'vlink', 'alink'] // These still work but are invalid HTML5
+                    };
+                    
+                    if (discouragedAttributes[tagName]) {
+                        discouragedAttributes[tagName].forEach(attr => {
+                            const discouragedRegex = new RegExp(`\\b${attr}\\s*=`, 'i');
+                            if (discouragedRegex.test(tagContent)) {
+                                addIssue('warning', 'Discouraged Attribute', 
+                                    `Attribute "${attr}" on <${tagName}> still works but is invalid HTML5. Use CSS instead`, 
+                                    lineNum, 'deprecated');
+                            }
+                        });
+                    }
+                }
+                }
+            });
+        }
+
+        function checkContentModel(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for invalid nesting patterns
+                const patterns = [
+                    { parent: 'p', child: 'div', message: 'Block elements cannot be nested inside <p> tags' },
+                    { parent: 'a', child: 'a', message: 'Anchor tags cannot be nested inside other anchor tags' },
+                    { parent: 'button', child: 'button', message: 'Button elements cannot be nested' },
+                    { parent: 'h1', child: 'h[1-6]', message: 'Heading elements cannot be nested inside other headings' }
+                ];
+
+                patterns.forEach(pattern => {
+                    const nestedRegex = new RegExp(`<${pattern.parent}[^>]*>.*<${pattern.child}`, 'i');
+                    if (nestedRegex.test(line)) {
+                        addIssue('error', 'Invalid Element Nesting', 
+                            pattern.message, lineNum, 'nesting');
+                    }
+                });
+
+                // Check for interactive elements in wrong contexts
+                if (line.includes('<a') && line.includes('<button')) {
+                    addIssue('warning', 'Interactive Elements Conflict', 
+                        'Avoid nesting interactive elements like buttons inside links', 
+                        lineNum, 'nesting');
+                }
+            });
+        }
+
+        function checkEntityReferences(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for unescaped ampersands
+                const ampersandRegex = /&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#[0-9]+|#x[0-9a-fA-F]+);)/g;
+                let match;
+                while ((match = ampersandRegex.exec(line)) !== null) {
+                    addIssue('error', 'Unescaped Ampersand', 
+                        'Ampersand (&) must be escaped as &amp; in HTML', 
+                        lineNum, 'entities');
+                }
+
+                // Check for invalid entity references
+                const entityRegex = /&([a-zA-Z][a-zA-Z0-9]*);/g;
+                while ((match = entityRegex.exec(line)) !== null) {
+                    const entity = '&' + match[1] + ';';
+                    if (!validationEngine.validEntities.includes(entity)) {
+                        addIssue('warning', 'Unknown Entity Reference', 
+                            `Entity "${entity}" may not be recognized in all browsers`, 
+                            lineNum, 'entities');
+                    }
+                }
+
+                // Check for malformed numeric entities
+                const numericEntityRegex = /&#(?:x[0-9a-fA-F]*|[0-9]*);/g;
+                while ((match = numericEntityRegex.exec(line)) !== null) {
+                    const entity = match[0];
+                    if (entity === '&#;' || entity === '&#x;') {
+                        addIssue('error', 'Malformed Numeric Entity', 
+                            `Invalid numeric entity reference: ${entity}`, 
+                            lineNum, 'entities');
+                    }
+                }
+            });
+        }
+
+        function checkAccessibility(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for missing alt attributes on images
+                if (line.includes('<img') && !line.includes('alt=')) {
+                    addIssue('error', 'Missing Alt Attribute', 
+                        'Images must have alt attributes for screen readers', 
+                        lineNum, 'accessibility');
+                }
+
+                // Check for empty alt attributes on non-decorative images
+                const emptyAltRegex = /<img[^>]+alt\s*=\s*["']?\s*["']?[^>]*>/i;
+                if (emptyAltRegex.test(line) && !line.includes('role="presentation"')) {
+                    addIssue('warning', 'Empty Alt Attribute', 
+                        'Consider if this image is decorative or needs descriptive alt text', 
+                        lineNum, 'accessibility');
+                }
+
+                // Check for form inputs without labels
+                if (line.includes('<input') && !line.includes('type="hidden"')) {
+                    const inputMatch = line.match(/id\s*=\s*["']([^"']+)["']/);
+                    if (inputMatch) {
+                        const inputId = inputMatch[1];
+                        const hasLabel = html.includes(`for="${inputId}"`);
+                        const hasAriaLabel = line.includes('aria-label');
+                        if (!hasLabel && !hasAriaLabel) {
+                            addIssue('warning', 'Input Without Label', 
+                                'Form inputs should be associated with labels or have aria-label', 
+                                lineNum, 'accessibility');
+                        }
+                    }
+                }
+
+                // Check for heading hierarchy
+                const headingMatch = line.match(/<h([1-6])[^>]*>/i);
+                if (headingMatch) {
+                    const level = parseInt(headingMatch[1]);
+                    if (level > 1) {
+                        const prevHeadingRegex = new RegExp(`<h[1-${level-1}]`, 'i');
+                        if (!html.match(prevHeadingRegex)) {
+                            addIssue('info', 'Heading Hierarchy Skip', 
+                                `Consider using h${level-1} before h${level} for better document structure`, 
+                                lineNum, 'accessibility');
+                        }
+                    }
+                }
+
+                // Check for ARIA attributes
+                const ariaRoleMatch = line.match(/role\s*=\s*["']([^"']+)["']/i);
+                if (ariaRoleMatch) {
+                    const role = ariaRoleMatch[1];
+                    if (!validationEngine.validAriaRoles.includes(role)) {
+                        addIssue('warning', 'Invalid ARIA Role', 
+                            `ARIA role "${role}" is not valid`, 
+                            lineNum, 'accessibility');
+                    }
+                }
+
+                // Check for aria-invalid without aria-describedby
+                if (line.includes('aria-invalid="true"') && !line.includes('aria-describedby')) {
+                    addIssue('warning', 'Missing Error Description', 
+                        'Elements with aria-invalid="true" should have aria-describedby pointing to error message', 
+                        lineNum, 'accessibility');
+                }
+            });
+        }
+
+        function checkSEO(html, lines, options) {
+            // Check for title tag
+            if (!html.includes('<title>')) {
+                addIssue('error', 'Missing Title Tag', 
+                    'Document must have a <title> tag for SEO and browser tabs', 1, 'seo');
+            } else {
+                const titleMatch = html.match(/<title[^>]*>(.*?)<\/title>/is);
+                if (titleMatch) {
+                    const titleText = titleMatch[1].trim();
+                    if (!titleText) {
+                        addIssue('warning', 'Empty Title Tag', 
+                            'Title tag should contain descriptive text', 1, 'seo');
+                    } else if (titleText.length > 60) {
+                        addIssue('info', 'Long Title Tag', 
+                            'Title should be under 60 characters for optimal SEO', 1, 'seo');
+                    }
+                }
+            }
+
+            // Check for meta description
+            if (!html.includes('name="description"')) {
+                addIssue('info', 'Missing Meta Description', 
+                    'Consider adding a meta description for better SEO', 1, 'seo');
+            }
+
+            // Check for viewport meta tag
+            if (!html.includes('viewport')) {
+                addIssue('info', 'Missing Viewport Meta Tag', 
+                    'Add viewport meta tag for responsive design', 1, 'seo');
+            }
+
+            // Check for multiple H1 tags
+            const h1Count = (html.match(/<h1[^>]*>/gi) || []).length;
+            if (h1Count > 1) {
+                addIssue('warning', 'Multiple H1 Tags', 
+                    'Page should have only one H1 tag for SEO', 1, 'seo');
+            } else if (h1Count === 0) {
+                addIssue('warning', 'Missing H1 Tag', 
+                    'Page should have an H1 tag for SEO', 1, 'seo');
+            }
+        }
+
+        function checkPerformance(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for inline styles
+                if (line.includes('style=')) {
+                    addIssue('info', 'Inline Styles', 
+                        'Consider using external CSS files for better performance and maintainability', 
+                        lineNum, 'performance');
+                }
+
+                // Check for images without dimensions
+                if (line.includes('<img') && (!line.includes('width=') || !line.includes('height='))) {
+                    addIssue('info', 'Image Without Dimensions', 
+                        'Specify width and height attributes to prevent layout shift', 
+                        lineNum, 'performance');
+                }
+
+                // Check for external scripts without async/defer
+                if (line.includes('<script') && line.includes('src=') && 
+                    !line.includes('async') && !line.includes('defer')) {
+                    addIssue('info', 'Blocking Script', 
+                        'Consider adding async or defer to external scripts for better performance', 
+                        lineNum, 'performance');
+                }
+            });
+        }
+
+        function checkFormValidation(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for forms with required fields but no validation
+                if (line.includes('<form') && !line.includes('novalidate')) {
+                    // This is actually good - native validation should be used
+                }
+
+                // Check for input types
+                if (line.includes('<input') && line.includes('type="email"')) {
+                    if (!line.includes('required') && !line.includes('aria-required')) {
+                        addIssue('info', 'Email Input Without Required', 
+                            'Consider if email input should be required', 
+                            lineNum, 'forms');
+                    }
+                }
+
+                // Check for form labels
+                if (line.includes('<input') && !line.includes('type="hidden"') && 
+                    !line.includes('type="submit"') && !line.includes('type="button"')) {
+                    if (!line.includes('id=')) {
+                        addIssue('warning', 'Input Without ID', 
+                            'Form inputs should have IDs for label association', 
+                            lineNum, 'forms');
+                    }
+                }
+            });
+        }
+
+        function checkDeprecatedElements(html, lines, options) {
+            // Check deprecated elements (warning level)
+            validationEngine.deprecatedElements.forEach(element => {
+                const regex = new RegExp(`<${element}\\b`, 'gi');
+                lines.forEach((line, index) => {
+                    if (regex.test(line)) {
+                        addIssue('warning', 'Deprecated Element', 
+                            `The <${element}> element is deprecated but still works. Consider using modern HTML and CSS instead`, 
+                            index + 1, 'deprecated');
+                    }
+                });
+            });
+
+            // Check obsolete elements (error level)
+            if (validationEngine.obsoleteElements) {
+                validationEngine.obsoleteElements.forEach(element => {
+                    const regex = new RegExp(`<${element}\\b`, 'gi');
+                    lines.forEach((line, index) => {
+                        if (regex.test(line)) {
+                            addIssue('error', 'Obsolete Element', 
+                                `The <${element}> element is obsolete and should not be used`, 
+                                index + 1, 'deprecated');
+                        }
+                    });
+                });
+            }
+        }
+
+        function checkComments(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for malformed comments
+                if (line.includes('<!--') && !line.includes('-->')) {
+                    // Check if comment spans multiple lines
+                    const restOfDocument = html.substring(html.indexOf(line));
+                    if (!restOfDocument.includes('-->')) {
+                        addIssue('error', 'Unclosed Comment', 
+                            'HTML comment is not properly closed', 
+                            lineNum, 'comments');
+                    }
+                }
+
+                // Check for nested comments (not allowed)
+                if (line.includes('<!--') && line.indexOf('<!--', line.indexOf('<!--') + 1) !== -1) {
+                    addIssue('error', 'Nested Comments', 
+                        'HTML comments cannot be nested', 
+                        lineNum, 'comments');
+                }
+
+                // Check for invalid comment syntax
+                const invalidCommentRegex = /<!(?!--)[^>]*>/;
+                if (invalidCommentRegex.test(line)) {
+                    addIssue('error', 'Invalid Comment Syntax', 
+                        'Use <!-- comment --> syntax for HTML comments', 
+                        lineNum, 'comments');
+                }
+            });
+        }
+
+        function checkURLs(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for empty href attributes
+                if (line.includes('href=""') || line.includes("href=''")) {
+                    addIssue('warning', 'Empty Link', 
+                        'Link has empty href attribute', 
+                        lineNum, 'links');
+                }
+
+                // Check for external links without security attributes
+                const externalLinkRegex = /href\s*=\s*["']https?:\/\/[^"']*["'][^>]*target\s*=\s*["']_blank["']/i;
+                if (externalLinkRegex.test(line) && !line.includes('rel=')) {
+                    addIssue('warning', 'External Link Security', 
+                        'External links with target="_blank" should include rel="noopener" or rel="noreferrer"', 
+                        lineNum, 'security');
+                }
+
+                // Check for javascript: URLs
+                if (line.includes('javascript:')) {
+                    addIssue('warning', 'JavaScript URL', 
+                        'Avoid javascript: URLs for better security and accessibility', 
+                        lineNum, 'security');
+                }
+            });
+        }
+
+        function checkMediaElements(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for video elements without controls
+                if (line.includes('<video') && !line.includes('controls') && !line.includes('autoplay')) {
+                    addIssue('warning', 'Video Without Controls', 
+                        'Video elements should have controls for accessibility', 
+                        lineNum, 'accessibility');
+                }
+
+                // Check for audio elements without descriptions
+                if (line.includes('<audio') && !line.includes('aria-label') && !line.includes('title')) {
+                    addIssue('info', 'Audio Without Description', 
+                        'Consider adding aria-label or title to audio elements', 
+                        lineNum, 'accessibility');
+                }
+            });
+        }
+
+        function checkTableStructure(html, lines, options) {
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                
+                // Check for tables without captions
+                if (line.includes('<table') && !html.includes('<caption')) {
+                    addIssue('info', 'Table Without Caption', 
+                        'Consider adding a caption to tables for accessibility', 
+                        lineNum, 'accessibility');
+                }
+
+                // Check for tables without th elements
+                if (line.includes('<table') && !html.includes('<th')) {
+                    addIssue('warning', 'Table Without Headers', 
+                        'Data tables should have header cells (<th>) for accessibility', 
+                        lineNum, 'accessibility');
+                }
+            });
+        }
+
+        function addIssue(type, title, message, line, category, codeSnippet = '') {
+            allIssues.push({
+                type,
+                title,
+                message,
+                line,
+                category,
+                codeSnippet
+            });
+        }
+
+        function displayResults() {
+            const results = document.getElementById('results');
+            const summary = document.getElementById('summary');
+            const summaryTitle = document.getElementById('summaryTitle');
+            const summaryText = document.getElementById('summaryText');
+            const stats = document.getElementById('stats');
+            const issuesContainer = document.getElementById('issues');
+
+            results.classList.add('show');
+
+            const critical = allIssues.filter(issue => issue.type === 'critical');
+            const errors = allIssues.filter(issue => issue.type === 'error');
+            const warnings = allIssues.filter(issue => issue.type === 'warning');
+            const infos = allIssues.filter(issue => issue.type === 'info');
+
+            // Update summary
+            if (allIssues.length === 0) {
+                summary.className = 'summary valid';
+                summaryTitle.textContent = '✅ Perfect HTML';
+                summaryText.textContent = 'Excellent! Your HTML is fully compliant and follows all best practices.';
+            } else if (critical.length > 0) {
+                summary.className = 'summary critical';
+                summaryTitle.textContent = '🚨 Critical Issues Found';
+                summaryText.textContent = `Found ${critical.length} critical issue(s) that prevent proper rendering.`;
+            } else if (errors.length > 0) {
+                summary.className = 'summary invalid';
+                summaryTitle.textContent = '❌ HTML Errors Found';
+                summaryText.textContent = `Found ${errors.length} error(s) that should be fixed for valid HTML.`;
+            } else {
+                summary.className = 'summary';
+                summaryTitle.textContent = '⚠️ HTML with Suggestions';
+                summaryText.textContent = `Found ${allIssues.length} suggestion(s) for improvement.`;
+            }
+
+            // Update stats
+            stats.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number critical">${critical.length}</div>
+                    <div class="stat-label">Critical</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number errors">${errors.length}</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number warnings">${warnings.length}</div>
+                    <div class="stat-label">Warnings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info">${infos.length}</div>
+                    <div class="stat-label">Suggestions</div>
+                </div>
+            `;
+
+            // Create category filters
+            createCategoryFilters();
+
+            // Display issues
+            displayIssues();
+        }
+
+        function createCategoryFilters() {
+            const categories = [...new Set(allIssues.map(issue => issue.category))];
+            const categoryFilters = document.getElementById('categoryFilters');
             
-            // Auto-hide after a few seconds
-            setTimeout(function() {
-                statusMessage.style.display = 'none';
+            let filtersHTML = '<div class="category-filter active" data-category="all">All Issues</div>';
+            categories.forEach(category => {
+                const count = allIssues.filter(issue => issue.category === category).length;
+                filtersHTML += `<div class="category-filter" data-category="${category}">${category.charAt(0).toUpperCase() + category.slice(1)} (${count})</div>`;
+            });
+            
+            categoryFilters.innerHTML = filtersHTML;
+
+            // Add click handlers
+            categoryFilters.querySelectorAll('.category-filter').forEach(filter => {
+                filter.addEventListener('click', (e) => {
+                    categoryFilters.querySelectorAll('.category-filter').forEach(f => f.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    const category = e.target.dataset.category;
+                    activeFilters.clear();
+                    activeFilters.add(category);
+                    displayIssues();
+                });
+            });
+        }
+
+        function displayIssues() {
+            const issuesContainer = document.getElementById('issues');
+            
+            if (allIssues.length === 0) {
+                issuesContainer.innerHTML = `
+                    <div class="no-issues">
+                        <span class="icon">🎉</span>
+                        <h3>Outstanding work!</h3>
+                        <p>Your HTML code follows all standards and best practices.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const filteredIssues = activeFilters.has('all') 
+                ? allIssues 
+                : allIssues.filter(issue => activeFilters.has(issue.category));
+
+            issuesContainer.innerHTML = filteredIssues.map(issue => `
+                <div class="issue ${issue.type}">
+                    <h4>
+                        <span class="title-text">${issue.title}</span>
+                        <span class="category-badge">${issue.category}</span>
+                        <span class="line-number">Line ${issue.line}</span>
+                    </h4>
+                    <p>${issue.message}</p>
+                    ${issue.codeSnippet ? `<div class="code-snippet">${issue.codeSnippet}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Live Editor Functions
+        function updatePreview() {
+            const editorInput = document.getElementById('editorInput');
+            const previewContent = document.getElementById('previewContent');
+            
+            if (!editorInput || !previewContent) return;
+            
+            try {
+                const html = editorInput.value;
+                // Create a safe iframe for preview
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '400px';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '8px';
+                
+                previewContent.innerHTML = '';
+                previewContent.appendChild(iframe);
+                
+                // Write HTML to iframe
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(html);
+                iframe.contentDocument.close();
+                
+                showStatusMessage('Preview updated successfully!', 'success');
+            } catch (error) {
+                previewContent.innerHTML = '<p style="color: red;">Error rendering preview: ' + error.message + '</p>';
+                showStatusMessage('Error updating preview', 'error');
+            }
+        }
+
+        function clearEditor() {
+            document.getElementById('editorInput').value = '';
+            document.getElementById('previewContent').innerHTML = 'Preview cleared. Enter HTML and update to see results.';
+            showStatusMessage('Editor cleared!', 'success');
+        }
+
+        function downloadHTML() {
+            const content = document.getElementById('editorInput').value;
+            downloadFile(content, 'my-html-file.html');
+        }
+
+        function validateFromEditor() {
+            const content = document.getElementById('editorInput').value;
+            document.getElementById('htmlInput').value = content;
+            switchTab('validator');
+            setTimeout(() => validateHTML(), 100);
+        }
+
+        // Split View Functions
+        function updateSplitPreview() {
+            const splitInput = document.getElementById('splitInput');
+            const splitPreviewContent = document.getElementById('splitPreviewContent');
+            
+            if (!splitInput || !splitPreviewContent) return;
+            
+            try {
+                const html = splitInput.value;
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '350px';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '8px';
+                
+                splitPreviewContent.innerHTML = '';
+                splitPreviewContent.appendChild(iframe);
+                
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(html);
+                iframe.contentDocument.close();
+                
+                showStatusMessage('Split preview updated!', 'success');
+            } catch (error) {
+                splitPreviewContent.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+                showStatusMessage('Error updating split preview', 'error');
+            }
+        }
+
+        function validateFromSplit() {
+            const content = document.getElementById('splitInput').value;
+            document.getElementById('htmlInput').value = content;
+            switchTab('validator');
+            setTimeout(() => validateHTML(), 100);
+        }
+
+        function downloadFromSplit() {
+            const content = document.getElementById('splitInput').value;
+            downloadFile(content, 'split-view-file.html');
+        }
+
+        function clearSplit() {
+            document.getElementById('splitInput').value = '';
+            document.getElementById('splitPreviewContent').innerHTML = 'Split view cleared. Enter HTML and update to see results.';
+            showStatusMessage('Split view cleared!', 'success');
+        }
+
+        // Utility Functions
+        function downloadFile(content, filename) {
+            try {
+                const blob = new Blob([content], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                window.URL.revokeObjectURL(url);
+                showStatusMessage('File downloaded successfully!', 'success');
+            } catch (error) {
+                showStatusMessage('Error downloading file: ' + error.message, 'error');
+            }
+        }
+
+        function showStatusMessage(message, type) {
+            // Create a temporary status message
+            const statusDiv = document.createElement('div');
+            statusDiv.style.position = 'fixed';
+            statusDiv.style.top = '20px';
+            statusDiv.style.right = '20px';
+            statusDiv.style.padding = '10px 20px';
+            statusDiv.style.borderRadius = '8px';
+            statusDiv.style.color = 'white';
+            statusDiv.style.fontWeight = 'bold';
+            statusDiv.style.zIndex = '10000';
+            statusDiv.style.animation = 'slideInRight 0.3s ease';
+            
+            if (type === 'success') {
+                statusDiv.style.background = '#28a745';
+            } else {
+                statusDiv.style.background = '#dc3545';
+            }
+            
+            statusDiv.textContent = message;
+            document.body.appendChild(statusDiv);
+            
+            setTimeout(() => {
+                statusDiv.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (statusDiv.parentNode) {
+                        document.body.removeChild(statusDiv);
+                    }
+                }, 300);
             }, 3000);
         }
-        
-        // Initial preview on page load
+
+        // Showcase Functions
+        function loadSpamDemo() {
+            const showcaseInput = document.getElementById('showcaseInput');
+            // The demo is already loaded in the textarea, so just update preview
+            updateShowcasePreview();
+            showStatusMessage('Spam tag demo loaded!', 'success');
+        }
+
+        function updateShowcasePreview() {
+            const showcaseInput = document.getElementById('showcaseInput');
+            const showcasePreviewContent = document.getElementById('showcasePreviewContent');
+            
+            if (!showcaseInput || !showcasePreviewContent) return;
+            
+            try {
+                const html = showcaseInput.value;
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '8px';
+                
+                showcasePreviewContent.innerHTML = '';
+                showcasePreviewContent.appendChild(iframe);
+                
+                // Write HTML to iframe - the custom spam tag will work!
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(html);
+                iframe.contentDocument.close();
+                
+                showStatusMessage('Custom spam tag demo updated!', 'success');
+            } catch (error) {
+                showcasePreviewContent.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+                showStatusMessage('Error updating showcase preview', 'error');
+            }
+        }
+
+        function validateFromShowcase() {
+            const content = document.getElementById('showcaseInput').value;
+            document.getElementById('htmlInput').value = content;
+            switchTab('validator');
+            setTimeout(() => validateHTML(), 100);
+        }
+
+        function downloadFromShowcase() {
+            const content = document.getElementById('showcaseInput').value;
+            downloadFile(content, 'custom-spam-tag-demo.html');
+        }
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Auto-validate on page load
         window.onload = function() {
-            updatePreview();
+            validateHTML();
         };
     </script>
 </body>

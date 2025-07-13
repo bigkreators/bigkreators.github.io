@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Moved</title>
+    <meta http-equiv="refresh" content="1; url=index5.html" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .clock-container {
+            text-align: center;
+            color: #00ff88;
+            padding: 40px;
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+        
+        .time-labels {
+            display: flex;
+            font-size: 12px;
+            font-weight: bold;
+            color: #66ffaa;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .time-labels span {
+            width: 80px;
+            text-align: center;
+        }
+        
+        .time-labels span:nth-child(2),
+        .time-labels span:nth-child(3) {
+            margin-left: 45px;
+        }
+        
+        .time-display {
+            font-size: 64px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .separator {
+            color: #44cc77;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="time-labels">
+            <span>hours</span>
+            <span>minutes</span>
+            <span>seconds</span>
+        </div>
+        <div class="time-display">
+            00<span class="separator">:</span>00<span class="separator">:</span>04
+        </div>
+    </div>
+</body>
+</html>

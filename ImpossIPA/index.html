@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impossible IPA chart</title>
 <style>
+/* font */
 @font-face {
     font-family: 'Charis SIL';
     src: url('CharisSIL-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
+/* body section */
 body {
    font-family: Charis SIL;
    display: flex;
@@ -20,14 +22,61 @@ body {
    min-height: 100vh;
    margin: 0;
 }
+/* table */
 .impossible {
     background-color: #d1d4da;
+}
+table {
+font-size: 18px;
+text-align: center;
+border-spacing: 0.15em;
+}
+th {
+padding: 0.15em;
+line-height: 100%;
+font-weight: bold;
+}
+th:nth-child(odd) {
+background-color: #6f4;
+}
+th:nth-child(even) {
+background-color: #ccffc1;
+}
+tr:first-child th:first-child {
+background-color: white !important;
+}
+td {
+padding: 0.1em;
+background-color: #eeffea;
+}
+/* audio */
+.audio {
+    cursor: pointer;
+}
+.problem {
+    background-color: #faa;
+    border: 1px solid #f00;
+    padding: 0 1em;
+    margin: 1em auto;
+    max-width: 37em;
 }
 </style>
 </head>
 <body>
 <h1>Impossible IPA chart</h1>
-<table style="font-size: 18px; text-align: center;">
+<noscript>
+<div class="problem">
+    <p><strong>Sorry, you have JavaScript disabled or your web browser doesn't support it.</strong></p>
+    <p>The audio on this chart won't work without JavaScript enabled. Please enable JavaScript or upgrade to a modern web browser.</p>
+</div>
+<!-- make cursor default if there is no javascript -->
+<style>
+.audio {
+    cursor: default !important;
+}
+</style>
+</noscript>
+<table>
 <tr>
 <th></th>
 <th colspan="2">Bilabial</th>
@@ -49,7 +98,7 @@ body {
 <td></td>
 <!-- Pharyngeal -->
 <td></td>
-<td class="impossible">𝼂</td>
+<td class="impossible audio" data-src="audio/Voiced_pharyngeal_stop.ogg">𝼂</td>
 <!-- Glottal -->
 <td></td>
 <td class="impossible">ʔ̬</td>
@@ -67,7 +116,7 @@ body {
 <td></td>
 <!-- Pharyngeal -->
 <td class="impossible">ɴ̠̊</td>
-<td class="impossible">ɴ̠</td>
+<td class="impossible audio" data-src="audio/Voiced-pharyngeal-nasal.ogg">ɴ̠</td>
 <!-- Glottal -->
 <td class="impossible">ʔ̃</td>
 <td class="impossible">ʔ̬̃</td>
@@ -81,8 +130,8 @@ body {
 <td></td>
 <td></td>
 <!-- Velar -->
-<td class="impossible">ʀ̟̊˖</td>
-<td class="impossible">ʀ̟˖</td>
+<td class="impossible audio" data-src="audio/Voiceless_velar_trill.wav">ʀ̟̊˖</td>
+<td class="impossible audio" data-src="audio/Voiced_velar_trill.wav">ʀ̟˖</td>
 <!-- Pharyngeal -->
 <td></td>
 <td></td>
@@ -100,7 +149,7 @@ body {
 <td></td>
 <!-- Velar -->
 <td class="impossible">k̆</td>
-<td class="impossible">ɡ̆</td>
+<td class="impossible audio" data-src="audio/Voiced_velar_tap.wav">ɡ̆</td>
 <!-- Pharyngeal -->
 <td></td>
 <td></td>
@@ -158,5 +207,27 @@ body {
 <td class="impossible">ʟ̠˗</td>
 </tr>
 </table>
+<p>The audio samples used on this page are from Wikimedia Commons:</p>
+<ul>
+<li><a href="https://commons.wikimedia.org/wiki/File:Voiced_pharyngeal_stop.ogg">File:Voiced pharyngeal stop.ogg</a> - <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">Creative Commons Attribution-Share Alike 3.0 Unported</a> license</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Voiced-pharyngeal-nasal.ogg">File:Voiced-pharyngeal-nasal.ogg</a> - <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">Creative Commons Attribution-Share Alike 4.0 International</a> license</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Voiceless_velar_trill.wav">File:Voiceless velar trill.wav</a> - <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">Creative Commons CC0 1.0 Universal Public Domain Dedication</a> license</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Voiced_velar_trill.wav">File:Voiced velar trill.wav</a> - <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">Creative Commons CC0 1.0 Universal Public Domain Dedication</a> license</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Voiced_velar_tap.wav">File:Voiced velar tap.wav</a> - <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">Creative Commons CC0 1.0 Universal Public Domain Dedication</a> license</li>
+</ul>
+<p>Some of this stuff is based off of <a href="https://ipachart.com">ipachart.com</a></p>
+<script>
+// Audio functionality for clickable phonetic symbols
+    document.querySelectorAll('.audio').forEach(element => {
+        element.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-src');
+            if (audioUrl) {
+                const audio = new Audio(audioUrl);
+                audio.play().catch(e => {
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
