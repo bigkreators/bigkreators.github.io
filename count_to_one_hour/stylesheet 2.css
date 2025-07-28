@@ -1,5 +1,3 @@
-/* Fonts */
-
 @font-face {
     font-family: 'Gentium Plus';
     src: url('../fonts/GentiumPlus-Regular.ttf') format('truetype');
@@ -15,65 +13,15 @@
     font-style: normal;
     font-display: swap;
 }
-@font-face {
-    font-family: 'Quivira';
-    src: url('../fonts/Quivira.otf') format('opentype');
-    font-display: swap; /* Correct choice for essential symbols */
-}
-@font-face {
-font-family: 'Noto Sans';
-src: url('../fonts/NotoSans-Regular.ttf') format('truetype');
-font-display: swap;
-}
-@font-face {
-font-family: 'AncientSans';
-src: url('../fonts/Ancientsans-rvyrK.ttf');
-font-display: swap;
-}
-.STIX_Two_Math-or_Symbola {
-    font-family: "STIX Two Math", "Symbola";
-}
-.AncientSans-or-Copperplate {
-    font-family: AncientSans, Copperplate, sans-serif; 
-}
 
-/* Rest of the CSS */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f7fa;
-    padding: 20px;
-}
-
-
-table {
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-bottom: 20px; 
-}
-
-th, td { 
-    border: 1px solid #ddd; 
-    padding: 10px; 
-    text-align: center;
-}
-
-th { 
-    background-color: #f8f9fa; 
-    font-weight: normal;
-}
-
-.label-cell { 
-    background-color: #f8f9fa; 
-    font-weight: bold;
-}
+/* Rest of your CSS... */
 
 h2, h3 {
 border-bottom: 1px solid #a2a9b1;
 text-align: center;
 }
-.sideways {
-    display: inline-block;
-    transform: rotate(-90deg);
+.STIX_Two_Math-or_Symbola {
+    font-family: "STIX Two Math", "Symbola";
 }
 
 .clear-btn { 
@@ -118,6 +66,10 @@ text-align: center;
     position: absolute; 
     left: 0; 
     top: 0; 
+}
+
+.AncientSans-or-Copperplate { 
+    font-family: AncientSans, Copperplate, sans-serif; 
 }
 
 span { 
@@ -169,6 +121,13 @@ small-capital {
     width: 30%; 
     margin-bottom: 20px; 
 }
+
+body { 
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -185,13 +144,13 @@ small-capital {
     margin-bottom: 20px;
 }
 
-.search-container { 
-    display: flex; 
-    margin-bottom: 10px; 
-    padding: 10px; 
+.search-container {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
     background-color: #f9f9f9; 
     align-items: center; 
-    border: none; 
+    border: none;
 }
 
 #searchInput { 
@@ -199,7 +158,7 @@ small-capital {
     padding: 8px; 
     border: 1px solid #ccc; 
     border-radius: 4px 0 0 4px; 
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .search-btn { 
@@ -211,7 +170,7 @@ small-capital {
     cursor: pointer; 
     font-weight: 600; 
     transition: all 0.3s ease; 
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3); 
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
 
 .overflow {
@@ -226,6 +185,8 @@ small-capital {
 .tabs {
     display: flex;
     margin-bottom: 20px;
+
+
 }
 
 .tab {
@@ -236,11 +197,28 @@ small-capital {
     cursor: pointer;
     border-radius: 5px;
     margin-right: 10px;
+
+
+
 }
 
 .tab.active {
     background-color: #6b7ff7;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .category-tabs {
     display: flex;
@@ -256,6 +234,69 @@ small-capital {
     margin: 0 2px 5px 0;
     flex-grow: 1;
     border-radius: 5px;
+}
+
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 20px; 
+
+
+}
+
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    text-align: center;
+
+
+}
+
+th { 
+    background-color: #f8f9fa; 
+    font-weight: normal;
+
+
+}
+
+.label-cell { 
+    background-color: #f8f9fa; 
+    font-weight: bold;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 .tab-content { 
@@ -276,10 +317,57 @@ small-capital {
     display: flex;
     align-items: center;
     gap: 15px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
 
 .notification-container {
     position: relative;
+
 }
 
 .bell-button {
@@ -337,6 +425,7 @@ small-capital {
     right: 0;
     top: 40px;
     width: 300px;
+
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -456,80 +545,122 @@ small-capital {
     text-align: center;
     color: #999;
 }
-
 /* This targets any text containing the character */
 *:contains("𝼋") {
     font-family: 'Gentium Plus' !important;
-}
 
-/* ========== MOBILE OPTIMIZATIONS (ONLY) ========== */
-@media (max-width: 768px) {
-    /* Basic layout adjustments */
-    body {
-        padding: 10px;
-    }
-    
-    .container {
-        padding: 15px;
-        margin: 0 5px;
-    }
-    
-    /* Header stack vertically on mobile */
-    .header {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
-    }
-    
-    /* Search controls stack on mobile */
-    .search-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    #searchInput {
-        border-radius: 4px;
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-    
-    .search-btn, .clear-btn {
-        width: 100%;
-    }
-    
-    /* Tabs wrap on mobile */
-    .tabs {
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-    
-    .tab {
-        flex: 1;
-        margin-right: 0;
-        min-width: 120px;
-    }
-    
-    /* Make notification bell easier to tap */
-    .bell-button:hover {
-        transform: scale(1.05); /* Less dramatic on mobile */
-    }
-    
-    /* Responsive notification dropdown */
-    .notifications-dropdown {
-        width: calc(100vw - 40px);
-        max-width: 350px;
-        right: 50%;
-        transform: translateX(50%);
-    }
-    
-    /* Improve table scrolling experience */
-    .overflow {
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Make "other ones" tables full width on mobile */
-    .otherones-table, 
-    .otherones-table_with-images {
-        width: 100%;
-        height: auto;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

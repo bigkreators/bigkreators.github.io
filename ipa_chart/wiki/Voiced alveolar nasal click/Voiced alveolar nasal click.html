@@ -92,86 +92,253 @@ width: 65%;
             font-size: 0.9em;
         }
 
-/* Simple Wikipedia audio player - clean start */
-.wikipedia-minimal-player {
-    background: #7c7c7e;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px 8px;
-    height: 24px;
-    width: 130px;
+/* Wikipedia-style audio player */
+.mw-tmh-player {
+    width: 150px;
+    height: 84.375px;
     margin: 0 auto;
-    font-family: inherit;
-}
-.wikipedia-minimal-player:hover, .wikipedia-minimal-player.playing, .wikipedia-minimal-player.paused, .wikipedia-minimal-player.ended {
-    background: #1f232a;
+    position: relative;
+    background: #000;
+    border-radius: 0;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8125rem;
 }
 
-.minimal-play-btn {
+.video-js {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    color: #fff;
+    background-color: #000;
+    position: relative;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: normal;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    word-break: initial;
+}
+
+.video-js.vjs-audio {
+    display: flex;
+    height: 3em;
+}
+
+.video-js.vjs-audio:not(.vjs-fill) {
+    display: flex;
+    height: 3em;
+}
+
+.vjs-control-bar {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    background-color: #2B333F;
+    background-color: rgba(43, 51, 63, 0.7);
+}
+
+.vjs-has-started .vjs-control-bar {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.1s, opacity 0.1s;
+}
+
+.vjs-control {
+    position: relative;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 4em;
+    flex: none;
+}
+
+.vjs-play-control {
+    cursor: pointer;
+}
+
+.vjs-button {
     background: none;
     border: none;
-    color: white;
+    color: inherit;
+    display: inline-block;
+    font-size: inherit;
+    line-height: inherit;
+    text-transform: none;
+    text-decoration: none;
+    transition: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 100%;
+}
+
+.vjs-icon-placeholder {
+    display: block;
+    font-size: 1.8em;
+    line-height: 1.67;
+}
+
+.vjs-icon-placeholder:before {
+    font-family: VideoJS;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.vjs-play-control .vjs-icon-placeholder:before {
+    content: "\f101";
+}
+
+.vjs-play-control.vjs-playing .vjs-icon-placeholder:before {
+    content: "\f103";
+}
+
+.vjs-play-control.vjs-ended .vjs-icon-placeholder:before {
+    content: "\f11b";
+}
+
+.vjs-volume-panel {
+    transition: width 1s;
+    display: flex;
+}
+
+.vjs-mute-control {
     cursor: pointer;
-    font-size: 14px;
+    flex: none;
+}
+
+.vjs-mute-control .vjs-icon-placeholder:before {
+    content: "\f107";
+}
+
+.vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder:before {
+    content: "\f104";
+}
+
+.vjs-volume-control {
+    cursor: pointer;
+    margin-right: 1em;
+    display: flex;
+    visibility: visible;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin-left: -1px;
+}
+
+.vjs-volume-panel:hover .vjs-volume-control,
+.vjs-volume-panel.vjs-hover .vjs-volume-control {
+    visibility: visible;
+    opacity: 1;
+    position: relative;
+    transition: visibility 0.1s, opacity 0.1s, height 0.1s, width 0.1s, left 0s, top 0s;
+    width: 5em;
+    height: 3em;
+    margin-right: 0;
+}
+
+.vjs-time-control {
+    flex: none;
+    font-size: 1em;
+    line-height: 3em;
+    min-width: 2em;
+    width: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.vjs-progress-control {
+    cursor: pointer;
+    flex: auto;
+    display: flex;
+    align-items: center;
+    min-width: 4em;
+    touch-action: none;
+}
+
+.vjs-progress-holder {
+    flex: auto;
+    transition: all 0.2s;
+    height: 0.3em;
+    margin: 0 10px;
+}
+
+.vjs-load-progress,
+.vjs-play-progress {
+    position: absolute;
+    display: block;
+    height: 100%;
+    margin: 0;
     padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 16px;
+    width: 0;
 }
 
-.minimal-time-display {
-    background-color: rgba(0,0,0,0.8);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 3px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.vjs-play-progress {
+    background-color: #fff;
 }
 
-/* Audio container styling */
-.audio-container {
-    margin: 8px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
+.vjs-load-progress {
+    background: rgba(115, 133, 159, 0.5);
 }
 
-.info-link {
-    color: #0645ad;
-    text-decoration: none;
-    font-size: 14px;
-    background: #f0f0f0;
-    border: 1px solid #a2a9b1;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.vjs-slider {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0.45em 0 0.45em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: #73859f;
+    background-color: rgba(115, 133, 159, 0.5);
 }
 
-.info-link:hover {
-    background: #e0e0e0;
-    text-decoration: none;
+/* Custom control spacer */
+.vjs-custom-control-spacer {
+    flex: auto;
+    display: block;
+    font-size: 0;
 }
+
+/* More info button */
+.mw-info-button {
+    background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTEsOUgxM1Y3SDExTTEyLDIwQzcuNTksMjAgNCwxNi40MSA0LDEyQzQsNy41OSA3LjU5LDQgMTIsNEMxNi40MSw0IDIwLDcuNTkgMjAsMTJDMjAsMTYuNDEgMTYuNDEsMjAgMTIsMjBNMTIsMkExMCwxMCAwIDAsMCAyLDEyQTEwLDEwIDAgMCwwIDEyLDIyQTEwLDEwIDAgMCwwIDIyLDEyQTEwLDEwIDAgMCwwIDEyLDJNMTEsMTdIMTNWMTFIMTFWMTdaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 2em 2em;
+    cursor: pointer;
+}
+
+/* Hidden text for screen readers */
+.vjs-control-text {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+@font-face {
+    font-family: VideoJS;
+    src: url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAABTsAAsAAAAAIpAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADsAAABUIIslek9TLzIAAAFEAAAAPgAAAFZRiV32Y21hcAAAAYQAAAEJAAAD5p42+VxnbHlmAAACkAAADtIAABckI4l972hlYWQAABFkAAAAKwAAADYsvIjpaGhlYQAAEZAAAAAdAAAAJA+RCL1obXR4AAARsAAAABcAAAC8Q2YAAGxvY2EAABHIAAAAYAAAAGB7CIGGbWF4cAAAEigAAAAfAAAAIAFAAI9uYW1lAAASSAAAASUAAAIK1cf1oHBvc3QAABNwAAABfAAAAnXdFqh1eJxjYGRgYOBiMGCwY2BycfMJYeDLSSzJY5BiYGGAAJA8MpsxJzM9kYEDxgPKsYBpDiBmg4gCACY7BUgAeJxjYGR7yDiBgZWBgaWQ5RkDA8MvCM0cwxDOeI6BgYmBlZkBKwhIc01hcPjI+FGPHcRdyA4RZgQRADaGCyYAAHic7dPXbcMwAEXRK1vuvffem749XAbKV3bjBA6fXsaIgMMLEWoQJaAEFKNnlELyQ4K27zib5PNF6vl8yld+TKr5kH0+cUw0xv00Hwvx2DResUyFKrV4XoMmLdp06NKjz4AhI8ZMmDJjzoIlK9Zs2LJjz4EjJ85cuHLjziPe/0UWL17mf2tqKLz/9jK9f8tXpGCoRdPKhtS0RqFkWvVQNtSKoVYNtWaoddPXEBqG2jQ9XWgZattQO4baNdSeofYNdWCoQ0MdGerYUCeGOjXUmaHODXVhqEtDXRnq2lA3hro11J2h7g31YKhHQz0Z6tlQL4Z6NdSbod4N9WGoT9MfHF6GmhnZLxyDcRMAAAB4nJ1YC1hU17U+a5/HMA4iA3NmVBDmoQwP5TFnHlFeA4gYiUFRQINoSCBAyK3G2yi+0aipYtFcHYo2xsb4NiY3+VrNxSaX5uvt495ozNdoYoxmem2/L8HGpLc+InB269pnhlGr5mvL4eyz99nrrL32eu1/DQcc/okdYgdHOA6MQKp4r9gx0EcMHMezOalVasW5BM7NcXoSb9fFgE6KtySBxWz1FYDPG+vMBGcKb9cebu2VS5s2aaTkCvRSf6C7Y+Ppibm5E09v7IDs2/3uZQtbD0zIyppwoHXh/93ukmyYgdePNRp65p5v+3v/9otQl2O7wP34cT88p8Md2YxpYLQZoRcy6FlSBRnwnGAe6BPMSCZo+7NJVqS0cE4uHendzhSnbPH6TDqL1+Nme5LZXkCHnGyoH0kne30WH+gswhm3q+pt/mTas9NLS64GnjmSlTPw0wVQT/ewRaBgxtydy3cuUB9/6SW+vb5yRvr+t0eOfPKJZ/9t3+4tL7xj32Xd3thCxi+ge6ifdsAN+l5+wi5HQ/cCoeull1AszS7CUfEcJzK7sKWJAdJhCd0sPM4+EY7QDm5ov08hXRQXE5bf6PV5Q5+IjW7X7Nku92Ask4l2hCRRD6TPqISiCJeQna3SCFwrhrNzXHzo4yFevBwxpzxk8WCIIfkvVEKVy32SbT8n68gzgaslpaiO2zIGIyuSb7RNf9HSuN26y/7OC1tgEmpiyA6aD4qcgTOiLThwGG0eB694FI8NHLLN6OBlRVaMxNAFS4JdXUG6mW8PwpKuYLCLXKGbu8iwYNdgO06Sn3Th+/vyZAxs8Ro30DjHe9gy8Fywi24OMm7Qyzh3MTZVOMYhLBnoC+J79lpTUyQmorjhnMwlcQ5uPEYGpDjsOkkH49BjQLQBqs3jFtFdJNlksYmoQFDArLh8Xh+Qd6Ghcsb6FUuehDi+U/lqD71K/qiegeV1imcwjl7ExwiSrf4BZyCujV6cVcFo6VX+G9IcPyFjJnUufbU/jzrL1X99as36reXl8K32nFaOr+E8jWJEcJ55DpMVfSMe95/AJaOsGBH2GJCNpiRQbK4C8BjdmQA22QY2j03Em13i2YHqtNLU1NI04Yj2HJgA6fQc6VPNpA/D+Ryks554NnVy2mB72uRUfPLsqR4N0LOBQKArwJYO+5W2fgZX8oC1HR6HjNaQTVIG2FPwnTcXXGZZfNB7TE6pTKZUwaw91XWLAoFFGcnB5PHjsckgBjbWutrL+0h5Y1xw3DRGDumsnXb3MJwXrJIN5U7m0rgJ3yG5w4he5ckFG4pmNEkOm0/xOO4r4yL87wqtQM+hiJIVp+6iG2wPBKD35ElGkDx+UfC2v1mFG1o+M3AjNFty8biKMXwzyxnZLds8wYD2BxmCPHAldPOeLsy/0BugftYhVYFAhO8SqQ0j3oK7dHJZnI/jxmUS4onlxskSF8thmvNZjIrRZwEPxr0lBuLRuz3oy/FOHCsxwOPYh2M+e9u3J5pgPYz9gp6G7C9m0A11F9ddqKMfV+4sbq45/YspOysXvT+3pdFdYNg2fHbW8Dz301MqDVuGrz0Fuh0YMW8mddrpqzST7rV9BcvqPoNvadRndWp0p8HvbiqrFj5yFQ/vNFSXDpxpLEFWp+DcrF3FT1afWshFcmCfeAMjEvO65i0Y6XijQfSRPWx3TV/Df7Km3E1l+kLt56s/rwVzuRusNMhudznkwdLaS+QNdeal2jDPP4l9qHc98vTYZOSkxzD+njBWVWjFPKgipx6DkWvXQiW8OYcewVHE5yukinDMcfGgc0opDltYKDxIGBedkzc6jSfE7tlvESCDFUw0Hx0opS+U0lHCxNottbNWSxX9zZVvEhKWUSyBpaXwBc2a98M6UqPeXAs/GDon8Ax7hsthO8cM5HU7Ad0UvRR9lHmtyQKZ4MAe814X5h9MSUkQmhf96eVJ6p90OjIiqSIjvykvr2l5U55O/fPQKD+jIomYpNyGJQ25uQ2kIikRfAmuBHCPsWqkSDEqgZ5KDI2sifS/R43MbZg0idFHbCPNxXxZws1ACVE6hAhOdJwRkJLFBLPZpRGYJ50pko6XzMkgmSx40ljik6AQcKhFnLcQE6rF7PXFe1Ocoj0T3AXgSgJTDIhHRfHlYZKuSzc6uievOJGXY+i5GJkkTp7UM3y0LqATDbtFcbdBxO7o4T25JYlEjoH0uynUh8rapkxp62QN70svSF+hT4gGPlovlmcm/ComLi7mV4kTykV9NFWjE/QrwgQ4uIcAP0rQF4VZYRP2o3PhHHzfPMJj9Ir+uzKUlrH49ntT18AVvj1sc3YGjUT/Mt2Dxawa8ArcA7bCQIpvfwAYu22vEG/No/5RvPdA7g+AelLrPwzy+LtkLPhnpIxH14m4EYq8eeMHbPEPNm6G7Nv9B4jcFPZ8bJj0SEjP3MPgQdKTqqEoy2v6G32P/Y6dxOv04AxnoAeq+GILvUavtYCBXm+BaIhuodcfrN5B/V2EYMCPh+SxavjGyPwV0x4CJgUPGT0mQaODGBACIJZGsMXwAD0LGXx7l3CdAcKMIKI+f5CepWeD0BvyU/GcdBxPF8SwejC6LGZmAURFdsSWKR5HyHld2kbdIZO1Ixx+bnnzU7n5+blPNV9jnUDWhP2tC68tbN3PVIldsQPxSAcSpjOav7Q05uXn5zW2LLvDXn9B6syscPy9iDLEMmSrJz6nYuWMipukjM0AH8JkGS+XFyMRkzSCH7KD/hwm172SAyZYumHlefr5AddrtA0O0TnwaVZxcRY9Bfukn9Gf05N1r9DV9MoBsJ1f+ZrqUvtPHizJAntWybv7hmqLt6QLuK6ZS9Fqi1jO5rDoWPZXXII5Tgajg53cIXCjDCGIcYrRIY2n6+mXOa/W0bdhau3ryiEYe2FV/5oeaIYK/5w5frCyll6/cYO8DiNhw6t1MBWmznt91QX62UF1N7l0eHBZTRGpKaqpKVIPF9UcIzmReud9TSY75+K899GHbBu6wjoR7RKKZVYiYxSPf5/2wJT5e3NAhmUbVn5KLx1Ujg0+BGvpAIh0DezInTkzF37KVocxrKU3r1+XLtAe2lO3l66kfQfB/unKY+q8N375Ru8bc4pJXfEcESU95q+p8ZNZRTWH1d9FzvUdYXk5rLkcdkEisoKKVHQW/b3GEx6tPaYcoJfOr9wAbSBnv1IHpep0OExr4LPMkpJM+j7sly7UHkOzXjoAZljHCGiyegtNlwljM0v+c19ET9Pvst09a2Mtgcf5/ZSzYO5h1156+eyydfAsxGa9XAuF6vzjh6CssLq6ECysperXX0sX5h5ZdpZe3guxsGIPEtHk/aqXX1hVqP5HYVVVISkrrNqvXorIc+5Ou91Hnr/LcD2afi6eX7UBloOcs7cOpqgGaNfs1g7bNbs9z6wASaylN69d0/TFTIz6Ws8+oGV3mE2612wRTHKcVUbhjKadebloMc+dyXgMVtVK6BwMB/+mVW09igdRBWaRtNQX59d/VD//xdQ0TCiYNj1KT9sq6Wdu5WTbqk3qDXyDaLa1fv621LS01G3z61sD6lH8lAxDLicV921s6Bf92JOYvzNYCL1khbqBXEFUzC521N5NyzNaQIWhjyFyDoBIVrAjmv2UEaLlI+c6zw1jmVIPLLLZZUTj6GxGHW+mq1tgHXR2D85p4Q934+jLbtjVLcyCdS10NVzpHqxp4Q/hK7WopY/NRGx9HGsPGdFjOjcpjBnGYMVqY/4eqT5khWEHWUup2A/pTw7pdWgsWft7ETUERL96nRg0HNFPmCYba6tylECaExX89A9WLUOVB4oKLu/o1oqSYHCgLzBUlAz8hNFDRpeSU1XT+LRmDUgPaKbYdHDn9suF/tu13nHJij0N97LfS0QmqONuyONk7zvUI6Qa0pF9f2+oABL92AT6e0U//z9YqAiWtJLU1JK0gS+1aacwamiNqK067u9ZQ8f1d4qLodMzz3uL89Z68V/Hnr++hXWUuHgw8dfi972PeTyPefu3aNNucemQ74qFuIaJnVkOu4Q+yjuwmmC1FqZpl1i4uzoPxjkpPf3Xv545tl26Rr+dOvUd+omqJzch9dOeU7f10Y64nMcKK137DccIZq2WdXtdZjbEoLSzHwiMtrjYLDxpHQW8gjMX6XFYAE2zSWVD04EGYSs9MbO6sEo20BMEAB4mpvSypsKjZ4Stgzb+c3A9/MQT2+vrBy+qvyFxLUtLlSRF/Ri2wjfZ2dus2Q8lXx4608/jnqK5OOap6NY2PSjYYnECCjiEeLJll/pbmqfeIK+ps3+MxrlEhqmTPipVP7kqlF4VhpEb6r+Q7YOJg38kJ9SHBf3NBl6+9YchfbUjb5ahLSzUM3kPHmwFAsZ5rpai0S7E5xWzZ1j+fW7zsUWP2g5NXTw52ySCTrgG0+lbw60l2Y/CB185CoA8NK+tbRKxfjy6pm5hzQRRR+cMqv1Jbiw6STivtEvt3DRcy0QEh92JlUGo2PG4tSKHl00YD6xc8CK+YPYyy3io2lN8BcSjKRzrIV6ypOAobqxViJPaT9M9Hy5szY33mp7OX/Zu89L/7Ww5vqY2Y8b0pKgoiUhG5cPDPzq8qTV/WkzUOIvXVVA96kmjcBrr3HrYC/Wn+fYP6Z7T1rqy3zknbvqma/FvVk96fNXGkuaXrdHW5JGSxZT/2I/O73v+yNWafMdzc5NdxYurHs6h86e01sLKLz9EBrg+x36rxAaED7hRnAMx7Vzu+9wabh3zG8XLQjx0ablUJzmxdErxYT3kzQSd0SSafVqF5PXgpp0OyYJ1EyNHpGUZmvK575ySzd85JSqF7IBzSAbMM04+MbE58xF3/njXOGecSaermlw2y9PsSQdytLJVr8t+wg+rR8cZYoeNxVIzNdk3Bngi8U5LAlgTFoQnzJCa5EsCgYhCaGL+qPj7TdhG31p9tej3R04N//PXxNwJvyUqwaJqRPJY98TJ5TPndmflRAkAhBfe46sfKW5wizSge08Xb7Ca/GUVs55trngkKkrUS2WPzKttaaqq+idmahugkY+W6fN0I6i3gPt/x88U4wAAeJxjYGRgYADiGU9YXsXz23xl4GZnAIFH7fO+IdMc/WBxDgYmEAUASbMKwAB4nGNgZGBgZwABjj4Ghv//OfoZGBlQgT4ARicDZAAAAHicY2BgYGAfxJijD8Fmu4EqBwCSpgKpAAAAAAAADgBoAH4AzADgAQIBQgFsAZgB7gIuAooC0AL8A2IDjAOoA+AEMASwBNoFCAVaBcAGCAYuBnAGrAb2B04HigfSCCoIcAiGCJwIyAkkCVYJiAmsCfIKIApWCsQLknicY2BkYGDQZ2hmYGcAASYg5gJCBob/YD4DABqrAdAAeJxdkE1qg0AYhl8Tk9AIoVDaVSmzahcF87PMARLIMoFAl0ZHY1BHdBJIT9AT9AQ9RQ9Qeqy+yteNMzDzfM+88w0K4BY/cNAMB6N2bUaPPBLukybCLvleeAAPj8JD+hfhMV7hC3u4wxs7OO4NzQSZcI/8Ltwnfwi75E/hAR7wJTyk/xYeY49fYQ/PztM+jbTZ7LY6OWdBJdX/pqs6NYWa+zMxa13oKrA6Uoerqi/JwtpYxZXJ1coUVmeZUWVlTjq0/tHacjmdxuL90OR8O0UEDYMNdtiSEpz5XQGqzlm30kzUdAYFFOb8R7NOZk0q2lwAyz1i7oAr1xoXvrOgtYhZx8wY5KRV269JZ5yGpmzPTjQhvY9je6vEElPOuJP3mWKnP5M3V+YAAAB4nG2ReVPbMBDF/ULi2EkDBFqO3gdHLxUzDB9IkdexBllydRD49ihO3Ckz7B/a31utZnafkkGyiXnyclxhgB0MMUKKMTLkmGCKV5hhF3vYxxwHOMRrvMERjnGCU7zFO7zHB3zEJ3zGF3zFN5zhHBe4xHf8wE/8wm8w/MEVimTYKv44XR9MSCsUjVoeHE3vjQoNsSZ4mmxZmVWPjSz7jlou6/0qKOWEJdKMtCe793/hQfqxa6XWZHMXFl56RS4TvPXSaDeoy0zUUZB109KstDK8lHo5q6Qi1hcOnqkImubPS6aqRq7mlnaEWabub4iYblba3SRmgldS0+FWdhNtt04F14JUaqkl7tcpOpJtErvNt3Bd9HRT5JWxK25Ldjvp6br4hzfFiIdSmlzTg2fSUzNrLd1LE1ynxq4OVaVoKLjzJ60UPtj1RKzHzsbjly6inVnFBS2MucviPncU7Rr7lfTxRepDs1A2j3ZHRc7PuzFYSfE3ZOd4kjwBy227hA==) format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
 noscript {
-background-color: red;
+    background-color: red;
 }
-.vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder:before{content:"\f105"}
-
-.vjs-icon-volume-mid:before,.video-js .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder:before{content:"\f106"}
-
-.vjs-icon-volume-high:before,.video-js .vjs-mute-control .vjs-icon-placeholder:before{content:"\f107"}
 </style>
 </head>
 <body>
@@ -220,39 +387,96 @@ background-color: red;
      </th>
     </tr>
             <tr>
-            <td class="infobox-full-data center">
+            <td class="infobox-full-data center" colspan="2">
             <noscript>This audio player needs Javascript to work.</noscript>
-                <div class="audio-container" data-info-action="window.open('credit.html')">
-    <div class="wikipedia-minimal-player" id="audio-player">
-        <button class="minimal-play-btn" onclick="toggleAudioPlay()" id="play-btn">
-            ▶
-        </button>
-        <span class="minimal-time-display" id="time-display">0:00</span>
-    </div>
-</div>
                 
-                <!-- Hidden audio element -->
-                <audio id="hidden-audio" preload="metadata">
-                    <source src="Intervocalic_nasal_alveolar_clicks.ogg" type='audio/ogg; codecs="vorbis"'>
-                    <source src="Intervocalic_nasal_alveolar_clicks.ogg" type="audio/mpeg">
-                </audio>
-               </div>
-               <small>
-        <a href="https://en.wikipedia.org/wiki/File:Intervocalic_nasal_alveolar_clicks.ogg" title="File:Intervocalic nasal alveolar clicks.ogg">
-         source
-        </a>
-        <span style="font-weight:bold;">
-         ·
-        </span>
-        <a class="mw-redirect" href="https://en.wikipedia.org/wiki/Wikipedia:Media_help" title="Wikipedia:Media help">
-         help
-        </a>
-       </small>
-       </div>
-       </td>
+                <!-- Wikipedia-style audio player -->
+                <span typeof="mw:File">
+                    <span class="mw-tmh-player audio mw-file-element" style="width:150px;">
+                        <div class="video-js vjs-audio vjs-has-started vjs-paused" 
+                             id="mwe_player_1" 
+                             style="width:150px;" 
+                             role="region" 
+                             aria-label="Audio Player">
+                            
+                            <!-- Hidden HTML5 audio element -->
+                            <audio id="mwe_player_1_html5_api" 
+                                   preload="metadata" 
+                                   class="vjs-tech" 
+                                   style="width:150px;">
+                                <source src="Intervocalic_nasal_alveolar_clicks.ogg" type='audio/ogg; codecs="vorbis"'>
+                                <source src="Intervocalic_nasal_alveolar_clicks.ogg" type="audio/mpeg">
+                            </audio>
+                            
+                            <!-- Control bar -->
+                            <div class="vjs-control-bar" dir="ltr">
+                                <button class="vjs-play-control vjs-control vjs-button vjs-paused" 
+                                        type="button" 
+                                        title="Play" 
+                                        onclick="togglePlay()">
+                                    <span class="vjs-icon-placeholder" aria-hidden="true"></span>
+                                    <span class="vjs-control-text">Play</span>
+                                </button>
+                                
+                                <div class="vjs-volume-panel vjs-control vjs-volume-panel-vertical">
+                                    <button class="vjs-mute-control vjs-control vjs-button vjs-vol-3" 
+                                            type="button" 
+                                            title="Mute" 
+                                            onclick="toggleMute()">
+                                        <span class="vjs-icon-placeholder" aria-hidden="true"></span>
+                                        <span class="vjs-control-text">Mute</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="vjs-current-time vjs-time-control vjs-control">
+                                    <span class="vjs-control-text">Current Time </span>
+                                    <span class="vjs-current-time-display" id="current-time">0:03</span>
+                                </div>
+                                
+                                <div class="vjs-time-control vjs-time-divider" aria-hidden="true">
+                                    <div><span>/</span></div>
+                                </div>
+                                
+                                <div class="vjs-duration vjs-time-control vjs-control">
+                                    <span class="vjs-control-text">Duration </span>
+                                    <span class="vjs-duration-display" id="duration">0:03</span>
+                                </div>
+                                
+                                <div class="vjs-progress-control vjs-control">
+                                    <div class="vjs-progress-holder vjs-slider vjs-slider-horizontal" 
+                                         onclick="seekAudio(event)">
+                                        <div class="vjs-load-progress" style="width: 100%;"></div>
+                                        <div class="vjs-play-progress vjs-slider-bar" 
+                                             id="progress-bar" 
+                                             style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="vjs-custom-control-spacer vjs-spacer">&nbsp;</div>
+                                
+                                <button class="vjs-control vjs-button mw-info-button" 
+                                        type="button" 
+                                        title="More information"
+                                        onclick="showInfo()">
+                                    <span class="vjs-control-text">More information</span>
+                                </button>
+                            </div>
+                        </div>
+                    </span>
+                </span>
+                
+                <div>
+                    <small>
+                        <a href="https://en.wikipedia.org/wiki/File:Intervocalic_nasal_alveolar_clicks.ogg" title="File:Intervocalic nasal alveolar clicks.ogg">source</a>
+                        <span style="font-weight:bold;"> · </span>
+                        <a class="mw-redirect" href="https://en.wikipedia.org/wiki/Wikipedia:Media_help" title="Wikipedia:Media help">help</a>
+                    </small>
+                </div>
+            </td>
             </tr>
         </tbody>
     </table>
+    
     <table class="infobox" style="width: 16em;">
         <tbody>
             <tr>
@@ -276,6 +500,7 @@ background-color: red;
             </tr>
         </tbody>
     </table>
+
 <p>The alveolar nasal click is a click consonant found primarily among the languages of southern Africa.[2] The symbol in the International Phonetic Alphabet for a nasal alveolar click with a velar rear articulation is ⟨ŋ͡ǃ⟩ or ⟨ŋ͜ǃ⟩, commonly abbreviated to ⟨ŋǃ⟩, ⟨ᵑǃ⟩ or ⟨ǃ̃⟩; a symbol abandoned by the IPA but still preferred by some linguists is ⟨ŋ͡ʗ⟩ or ⟨ŋ͜ʗ⟩, abbreviated ⟨ŋʗ⟩, ⟨ᵑʗ⟩ or ⟨ʗ̃⟩. For a click with a uvular rear articulation, the equivalents are ⟨ɴ͡ǃ, ɴ͜ǃ, ɴǃ, ᶰǃ⟩ and ⟨ɴ͡ʗ, ɴ͜ʗ, ɴʗ, ᶰʗ⟩. Sometimes the accompanying letter comes after the click letter, e.g. ⟨ǃŋ⟩ or ⟨ǃᵑ⟩; this may be a simple orthographic choice, or it may imply a difference in the relative timing of the releases.[3]
 
 </p>
@@ -286,228 +511,121 @@ background-color: red;
 </div>
 
 <script>
-// Audio player functionality
-function toggleAudioPlay() {
-    const audio = document.getElementById('hidden-audio');
-    const player = document.getElementById('audio-player');
+// Global audio element reference
+let audio;
+let isPlaying = false;
+let isMuted = false;
+
+function initializePlayer() {
+    audio = document.getElementById('mwe_player_1_html5_api');
     
     if (!audio) {
         console.error('Audio element not found');
         return;
     }
     
-    if (audio.paused) {
-        audio.play().then(() => {
-            console.log('Audio playback started');
-            // Note: The play event listener will handle the UI transformation
-        }).catch(e => {
-            console.error('Play failed:', e.message);
-        });
-    } else {
-        audio.pause();
-        console.log('Audio paused');
-        // Note: The pause event listener will handle the UI transformation
-    }
-}
-
-function toggleAudioMute() {
-   const audio = document.getElementById('hidden-audio');
-   const btn = document.getElementById('volume-btn');
-   
-   if (!audio) {
-       console.error('Audio element not found');
-       return;
-   }
-   
-   if (audio.muted) {
-       audio.muted = false;
-       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="white"> <path d="M1 5v6h2L8 14V2L3 5H1z"/> <path d="M9.5 4.5c1 1 1 2.5 0 3.5" stroke="white" stroke-width="1" fill="none"/> <path d="M11 3c1.5 1.5 1.5 4 0 5.5" stroke="white" stroke-width="1" fill="none"/> </svg>';
-       console.log('Audio unmuted');
-   } else {
-    audio.muted = true;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="white"><path d="M1 5v6h2L8 14V2L3 5H1z"/><path d="M9.5 4.5c1 1 1 2.5 0 3.5" stroke="white" stroke-width="1" fill="none"/><path d="M11 3c1.5 1.5 1.5 4 0 5.5" stroke="white" stroke-width="1" fill="none"/><line x1="3" y1="3" x2="13" y2="13" stroke="white" stroke-width="2"/></svg>';
-    console.log('Audio muted');
-}
-}
-
-function showAudioInfo() {
-    const audioContainer = document.querySelector('.audio-container');
-    const customAction = audioContainer ? audioContainer.dataset.infoAction : null;
-    
-    if (customAction) {
-        try {
-            if (customAction.includes('<a ')) {
-                // If it contains HTML with links, create a temporary container and show it
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = customAction;
-                tempDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:1px solid #ccc;z-index:1000;';
-                document.body.appendChild(tempDiv);
-                
-                // Add close button
-                const closeBtn = document.createElement('button');
-                closeBtn.textContent = 'Close';
-                closeBtn.onclick = () => document.body.removeChild(tempDiv);
-                tempDiv.appendChild(closeBtn);
-            } else {
-                // Execute as JavaScript
-                eval(customAction);
-            }
-        } catch (e) {
-            console.error('Error executing custom info action:', e);
-            defaultInfoAction();
-        }
-    } else {
-        defaultInfoAction();
-    }
-}
-
-// Define restartAudio globally
-window.restartAudio = function() {
-    console.log('restartAudio() function called!');
-    
-    const audio = document.getElementById('hidden-audio');
-    const player = document.getElementById('audio-player');
-    
-    if (!audio) {
-        console.error('Audio element not found');
-        return;
-    }
-    
-    // Reset audio to beginning and play
-    audio.currentTime = 0;
-    audio.play().then(() => {
-        console.log('Audio restarted successfully!');
-        
-        // Clear any inline styles to return to CSS defaults
-        player.style.background = '';
-        player.style.borderRadius = '';
-        player.style.width = '';
-        
-    }).catch(e => {
-        console.error('Restart failed:', e.message);
-    });
-};
-
-// Set up event listeners when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const audio = document.getElementById('hidden-audio');
-    const timeDisplay = document.getElementById('time-display');
-    const playBtn = document.getElementById('play-btn');
-    const player = document.getElementById('audio-player');
-    
-    // Force load metadata immediately
+    // Force load metadata
     audio.load();
     
-    if (!audio || !timeDisplay || !playBtn || !player) {
-        console.error('Audio player elements not found');
-        return;
-    }
+    // Set up event listeners
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', onAudioEnded);
+    audio.addEventListener('play', onAudioPlay);
+    audio.addEventListener('pause', onAudioPause);
     
-    // Update duration when metadata loads
-    audio.addEventListener('loadedmetadata', function() {
-        const duration = Math.ceil(audio.duration) || 3;
-        const minutes = Math.floor(duration / 60);
-        const seconds = duration % 60;
-        timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        console.log(`Audio duration: ${duration} seconds`);
-    });
-    
-    // Update remaining time during playback
-    audio.addEventListener('timeupdate', function() {
-        const remaining = Math.ceil(audio.duration - audio.currentTime) || 0;
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
-        timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    });
-    
-    // Handle play event
-audio.addEventListener('play', function() {
-    console.log('Audio started playing');
-        
-        const player = document.getElementById('audio-player');
-player.className = 'wikipedia-minimal-player playing';
-        
-        // Replace with three buttons for playing state
-        player.innerHTML = `
-            <button onclick="toggleAudioPlay()" style="
-                background: none; border: none; color: white; cursor: pointer; padding: 2px; width: 20px; height: 20px;
-                display: flex; align-items: center; justify-content: center;
-            "><svg width="16" height="16" viewBox="0 0 16 16" fill="white">
-  <rect x="4" y="3" width="2.5" height="10"/>
-  <rect x="9.5" y="3" width="2.5" height="10"/>
-</svg></button>
-            <button id="volume-btn" onclick="toggleAudioMute()" style="
-                background: none; border: none; color: white; cursor: pointer;
-                font-size: 14px; padding: 2px; width: 20px; height: 20px;
-                display: flex; align-items: center; justify-content: center;
-            "><svg width="16" height="16" viewBox="0 0 16 16" fill="white">
-  <path d="M1 5v6h2L8 14V2L3 5H1z"/>
-  <path d="M9.5 4.5c1 1 1 2.5 0 3.5" stroke="white" stroke-width="1" fill="none"/>
-  <path d="M11 3c1.5 1.5 1.5 4 0 5.5" stroke="white" stroke-width="1" fill="none"/>
-</svg>
-</button>
-            <button onclick="showAudioInfo()" style="
-                background: none; border: 1px solid white; border-radius: 50%;
-                color: white; cursor: pointer; font-size: 10px; font-weight: bold;
-                width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
-            ">i</button>
-        `;
-    });
-    
-   // Handle pause event
-audio.addEventListener('pause', function() {
-    console.log('Audio paused');
-    
-    const player = document.getElementById('audio-player');
-player.className = 'wikipedia-minimal-player paused';
-   
-   // Change pause button back to play button
-   const playBtn = player.querySelector('button[onclick="toggleAudioPlay()"]');
-   if (playBtn) {
-       playBtn.textContent = '▶';
-   }
-});
-    
-    // Handle end of audio
-audio.addEventListener('ended', function() {
-    console.log('Audio playback ended');
-    
-    const player = document.getElementById('audio-player');
-player.className = 'wikipedia-minimal-player ended';
+    console.log('Wikipedia-style audio player initialized');
+}
 
-        // Replace with three buttons (keeping the same gray Wikipedia styling)
-        player.innerHTML = `
-            <button onclick="restartAudio()" style="
-                background: none; border: none; color: white; cursor: pointer;
-                font-size: 14px; padding: 2px; width: 20px; height: 20px;
-                display: flex; align-items: center; justify-content: center;
-            "><svg width="16" height="16" viewBox="0 0 16 16" fill="white" style="transform: scaleX(-1);"><path d="M8 3V1l3 3-3 3V5c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4h1.5c0 3-2.5 5.5-5.5 5.5S2.5 12 2.5 9 5 3.5 8 3.5z"/></svg></button>
-            <button id="volume-btn" onclick="toggleAudioMute()" style="
-                background: none; border: none; color: white; cursor: pointer;
-                font-size: 14px; padding: 2px; width: 20px; height: 20px;
-                display: flex; align-items: center; justify-content: center;
-            "><svg width="16" height="16" viewBox="0 0 16 16" fill="white">
-  <path d="M1 5v6h2L8 14V2L3 5H1z"/>
-  <path d="M9.5 4.5c1 1 1 2.5 0 3.5" stroke="white" stroke-width="1" fill="none"/>
-  <path d="M11 3c1.5 1.5 1.5 4 0 5.5" stroke="white" stroke-width="1" fill="none"/>
-</svg>
-</button>
-            <button onclick="showAudioInfo()" style="
-                background: none; border: 1px solid white; border-radius: 50%;
-                color: white; cursor: pointer; font-size: 10px; font-weight: bold;
-                width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
-            ">i</button>
-        `;
-    });
+function togglePlay() {
+    if (!audio) return;
     
-    // Handle loading errors
-    audio.addEventListener('error', function() {
-        console.error('Audio loading error');
-        timeDisplay.textContent = 'Error';
-    });
+    if (isPlaying) {
+        audio.pause();
+    } else {
+        audio.play().catch(e => console.error('Play failed:', e));
+    }
+}
+
+function toggleMute() {
+    if (!audio) return;
     
-    console.log('Wikipedia-style audio player initialized successfully');
-});
+    isMuted = !isMuted;
+    audio.muted = isMuted;
+    
+    const muteBtn = document.querySelector('.vjs-mute-control');
+    if (isMuted) {
+        muteBtn.className = 'vjs-mute-control vjs-control vjs-button vjs-vol-0';
+    } else {
+        muteBtn.className = 'vjs-mute-control vjs-control vjs-button vjs-vol-3';
+    }
+}
+
+function seekAudio(event) {
+    if (!audio) return;
+    
+    const progressContainer = event.currentTarget;
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const width = rect.width;
+    const percentage = clickX / width;
+    
+    audio.currentTime = percentage * audio.duration;
+}
+
+function updateDuration() {
+    const duration = Math.floor(audio.duration) || 3;
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    document.getElementById('duration').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function updateProgress() {
+    if (!audio.duration) return;
+    
+    const current = Math.floor(audio.currentTime);
+    const minutes = Math.floor(current / 60);
+    const seconds = current % 60;
+    document.getElementById('current-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    const percentage = (audio.currentTime / audio.duration) * 100;
+    document.getElementById('progress-bar').style.width = percentage + '%';
+}
+
+function onAudioPlay() {
+    isPlaying = true;
+    const playBtn = document.querySelector('.vjs-play-control');
+    playBtn.className = 'vjs-play-control vjs-control vjs-button vjs-playing';
+    playBtn.title = 'Pause';
+    playBtn.querySelector('.vjs-control-text').textContent = 'Pause';
+}
+
+function onAudioPause() {
+    isPlaying = false;
+    const playBtn = document.querySelector('.vjs-play-control');
+    playBtn.className = 'vjs-play-control vjs-control vjs-button vjs-paused';
+    playBtn.title = 'Play';
+    playBtn.querySelector('.vjs-control-text').textContent = 'Play';
+}
+
+function onAudioEnded() {
+    isPlaying = false;
+    const playBtn = document.querySelector('.vjs-play-control');
+    playBtn.className = 'vjs-play-control vjs-control vjs-button vjs-ended';
+    playBtn.title = 'Replay';
+    playBtn.querySelector('.vjs-control-text').textContent = 'Replay';
+    
+    // Reset progress
+    document.getElementById('progress-bar').style.width = '0%';
+    audio.currentTime = 0;
+}
+
+function showInfo() {
+    alert('Audio file: Intervocalic nasal alveolar clicks\nDuration: ~3 seconds\nFormat: OGG Vorbis');
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', initializePlayer);
 </script>
 </body>
 </html>

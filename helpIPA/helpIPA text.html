@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<script>
+// Check immediately when page loads
+if (location.hash === '#website') {
+    location.href = 'helpIPA.html';
+}
+
+// Also check for hash changes after page load
+window.addEventListener('hashchange', function() {
+    if (location.hash === '#website') {
+        location.href = 'helpIPA.html';
+    }
+});
+</script>
+<plaintext><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">

@@ -49,6 +49,7 @@
         <div class="tabs">
             <div class="tab active" data-tab="consonants" id="consonants-tab">Consonants</div>
             <div class="tab" data-tab="vowels" id="vowels-tab">Vowels</div>
+            <div class="tab" data-tab="ual" id="ual-tab">Uppercase and lowercase</div>
             <div class="tab" data-tab="diacritics" id="diacritics-tab">Diacritics</div>
             <div class="tab" data-tab="examples" id="examples-tab">Examples</div>
         </div>
@@ -78,6 +79,7 @@
                             <th colspan="2" scope="col">Labialized postpalatal</th>
                             <th colspan="2" scope="col">Compressed post-palatal</th>
                             <th colspan="2" scope="col">Velar</th>
+                            <th colspan="2" scope="col">Post-velar</th>
                             <th colspan="2" scope="col">Labial-velar</th>
                             <th colspan="2" scope="col">Uvular</th>
                             <th colspan="2" scope="col">Pharyngeal</th>
@@ -126,6 +128,9 @@
                         <th>voiced</th>
                         <th>voiceless</th>
                         <th>voiced</th>
+                        <th>voiceless</th>
+                        <th>voiced</th>
+                        </tr>
                         <tr>
                              <td class="label-cell">Nasal</td>
                              <td class="clickable-text" data-audio-url="audio/Voiceless_Bilabial_Nasal.ogg.mp3">ᴍ</td>
@@ -156,13 +161,15 @@
                              <td></td>
                              <td></td>
                              <td></td>
-                             <td class="clickable-text" data-audio-url="audio/Voiceless_velar_nasal.wav.mp3">ƞ</td>
                              <td></td>
                              <td></td>
                              <td></td>
-                             <td class="clickable-text" data-audio-url="audio/Voiceless_uvular_nasal.ogg.mp3">ᴎ</td>
                              <td></td>
-                             <td class="grayed-out">ᴎ̠</td>
+                             <td></td>
+                             <td></td>
+                             <td></td>
+                             <td></td>
+                             <td class="grayed-out"></td>
                              <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiced-pharyngeal-nasal.ogg.mp3">ɴ̠</span></td>
                              <td class="grayed-out">ʡ̃</td>
                              <td class="grayed-out">ʡ̬̃</td>
@@ -206,6 +213,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                             <td class="grayed-out"></td>
                             <td></td>
                             <td class="grayed-out">ʡ̬</td>
@@ -231,20 +240,20 @@
                             <td class="clickable-text" data-audio-url="audio/Voiceless-retroflex-implosive.ogg.mp3" style="font-family: Gentium Plus;">𝼉</td>
                             <td class="clickable-text" data-audio-url="audio/Voiced-retroflex-implosive.ogg.mp3">ᶑ</td>
                             <td><span class="overlay-target">ȶ<span class="overlay">ƭ</span></span></td>
-                            <td><span class="overlay-target">ȶ<span class="overlay">ƭ</span></span><br> ̬</td>
+                            <td>ȡ𐞩</td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless_palatal_implosive.ogg.mp3">ƈ</td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><span class="overlay-target" style="font-family: Noto Sans; position: relative; display: inline-block;">ꬶ
-    <span class="overlay" style="font-family: Noto Sans;">ɗ</span>
-</span> voiced Post-palatal implosive<br></td>
+                            <td style="font-family: Quivira;"><span class="overlay-target" style="position: relative; display: inline-block;">ꬶ<span class="overlay">ɗ</span></span></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless-velar-implosive.ogg.mp3">ƙ</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless-labial–velar-implosive.ogg.mp3">ƙ͜ƥ</td>
                             <td></td>
@@ -299,6 +308,8 @@
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
                         </tr>
                         <tr>
                         <td class="label-cell">Sibilant affricate</td>
@@ -332,6 +343,8 @@
                         <td class="grayed-out"></td>
                         <td class="grayed-out">k͡ӽ</td>
                         <td class="grayed-out">ɡ͡γ</td>
+                        <td class="grayed-out"></td>
+                        <td class="grayed-out"></td>
                         <td class="grayed-out"></td>
                         <td class="grayed-out"></td>
                         <td class="grayed-out" style="font-family: Noto Sans;">q͡ꭔ</td>
@@ -386,6 +399,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="label-cell">Sibilant fricative</td>
@@ -393,14 +408,14 @@
                             <td class="grayed-out">ϐ</td>
                             <td class="grayed-out">ẜ</td>
                             <td class="grayed-out" style="font-family: Gentium Plus;">ꝟ</td>
-                            <td class="grayed-out">s̼</td>
+                            <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiceless_linguolabial_sibilant_fricative.ogg.mp3">s̼</span></td>
                     <td class="grayed-out">z̼</td>
                             <td style="font-family: Gentium Plus Compact;">𝼩</td>
                             <td style="font-family: Gentium Plus Compact;"><img src="images/Z_with_left_hook.svg.png" alt="Z with left hook" width="20"       height="20"></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td>voiced post-alveolar sibilant fricative ℥<br></td>
+                            <td>ꜱ voiceless post-alveolar sibilant fricative<br></td>
+                            <td>℥</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -419,6 +434,8 @@
                     <td class="grayed-out"></td>
                     <td class="grayed-out">ӽ</td>
                     <td class="grayed-out">γ</td>
+                    <td class="grayed-out"></td>
+                    <td class="grayed-out"></td>
                     <td class="grayed-out"></td>
                     <td class="grayed-out"></td>
                     <td class="grayed-out" style="font-family: Noto Sans;">ꭔ</td>
@@ -457,7 +474,9 @@
      width="20" height="20"></td>
                             <td>կ</td>
                             <td style="font-family: Quivira;">ꭖ</td>
-                            <td>ʝ̵</td>
+                            <td style="font-family: Quivira;">ʝ̵</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -510,6 +529,8 @@
              <td></td>
              <td></td>
              <td></td>
+             <td></td>
+             <td></td>
              <td>ξ</td>
              <td class="clickable-text STIX_Two_Math-or_Symbola" data-audio-url="audio/Voiced_Uvular_Approximant.ogg.mp3">ʁ⃒</td>
              <td></td>
@@ -553,6 +574,8 @@
                     <td class="grayed-out">ɡǥ</td>
                     <td class="grayed-out"></td>
                     <td class="grayed-out"></td>
+                    <td class="grayed-out"></td>
+                    <td class="grayed-out"></td>
                     <td></td>
                     <td></td>
                     <td class="grayed-out"></td>
@@ -580,10 +603,10 @@
                             <td></td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless_retroflex_trill.ogg.mp3"><span style="font-family: Noto Sans;" class="overlay-target">ɽ˚<span class="overlay">ꭈ</span></span></td>
                             <td class="clickable-text" data-audio-url="audio/Voiced_retroflex_trill.ogg.mp3"><span style="font-family: Noto Sans;" class="overlay-target">ɽ<span class="overlay">ꭈ</span></span></td>
-                            <td><span class="mirrored" style="font-family: Noto Sans;">ꭊ</span></td>
-                            <td style="font-family: Noto Sans;">ꭊ</td>
+                            <td><span class="mirrored" style="font-family: Noto Sans;">ꭉ</span></td>
+                            <td style="font-family: Noto Sans;">ꭉ</td>
                             <td class="grayed-out">ʗ</td>
-                            <td class="grayed-out" style="font-family: Gentium Plus;">ᶉ</td>
+                            <td class="grayed-out" style="font-family: Gentium Plus;"><span class="clickable-text" data-audio-url="audio/Voiced_palatal_trill.ogg.mp3">ᶉ</span></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out" style="font-family: Quivira;">ꭘ</td>
@@ -593,9 +616,11 @@
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiceless_velar_trill.wav.ogg" style="font-family: Noto Sans;">ꭗ</span></td>
-                    <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiced_velar_trill.wav.ogg">ǥ</span></td>
+                            <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiced_velar_trill.wav.ogg">ǥ</span></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out">ꝡ</td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless_uvular_trill.ogg.mp3">ᴙ</td>
                             <td></td>
                             <td style="font-family: Gentium Plus;" class="grayed-out"><span class="mirrored">ꝶ</span></td>
@@ -639,6 +664,8 @@
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless_uvular_fricative_trill.ogg.mp3"><span class="mirrored" style="font-family: Quivira;">ꭆ</span></td>
                             <td style="font-family: Quivira;">ꭆ</td>
                             <td class="grayed-out"></td>
@@ -666,10 +693,9 @@
                             <td></td>
                             <td class="clickable-text" data-audio-url="audio/Voiceless_retroflex_tap.wav.mp3">ʅ</td>
                             <td></td>
-                            <td><span class="mirrored" style="font-family: Noto Sans;">ꭉ</span></td>
-                            <td style="font-family: Noto Sans;">ꭉ</td>
-
-                            <td class="grayed-out"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="grayed-out">ᴄ voiceless palatal tap or flap<br></td>
                             <td class="grayed-out"><span style="font-family: Gentium Plus;">𝼖</span></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
@@ -681,6 +707,8 @@
                             <td class="grayed-out"></td>
                             <td class="grayed-out">k̆</td>
                             <td class="grayed-out"><span class="clickable-text" data-audio-url="audio/Voiced_velar_tap.wav.mp3">ɡ̆</span></td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
                             <td class="grayed-out">k̆<span style="font-family: Helvetica; position: relative;"><span class="overlay-target">ʍ<span class="overlay" style="position: absolute; right: -0.3em; top: 0;">ʎ</span></span></span></td>
                             <td class="grayed-out" style="font-family: Gentium Plus;">ɡ̆ⱳ</td>
                             <td><span class="mirrored" style="font-family: Gentium Plus;">ꝛ</span></td>
@@ -734,6 +762,8 @@
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
+                            <td class="grayed-out"></td>
                         </tr>
                         <tr>
                             <td class="label-cell">Lateral affricate</td>
@@ -766,6 +796,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td><span class="clickable-text" data-audio-url="audio/Voiced_velar_lateral_affricate.ogg.mp3" style="font-family: Helvetica;">Voiced velar lateral affricate ɡʟ̧</span></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -796,8 +828,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><img src="images/Latin_small_letter_lezh_with_curl.svg.png" width="20"       height="36" alt="ɮ with curl like the letter ʓ" /></td>
+                            <td><span class="overlay-target" style="font-family: Gentium Plus;">ȴ<span class="overlay" style="font-family: Gentium Plus;">ɬ</span></span><br></td>
+                            <td><!--<img src="images/Latin_small_letter_lezh_with_curl.svg.png" width="20"       height="36" alt="ɮ with curl like the letter ʓ" /> 𝽧<br>(--><span class="overlay-target">ɮ<span class="overlay">ʓ</span></span><!--)--></td>
                             <td></td>
                             <td><span class="overlay-target AncientSans-or-Copperplate">ԡ<span class="overlay AncientSans-or-Copperplate">ʎ</span></span></td>
                             <td></td>
@@ -810,6 +842,8 @@
                             <td></td>
                             <td></td>
                             <td class="clickable-text" data-audio-url="audio/Voiced_velar_lateral_fricative.ogg.mp3" style="font-family: Helvetica;">ʟ̧</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -841,6 +875,8 @@
                             <td></td>
                             <td></td>
                             <td>ȴ</td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -899,6 +935,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                             <td style="font-family: Helvetica;">ᴌ̆</td>
                             <td class="grayed-out"></td>
                             <td class="grayed-out"></td>
@@ -929,7 +967,7 @@
             </tr>
         </tbody>
     </table>
-    𝼎
+    <span style="font-family: Gentium Plus;">𝼎</span>
     <table class="otherones-table_with-images">
         <tbody>
             <tr>
@@ -985,14 +1023,14 @@
                                 </tr>
                                 <tr>
                                 <td style="background: #ffffe6;">
-                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">ꭈ
+                                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal; font-family: Noto Sans;">ꭈ
                                 <span class="mirrored">ꭈ</span></span>
                                 </td>
                                 </tr>
                                 <tr>
                                 <td style="background: #ffffe6;">
                                 <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">ʆ
-                                𝼞</span>
+                                <span style="font-family: AncientSans;">𝼞</span></span>
                             </td>
                         </tr>
                         <tr>
@@ -1005,8 +1043,8 @@
                 </table>
 </div>
 <p class="centralized">ᶚ voiced laminal retroflex fricative<br>
-ᴡ<br>
-ᴢ<br>
+ᴡ voiced labial-uvular approximant<br>
+ᴢ voiced post-velar siblant fricative<br>
                     Ꜿ labiodental click<br>
                     ᶘ voiceless laminal retroflex fricative<br>
 Tenuis retroflex velar lateral click k͡⦀<br>
@@ -1015,14 +1053,12 @@ voiced Post-palatal lateral approximant <span class="turned">ɏ</span><br>ʎ̵<b
 <span style="display: none;">Voiced linguolabial trill r̼<br>
 voiced glottal trill<br>
 <span class="clickable-text" data-audio-url="audio/Voiced_palatal_lateral_flap.wav.mp3">Voiced palatal lateral flap</span><br></span>
-ꜱ<br>
-ᴋ<br>
-ᴄ<br>
+ᴋ voiceless post-velar plosive<br>
 ᴝ<br>
 ᴟ<br>
+<span class="clickable-text" data-audio-url="audio/Labialized_voiceless_uvular_fricative.ogg"><span class="turned">ᴡ</span> Voiceless labial-uvular fricative/approximant</span><br>
 ᴂ<br>
-<small-capital>ƙ</small-capital><br>
-ꝡ <br>
+<small-capital>ƙ</small-capital> voiceless post-velar implosive<br>
 ⱨ voiceless glottal sibilant fricative<br>
 <small-capital>ƭ</small-capital><br>
 Voiced compressed post-palatal approximant 𝼾<br>(ɥ̵/<img src="images/Latin_small_letter_barred_turned_H.svg.png" alt="Turned H with a bar before the descender" width="20"       height="20" />)<br>
@@ -1032,9 +1068,7 @@ Voiced compressed post-palatal approximant 𝼾<br>(ɥ̵/<img src="images/Latin_
 <span class="overlay-target"><sub style="font-size: 9px;">ɕ</sub><span class="overlay"><sup style="font-size: 10px;">ɕ</sup></span></span> alveolo-palatal percussive<br>
 <span class="overlay-target"><sub style="font-size: 9px;">z</sub><span class="overlay"><sup style="font-size: 10px;">z</sup></span></span> alveolar percussive<br>
 <span class="overlay-target"><sub style="font-size: 9px;">ʐ</sub><span class="overlay"><sup style="font-size: 10px;">z</sup></span></span> retroflex percussive<br>
-<span class="mirrored">xɣɰʞɠƙƞӽ<span style="font-family: Noto Sans;">ꭗ</span>ǥγ</span><br> <!-- I am mirroring velar consonants for velodorsal consonants like how the voiceless velodorsal plosive [𝼃] in the extIPA is a mirrored voiceless velar plosive [k] -->
-Voiceless alveolo-palatal lateral fricative <span class="overlay-target" style="font-family: Gentium Plus;">ȴ<span class="overlay" style="font-family: Gentium Plus;">ɬ</span></span><br>
-<span class="clickable-text" data-audio-url="audio/Voiced_velar_lateral_affricate.ogg.mp3" style="font-family: Helvetica;">Voiced velar lateral affricate ɡʟ̧</span></p>
+<span class="mirrored">xɣɰʞɠƙƞӽ<span style="font-family: Noto Sans;">ꭗ</span>ǥγ</span><br> <!-- I am mirroring velar consonants for velodorsal consonants like how the voiceless velodorsal plosive [𝼃] in the extIPA is a mirrored voiceless velar plosive [k] --></p>
 <h2><span class="grayed-out">Impossible</span> ones</h2>
 <p class="centralized"><span class="grayed-out">ᶎ voiced palatal sibilant fricative<br>
 ᴣ Voiced post-palatal sibilant fricative<br>
@@ -1071,7 +1105,7 @@ Voiceless alveolo-palatal lateral fricative <span class="overlay-target" style="
                 <tr>
                     <td class="label-cell">Close</td>
                     <td></td>
-                    <td class="clickable-text" data-audio-url="audio/Close_front_protruded_vowel.ogg.mp3" style="font-family: Noto Sans;">ꭚ</td>
+                    <td class="clickable-text" data-audio-url="audio/Close_front_protruded_vowel.ogg.mp3">ỿ</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -1135,6 +1169,13 @@ Voiceless alveolo-palatal lateral fricative <span class="overlay-target" style="
             ⟨ʮ⟩ = [ʉ]
 ⟨ʯ ⟩ = [ʉ˞]
         </div>
+        <!-- Uppercase and lowercase Tab Content -->
+                <div id="ual" class="tab-content">
+                    <div class="category-tabs">
+                    </div>
+                    Note: The seperate page can be found <a href="U&L IPA/index.html">here</a>.
+         <iframe src="U&L IPA/index.html" width="500" height="300" title="Embedded Content"></iframe>
+</div>
         <!-- Diacritics Tab Content -->
                 <div id="diacritics" class="tab-content">
                     <div class="category-tabs">

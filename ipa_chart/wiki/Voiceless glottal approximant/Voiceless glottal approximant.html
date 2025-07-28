@@ -14,27 +14,6 @@
             font-family: "Arial", sans-serif;
         }
         
-        /* Container using grid layout */
-        .content-container {
-            display: grid;
-            grid-template-columns: 1fr auto; /* Main content takes available space, tables take what they need */
-            grid-gap: 20px;
-            align-items: start;
-        }
-        
-        /* Main content styles */
-        .main-content {
-            font-size: 1.2em;
-            padding-right: 15px;
-        }
-        
-        /* Tables container - vertically stacked but on right side */
-        .tables-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
         /* Infobox styles */
         .infobox {
             border: 1px solid #a2a9b1;
@@ -44,6 +23,8 @@
             line-height: 1.5em;
             width: 22em;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            float: right;
+            clear: right;
         }
         
         .ipa-symbol {
@@ -86,9 +67,9 @@
             background-color: #ddd;
         }
         
-        audio {
+       /* don't interfear with the audio please: audio {
             display: none;
-        }
+        } */
         
         /* Image container that spans both columns */
         .image-container {
@@ -101,34 +82,27 @@
             .content-container {
                 grid-template-columns: 1fr;
             }
-            
-            .tables-container {
-                align-items: center;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="content-container">
-        <div class="main-content">
-            <p>The voiceless glottal approximant is a consonant. The IPA symbol for it is ⟨h⟩, but the approximant can be distinguished from the fricative (the IPA symbol is called a fricative by the IPA) by a diacritic ⟨h̞⟩. An effort undertaken in the Kiel Convention in 1989 attempted to move both voiceless and voiced glottal fricatives, to approximants.
-        </div>
-        
-        <div class="tables-container">
             <table class="infobox">
                 <tr><td class="infobox-header">Voiceless glottal approximant</td></tr>
-                <tr><td><span class="ipa-symbol">h̞</span></td></tr>
-                <tr><td> <div class="speaker-icon" onclick="document.getElementById('sound1').play()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                </div>
-                <span>listen</span>
-                <audio id="sound1" src="Voiceless_glottal_approximant_h̞.wav.mp3"></audio>
-                </div></td></tr>
+                <tr>
+                <td><span class="ipa-symbol">h̞</span></td></tr>
+                <tr>
+                <td>
+                <span>
+                <audio controls>
+                <source src="Voiceless_glottal_approximant_h̞.wav.mp3" type="audio/wav"></source>
+                </audio>
+                </span>
+                </td>
+                </tr>
             </table>
+        </div>
+        <div class="main-content">
+            <p>The voiceless glottal approximant is a consonant. The IPA symbol for it is ⟨h⟩, but the approximant can be distinguished from the fricative (the IPA symbol is called a fricative by the IPA) by a diacritic ⟨h̞⟩. An effort undertaken in the Kiel Convention in 1989 attempted to move both voiceless and voiced glottal fricatives, to approximants.
         </div>
     </div>
 </body>

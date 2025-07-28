@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help:IPA symbols</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .ipa-container {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 4px 8px;
+      background-color: #f8f9fa;
+      margin-bottom: 10px;
+    }
+    
+    .ipa-symbol {
+      font-size: 18px;
+      margin-right: 8px;
+      min-width: 20px;
+      text-align: center;
+    }
+    
+    .audio-player {
+      display: flex;
+      align-items: center;
+    }
+    
+    .audio-button {
+      background-color: #f8f9fa;
+      border: 1px solid #a2a9b1;
+      border-radius: 4px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+    
+    .audio-button:hover {
+      background-color: #eaecf0;
+    }
+    
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 8px solid #202122;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      margin-left: 2px;
+    }
+    
+    .audio-info {
+      font-size: 12px;
+      color: #54595d;
+    }
+    
+    .example-container {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+      max-width: 600px;
+    }
+    
+    .example-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .symbol-description {
+      margin-left: 10px;
+      font-size: 14px;
+    }
+
+    #ipa-database {
+      margin-top: 30px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+    }
+
+    .symbol-group {
+      margin-bottom: 20px;
+    }
+
+    .symbol-group-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .symbol-item {
+      border: 1px solid #eee;
+      border-radius: 4px;
+      padding: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .symbol-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .search-container {
+      margin: 20px 0;
+    }
+
+    input[type="text"], select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #f8f9fa;
+      border: 1px solid #a2a9b1;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #eaecf0;
+    }
+
+    .tab-container {
+      margin-top: 20px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .tab-button {
+      padding: 8px 16px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      background-color: transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+
+    .tab-button.active {
+      border-color: #ddd;
+      background-color: white;
+      border-bottom: 1px solid white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Help:IPA symbols</h1>
+  <p>This page lets you hear the sounds that the IPA (International Phonetic Alphabet) symbols represent and learn their phonetic names.</p>
+
+  <div class="tab-container">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="openTab(event, 'custom-tab')">Custom Symbol</button>
+      <button class="tab-button" onclick="openTab(event, 'database-tab')">IPA Database</button>
+    </div>
+
+    <div id="custom-tab" class="tab-content active">
+      <div class="example-container">
+        <div class="example-title">Customizable IPA Symbol</div>
+        
+        <div class="ipa-container">
+          <span class="ipa-symbol" id="custom-symbol">θ</span>
+          <div class="audio-player">
+            <button class="audio-button" onclick="playSound('θ')" title="Play audio">
+              <div class="triangle"></div>
+            </button>
+            <span class="audio-info">Audio (help)</span>
+          </div>
+          <span class="symbol-description" id="custom-description">voiceless dental fricative (as in English "think")</span>
+        </div>
+        
+        <div style="margin-top: 16px;">
+          <label for="symbol-input">IPA Symbol:</label>
+          <input type="text" id="symbol-input" value="θ">
+          <button onclick="updateSymbol()">Update</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="database-tab" class="tab-content">
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search symbols...">
+        <select id="category-filter">
+          <option value="all">All Categories</option>
+          <option value="consonants">Consonants</option>
+          <option value="vowels">Vowels</option>
+          <option value="suprasegmentals">Suprasegmentals</option>
+        </select>
+        <button onclick="searchSymbols()">Search</button>
+      </div>
+      
+      <div id="ipa-database">
+        <div class="symbol-group">
+          <div class="symbol-group-title">Consonants</div>
+          <div class="symbol-grid" id="consonants-grid">
+            <!-- Filled by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="symbol-group">
+          <div class="symbol-group-title">Vowels</div>
+          <div class="symbol-grid" id="vowels-grid">
+            <!-- Filled by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="symbol-group">
+          <div class="symbol-group-title">Suprasegmentals</div>
+          <div class="symbol-grid" id="suprasegmentals-grid">
+            <!-- Filled by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+//--------------------------------------------------------
+      // Check for specific hash
+ function checkForRedirect() {
+    if (location.hash === '#code'); {
+ // And if present:
+ // Redirect to the plain text one
+ location = 'helpIPA text.html';
+     }
+    }
+ // Run immediately
+ checkForRedirect();
+ 
+ // Run when hash changes
+ window.addEventListener('hashchange', checkForRedirect);
+ 
+ // Block "View Page Source" button
+ block('View Page Source');
+ // Block "Inspect" button
+ block('Inspect');
+//--------------------------------------------------------
+
+    // IPA database
+    const ipaDatabase = {
+      consonants: [
+        { symbol: "p", description: "voiceless bilabial plosive (as in English 'spin')" },
+        { symbol: "b", description: "voiced bilabial plosive (as in English 'bin')" },
+        { symbol: "t", description: "voiceless alveolar plosive (as in English 'stop')" },
+        { symbol: "d", description: "voiced alveolar plosive (as in English 'dog')" },
+        { symbol: "k", description: "voiceless velar plosive (as in English 'skin')" },
+        { symbol: "g", description: "voiced velar plosive (as in English 'go')" },
+        { symbol: "f", description: "voiceless labiodental fricative (as in English 'fan')" },
+        { symbol: "v", description: "voiced labiodental fricative (as in English 'van')" },
+        { symbol: "θ", description: "voiceless dental fricative (as in English 'think')" },
+        { symbol: "ð", description: "voiced dental fricative (as in English 'this')" },
+        { symbol: "s", description: "voiceless alveolar fricative (as in English 'sit')" },
+        { symbol: "z", description: "voiced alveolar fricative (as in English 'zoo')" },
+        { symbol: "ʃ", description: "voiceless postalveolar fricative (as in English 'ship')" },
+        { symbol: "ʒ", description: "voiced postalveolar fricative (as in English 'measure')" },
+        { symbol: "h", description: "voiceless glottal fricative (as in English 'hat')" },
+        { symbol: "m", description: "bilabial nasal (as in English 'map')" },
+        { symbol: "n", description: "alveolar nasal (as in English 'not')" },
+        { symbol: "ŋ", description: "velar nasal (as in English 'sing')" },
+        { symbol: "l", description: "alveolar lateral approximant (as in English 'let')" },
+        { symbol: "ʈꞎ", description: "Voiceless retroflex lateral affricate" },
+        { symbol: "ɹ", description: "alveolar approximant (as in American English 'red')" },
+        { symbol: "j", description: "palatal approximant (as in English 'yes')" },
+        { symbol: "w", description: "labial-velar approximant (as in English 'web')" }
+      ],
+      vowels: [
+        { symbol: "i", description: "close front unrounded vowel (as in English 'see')" },
+        { symbol: "ɪ", description: "near-close near-front unrounded vowel (as in English 'sit')" },
+        { symbol: "e", description: "close-mid front unrounded vowel (as in Spanish 'que')" },
+        { symbol: "ɛ", description: "open-mid front unrounded vowel (as in English 'bed')" },
+        { symbol: "æ", description: "near-open front unrounded vowel (as in English 'cat')" },
+        { symbol: "a", description: "open front unrounded vowel (as in Spanish 'casa')" },
+        { symbol: "ɑ", description: "open back unrounded vowel (as in English 'father')" },
+        { symbol: "ɒ", description: "open back rounded vowel (as in British English 'lot')" },
+        { symbol: "ʌ", description: "open-mid back unrounded vowel (as in English 'cut')" },
+        { symbol: "ɔ", description: "open-mid back rounded vowel (as in English 'thought')" },
+        { symbol: "o", description: "close-mid back rounded vowel (as in Spanish 'no')" },
+        { symbol: "ʊ", description: "near-close near-back rounded vowel (as in English 'put')" },
+        { symbol: "u", description: "close back rounded vowel (as in English 'food')" },
+        { symbol: "ə", description: "mid central vowel (schwa, as in English 'about')" },
+        { symbol: "ɜ", description: "open-mid central unrounded vowel (as in British English 'bird')" }
+      ],
+      suprasegmentals: [
+        { symbol: "ˈ", description: "primary stress" },
+        { symbol: "ˌ", description: "secondary stress" },
+        { symbol: "ː", description: "long vowel" },
+        { symbol: ".", description: "syllable break" },
+        { symbol: "‿", description: "linking (absence of a break)" }
+      ]
+    };
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      populateDatabaseGrids();
+    });
+
+    function populateDatabaseGrids() {
+      const consonantsGrid = document.getElementById('consonants-grid');
+      const vowelsGrid = document.getElementById('vowels-grid');
+      const suprasegmentalsGrid = document.getElementById('suprasegmentals-grid');
+
+      consonantsGrid.innerHTML = '';
+      vowelsGrid.innerHTML = '';
+      suprasegmentalsGrid.innerHTML = '';
+
+      ipaDatabase.consonants.forEach(item => {
+        consonantsGrid.appendChild(createSymbolItem(item));
+      });
+
+      ipaDatabase.vowels.forEach(item => {
+        vowelsGrid.appendChild(createSymbolItem(item));
+      });
+
+      ipaDatabase.suprasegmentals.forEach(item => {
+        suprasegmentalsGrid.appendChild(createSymbolItem(item));
+      });
+    }
+
+    function createSymbolItem(item) {
+      const div = document.createElement('div');
+      div.className = 'symbol-item';
+      div.innerHTML = `
+        <span class="ipa-symbol">${item.symbol}</span>
+        <button class="audio-button" onclick="playSound('${item.symbol}')" title="Play audio">
+          <div class="triangle"></div>
+        </button>
+        <small>${item.description.split(' ')[0]}</small>
+      `;
+      div.title = item.description;
+      div.onclick = function() {
+        updateCustomSymbol(item.symbol, item.description);
+      };
+      return div;
+    }
+
+    function updateCustomSymbol(symbol, description) {
+      document.getElementById('custom-symbol').textContent = symbol;
+      document.getElementById('custom-description').textContent = description;
+      document.getElementById('symbol-input').value = symbol;
+      
+      // Switch to custom tab
+      openTab({ currentTarget: document.querySelector('.tab-button') }, 'custom-tab');
+    }
+
+    function updateSymbol() {
+      const symbolInput = document.getElementById('symbol-input').value;
+      document.getElementById('custom-symbol').textContent = symbolInput;
+      
+      // Update description if symbol is in database
+      let description = "unknown symbol";
+      for (const category in ipaDatabase) {
+        const found = ipaDatabase[category].find(item => item.symbol === symbolInput);
+        if (found) {
+          description = found.description;
+          break;
+        }
+      }
+      document.getElementById('custom-description').textContent = description;
+    }
+
+    function searchSymbols() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const category = document.getElementById('category-filter').value;
+      
+      if (category === 'all') {
+        for (const cat in ipaDatabase) {
+          const grid = document.getElementById(`${cat}-grid`);
+          grid.innerHTML = '';
+          
+          ipaDatabase[cat].forEach(item => {
+            if (item.symbol.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm)) {
+              grid.appendChild(createSymbolItem(item));
+            }
+          });
+        }
+      } else {
+        const grid = document.getElementById(`${category}-grid`);
+        grid.innerHTML = '';
+        
+        ipaDatabase[category].forEach(item => {
+          if (item.symbol.toLowerCase().includes(searchTerm) ||
+              item.description.toLowerCase().includes(searchTerm)) {
+            grid.appendChild(createSymbolItem(item));
+          }
+        });
+      }
+    }
+
+    function openTab(evt, tabName) {
+      // Hide all tab content
+      const tabContents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].className = tabContents[i].className.replace(" active", "");
+      }
+      
+      // Remove active class from all tab buttons
+      const tabButtons = document.getElementsByClassName("tab-button");
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+      }
+      
+      // Show the current tab content and add active class to button
+      document.getElementById(tabName).className += " active";
+      evt.currentTarget.className += " active";
+    }
+
+    // Audio functionality
+    function playSound(symbol) {
+      // In a real implementation, this would play audio files for each symbol
+      // Since we can't actually play sounds here, we'll use the Web Speech API if available
+      
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(symbol);
+        utterance.rate = 0.8; // Slower speech for better pronunciation
+        utterance.pitch = 1;
+        speechSynthesis.speak(utterance);
+      } else {
+        alert("Sorry, your browser doesn't support speech synthesis. In a real implementation, pre-recorded audio files would be used.");
+      }
+      
+      // Visual feedback
+      const symbolElements = document.querySelectorAll('.ipa-symbol');
+      symbolElements.forEach(el => {
+        if (el.textContent === symbol) {
+          el.style.color = '#007bff';
+          setTimeout(() => {
+            el.style.color = '';
+          }, 500);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

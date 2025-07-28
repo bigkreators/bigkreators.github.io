@@ -1,0 +1,71 @@
+/* font */
+@font-face {
+    font-family: 'Charis SIL';
+    src: url('../font/CharisSIL-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+/* body section */
+body {
+   font-family: Charis SIL;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   min-height: 100vh;
+   margin: 0;
+}
+/* table */
+.impossible {
+    background-color: #d1d4da;
+}
+table {
+font-size: 18px;
+text-align: center;
+border-spacing: 0.15em;
+}
+th {
+padding: 0.15em;
+line-height: 100%;
+font-weight: bold;
+}
+th:nth-child(odd) {
+background-color: #6f4;
+}
+th:nth-child(even) {
+background-color: #ccffc1;
+}
+tr:first-child th:first-child {
+background-color: white !important;
+}
+td {
+padding: 0.1em;
+background-color: #eeffea;
+}
+/* audio */
+.audio {
+    cursor: pointer;
+}
+.problem {
+    background-color: #faa;
+    border: 1px solid #f00;
+    padding: 0 1em;
+    margin: 1em auto;
+    max-width: 37em;
+}
+/* buttons to see other html files */
+.btn {
+background-color: green;
+border-radius: 30px;
+text-decoration: none;
+color: black;
+display: inline-block;
+    padding: 12px 20px;
+    text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 200px;
+    max-width: 400px;
+    line-height: 1.3;
+    box-sizing: border-box;
+}
