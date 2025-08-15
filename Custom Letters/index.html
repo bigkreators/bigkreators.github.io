@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ɓ𝼛ɗɦᶖ'ᶊ Custom Letters</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --accent-color: #8B4513;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--primary-color);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-bottom: 5px solid var(--accent-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        .input-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .letter-input {
+            font-size: 2rem !important;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: #5048e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-delete {
+            background-color: #dc2626;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .btn-delete:hover {
+            background-color: #b91c1c;
+        }
+
+        .listofcustomletters {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .customletter {
+            background-color: white;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 45%;
+            min-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .customletter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .customletter .letter-display {
+            font-size: 4rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 0.5rem 0;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .customletter .label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 1rem;
+        }
+
+        .customletter .value {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .no-letters {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            font-style: italic;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .letters-count {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rating-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            font-size: 1.5rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.filled {
+            color: #fbbf24;
+        }
+
+        .rating-display {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .comments-section {
+            margin-top: 1rem;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .comment-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .comment-btn:hover {
+            background: #5048e5;
+        }
+
+        .comment {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .admin-badge {
+            background: var(--accent-color);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        /* Letter transformation classes */
+        .mirrored {
+            transform: scaleX(-1);
+            display: inline-block;
+        }
+
+        .turned {
+            transform: rotate(180deg);
+            display: inline-block;
+        }
+
+        .inverted {
+            transform: scaleY(-1);
+            display: inline-block;
+        }
+
+        .rotated-90 {
+            transform: rotate(90deg);
+            display: inline-block;
+        }
+
+        .rotated-270 {
+            transform: rotate(270deg);
+            display: inline-block;
+        }
+
+        .small-caps {
+            font-variant: small-caps;
+            font-size: 0.8em;
+        }
+
+        .superscript {
+            vertical-align: super;
+            font-size: 0.7em;
+        }
+
+        .subscript {
+            vertical-align: sub;
+            font-size: 0.7em;
+        }
+
+        .reversed {
+            transform: scaleX(-1) scaleY(-1);
+            display: inline-block;
+        }
+
+        .italic-transform {
+            transform: skewX(-15deg);
+            display: inline-block;
+        }
+
+        .bold-transform {
+            font-weight: 900;
+            text-shadow: 1px 0 0 currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .customletter {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .input-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ɓ𝼛ɗɦᶖ'ᶊ Custom Letters</h1>
+        <p>Create and manage your custom letter collection</p>
+    </header>
+    
+    <div class="container">
+        <!-- Login Section -->
+        <div class="login-section" id="loginSection">
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+
+        <!-- User Info Section (hidden initially) -->
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div>
+                <strong>Welcome, BodhiHarp!</strong><br>
+                <small>bodhi@customletters.com</small>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <div class="input-section" id="inputSection" style="display: none;">
+            <h2>Add New Custom Letter</h2>
+            <form id="letterForm">
+                <div class="form-group">
+                    <label for="letter">Letter:</label>
+                    <input type="text" id="letter" class="letter-input" placeholder="Enter your custom letter" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phonetic">Phonetic Value(s):</label>
+                    <input type="text" id="phonetic" placeholder="e.g., /b/, /β/, [voiced bilabial]" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="unicodeName">Unicode Name:</label>
+                    <input type="text" id="unicodeName" placeholder="e.g., LATIN LETTER B WITH HOOK" required>
+                </div>
+                
+                <button type="submit" class="btn">Add Letter</button>
+            </form>
+        </div>
+
+        <div class="letters-count" id="lettersCount">
+            Total Custom Letters: 0
+        </div>
+        
+        <div class="listofcustomletters" id="lettersList">
+            <div class="no-letters">
+                No custom letters yet. Add your first letter above!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Storage keys
+        const STORAGE_KEY = 'customLetters';
+        const RATINGS_KEY = 'letterRatings';
+        const COMMENTS_KEY = 'letterComments';
+        const AUTH_KEY = 'userAuth';
+        
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: 'BodhiHarp',
+            email: 'bodhi@customletters.com',
+            password: 'culettr'
+        };
+        
+        // Get DOM elements
+        const loginSection = document.getElementById('loginSection');
+        const userInfo = document.getElementById('userInfo');
+        const inputSection = document.getElementById('inputSection');
+        const loginForm = document.getElementById('loginForm');
+        const letterForm = document.getElementById('letterForm');
+        const letterInput = document.getElementById('letter');
+        const phoneticInput = document.getElementById('phonetic');
+        const unicodeNameInput = document.getElementById('unicodeName');
+        const lettersList = document.getElementById('lettersList');
+        const lettersCount = document.getElementById('lettersCount');
+        
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            displayLetters();
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (username === ADMIN_CREDENTIALS.username && 
+                email === ADMIN_CREDENTIALS.email && 
+                password === ADMIN_CREDENTIALS.password) {
+                
+                // Store auth status
+                localStorage.setItem(AUTH_KEY, JSON.stringify({
+                    isLoggedIn: true,
+                    username: username,
+                    email: email,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                showAdminInterface();
+            } else {
+                alert('Invalid credentials. Please check your username, email, and password.');
+            }
+        });
+        
+        // Letter form submission
+        letterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const letter = letterInput.value.trim();
+            const phonetic = phoneticInput.value.trim();
+            const unicodeName = unicodeNameInput.value.trim();
+            
+            if (!letter || !phonetic || !unicodeName) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            
+            // Check if letter already exists
+            const existingLetters = getLetters();
+            if (existingLetters.some(l => l.letter === letter)) {
+                alert('This letter already exists in your collection!');
+                return;
+            }
+            
+            addLetter(letter, phonetic, unicodeName);
+            
+            // Clear form
+            letterInput.value = '';
+            phoneticInput.value = '';
+            unicodeNameInput.value = '';
+            
+            displayLetters();
+        });
+        
+        function checkAuthStatus() {
+            const auth = localStorage.getItem(AUTH_KEY);
+            if (auth) {
+                const authData = JSON.parse(auth);
+                if (authData.isLoggedIn) {
+                    showAdminInterface();
+                }
+            }
+        }
+        
+        function showAdminInterface() {
+            loginSection.style.display = 'none';
+            userInfo.style.display = 'flex';
+            inputSection.style.display = 'block';
+        }
+        
+        function logout() {
+            localStorage.removeItem(AUTH_KEY);
+            loginSection.style.display = 'block';
+            userInfo.style.display = 'none';
+            inputSection.style.display = 'none';
+            
+            // Clear login form
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        function addLetter(letter, phonetic, unicodeName) {
+            const letters = getLetters();
+            const newLetter = {
+                id: Date.now(),
+                letter: letter,
+                phonetic: phonetic,
+                unicodeName: unicodeName,
+                dateAdded: new Date().toLocaleString(),
+                addedBy: 'BodhiHarp'
+            };
+            
+            letters.push(newLetter);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(letters));
+        }
+        
+        function getLetters() {
+            const letters = localStorage.getItem(STORAGE_KEY);
+            return letters ? JSON.parse(letters) : [];
+        }
+        
+        function getRatings() {
+            const ratings = localStorage.getItem(RATINGS_KEY);
+            return ratings ? JSON.parse(ratings) : {};
+        }
+        
+        function getComments() {
+            const comments = localStorage.getItem(COMMENTS_KEY);
+            return comments ? JSON.parse(comments) : {};
+        }
+        
+        function rateLetter(letterId, rating) {
+            const ratings = getRatings();
+            if (!ratings[letterId]) {
+                ratings[letterId] = [];
+            }
+            
+            // For simplicity, allow multiple ratings (in real app, you'd track by user)
+            ratings[letterId].push({
+                rating: rating,
+                date: new Date().toISOString(),
+                user: 'Anonymous'
+            });
+            
+            localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings));
+            displayLetters();
+        }
+        
+        function addComment(letterId, commentText, author = 'Anonymous') {
+            if (!commentText.trim()) return;
+            
+            const comments = getComments();
+            if (!comments[letterId]) {
+                comments[letterId] = [];
+            }
+            
+            comments[letterId].push({
+                id: Date.now(),
+                text: commentText.trim(),
+                author: author,
+                date: new Date().toLocaleString(),
+                isAdmin: author === 'BodhiHarp'
+            });
+            
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+            displayLetters();
+        }
+        
+        function deleteLetter(id) {
+            const auth = localStorage.getItem(AUTH_KEY);
+            if (!auth || !JSON.parse(auth).isLoggedIn) {
+                alert('Only BodhiHarp can delete letters.');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to delete this letter?')) {
+                return;
+            }
+            
+            const letters = getLetters();
+            const filteredLetters = letters.filter(letter => letter.id !== id);
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredLetters));
+            
+            // Also clean up ratings and comments for this letter
+            const ratings = getRatings();
+            const comments = getComments();
+            delete ratings[id];
+            delete comments[id];
+            localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings));
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+            
+            displayLetters();
+        }
+        
+        function calculateAverageRating(letterId) {
+            const ratings = getRatings();
+            const letterRatings = ratings[letterId] || [];
+            
+            if (letterRatings.length === 0) return 0;
+            
+            const sum = letterRatings.reduce((acc, r) => acc + r.rating, 0);
+            return (sum / letterRatings.length).toFixed(1);
+        }
+        
+        function displayLetters() {
+            const letters = getLetters();
+            const ratings = getRatings();
+            const comments = getComments();
+            const auth = localStorage.getItem(AUTH_KEY);
+            const isAdmin = auth && JSON.parse(auth).isLoggedIn;
+            
+            lettersCount.textContent = `Total Custom Letters: ${letters.length}`;
+            
+            if (letters.length === 0) {
+                lettersList.innerHTML = `
+                    <div class="no-letters">
+                        No custom letters yet. ${isAdmin ? 'Add your first letter above!' : `<a href="https://en.wikipedia.org/wiki/User:BodhiHarp" target="_blank" style="color: var(--primary-color); text-decoration: none;">BodhiHarp</a> hasn't added any letters yet.`}
+                    </div>
+                `;
+                return;
+            }
+            
+            lettersList.innerHTML = letters.map(letter => {
+                const letterRatings = ratings[letter.id] || [];
+                const letterComments = comments[letter.id] || [];
+                const avgRating = calculateAverageRating(letter.id);
+                
+                return `
+                    <div class="customletter">
+                        ${isAdmin ? `<button class="delete-btn" onclick="deleteLetter(${letter.id})" title="Delete letter">×</button>` : ''}
+                        
+                        <div class="letter-display">${escapeHtml(letter.letter)}</div>
+                        
+                        <div class="label">Phonetic Value(s):</div>
+                        <div class="value">${escapeHtml(letter.phonetic)}</div>
+                        
+                        <div class="label">Unicode Name:</div>
+                        <div class="value">${escapeHtml(letter.unicodeName)}</div>
+                        
+                        <div class="rating-section">
+                            <div class="rating-display">
+                                ${avgRating > 0 ? `★ ${avgRating} (${letterRatings.length} rating${letterRatings.length !== 1 ? 's' : ''})` : 'No ratings yet'}
+                            </div>
+                            
+                            <div class="stars" data-letter-id="${letter.id}">
+                                ${[1,2,3,4,5].map(star => 
+                                    `<span class="star" onclick="rateLetter(${letter.id}, ${star})">★</span>`
+                                ).join('')}
+                            </div>
+                            
+                            <div class="comments-section">
+                                <div class="comment-form">
+                                    <input type="text" class="comment-input" placeholder="Leave a comment..." id="comment-${letter.id}">
+                                    <button class="comment-btn" onclick="submitComment(${letter.id})">Comment</button>
+                                </div>
+                                
+                                <div class="comments-list">
+                                    ${letterComments.map(comment => `
+                                        <div class="comment">
+                                            <div class="comment-author">
+                                                ${escapeHtml(comment.author)}
+                                                ${comment.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                                            </div>
+                                            <div class="comment-text">${escapeHtml(comment.text)}</div>
+                                            <div class="comment-date">${comment.date}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="font-size: 0.9rem; color: #64748b; margin-top: 1rem;">
+                            Added by: ${letter.addedBy || 'BodhiHarp'} • ${letter.dateAdded}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function submitComment(letterId) {
+            const commentInput = document.getElementById(`comment-${letterId}`);
+            const commentText = commentInput.value.trim();
+            
+            if (!commentText) {
+                alert('Please enter a comment!');
+                return;
+            }
+            
+            const auth = localStorage.getItem(AUTH_KEY);
+            const author = auth && JSON.parse(auth).isLoggedIn ? 'BodhiHarp' : 'Anonymous';
+            
+            addComment(letterId, commentText, author);
+            commentInput.value = '';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

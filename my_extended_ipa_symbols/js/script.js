@@ -85,6 +85,8 @@ function removeNotification(notificationId) {
         updateNotificationBadge();
         refreshNotificationDisplay();
     }
+    // Prevent event bubbling to keep dropdown open
+    event.stopPropagation();
 }
 
 // Function to update notification badge count
@@ -301,8 +303,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const audio = new Audio(audioUrl);
                 audio.play().catch(e => {
                     console.error('Error playing audio:', e);
-                    // Add notification for audio error (removed alert)
-                    addNotification('Audio Error', 'Unable to play audio sample. The audio file may be missing or your browser may not support this feature.', 'error');
+                    // Add notification for audio error with quoted audio URL
+                    addNotification('Audio error', `Unable to play audio sample "${audioUrl}". The audio file may be missing or your browser may not support this feature.`, 'error');
                 });
             }
         });
