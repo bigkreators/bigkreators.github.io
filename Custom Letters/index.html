@@ -753,13 +753,13 @@
                     <div class="customletter">
                         ${isAdmin ? `<button class="delete-btn" onclick="deleteLetter(${letter.id})" title="Delete letter">×</button>` : ''}
                         
-                        <div class="letter-display">${escapeHtml(letter.letter)}</div>
+                        <div class="letter-display">${letter.letter}</div>
                         
                         <div class="label">Phonetic Value(s):</div>
-                        <div class="value">${escapeHtml(letter.phonetic)}</div>
+                        <div class="value">${letter.phonetic}</div>
                         
                         <div class="label">Unicode Name:</div>
-                        <div class="value">${escapeHtml(letter.unicodeName)}</div>
+                        <div class="value">${letter.unicodeName}</div>
                         
                         <div class="rating-section">
                             <div class="rating-display">
@@ -782,10 +782,10 @@
                                     ${letterComments.map(comment => `
                                         <div class="comment">
                                             <div class="comment-author">
-                                                ${escapeHtml(comment.author)}
+                                                ${comment.author}
                                                 ${comment.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
                                             </div>
-                                            <div class="comment-text">${escapeHtml(comment.text)}</div>
+                                            <div class="comment-text">${comment.text}</div>
                                             <div class="comment-date">${comment.date}</div>
                                         </div>
                                     `).join('')}
@@ -815,12 +815,6 @@
             
             addComment(letterId, commentText, author);
             commentInput.value = '';
-        }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
     </script>
 </body>
