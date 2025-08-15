@@ -715,6 +715,42 @@
             
             displayLetters();
         }
+
+        function editLetter(id) {
+            const auth = localStorage.getItem(AUTH_KEY);
+            if (!auth || !JSON.parse(auth).isLoggedIn) {
+                alert('Only BodhiHarp can edit letters.');
+                return;
+            }
+
+            const letters = getLetters();
+            const letter = letters.find(l => l.id === id);
+            
+            if (!letter) return;
+            
+            const newLetter = prompt('Edit letter:', letter.letter);
+            const newPhonetic = prompt('Edit phonetic value:', letter.phonetic);
+            const newUnicodeName = prompt('Edit Unicode name:', letter.unicodeName);
+            
+            if (newLetter !== null && newPhonetic !== null && newUnicodeName !== null) {
+                const updatedLetters = letters.map(l => {
+                    if (l.id === id) {
+                        return {
+                            ...l,
+                            letter: newLetter.trim(),
+                            phonetic: newPhonetic.trim(),
+                            unicodeName: newUnicodeName.trim(),
+                            dateEdited: new Date().toLocaleString()
+                        };
+                    }
+                    return l;
+                });
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLetters));
+                displayLetters();
+                alert('Letter updated successfully!');
+            }
+        }
         
         function calculateAverageRating(letterId) {
             const ratings = getRatings();
@@ -751,7 +787,10 @@
                 
                 return `
                     <div class="customletter">
-                        ${isAdmin ? `<button class="delete-btn" onclick="deleteLetter(${letter.id})" title="Delete letter">×</button>` : ''}
+                        ${isAdmin ? `
+                            <button class="delete-btn" onclick="deleteLetter(${letter.id})" title="Delete letter">×</button>
+                            <button class="btn btn-small" onclick="editLetter(${letter.id})" style="position: absolute; top: 10px; left: 10px; padding: 4px 8px; font-size: 12px;">Edit</button>
+                        ` : ''}
                         
                         <div class="letter-display">${letter.letter}</div>
                         
@@ -795,6 +834,7 @@
                         
                         <div style="font-size: 0.9rem; color: #64748b; margin-top: 1rem;">
                             Added by: ${letter.addedBy || 'BodhiHarp'} • ${letter.dateAdded}
+                            ${letter.dateEdited ? `<br>Last edited: ${letter.dateEdited}` : ''}
                         </div>
                     </div>
                 `;
