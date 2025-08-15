@@ -491,6 +491,11 @@
                     <input type="text" id="unicodeName" placeholder="e.g., LATIN LETTER B WITH HOOK" required>
                 </div>
                 
+                <div class="form-group">
+                    <label for="unicodeBlock">Unicode Block:</label>
+                    <input type="text" id="unicodeBlock" placeholder="e.g., Latin Extended-B, IPA Extensions" required>
+                </div>
+                
                 <button type="submit" class="btn">Add Letter</button>
             </form>
         </div>
@@ -529,6 +534,7 @@
         const letterInput = document.getElementById('letter');
         const phoneticInput = document.getElementById('phonetic');
         const unicodeNameInput = document.getElementById('unicodeName');
+        const unicodeBlockInput = document.getElementById('unicodeBlock');
         const lettersList = document.getElementById('lettersList');
         const lettersCount = document.getElementById('lettersCount');
         
@@ -571,8 +577,9 @@
             const letter = letterInput.value.trim();
             const phonetic = phoneticInput.value.trim();
             const unicodeName = unicodeNameInput.value.trim();
+            const unicodeBlock = unicodeBlockInput.value.trim();
             
-            if (!letter || !phonetic || !unicodeName) {
+            if (!letter || !phonetic || !unicodeName || !unicodeBlock) {
                 alert('Please fill in all fields!');
                 return;
             }
@@ -584,12 +591,13 @@
                 return;
             }
             
-            addLetter(letter, phonetic, unicodeName);
+            addLetter(letter, phonetic, unicodeName, unicodeBlock);
             
             // Clear form
             letterInput.value = '';
             phoneticInput.value = '';
             unicodeNameInput.value = '';
+            unicodeBlockInput.value = '';
             
             displayLetters();
         });
@@ -622,13 +630,14 @@
             document.getElementById('password').value = '';
         }
         
-        function addLetter(letter, phonetic, unicodeName) {
+        function addLetter(letter, phonetic, unicodeName, unicodeBlock) {
             const letters = getLetters();
             const newLetter = {
                 id: Date.now(),
                 letter: letter,
                 phonetic: phonetic,
                 unicodeName: unicodeName,
+                unicodeBlock: unicodeBlock,
                 dateAdded: new Date().toLocaleString(),
                 addedBy: 'BodhiHarp'
             };
@@ -731,8 +740,9 @@
             const newLetter = prompt('Edit letter:', letter.letter);
             const newPhonetic = prompt('Edit phonetic value:', letter.phonetic);
             const newUnicodeName = prompt('Edit Unicode name:', letter.unicodeName);
+            const newUnicodeBlock = prompt('Edit Unicode block:', letter.unicodeBlock || '');
             
-            if (newLetter !== null && newPhonetic !== null && newUnicodeName !== null) {
+            if (newLetter !== null && newPhonetic !== null && newUnicodeName !== null && newUnicodeBlock !== null) {
                 const updatedLetters = letters.map(l => {
                     if (l.id === id) {
                         return {
@@ -740,6 +750,7 @@
                             letter: newLetter.trim(),
                             phonetic: newPhonetic.trim(),
                             unicodeName: newUnicodeName.trim(),
+                            unicodeBlock: newUnicodeBlock.trim(),
                             dateEdited: new Date().toLocaleString()
                         };
                     }
@@ -799,6 +810,9 @@
                         
                         <div class="label">Unicode Name:</div>
                         <div class="value">${letter.unicodeName}</div>
+                        
+                        <div class="label">Unicode Block:</div>
+                        <div class="value">${letter.unicodeBlock || 'Not specified'}</div>
                         
                         <div class="rating-section">
                             <div class="rating-display">
