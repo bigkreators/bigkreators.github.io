@@ -511,11 +511,31 @@
         </div>
     </div>
 
-    <script>
-        // Storage keys
-        const STORAGE_KEY = 'customLetters';
-        const RATINGS_KEY = 'letterRatings';
-        const COMMENTS_KEY = 'letterComments';
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase configuration - REPLACE WITH YOUR ACTUAL VALUES
+        const firebaseConfig = {
+            apiKey: "your-api-key-here",
+            authDomain: "custom-letters-9a44c.firebaseapp.com",
+            projectId: "custom-letters-9a44c",
+            storageBucket: "custom-letters-9a44c.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Initialize anonymous authentication for public users
+        signInAnonymously(auth);
+        
+        // Storage keys (keeping localStorage for admin auth only)
         const AUTH_KEY = 'userAuth';
         
         // Admin credentials
