@@ -121,6 +121,72 @@
             gap: 0.5rem;
         }
 
+        /* IPA Infobox Styles */
+        .infobox {
+            float: right;
+            clear: right;
+            margin: 0.5em 0 1em 1em;
+            padding: 0.2em;
+            width: 22em;
+            text-align: center;
+            font-size: 88%;
+            line-height: 1.5em;
+            border: 1px solid #a2a9b1;
+            border-collapse: collapse;
+            background: #f8f9fa;
+        }
+
+        .infobox th {
+            background: #f2f2ce;
+            padding: 0.4em;
+            font-weight: bold;
+            border: 1px solid #a2a9b1;
+        }
+
+        .infobox td {
+            background: #ffffe6;
+            padding: 0.4em;
+            border: 1px solid #a2a9b1;
+        }
+
+        .IPA-symbol {
+            font-size: 5em;
+            line-height: 1.2em;
+            vertical-align: super;
+            font-weight: normal;
+            font-family: 'Segoe UI', 'DejaVu Sans', 'Lucida Grande', Arial, sans-serif;
+        }
+
+        .audio-row {
+            background: #f0f8ff !important;
+        }
+
+        .audio-button {
+            background: #0645ad;
+            color: white;
+            border: none;
+            padding: 0.3em 0.6em;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .audio-button:hover {
+            background: #0b0080;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .infobox {
+                float: none;
+                clear: none;
+                margin: 0 auto 1em auto;
+                width: 100%;
+                max-width: 22em;
+            }
+        }
+
+        /* Wiki content styles */
         .wiki-content h1 { font-size: 1.8rem; margin: 1.5rem 0 1rem; border-bottom: 1px solid #a2a9b1; padding-bottom: 0.3rem; }
         .wiki-content h2 { font-size: 1.5rem; margin: 1.3rem 0 0.8rem; border-bottom: 1px solid #a2a9b1; padding-bottom: 0.2rem; }
         .wiki-content h3 { font-size: 1.3rem; margin: 1.1rem 0 0.6rem; }
@@ -242,6 +308,22 @@
             font-style: italic;
             margin: 2rem 0;
         }
+
+        /* Template features table */
+        .features-list {
+            margin: 1rem 0;
+        }
+
+        .features-list ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.2rem 0;
+            border-bottom: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
@@ -268,10 +350,10 @@
 
         <div class="content">
             <div id="viewer">
-                <h1 class="page-title" id="pageTitle">Welcome to Local Wiki</h1>
+                <h1 class="page-title" id="pageTitle">Welcome to Phonetic Wiki</h1>
                 <div class="wiki-content" id="pageContent">
                     <div class="empty-state">
-                        <p>Welcome to your personal wiki! This wiki supports Wikipedia-style markup and stores everything locally in your browser.</p>
+                        <p>Welcome to your personal phonetic wiki! This wiki supports Wikipedia-style markup including IPA infoboxes.</p>
                         <p>Click "New Page" to create your first page, or "Help" to learn about the markup syntax.</p>
                     </div>
                 </div>
@@ -299,13 +381,13 @@
     <script>
         class Wiki {
             constructor() {
-    this.currentPage = 'Main Page';
-    this.isEditing = false;
-    this.initializeElements();
-    this.bindEvents();
-    this.loadPage(this.currentPage);    // Add this line
-    this.updatePageList();              // Add this line
-}
+                this.currentPage = 'Main Page';
+                this.isEditing = false;
+                this.initializeElements();
+                this.bindEvents();
+                this.loadPage(this.currentPage);
+                this.updatePageList();
+            }
     
             initializeElements() {
                 this.viewer = document.getElementById('viewer');
@@ -344,22 +426,12 @@
                         this.loadPage(pageName);
                     }
                 });
-
-                // Handle browser back/forward (only if served over HTTP/HTTPS)
-                if (window.location.protocol !== 'file:') {
-                    window.addEventListener('popstate', (e) => {
-                        if (e.state && e.state.page) {
-                            this.loadPage(e.state.page, false);
-                        }
-                    });
-                }
             }
 
             getPages() {
                 try {
                     const pages = localStorage.getItem('wiki_pages');
                     const result = pages ? JSON.parse(pages) : {};
-                    console.log('Retrieved pages from localStorage:', Object.keys(result));
                     return result;
                 } catch (error) {
                     console.error('Error reading from localStorage:', error);
@@ -367,60 +439,12 @@
                 }
             }
 
-            getPageHistory(pageName) {
-                try {
-                    const history = localStorage.getItem('wiki_history');
-                    const allHistory = history ? JSON.parse(history) : {};
-                    return allHistory[pageName] || [];
-                } catch (error) {
-                    console.error('Error reading page history:', error);
-                    return [];
-                }
-            }
-
-            savePageHistory(pageName, content) {
-                try {
-                    const history = localStorage.getItem('wiki_history');
-                    const allHistory = history ? JSON.parse(history) : {};
-                    
-                    if (!allHistory[pageName]) {
-                        allHistory[pageName] = [];
-                    }
-                    
-                    // Add new version to history
-                    allHistory[pageName].push({
-                        content: content,
-                        timestamp: new Date().toISOString(),
-                        version: allHistory[pageName].length + 1
-                    });
-                    
-                    // Keep only last 10 versions to prevent localStorage bloat
-                    if (allHistory[pageName].length > 10) {
-                        allHistory[pageName] = allHistory[pageName].slice(-10);
-                        // Renumber versions
-                        allHistory[pageName].forEach((entry, index) => {
-                            entry.version = index + 1;
-                        });
-                    }
-                    
-                    localStorage.setItem('wiki_history', JSON.stringify(allHistory));
-                } catch (error) {
-                    console.error('Error saving page history:', error);
-                }
-            }
-
             savePage() {
                 const content = this.editorTextarea.value;
                 const pages = this.getPages();
                 
-                // Save to history before updating current content
-                this.savePageHistory(this.currentPage, content);
-                
                 pages[this.currentPage] = content;
                 localStorage.setItem('wiki_pages', JSON.stringify(pages));
-                
-                console.log('Saved page:', this.currentPage, 'Content length:', content.length);
-                console.log('All pages now:', Object.keys(pages));
                 
                 this.isEditing = false;
                 this.showViewer();
@@ -436,28 +460,12 @@
                 this.pageTitle.textContent = pageName;
                 this.searchInput.value = pageName;
                 
-                // Update URL (only if served over HTTP/HTTPS, not file://)
-                if (updateHistory && window.location.protocol !== 'file:') {
-                    try {
-                        const url = pageName === 'Main Page' ? '/' : `/articles/${encodeURIComponent(pageName)}`;
-                        history.pushState({ page: pageName }, pageName, url);
-                    } catch (e) {
-                        // Silently fail if pushState is not supported
-                        console.log('History API not available in this context');
-                    }
-                }
-                
-                // Update sidebar title
-                const isSpecialPage = ['All Pages', 'Help', 'Main Page'].includes(pageName);
-                this.sidebarTitle.textContent = isSpecialPage ? 'All Pages' : 'Other Pages';
-                
                 if (content) {
                     this.pageContent.innerHTML = this.parseWikiMarkup(content);
                 } else if (pageName === 'Main Page') {
-                    // Show special welcome content for Main Page when no content exists
                     this.pageContent.innerHTML = `
                         <div class="empty-state">
-                            <p>Welcome to your personal wiki! This wiki supports Wikipedia-style markup and stores everything locally in your browser.</p>
+                            <p>Welcome to your personal phonetic wiki! This wiki supports Wikipedia-style markup including IPA infoboxes.</p>
                             <p>Click "New Page" to create your first page, or "Help" to learn about the markup syntax.</p>
                         </div>
                     `;
@@ -506,17 +514,6 @@
                 if (confirm(`Are you sure you want to delete the page "${this.currentPage}"? This action cannot be undone.`)) {
                     delete pages[this.currentPage];
                     localStorage.setItem('wiki_pages', JSON.stringify(pages));
-                    
-                    // Also delete history for this page
-                    try {
-                        const history = localStorage.getItem('wiki_history');
-                        const allHistory = history ? JSON.parse(history) : {};
-                        delete allHistory[this.currentPage];
-                        localStorage.setItem('wiki_history', JSON.stringify(allHistory));
-                    } catch (error) {
-                        console.error('Error deleting page history:', error);
-                    }
-                    
                     this.updatePageList();
                     this.loadPage('Main Page');
                 }
@@ -531,7 +528,6 @@
                 const content = this.editorTextarea.value;
                 this.pageContent.innerHTML = this.parseWikiMarkup(content);
                 
-                // Temporarily show viewer while keeping editor state
                 this.viewer.style.display = 'block';
                 this.editor.style.display = 'none';
                 
@@ -560,8 +556,6 @@
             updatePageList() {
                 const pages = this.getPages();
                 const pageNames = Object.keys(pages).sort();
-                
-                console.log('Updating page list. Found pages:', pageNames);
                 
                 if (pageNames.length === 0) {
                     this.pageList.innerHTML = '<li class="empty-state">No pages yet</li>';
@@ -592,13 +586,30 @@
             showHelp() {
                 const helpContent = `= Wiki Markup Help =
 
-This wiki supports Wikipedia-style markup. Here are the main formatting options:
+This wiki supports Wikipedia-style markup including IPA infoboxes.
+
+== IPA Infobox ==
+Create IPA infoboxes like this:
+
+<code>{{infobox IPA|above=Voiced bilabial plosive|ipa symbol=b|ipa symbol2=b̬|soundfile=voiced-bilabial-plosive.ogg}}</code>
+
+Parameters:
+* <code>above</code> - The title/name of the sound
+* <code>ipa symbol</code> - Primary IPA symbol (will be large)
+* <code>ipa symbol2</code> - Secondary/alternative symbol
+* <code>ipa symbol3</code> - Tertiary symbol
+* <code>ipa symbol4</code> - Quaternary symbol
+* <code>soundfile</code> - Audio filename (creates play button)
+
+<!-- Not how Wikipedia shows features! == Features Template ==
+Add phonetic features:
+
+<code>{{features|trill|palatal|voiced|oral|central articulation|pulmonic}}</code> -->
 
 == Headings ==
 * <code>= Level 1 =</code>
 * <code>== Level 2 ==</code>
 * <code>=== Level 3 ===</code>
-* And so on...
 
 == Text Formatting ==
 * <code>'''bold text'''</code> → '''bold text'''
@@ -606,31 +617,30 @@ This wiki supports Wikipedia-style markup. Here are the main formatting options:
 
 == Lists ==
 * <code>* Bullet point</code>
-* <code>** Sub-bullet</code>
 * <code># Numbered list</code>
-* <code>## Sub-numbered</code>
 
 == Links ==
 * <code>[[Page Name]]</code> → Link to another page
 * <code>[[Page Name|Display Text]]</code> → Link with custom text
 
-== Other ==
-* <code>&lt;code&gt;inline code&lt;/code&gt;</code> → <code>inline code</code>
-* Lines starting with space create preformatted text
-* Empty lines create paragraph breaks
-
-== Example ==
+== Example Page ==
 <pre>
-= My Page =
+= Voiced Bilabial Plosive =
 
-This is a paragraph with '''bold''' and ''italic'' text.
+{{infobox IPA|above=Voiced bilabial plosive|ipa symbol=b|ipa symbol2=b̬}}
 
-== Section ==
-* First item
-* Second item
-** Sub-item
+The '''voiced bilabial plosive''' is a consonantal sound.
 
-Check out [[Other Page]] for more info!
+== Features ==
+{{features|plosive|bilabial|voiced|oral|central articulation|pulmonic}}
+
+== Occurrence ==
+This sound occurs in many languages including:
+* English
+* Spanish  
+* French
+
+See also: [[Voiceless bilabial plosive]]
 </pre>
 `;
                 
@@ -638,73 +648,10 @@ Check out [[Other Page]] for more info!
                 this.pageContent.innerHTML = this.parseWikiMarkup(helpContent);
             }
 
-            showPageHistory() {
-                if (['All Pages', 'Help', 'Page History'].includes(this.currentPage)) {
-                    alert('No history available for this page.');
-                    return;
-                }
-                
-                const history = this.getPageHistory(this.currentPage);
-                
-                let content = `= Page History: ${this.currentPage} =\n\n`;
-                
-                if (history.length === 0) {
-                    content += 'No history available for this page.';
-                } else {
-                    content += `Found ${history.length} version${history.length === 1 ? '' : 's'}:\n\n`;
-                    
-                    // Show versions in reverse chronological order (newest first)
-                    history.slice().reverse().forEach((version, index) => {
-                        const date = new Date(version.timestamp);
-                        const formattedDate = date.toLocaleString();
-                        const isLatest = index === 0;
-                        
-                        content += `== Version ${version.version}${isLatest ? ' (Current)' : ''} ==\n`;
-                        content += `'''Date:''' ${formattedDate}\n\n`;
-                        content += `<details>\n`;
-                        content += `<summary>View content (${version.content.length} characters)</summary>\n\n`;
-                        content += `<pre>${version.content}</pre>\n`;
-                        content += `</details>\n\n`;
-                        
-                        if (!isLatest) {
-                            content += `<button onclick="wiki.restoreVersion('${this.currentPage}', ${version.version - 1})">Restore this version</button>\n\n`;
-                        }
-                    });
-                }
-                
-                this.currentPage = 'Page History';
-                this.pageTitle.textContent = `Page History: ${this.currentPage}`;
-                this.pageContent.innerHTML = this.parseWikiMarkup(content);
-                this.showViewer();
-            }
-
-            restoreVersion(pageName, versionIndex) {
-                const history = this.getPageHistory(pageName);
-                if (history[versionIndex]) {
-                    const oldContent = history[versionIndex].content;
-                    
-                    if (confirm(`Restore version ${versionIndex + 1}? This will replace the current content.`)) {
-                        const pages = this.getPages();
-                        
-                        // Save current content to history before restoring
-                        this.savePageHistory(pageName, pages[pageName] || '');
-                        
-                        // Restore the old version
-                        pages[pageName] = oldContent;
-                        localStorage.setItem('wiki_pages', JSON.stringify(pages));
-                        
-                        // Navigate back to the restored page
-                        this.loadPage(pageName);
-                        alert(`Version ${versionIndex + 1} has been restored.`);
-                    }
-                }
-            }
-
             exportData() {
                 const pages = this.getPages();
                 const dataStr = JSON.stringify(pages, null, 2);
                 
-                // Create download link
                 const dataBlob = new Blob([dataStr], {type: 'application/json'});
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
@@ -715,7 +662,7 @@ Check out [[Other Page]] for more info!
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);
                 
-                alert('Wiki data exported! Save the downloaded file to import into other environments.');
+                alert('Wiki data exported!');
             }
 
             importData() {
@@ -731,7 +678,6 @@ Check out [[Other Page]] for more info!
                             try {
                                 const importedData = JSON.parse(e.target.result);
                                 
-                                // Validate the data structure
                                 if (typeof importedData === 'object' && importedData !== null) {
                                     const pageCount = Object.keys(importedData).length;
                                     if (confirm(`Import ${pageCount} pages? This will merge with existing data.`)) {
@@ -743,7 +689,7 @@ Check out [[Other Page]] for more info!
                                         this.loadPage('Main Page');
                                     }
                                 } else {
-                                    alert('Invalid file format. Please select a valid wiki backup file.');
+                                    alert('Invalid file format.');
                                 }
                             } catch (error) {
                                 alert('Error reading file: ' + error.message);
@@ -759,8 +705,11 @@ Check out [[Other Page]] for more info!
             parseWikiMarkup(text) {
                 let html = text;
                 
-                // Escape HTML
+                // Escape HTML first
                 html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                // Parse templates first (before other markup)
+                html = this.parseTemplates(html);
                 
                 // Headings
                 html = html.replace(/^======\s*(.*?)\s*======$/gm, '<h6>$1</h6>');
@@ -787,20 +736,14 @@ Check out [[Other Page]] for more info!
                     return `<a href="#${page}"${className}>${page}</a>`;
                 });
                 
-                // Code blocks (preformatted)
+                // Code blocks
                 html = html.replace(/&lt;pre&gt;([\s\S]*?)&lt;\/pre&gt;/g, '<pre><code>$1</code></pre>');
-                
-                // Inline code
                 html = html.replace(/&lt;code&gt;(.*?)&lt;\/code&gt;/g, '<code>$1</code>');
-                
-                // Preformatted text (lines starting with space)
-                html = html.replace(/^( .+)$/gm, '<pre><code>$1</code></pre>');
                 
                 // Lists
                 const lines = html.split('\n');
                 let inList = false;
                 let listType = '';
-                let listLevel = 0;
                 let result = [];
                 
                 for (let line of lines) {
@@ -811,24 +754,22 @@ Check out [[Other Page]] for more info!
                         const level = bulletMatch[1].length;
                         const content = bulletMatch[2];
                         
-                        if (!inList || listType !== 'ul' || level !== listLevel) {
+                        if (!inList || listType !== 'ul') {
                             if (inList) result.push('</ul>');
                             result.push('<ul>');
                             inList = true;
                             listType = 'ul';
-                            listLevel = level;
                         }
                         result.push(`<li>${content}</li>`);
                     } else if (numberMatch) {
                         const level = numberMatch[1].length;
                         const content = numberMatch[2];
                         
-                        if (!inList || listType !== 'ol' || level !== listLevel) {
+                        if (!inList || listType !== 'ol') {
                             if (inList) result.push('</ol>');
                             result.push('<ol>');
                             inList = true;
                             listType = 'ol';
-                            listLevel = level;
                         }
                         result.push(`<li>${content}</li>`);
                     } else {
@@ -858,8 +799,74 @@ Check out [[Other Page]] for more info!
                 html = html.replace(/(<\/ul>)\s*<\/p>/g, '$1');
                 html = html.replace(/<p>\s*(<ol>)/g, '$1');
                 html = html.replace(/(<\/ol>)\s*<\/p>/g, '$1');
-                html = html.replace(/<p>\s*(<pre>)/g, '$1');
-                html = html.replace(/(<\/pre>)\s*<\/p>/g, '$1');
+                html = html.replace(/<p>\s*(<table>)/g, '$1');
+                html = html.replace(/(<\/table>)\s*<\/p>/g, '$1');
+                
+                return html;
+            }
+
+            parseTemplates(text) {
+                // Parse {{infobox IPA|...}} templates
+                text = text.replace(/\{\{infobox IPA\|(.*?)\}\}/gi, (match, params) => {
+                    return this.renderIPAInfobox(params);
+                });
+                
+                // Parse {{features|...}} templates
+                text = text.replace(/\{\{features\|(.*?)\}\}/gi, (match, params) => {
+                    return this.renderFeatures(params);
+                });
+                
+                return text;
+            }
+
+            renderIPAInfobox(params) {
+                const paramPairs = params.split('|');
+                const data = {};
+                
+                paramPairs.forEach(pair => {
+                    const [key, value] = pair.split('=').map(s => s.trim());
+                    if (key && value) {
+                        data[key] = value;
+                    }
+                });
+                
+                let symbols = [];
+                if (data['ipa symbol']) symbols.push(data['ipa symbol']);
+                if (data['ipa symbol2']) symbols.push(data['ipa symbol2']);
+                if (data['ipa symbol3']) symbols.push(data['ipa symbol3']);
+                if (data['ipa symbol4']) symbols.push(data['ipa symbol4']);
+                
+                let html = '<table class="infobox">';
+                
+                // Title row
+                if (data.above) {
+                    html += `<tr><th>${data.above}</th></tr>`;
+                }
+                
+                // Symbol rows
+                symbols.forEach(symbol => {
+                    html += `<tr><td><span class="IPA-symbol">${symbol}</span></td></tr>`;
+                });
+                
+                // Audio row
+                if (data.soundfile) {
+                    html += `<tr><td class="audio-row">
+                        <button class="audio-button" onclick="alert('Audio: ${data.soundfile}')">🔊 Play</button>
+                    </td></tr>`;
+                }
+                
+                html += '</table>';
+                return html;
+            }
+
+            renderFeatures(params) {
+                const features = params.split('|').map(f => f.trim()).filter(f => f);
+                
+                let html = '<div class="features-list"><ul>';
+                features.forEach(feature => {
+                    html += `<li><strong>Manner:</strong> ${feature}</li>`;
+                });
+                html += '</ul></div>';
                 
                 return html;
             }
