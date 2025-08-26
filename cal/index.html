@@ -17,8 +17,10 @@ background: orange;
 font-size: 35px;
 text-align: center;
 cursor: pointer;
+border: none;
+width: 60px
 }
-.result {
+.display {
 font-size: 45px;
 color: white;
 height: 50px;
@@ -28,44 +30,85 @@ height: 50px;
 <body>
 <table class="calculator">
 <tr>
-<td colspan="4" readonly class="result" id="result"></td>
+<td colspan="4" readonly class="display" id="display"></td>
 </tr>
 <tr>
-<td class="button">+</td>
-<td class="button" rowspan="2">-</td>
-<td class="button" rowspan="2">÷</td>
-<td class="button" rowspan="2">×</td>
+<td><button class="button" onclick="appendToDisplay('+')">+</button></td>
+<td rowspan="2"><button class="button" style="height: 88px;" onclick="appendToDisplay('-')">-</button></td>
+<td rowspan="2"><button class="button" style="height: 88px;" onclick="appendToDisplay('÷')">÷</button></td>
+<td rowspan="2"><button class="button" style="height: 88px;" onclick="appendToDisplay('×')">×</button></td>
 </tr>
 <tr>
-<td class="button">%</td>
+<td><button class="button" onclick="appendToDisplay('%')">%</button></td>
 </tr>
 <tr>
-<td class="button">.</td>
-<td class="button">=</td>
-<td class="button">C</td>
-<td class="button">D</td>
+<td><button class="button" onclick="appendToDisplay('.')">.</button></td>
+<td><button class="button" onclick="calculate()">=</button></td>
+<td><button class="button" onclick="clearDisplay()">C</button></td>
+<!--not added yet: <td class="button">D</td>-->
 </tr>
 <tr>
-<td class="button">1</td>
-<td class="button">2</td>
-<td class="button">3</td>
-<td class="button">4</td>
+<td><button class="button" onclick="appendToDisplay('1')">1</button></td>
+<td><button class="button" onclick="appendToDisplay('2')">2</button></td>
+<td><button class="button" onclick="appendToDisplay('3')">3</button></td>
+<td><button class="button" onclick="appendToDisplay('4')">4</button></td>
 </tr>
 <tr>
-<td class="button">5</td>
-<td class="button">6</td>
-<td class="button">7</td>
-<td class="button">8</td>
+<td><button class="button" onclick="appendToDisplay('5')">5</button></td>
+<td><button class="button" onclick="appendToDisplay('6')">6</button></td>
+<td><button class="button" onclick="appendToDisplay('7')">7</button></td>
+<td><button class="button" onclick="appendToDisplay('8')">8</button></td>
 </tr>
 <tr>
-<td class="button">9</td>
-<td class="button">10</td>
-<td class="button">11</td>
-<td class="button">12</td>
+<td><button class="button" onclick="appendToDisplay('9')">9</button></td>
+<td><button class="button" onclick="appendToDisplay('10')">10</button></td>
+<td><button class="button" onclick="appendToDisplay('11')">11</button></td>
+<td><button class="button" onclick="appendToDisplay('12')">12</button></td>
 </tr>
 </table>
 <script>
+const display = document.getElementById("display");
 
+function appendToDisplay(input) {
+    let currentText = display.textContent + input;
+    
+    // Insert line breaks every 10 characters
+    let formattedText = '';
+    for (let i = 0; i < currentText.length; i++) {
+        if (i > 0 && i % 10 === 0) {
+            formattedText += '<br>';
+        }
+        formattedText += currentText[i];
+    }
+    
+    display.innerHTML = formattedText; // Use innerHTML to render <br> tags
+}
+
+function clearDisplay() {
+     display.textContent = "";      // Changed from .value to .textContent
+}
+
+function calculate() {
+try {
+     // Convert symbols and evaluate
+     let expression = display.textContent.replace(/×/g, '*').replace(/÷/g, '/');
+     let result = eval(expression);
+     
+     // Apply line breaks to the result every 10 characters
+     let resultString = result.toString();
+     let formattedResult = '';
+     for (let i = 0; i < resultString.length; i++) {
+         if (i > 0 && i % 10 === 0) {
+             formattedResult += '<br>';
+         }
+         formattedResult += resultString[i];
+     }
+     
+     display.innerHTML = formattedResult;
+} catch(error) {
+     display.textContent = "Error";
+}
+}
 </script>
 </body>
 </html>
