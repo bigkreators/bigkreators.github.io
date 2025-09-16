@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wiki - Homepage</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f6f6f6;
+        }
+        
+        /* Header */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 30px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+        
+        /* Main Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            min-height: calc(100vh - 130px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            margin-right: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0645ad;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .main-content h1 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .main-content p {
+            margin-bottom: 15px;
+        }
+        
+        .article-preview {
+            margin-bottom: 30px;
+        }
+        
+        .article-preview h3 {
+            margin-bottom: 10px;
+        }
+        
+        .article-preview a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        
+        /* Featured Content */
+        .featured-content {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .featured-content h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 10px;
+        }
+        
+        footer ul li {
+            margin: 0 15px;
+        }
+        
+        footer ul li a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        
+        /* Helper Classes */
+        .edit-link {
+            font-size: 0.8em;
+            color: #777;
+            margin-left: 10px;
+            text-decoration: none;
+        }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 20px 0;
+                font-family: Arial, sans-serif;
+            }
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+            .ipa {
+                color: #6666BB;
+            }
+            caption {
+                font-weight: bold;
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            .language-link {
+                color: #4D71B9;
+            }
+            .note-link {
+                color: #4D71B9;
+            }
+            .arabic-text {
+                direction: rtl;
+            }
+            .superscript {
+                vertical-align: super;
+                font-size: smaller;
+            }
+            .armenian {
+                font-family: Arial, sans-serif;
+            }
+            .italic {
+                font-style: italic;
+            }
+        /* Extended styling for articles*/
+        .audio-sample-container {
+             width: 100%;
+             max-width: 400px;
+             margin: 20px auto;
+             background-color: #fefef7;
+             border: 1px solid #f0f0e0;
+             padding: 8px;
+             text-align: center;
+           }
+           
+           .audio-sample-title {
+             font-weight: bold;
+             font-size: 16px;
+             margin-bottom: 8px;
+           }
+           
+           .audio-player {
+             display: flex;
+             background-color: #707070;
+             height: 40px;
+             align-items: center;
+             padding: 0;
+             position: relative;
+           }
+           
+           .play-button {
+             width: 40px;
+             height: 40px;
+             background: none;
+             border: none;
+             cursor: pointer;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             padding: 0;
+           }
+           
+           .play-icon {
+             width: 0;
+             height: 0;
+             border-top: 10px solid transparent;
+             border-left: 18px solid white;
+             border-bottom: 10px solid transparent;
+             margin-left: 4px;
+           }
+           
+           .pause-icon {
+             display: none;
+             width: 16px;
+             height: 18px;
+             border-left: 5px solid white;
+             border-right: 5px solid white;
+             margin-left: 0;
+           }
+           
+           .time-display {
+             position: absolute;
+             right: 0;
+             background-color: #202020;
+             color: white;
+             padding: 4px 8px;
+             font-family: monospace;
+             font-size: 14px;
+             margin-right: 4px;
+             border-radius: 2px;
+           }
+           
+           .audio-links {
+             margin-top: 8px;
+             font-size: 14px;
+             color: #6060a0;
+           }
+           
+           .audio-links a {
+             color: #6060a0;
+             text-decoration: none;
+           }
+           
+           .audio-links a:hover {
+             text-decoration: underline;
+           }
+           
+           .dot {
+             margin: 0 6px;
+             color: #6060a0;
+           }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="Kryptopedia.png" width="50"
+            height="50" </img> <span class="logo">Kryptopedia</span>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search the wiki...">
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="iCloud Drive/Desktop/Github/bigkreators.github.io/Articles.html">Articles</a></li>
+                <li><a href="#">Random</a></li>
+                <li><a href="#">Contribute</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="#">Main Page</a></li>
+                <li><a href="#">Recent Changes</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Community Portal</a></li>
+            </ul>
+            
+            <h3>Tools</h3>
+            <ul>
+                <li><a href="#">Create Article</a></li>
+                <li><a href="#">Upload File</a></li>
+                <li><a href="#">Special Pages</a></li>
+                <li><a href="#">Admin Dashboard</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Wiki Content -->
+        <div class="main-content">
+            <h1>Welcome to the beginning of Kryptopedia!</h1>
+
+            
+            <p>Welcome to my wiki Kryptopedia!, a collaborative knowledge base dedicated to your favorite topics. Our goal is to create a comprehensive resource where enthusiasts and experts can share information, discoveries, and insights.
+<br>Other possible names: named Furn, Furnopedia, Cryptopedia</p>
+            
+            <div class="featured-content">
+                <h3>Featured Article</h3>
+                <p>Check out our featured article: <a href="#">Title of Featured Article</a>. This article showcases excellent content that represents the best of our wiki.</p>
+            </div>
+            <h3>Bonus content</h3>
+            <h1>Voiceless uvular fricative trill</h1>
+            <style>
+            .infobox {
+                border: 1px solid #a2a9b1;
+                background-color: #f8f9fa;
+                float: right;
+                clear: right;
+                margin: 0.5em 0 1em 1em;
+                padding: 0.2em;
+                width: 22em;
+            }
+                </style>
+            <table class="infobox" style="width: 16em;" style2="float:right">
+             <tbody>
+              <tr>
+               <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                Voiceless uvular fricative trill
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     ʀ̝̊
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     χ͡ʀ̥
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in Bodhi's Phonetic Alphabet">
+                     ᴙ̭
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+                  <th> <!-- Wikipedia-style Audio Player -->
+                      <div style="width: 100%; max-width: 400px; margin: 20px 0; background-color: #ffffe6; border: 1px solid #f0f0e0; padding: 8px; text-align: center;">
+                        <!-- Title -->
+                        <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Audio sample</div>
+                        
+                        <!-- Player bar -->
+                        <div style="display: flex; background-color: #707070; height: 40px; align-items: center; padding: 0; position: relative;">
+                          <!-- Play button -->
+                          <button id="wikiPlayButton" style="width: 40px; height: 40px; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; padding: 0;">
+                            <div id="wikiPlayIcon" style="width: 0; height: 0; border-top: 10px solid transparent; border-left: 18px solid white; border-bottom: 10px solid transparent; margin-left: 4px;"></div>
+                            <div id="wikiPauseIcon" style="display: none; width: 16px; height: 18px; border-left: 5px solid white; border-right: 5px solid white; margin-left: 0;"></div>
+                          </button>
+                          
+                          <!-- Time display -->
+                          <div id="wikiTimeDisplay" style="position: absolute; right: 0; background-color: #202020; color: white; padding: 4px 8px; font-family: Arial; font-size: 14px; margin-right: 4px; border-radius: 2px;">0:02</div>
+                        </div>
+                        
+                        <!-- Links -->
+                        <div style="margin-top: 8px; font-size: 14px; color: #6060a0;">
+                          <a href="#" style="color: #6060a0; text-decoration: none;">source</a>
+                          <span style="margin: 0 6px; color: #6060a0;">•</span>
+                          <a href="#" style="color: #6060a0; text-decoration: none;">help</a>
+                        </div>
+                      </div>
+
+                      <!-- Audio element -->
+                      <audio id="wikiAudioElement">
+                        <!-- Replace this with the path to your audio file -->
+                        <source src="Voiceless_uvular_fricative_trill_ʀ̝̊.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                      </audio></th>
+                  </tr>
+             </tbody>
+            </table>
+            
+            <table class="infobox" style="width: 16em;">
+             <tbody>
+              <tr>
+               <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                   voiceless (post)velar-uvular fricative trill
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    ʀ̝̊˖
+                 </span>
+                </span>
+               </th>
+              </tr>
+             </tbody>
+            </table>
+            The <strong>voiceless uvular fricative trill</strong> is a kind of rare type of consonantal sound used in some spoken languages. The IPA symbol for it is ⟨ʀ̝̊⟩, but since this sound is actually a simultaneous [χ] and [ʀ̥], it can also be transcribed as ⟨χ͡ʀ̥⟩. In Bodhi's Phonetic Alphabet<sup> <i> [Made up thing] </i> </sup>, it is represented with ⟨ᴙ̭⟩.<br> <br>
+            
+            Most of the languages that are claimed to have a <strong>voiceless uvular fricative</strong> might actually have a <strong>voiceless uvular fricative trill</strong>, since a complication of uvular fricatives in that the shape of the vocal tract may be such that the uvula vibrates.<br> <br>
+            
+            The frication in the fricative trill variant sometimes occurs at the middle or the back of the soft palate (termed velar or mediovelar and post-velar, respectively), rather than the uvula itself. This is the case in Northern Standard Dutch as well as some varieties of Arabic, Limburgish and Madrid Spanish. It may thus be appropriate to call those variants voiceless (post)velar-uvular fricative trill as the trill component is always uvular (velar trills are not physically possible). The corresponding IPA symbol is ⟨ʀ̝̊˖⟩ (a devoiced, raised and advanced uvular trill, where the "advanced" diacritic applies only to the fricative portion of the sound). Thus, in cases where a dialectal variation between voiceless uvular and velar fricatives is claimed the main difference between the two may be the trilling of the uvula as frication can be velar in both cases - compare Northern Dutch acht [ɑʀ̝̊˖t] 'eight' (with a postvelar-uvular fricative trill) with Southern Dutch [ɑxt] or [ɑx̟t], which features a non-trilled fricative articulated at the middle or front of the soft palate.[3][4][5][9][10][12]
+            <h2>Voiceless uvular fricative</h2>
+            <table class="infobox" style="width: 16em;">
+             <tbody>
+              <tr>
+               <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                   Voiceless uvular fricative
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     χ
+                     x̣
+                     x̌
+                     ᴚ
+                 </span>
+                </span>
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                Audio sample
+               </th>
+              </tr>
+              <tr>
+               <td class="infobox-full-data center" colspan="2">
+                <span typeof="mw:File">
+                 <span>
+                  <audio class="mw-file-element" controls="" data-durationhint="3" data-mw-tmh="" data-mwprovider="wikimediacommons" data-mwtitle="Voiceless_uvular_fricative.ogg.mp3" id="mwe_player_0" preload="none" style="width:150px;" width="150">
+                   <source data-height="0" data-width="0" src="Voiceless_uvular_fricative.ogg.mp3" type='audio/ogg; codecs="vorbis"'/>
+                   <source data-height="0" data-transcodekey="mp3" data-width="0" src="Voiceless_uvular_fricative.ogg.mp3" type="audio/mpeg"/>
+                  </audio>
+                 </span>
+                </span>
+               </td>
+              </tr>
+             </tbody>
+            </table>
+            </table>
+            
+        </body>
+        <table class="infobox" style="width: 16em;">
+         <tbody>
+          <tr>
+           <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+          voiceless pre-uvular fricative
+           </th>
+          </tr>
+          <tr>
+           <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+             <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                x̠
+                χ̟
+             </span>
+            </span>
+           </th>
+          </tr>
+         </tbody>
+        </table>
+            The <strong>voiceless uvular fricative</strong> is a type of consonantal sound used in some spoken languages. The IPA symbol for it is the Greek chi ⟨χ⟩, or sometimes ⟨x⟩ (or ⟨r⟩, if rhotic) in broad transcription. In the Americanist phonetic notation, this sound is represented by ex with underdot ⟨x̣⟩, or sometimes by ex with caron ⟨x̌⟩. In Bodhi’s Phonetic Alphabet <sup> <i> [Made up thing] </i> </sup>, it is represented with ⟨ᴚ⟩. The symbol ⟨ᴚ⟩ is also an obsolete IPA symbol for this sound.<br> <br>
+        
+        There is also a <strong>voiceless pre-uvular</strong> / <strong>post-velar fricative</strong> in some languages. The IPA symbol for it is ⟨x̠⟩ or ⟨χ̟⟩.
+        <h2>Voiceless uvular trill</h2>
+        <table class="infobox" style="width: 16em;">
+         <tbody>
+          <tr>
+           <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+               Voiceless uvular trill
+           </th>
+          </tr>
+          <tr>
+           <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+            <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+             <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                 ʀ̥
+             </span>
+            </span>
+           </th>
+          </tr>
+          <tr>
+             <th> <!-- Wikipedia-style Audio Player -->
+                 <div style="width: 100%; max-width: 400px; margin: 20px 0; background-color: #ffffe6; border: 1px solid #f0f0e0; padding: 8px; text-align: center;">
+                   <!-- Title -->
+                   <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Audio sample</div>
+                   
+                   <!-- Player bar -->
+                   <div style="display: flex; background-color: #707070; height: 40px; align-items: center; padding: 0; position: relative;">
+                     <!-- Play button -->
+                     <button id="wikiPlayButton" style="width: 40px; height: 40px; background: none; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; padding: 0;">
+                       <div id="wikiPlayIcon" style="width: 0; height: 0; border-top: 10px solid transparent; border-left: 18px solid white; border-bottom: 10px solid transparent; margin-left: 4px;"></div>
+                       <div id="wikiPauseIcon" style="display: none; width: 16px; height: 18px; border-left: 5px solid white; border-right: 5px solid white; margin-left: 0;"></div>
+                     </button>
+                     
+                     <!-- Time display -->
+                     <div id="wikiTimeDisplay" style="position: absolute; right: 0; background-color: #202020; color: white; padding: 4px 8px; font-family: Arial; font-size: 14px; margin-right: 4px; border-radius: 2px;">0:02</div>
+                   </div>
+                   
+                   <!-- Links -->
+                   <div style="margin-top: 8px; font-size: 14px; color: #6060a0;">
+                     <a href="#" style="color: #6060a0; text-decoration: none;">source</a>
+                     <span style="margin: 0 6px; color: #6060a0;">•</span>
+                     <a href="#" style="color: #6060a0; text-decoration: none;">help</a>
+                   </div>
+                 </div>
+
+                 <!-- Audio element -->
+                 <audio id="wikiAudioElement">
+                   <!-- Replace this with the path to your audio file -->
+                   <source src="Voiceless_uvular_trill.ogg.mp3" type="audio/mpeg">
+                   Your browser does not support the audio element.
+                 </audio></th>
+          </tr>
+         </tbody>
+        </table>
+        </table>
+        The voiceless uvular trill is a type of consonantal sound, used in some spoken languages. It is less common than its voiced counterpart. The symbol in the International Phonetic Alphabet that represents this sound is ⟨ʀ̥⟩, a small capital version of the Latin letter r with a ring diacritic indicating voicelessness.
+            
+            <h2>Occurrence</h2>
+            <body>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2" scope="col">Language</th>
+                            <th>Word</th>
+                            <th class="ipa">IPA</th>
+                            <th>Meaning</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="language-link">Afrikaans<sup>[13][14]</sup></span></td>
+                            <td></td>
+                            <td><span class="italic">goed</span></td>
+                            <td>[χut]</td>
+                            <td>'good'</td>
+                            <td>Varies between a fricative and a fricative trill when word-initial.<sup>[13]</sup> See <span class="note-link">Afrikaans phonology</span>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="language-link">Arabic<sup>[12]</sup></span></td>
+                            <td></td>
+                            <td><span class="arabic-text">خضراء</span><br><span class="italic">ḵaḍrāʾ</span></td>
+                            <td>[χadʿraːʔ]</td>
+                            <td>'green' (f.)</td>
+                            <td>Fricative trill with velar frication.<sup>[12]</sup> May be transcribed in IPA with ⟨x⟩. See <span class="note-link">Arabic phonology</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="language-link">Armenian</span></td>
+                            <td></td>
+                            <td><span class="armenian">խաղ</span> <span class="italic">xaġ</span></td>
+                            <td>[χɑʁ]</td>
+                            <td>'game'</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Azerbaijani</a><span class="superscript">[15]</span><span class="superscript">[16]</span></td>
+                            <td>
+                                In most of dialects, specially in all of <a href="#">Southern Azerbaijani Turkish</a>
+                            </td>
+                            <td>sancaq</td>
+                            <td>[sɑndʒɑχ]</td>
+                            <td>'pin', 'lance', 'starboard', 'banner', 'standard', 'ensign'</td>
+                            <td>
+                                Almost all words ending in q, regardless of their role in sentences would have the pronunciation of &lt;χ&gt;, but as a definitive accusative, the q character changes to ğ, forming '<a href="#">sancağı</a>' in which it sounds &lt;ʁ&gt;.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Breton</a></td>
+                            <td>Some speakers</td>
+                            <td>c'hwec'h</td>
+                            <td>[χwɛχ]</td>
+                            <td>'six'</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Chuvash</a></td>
+                            <td></td>
+                            <td>хăна hăna</td>
+                            <td>[χə'na]</td>
+                            <td>'guest'</td>
+                            <td></td>
+                    </tbody>
+                </table>
+            </body>
+            <h1>Voiced post-palatal fricative</h1>
+            </body>
+            <table class="infobox" style="width: 16em;">
+             <tbody>
+              <tr>
+               <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+            Voiced post-palatal fricative
+               </th>
+              </tr>
+              <tr>
+               <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                 <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                     ʝ̠
+                     ɣ̟
+                     ᶍ̬
+                     ɉ̝
+                     ꬶ̞
+                     ɣʲ
+                     ɣ̡
+                 </span>
+                </span>
+               </th>
+              </tr>
+             </tbody>
+            </table>
+           The voiced post-palatal fricative is a type of consonantal sound, used in some languages, which is articulated slightly more back compared with the place of articulation of the prototypical voiced palatal fricative but not as back as the prototypical voiced velar fricative. The International Phonetic Alphabet does not have a separate symbol for that sound, but it can be transcribed as ⟨ʝ̠⟩, ⟨ʝ˗⟩ (both symbols denote a retracted ⟨ʝ⟩), ⟨ɣ̟⟩ or ⟨ɣ˖⟩ (both symbols denote an advanced ⟨ɣ⟩). The equivalent X-SAMPA symbols are j\_- and G_+, respectively. <br> <br>
+            
+            Especially in broad transcription, the voiced post-palatal fricative may be transcribed as a palatalized voiced velar fricative (⟨ɣʲ⟩ in the IPA, G' or G_j in X-SAMPA). <br> <br>
+            
+            Using symbols from Bodhi's Extended IPA Symbols<sup> <i> [Made up thing] </i> </sup>, it can be represented as a voiced ᶍ (⟨ᶍ̬⟩), or a raised ɉ (⟨ɉ̝⟩), or a lowered ꬶ (⟨ꬶ̞⟩), but it can also be transcribed as the symbol ɣ modified by a palatal hook ◌̡.<br> <br>
+            <link href="mw-data:TemplateStyles:r1257001546" rel="mw-deduplicated-inline-style">
+             <link href="mw-data:TemplateStyles:r1151960987" rel="mw-deduplicated-inline-style">
+              <table class="infobox" style="width: 16em;">
+               <tbody>
+                <tr>
+                 <th class="infobox-above" colspan="2" style="background: #f2f2ce;">
+                  Voiced post-palatal approximant
+                 </th>
+                </tr>
+                <tr>
+                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                  <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                   <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    j˗  ʝ̞˗  i̯˗
+                   </span>
+                  </span>
+                 </th>
+                </tr>
+                <tr>
+                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                  <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                   <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    ɰ˖  ɣ̞˖  ɯ̯˖
+                     <tr>
+                      <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                       <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                        <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                   ɰʲ  ɣ̞ʲ  ɯ̯ʲ
+                    </span>
+                   </span>
+                  </th>
+                 </tr>
+                    <tr>
+                     <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                      <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                       <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    ɰ̈  ɣ̞̈  ɯ̯̈
+                   </span>
+                  </span>
+                 </th>
+                </tr>
+                <tr>
+                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                  <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                   <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    j̈  ʝ̈˕  ï̯
+                   </span>
+                  </span>
+                 </th>
+                </tr>
+                <tr>
+                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                  <span style="font-size: 5em; line-height: 1.2em; vertical-align: super; font-weight: normal;">
+                   <span class="IPA nowrap" lang="und-Latn-fonipa" title="Representation in the International Phonetic Alphabet (IPA)">
+                    ɉ  ɨ̯
+                   </span>
+                  </span>
+                 </th>
+                </tr>
+                <tr>
+                 <th class="infobox-header" colspan="2" style="background: #ffffe6;">
+                  Audio sample
+                 </th>
+                </tr>
+                <tr>
+                 <td class="infobox-full-data center" colspan="2">
+                  <span typeof="mw:File">
+                   <span>
+                    <audio class="mw-file-element" controls="" data-durationhint="2" data-mw-tmh="" data-mwprovider="wikimediacommons" data-mwtitle="Post-palatal_approximant.ogg" id="mwe_player_1" preload="none" style="width:150px;" width="150">
+                     <source data-height="0" data-transcodekey="mp3" data-width="0" src="Post-palatal_approximant.ogg/Post-palatal_approximant.ogg" type="audio/mpeg"/>
+                     <source data-height="0" data-width="0" src="Post-palatal_approximant.ogg" type='audio/ogg; codecs="vorbis"'/>
+                    </audio>
+                   </span>
+                  </span>
+                 </td>
+                </tr>
+               </tbody>
+              </table>
+            
+            There is also the post-palatal approximant[13] in some languages, which is articulated slightly more back than the place of articulation of the prototypical palatal approximant but less far back than the prototypical velar approximant. It can be considered the semivocalic equivalent of the close central unrounded vowel [ɨ]The International Phonetic Alphabet does not have a separate symbol for that sound, but it can be transcribed as ⟨j̠⟩, ⟨j˗⟩ (both symbols denote a retracted ⟨j⟩), ⟨ɰ̟⟩ or ⟨ɰ˖⟩ (both symbols denote an advanced ⟨ɰ⟩). The equivalent X-SAMPA symbols are j_- and M\_+, respectively. Other possible transcriptions include a centralized ⟨j⟩ (⟨j̈⟩ in the IPA, j_" in X-SAMPA), a centralized ⟨ɰ⟩ (⟨ɰ̈⟩ in the IPA, M\_" in X-SAMPA) and a non-syllabic ⟨ɨ⟩ (⟨ɨ̯⟩ in the IPA, 1_^ in X-SAMPA).
+
+            For the reasons mentioned above and in the article velar approximant, none of those symbols are appropriate for languages such as Spanish, whose post-palatal approximant consonant (not a semivowel) appears as an allophone of /ɡ/ before front vowels and is best transcribed ⟨ʝ̞˗⟩, ⟨ʝ˕˗⟩ (both symbols denote a lowered and retracted ⟨ʝ⟩), ⟨ɣ̞˖⟩ or ⟨ɣ˕˖⟩ (both symbols denote a lowered and advanced ⟨ɣ⟩). The equivalent X-SAMPA symbols are j\_o_- and G_o_+.
+            
+            <h2>Getting Started</h2>
+            <p>New to the wiki? Here are some ways to get started:</p>
+            <ul>
+                <li>Browse our articles to find topics that interest you</li>
+                <li>Check out the help page to learn how to navigate and contribute etc.</li>
+                <li>Visit the community portal to connect with other contributors</li>
+                <li>Features:<br>Option to create an account to start contributing your knowledge etc.<br>copy symbol option<br>link to another article or website option<br>Option to move page title or propose it<br>propose delete article option<br>bold text format option<br>audio option<br>italic text format option<br>font option<br>made up tag<br>option to propose article or template<br>option to propose edit<br>option to reward someone’s edit<br>Option to request page<br>Option to draft new article or develop it in your sandbox<br>Option to delete account</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>My Wiki - A collaborative knowledge base</p>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Simple script to handle link clicks for demo purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('y');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('This is a static demo - in a real wiki, this link would take you to: ' + link.textContent);
+                });
+            });
+            
+            // Add search functionality
+            const searchInput = document.querySelector('.search-bar input');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    alert('Search for: ' + searchInput.value);
+                    searchInput.value = '';
+                }
+            });
+        });
+        /* JavaScript for player functionality */
+        // Wait for DOM to be fully loaded
+         document.addEventListener('DOMContentLoaded', function() {
+           const audioElement = document.getElementById('wikiAudioElement');
+           const playButton = document.getElementById('wikiPlayButton');
+           const playIcon = document.getElementById('wikiPlayIcon');
+           const pauseIcon = document.getElementById('wikiPauseIcon');
+           const timeDisplay = document.getElementById('wikiTimeDisplay');
+           let isPlaying = false;
+           
+           if (playButton) {
+             playButton.addEventListener('click', function() {
+               if (isPlaying) {
+                 audioElement.pause();
+                 playIcon.style.display = 'block';
+                 pauseIcon.style.display = 'none';
+               } else {
+                 audioElement.play();
+                 playIcon.style.display = 'none';
+                 pauseIcon.style.display = 'block';
+               }
+               isPlaying = !isPlaying;
+             });
+           }
+           
+           if (audioElement) {
+             audioElement.addEventListener('timeupdate', function() {
+               const currentTime = audioElement.currentTime;
+               const minutes = Math.floor(currentTime / 60);
+               const seconds = Math.floor(currentTime % 60);
+               if (timeDisplay) {
+                 timeDisplay.textContent = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+               }
+             });
+             
+             audioElement.addEventListener('ended', function() {
+               if (playIcon && pauseIcon) {
+                 playIcon.style.display = 'block';
+                 pauseIcon.style.display = 'none';
+               }
+               isPlaying = false;
+             });
+           }
+         });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonetic Symbol Card</title>
+    <style>
+        .card {
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #f5f5dc; /* Light beige color */
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .symbol-container {
+            background-color: #f5f5dc;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            line-height: 1.5;
+        }
+        .audio-section {
+            background-color: #f0f0f5;
+            padding: 15px;
+            text-align: center;
+        }
+        .audio-label {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .audio-player {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .play-button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+        }
+        .time-display {
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        .footer {
+            background-color: #f0f0f5;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer a {
+            color: #5959b3;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer .dot {
+            color: #5959b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            Voiceless uvular fricative trill
+        </div>
+        <div class="symbol-container">
+            <div>R̥</div>
+            <div>χR̥</div>
+            <div>ʀ̥</div>
+        </div>
+        <div class="audio-section">
+            <div class="audio-label">Audio sample</div>
+            <div class="audio-player">
+                <button class="play-button">►</button>
+                <div class="time-display">0:02</div>
+            </div>
+        </div>
+        <div class="footer">
+            <a href="#">source</a>
+            <span class="dot">•</span>
+            <a href="#">help</a>
+        </div>
+    </div>
+</body>
+</html>
